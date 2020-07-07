@@ -1,0 +1,45 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "SaaS Usage", "GPL-3.0-or-later" ]
+      } ]
+    },
+    "SaaS Usage" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "SaaS Usage",
+        "terms" : [ {
+          "term" : "Commercial",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributionPublic",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributionPrivate",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributionService",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributingBinary",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributingSource",
+          "relation" : "Excluded"
+        } ]
+      }
+    },
+    "GPL-3.0-or-later" : {
+      "vertex" : "GPL3OrLater"
+    }
+  }
+}

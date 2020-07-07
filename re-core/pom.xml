@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>re-core</artifactId>
+
+	<parent>
+		<groupId>com.g2forge.reassert</groupId>
+		<artifactId>re-project</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../re-project/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jgrapht</groupId>
+			<artifactId>jgrapht-core</artifactId>
+			<version>${jgrapht.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.g2forge.enigma</groupId>
+			<artifactId>en-backend</artifactId>
+			<version>${enigma.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.g2forge.enigma</groupId>
+			<artifactId>en-diagram</artifactId>
+			<version>${enigma.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>re-cache</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.g2forge.alexandria</groupId>
+			<artifactId>ax-log</artifactId>
+			<version>${alexandria.version}</version>
+		</dependency>
+	</dependencies>
+</project>

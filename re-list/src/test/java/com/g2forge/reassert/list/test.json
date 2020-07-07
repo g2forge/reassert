@@ -1,0 +1,45 @@
+{
+  "vertices" : {
+    "ax-java artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "ax-java"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "coordinates",
+        "targets" : [ "ax-java" ]
+      }, {
+        "edge" : "inherits",
+        "targets" : [ "ax-root artifact" ]
+      } ]
+    },
+    "ax-java" : {
+      "vertex" : {
+        "@c" : "com.g2forge.reassert.mock.MockCoordinates",
+        "text" : "ax-java"
+      }
+    },
+    "ax-root artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "ax-root"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "coordinates",
+        "targets" : [ "ax-root" ]
+      } ]
+    },
+    "ax-root" : {
+      "vertex" : {
+        "@c" : "com.g2forge.reassert.mock.MockCoordinates",
+        "text" : "ax-root"
+      }
+    }
+  }
+}

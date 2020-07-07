@@ -1,0 +1,4 @@
+Minimum finding level: WARN
+WARN: You must disclose the source for this artifact
+	Rule: (("Public distribution" || ("SaaS distribution" && "Requires distribution for SaaS")) && "Requires source disclosure")
+	Explanation: Included (&&) - because the && operator (with identity Included) was applied

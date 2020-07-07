@@ -1,0 +1,50 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "C artifact" ]
+      }, {
+        "edge" : "inherits",
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "BSD-3-Clause" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      }
+    },
+    "C artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "C"
+        }
+      }
+    },
+    "BSD-3-Clause" : {
+      "vertex" : "BSD3"
+    }
+  }
+}

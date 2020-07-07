@@ -1,0 +1,44 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "inherits",
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "C artifact" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      }
+    },
+    "C artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "C"
+        }
+      }
+    }
+  }
+}
