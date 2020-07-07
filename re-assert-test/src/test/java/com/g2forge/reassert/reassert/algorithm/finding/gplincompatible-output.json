@@ -125,7 +125,7 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "IncompatibleWorkLicenseFinding 30",
         "finding" : {
-          "unknown" : [ "PatentNonGrant", "Notice", "DisclosureSource", "SaaSIsDistribution", "SameLicense", "Trademark", "Distribution", "Liability", "Modification", "StateChanges", "PatentGrant" ],
+          "unknown" : [ "Distribution", "Modification", "PatentGrant", "DisclosureSource", "Notice", "SameLicense", "StateChanges", "Liability", "SaaSIsDistribution", "PatentNonGrant", "Trademark" ],
           "mismatched" : [ "CommercialUse" ],
           "level" : "ERROR"
         }
