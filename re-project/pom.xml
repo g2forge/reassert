@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.g2forge.reassert</groupId>
+	<artifactId>re-project</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.g2forge.alexandria</groupId>
+		<artifactId>ax-project</artifactId>
+		<version>0.0.14-SNAPSHOT</version>
+		<relativePath>../../alexandria/ax-project/pom.xml</relativePath>
+	</parent>
+
+	<properties>
+		<alexandria.version>0.0.14-SNAPSHOT</alexandria.version>
+		<enigma.version>0.0.8-SNAPSHOT</enigma.version>
+		<gearbox.version>0.0.6-SNAPSHOT</gearbox.version>
+		<jgrapht.version>1.4.0</jgrapht.version>
+
+		<reassert.organization>g2forge</reassert.organization>
+		<reassert.name>Reassert</reassert.name>
+		<reassert.repository>reassert</reassert.repository>
+	</properties>
+
+	<name>Reassert Project</name>
+	<description>Parent project for Reassert.</description>
+	<url>https://github.com/${reassert.organization}/${reassert.repository}/tree/${project.version}/${project.artifactId}</url>
+	<developers>
+		<developer>
+			<name>Greg Gibeling</name>
+			<email>gdgib@outlook.com</email>
+			<organization>G2 Forge</organization>
+			<organizationUrl>http://www.g2forge.com</organizationUrl>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>https://github.com/${reassert.organization}/${reassert.repository}/blob/${project.version}/LICENSE</url>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/${reassert.organization}/${reassert.repository}.git</connection>
+		<developerConnection>scm:git:ssh://github.com:${reassert.organization}/${reassert.repository}.git</developerConnection>
+		<url>http://github.com/${reassert.organization}/${reassert.repository}/tree/${project.version}</url>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<properties>
+						<property>
+							<name>alexandria.version</name>
+							<dependencies>
+								<dependency>
+									<groupId>com.g2forge.alexandria</groupId>
+									<artifactId>alexandria</artifactId>
+								</dependency>
+							</dependencies>
+						</property>
+						<property>
+							<name>enigma.version</name>
+							<dependencies>
+								<dependency>
+									<groupId>com.g2forge.enigma</groupId>
+									<artifactId>enigma</artifactId>
+								</dependency>
+							</dependencies>
+						</property>
+						<property>
+							<name>gearbox.version</name>
+							<dependencies>
+								<dependency>
+									<groupId>com.g2forge.gearbox</groupId>
+									<artifactId>gearbox</artifactId>
+								</dependency>
+							</dependencies>
+						</property>
+					</properties>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

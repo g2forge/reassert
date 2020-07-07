@@ -1,0 +1,89 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "C artifact" ]
+      }, {
+        "edge" : "inherits",
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "Commercial Usage" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "unspecifiedusage" ]
+      } ]
+    },
+    "C artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "C"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "Merged usage 0" ]
+      } ]
+    },
+    "Commercial Usage" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "Commercial Usage",
+        "terms" : [ {
+          "term" : "Commercial",
+          "relation" : "Included"
+        } ]
+      }
+    },
+    "unspecifiedusage" : {
+      "vertex" : {
+        "@c" : ".contract.usage.UnspecifiedUsage"
+      }
+    },
+    "Merged usage 0" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "Merged usage 0",
+        "terms" : [ {
+          "term" : "UseCopy",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseModified",
+          "relation" : "Excluded"
+        }, {
+          "term" : "Commercial",
+          "relation" : "Included"
+        }, {
+          "term" : "UseLink",
+          "relation" : "Included"
+        } ]
+      }
+    }
+  }
+}

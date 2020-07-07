@@ -1,0 +1,135 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "GPL-3.0-or-later", "Private Usage" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "No such license", "Private Usage" ]
+      } ]
+    },
+    "GPL-3.0-or-later" : {
+      "vertex" : "GPL3OrLater"
+    },
+    "No such license" : {
+      "vertex" : {
+        "@c" : ".contract.license.License",
+        "name" : "No such license",
+        "terms" : [ {
+          "term" : "CommercialUse",
+          "relation" : "Excluded"
+        }, {
+          "term" : "PrivateUse",
+          "relation" : "Included"
+        }, {
+          "term" : "Warranty",
+          "relation" : "Included"
+        } ]
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "UnknownWorkTypeFinding 0" ]
+      } ]
+    },
+    "Private Usage" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "Private Usage",
+        "terms" : [ {
+          "term" : "Commercial",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributionPublic",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributionPrivate",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributionService",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseLink",
+          "relation" : "Included"
+        }, {
+          "term" : "UseCopy",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseModified",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributingBinary",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributingSource",
+          "relation" : "Excluded"
+        } ]
+      }
+    },
+    "UnknownWorkTypeFinding 0" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextualFinding",
+        "name" : "UnknownWorkTypeFinding 0",
+        "finding" : {
+          "level" : "ERROR"
+        }
+      }
+    },
+    "Work 0" : {
+      "vertex" : {
+        "@c" : ".work.Work",
+        "name" : "Work 0",
+        "type" : {
+          "@c" : "com.g2forge.reassert.license.StandardWorkTypeFactory$GPLWorkType"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "IncompatibleWorkLicenseFinding 30" ]
+      }, {
+        "edge" : "workcontains",
+        "targets" : [ "A artifact", "B artifact" ]
+      }, {
+        "edge" : "worklicense",
+        "targets" : [ "GPL-3.0-or-later" ]
+      } ]
+    },
+    "IncompatibleWorkLicenseFinding 30" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextualFinding",
+        "name" : "IncompatibleWorkLicenseFinding 30",
+        "finding" : {
+          "unknown" : [ "PatentNonGrant", "Notice", "DisclosureSource", "SaaSIsDistribution", "SameLicense", "Trademark", "Distribution", "Liability", "Modification", "StateChanges", "PatentGrant" ],
+          "mismatched" : [ "CommercialUse" ],
+          "level" : "ERROR"
+        }
+      }
+    }
+  }
+}

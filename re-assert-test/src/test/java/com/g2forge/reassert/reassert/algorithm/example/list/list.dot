@@ -1,0 +1,9 @@
+digraph reassert {
+	ax_java_artifact [label="ax-java"];
+	ax_java [label="ax-java"];
+	ax_root_artifact [label="ax-root"];
+	ax_root [label="ax-root"];
+	ax_java_artifact -> ax_root_artifact [label="inherits"];
+	ax_java_artifact -> ax_java [label="coordinates"];
+	ax_root_artifact -> ax_root [label="coordinates"];
+}

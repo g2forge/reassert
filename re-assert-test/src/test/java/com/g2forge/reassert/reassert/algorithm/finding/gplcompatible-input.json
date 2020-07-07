@@ -1,0 +1,79 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "GPL-3.0-or-later", "Private Usage" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "BSD-3-Clause", "Private Usage" ]
+      } ]
+    },
+    "GPL-3.0-or-later" : {
+      "vertex" : "GPL3OrLater"
+    },
+    "BSD-3-Clause" : {
+      "vertex" : "BSD3"
+    },
+    "Private Usage" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "Private Usage",
+        "terms" : [ {
+          "term" : "Commercial",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributionPublic",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributionPrivate",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributionService",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseLink",
+          "relation" : "Included"
+        }, {
+          "term" : "UseCopy",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseModified",
+          "relation" : "Excluded"
+        }, {
+          "term" : "DistributingBinary",
+          "relation" : "Included"
+        }, {
+          "term" : "DistributingSource",
+          "relation" : "Excluded"
+        } ]
+      }
+    }
+  }
+}

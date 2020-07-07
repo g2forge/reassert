@@ -1,0 +1,27 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "NoSuchLicense" ]
+      } ]
+    },
+    "NoSuchLicense" : {
+      "vertex" : {
+        "@c" : ".contract.license.License",
+        "name" : "No such license",
+        "terms" : [ {
+          "term" : "Warranty",
+          "relation" : "Included"
+        } ]
+      }
+    }
+  }
+}
