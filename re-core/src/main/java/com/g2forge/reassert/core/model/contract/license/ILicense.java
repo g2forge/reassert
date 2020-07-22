@@ -9,7 +9,7 @@ public interface ILicense extends IContract {
 	 * 
 	 * @return The SPDX identifier for this license.
 	 * 
-	 * @see https://spdx.org/ids
+	 * @see <a href="https://spdx.org/ids">SPDX IDs</a>
 	 */
 	public String getSPDX();
 
