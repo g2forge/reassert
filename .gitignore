@@ -3,5 +3,6 @@
 /.settings/
 /target/
 /bulldozer-temp.json
+/bulldozer-state.json
 /.factorypath
 /.cache/

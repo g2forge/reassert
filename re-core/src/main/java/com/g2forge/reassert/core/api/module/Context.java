@@ -1,5 +1,6 @@
 package com.g2forge.reassert.core.api.module;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +51,7 @@ public class Context implements IContext {
 
 	protected Collection<IDescriber<?>> describers;
 
-	protected final ICache cache = new LocalCache();
+	protected final ICache cache = new LocalCache(Paths.get(System.getProperty("user.home")).resolve(".reassert"));
 
 	public Context(IModule... modules) {
 		this(HCollection.asList(modules));
