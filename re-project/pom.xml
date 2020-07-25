@@ -1,25 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.g2forge.reassert</groupId>
 	<artifactId>re-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.14-SNAPSHOT</version>
+		<version>0.0.15-SNAPSHOT</version>
 		<relativePath>../../alexandria/ax-project/pom.xml</relativePath>
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.14-SNAPSHOT</alexandria.version>
-		<enigma.version>0.0.8-SNAPSHOT</enigma.version>
-		<gearbox.version>0.0.6-SNAPSHOT</gearbox.version>
+		<alexandria.version>0.0.15-SNAPSHOT</alexandria.version>
+		<enigma.version>0.0.9-SNAPSHOT</enigma.version>
+		<gearbox.version>0.0.7-SNAPSHOT</gearbox.version>
 		<jgrapht.version>1.4.0</jgrapht.version>
 
 		<reassert.organization>g2forge</reassert.organization>
@@ -44,11 +42,6 @@
 			<url>https://github.com/${reassert.organization}/${reassert.repository}/blob/${project.version}/LICENSE</url>
 		</license>
 	</licenses>
-	<scm>
-		<connection>scm:git:git://github.com/${reassert.organization}/${reassert.repository}.git</connection>
-		<developerConnection>scm:git:ssh://github.com:${reassert.organization}/${reassert.repository}.git</developerConnection>
-		<url>http://github.com/${reassert.organization}/${reassert.repository}/tree/${project.version}</url>
-	</scm>
 
 	<build>
 		<plugins>

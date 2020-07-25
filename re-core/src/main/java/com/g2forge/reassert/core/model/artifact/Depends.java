@@ -18,16 +18,32 @@ import lombok.ToString;
 public class Depends extends DefaultEdge implements IEdge {
 	private static final long serialVersionUID = 2370178050989575531L;
 
-	/** Indicates that anyone depending an artifact with this dependency, will inherit the dependency. */
+	/**
+	 * Indicates that any artifact depending an artifact with this dependency, will inherit the dependency.
+	 * 
+	 * @return {@code true} if any artifact depending an artifact with this dependency, will inherit the dependency.
+	 */
 	protected final boolean transitive;
 
-	/** Indicates that this dependency is required at runtime. */
+	/**
+	 * Indicates that this dependency is required at runtime.
+	 * 
+	 * @return {@code true} if this dependency is required at runtime.
+	 */
 	protected final boolean runtime;
 
-	/** Indicates that this dependency is required during testing. */
+	/**
+	 * Indicates that this dependency is required during testing.
+	 * 
+	 * @return {@code true} if this dependency is required during testing.
+	 */
 	protected final boolean testtime;
 
-	/** Indicates that this dependency is required during compilation. */
+	/**
+	 * Indicates that this dependency is required during compilation.
+	 * 
+	 * @return {@code true} if this dependency is required during compilation.
+	 */
 	protected final boolean compiletime;
 
 	@Override
