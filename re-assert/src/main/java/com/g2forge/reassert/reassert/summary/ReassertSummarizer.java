@@ -46,7 +46,6 @@ public class ReassertSummarizer {
 	public ReportSummary summarize(IReport report) {
 		final List<Artifact<?>> artifacts = report.getGraph().vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList());
 		HCollection.sort(artifacts, new Comparator<Artifact<?>>() {
-
 			@Override
 			public int compare(Artifact<?> o1, Artifact<?> o2) {
 				// TODO Auto-generated method stub
