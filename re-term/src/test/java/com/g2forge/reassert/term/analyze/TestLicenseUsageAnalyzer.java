@@ -65,12 +65,12 @@ public class TestLicenseUsageAnalyzer {
 
 	protected void test(final IUsage usage, final ILicense license, final Level exepctedMinLevel, final String expectedResource, IPredicate1<IFinding> filter) {
 		final IReport reportRaw = new LicenseUsageAnalyzer(StandardLicenseUsageRules.create()).report(usage, license);
-		final IReport reportClean = filter != null ? new Report(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList()), null) : reportRaw;
+		final IReport reportClean = filter != null ? Report.builder().findings(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList())).build() : reportRaw;
 
 		final ReportRenderer reportRenderer = new ReportRenderer(ExplanationMode.Explain);
 
 		HAssert.assertTrue(reportRenderer.render(reportRaw), reportClean.getMinLevel().compareTo(exepctedMinLevel) >= 0);
-		final String rendered = reportRenderer.render(new Report(reportClean.getFindings().stream().filter(finding -> finding.getLevel().compareTo(Level.WARN) <= 0).collect(Collectors.toList()), null));
+		final String rendered = reportRenderer.render(Report.builder().findings(reportClean.getFindings().stream().filter(finding -> finding.getLevel().compareTo(Level.WARN) <= 0).collect(Collectors.toList())).build());
 		HAssert.assertEquals(new Resource(getClass(), expectedResource), rendered);
 	}
 

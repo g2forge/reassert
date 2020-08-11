@@ -35,5 +35,5 @@ public class ArtifactSummary {
 	protected final Collection<ILicense> licenses;
 
 	@Singular
-	protected final Collection<GraphPath<IVertex, IEdge>> paths;
+	protected final Collection<GraphPath<? extends IVertex, ? extends IEdge>> paths;
 }

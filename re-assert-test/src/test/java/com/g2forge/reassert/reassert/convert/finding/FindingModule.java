@@ -4,6 +4,7 @@ import org.slf4j.event.Level;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -43,6 +44,8 @@ public class FindingModule extends SimpleModule {
 		protected IExpression<TermRelation> expression;
 	}
 
+	@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
+	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 	protected static abstract class FindingMixin {
 		@JsonIgnore
 		public abstract IFinding getInnermostFinding();

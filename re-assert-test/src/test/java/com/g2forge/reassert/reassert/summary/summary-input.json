@@ -20,6 +20,9 @@
       }, {
         "edge" : "inherits",
         "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "Finding 0" ]
       } ]
     },
     "C artifact" : {
@@ -82,6 +85,17 @@
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
+    },
+    "Finding 0" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextualFinding",
+        "name" : "Finding 0",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.reassert.test.finding.TestFinding",
+          "level" : "ERROR",
+          "message" : "some finding"
+        }
+      }
     }
   }
 }

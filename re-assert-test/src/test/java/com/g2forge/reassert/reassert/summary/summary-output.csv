@@ -1,5 +1,5 @@
 level,artifact,findings,usages,licenses,paths
-,A,,,,
-,B,,,"GPL 3.0 or later license
-BSD 3 Clause license",
-,C,,"Commercial Usage",,
+ERROR,A,"ERROR: some finding",,,
+INFO,B,,,"GPL 3.0 or later license
+BSD 3 Clause license","A -> B"
+INFO,C,,"Commercial Usage",,"A -> C"

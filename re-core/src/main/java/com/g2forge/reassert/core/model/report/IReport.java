@@ -20,6 +20,8 @@ public interface IReport {
 		return findings.stream().map(IFinding::getLevel).min(ComparableComparator.create()).get();
 	}
 
+	public IOrigins getOrigins();
+
 	public default boolean isAcceptable() {
 		final Level minLevel = getMinLevel();
 		if (minLevel == null) return true;

@@ -20,4 +20,6 @@ public class Report implements IReport {
 	protected final Collection<IFinding> findings;
 
 	protected final Graph<IVertex, IEdge> graph;
+
+	protected final IOrigins origins;
 }
