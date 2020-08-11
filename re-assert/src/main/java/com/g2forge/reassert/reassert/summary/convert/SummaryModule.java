@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.core.api.described.IDescription;
-import com.g2forge.reassert.core.model.IVertex;
+import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
+import com.g2forge.reassert.core.api.module.IContext;
+import com.g2forge.reassert.core.model.contract.IContract;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
+import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.reassert.convert.ReportRenderer;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +20,27 @@ import lombok.RequiredArgsConstructor;
 public class SummaryModule extends SimpleModule {
 	private static final long serialVersionUID = 840399436131646940L;
 
-	protected final IFunction1<IVertex, IDescription> vertexDescriber;
+	protected final IContext context;
+
+	protected ReportRenderer createReportRenderer() {
+		return new ReportRenderer();
+	}
+
+	protected ReassertVertexDescriber createVertexDescriber() {
+		return new ReassertVertexDescriber(getContext());
+	}
 
 	@Override
 	public void setupModule(SetupContext context) {
 		super.setupModule(context);
-		
+
+		final ReassertVertexDescriber vertexDescriber = createVertexDescriber();
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
-				if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(getVertexDescriber());
+				if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(vertexDescriber);
+				if (IContract.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(vertexDescriber);
+				if (IFinding.class.isAssignableFrom(description.getBeanClass())) return new FindingSerializer(createReportRenderer());
 				return serializer;
 			}
 		});

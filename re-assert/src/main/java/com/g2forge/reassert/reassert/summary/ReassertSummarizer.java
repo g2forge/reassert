@@ -14,7 +14,6 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -30,12 +29,16 @@ import lombok.RequiredArgsConstructor;
 public class ReassertSummarizer {
 	protected final IContext context;
 
+	protected SummaryModule createSummaryModule() {
+		return new SummaryModule(getContext());
+	}
+
 	public void renderArtifacts(ReportSummary reportSummary, IDataSink sink) {
 		final CsvMapper mapper = new CsvMapper();
 		mapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
-		mapper.registerModule(new SummaryModule(new ReassertVertexDescriber(getContext())));
+		mapper.registerModule(createSummaryModule());
 
-		final ObjectWriter writer = mapper.writerFor(ArtifactSummary.class).with(mapper.schemaFor(ArtifactSummary.class).withHeader().withColumnReordering(true));
+		final ObjectWriter writer = mapper.writerFor(ArtifactSummary.class).with(mapper.schemaFor(ArtifactSummary.class).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
 		try (final OutputStream stream = sink.getStream(ITypeRef.of(OutputStream.class))) {
 			writer.writeValues(stream).writeAll(reportSummary.getArtifacts());
 		} catch (IOException e) {
