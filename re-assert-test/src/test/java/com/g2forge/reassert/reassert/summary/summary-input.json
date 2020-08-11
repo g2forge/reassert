@@ -22,6 +22,15 @@
         "targets" : [ "B artifact" ]
       } ]
     },
+    "C artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "C"
+        }
+      }
+    },
     "B artifact" : {
       "vertex" : {
         "@c" : ".artifact.Artifact",
@@ -34,15 +43,6 @@
         "edge" : "notice",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
-    },
-    "C artifact" : {
-      "vertex" : {
-        "@c" : ".artifact.Artifact",
-        "coordinates" : {
-          "system" : "mock",
-          "text" : "C"
-        }
-      }
     },
     "GPL-3.0-or-later" : {
       "vertex" : "GPL3OrLater"

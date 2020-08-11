@@ -1,3 +1,4 @@
-level,artifact,findings,usage,licenses,paths
-WARN,A,a finding,some usage,"license 0",
-ERROR,B,another finding,some usage,"license 1\nlicense 2","A -> B"
+level,artifact,findings,usages,licenses,paths
+,A,,,,
+,B,,,"GPL3OrLater License",
+,C,,,,

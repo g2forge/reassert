@@ -28,7 +28,8 @@ public class ArtifactSummary {
 	@Singular
 	protected final Collection<IFinding> findings;
 
-	protected final IUsage usage;
+	@Singular
+	protected final Collection<IUsage> usages;
 
 	@Singular
 	protected final Collection<ILicense> licenses;
