@@ -3,7 +3,7 @@ package com.g2forge.reassert.term.analyze.model.findings;
 import org.slf4j.event.Level;
 
 import com.g2forge.reassert.core.model.contract.TermRelation;
-import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.core.model.report.ITerminalFinding;
 import com.g2forge.reassert.term.eee.explain.model.IExplained;
 
 import lombok.Builder;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ConditionFinding implements IFinding {
+public class ConditionFinding implements ITerminalFinding {
 	protected final IExplained<TermRelation> result;
 
 	@Override

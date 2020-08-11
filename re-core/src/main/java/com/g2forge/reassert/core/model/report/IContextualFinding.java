@@ -5,6 +5,10 @@ import org.slf4j.event.Level;
 public interface IContextualFinding extends IFinding {
 	public IFinding getFinding();
 
+	public default IFinding getInnermostFinding() {
+		return getFinding().getInnermostFinding();
+	}
+	
 	@Override
 	public default Level getLevel() {
 		return getFinding().getLevel();

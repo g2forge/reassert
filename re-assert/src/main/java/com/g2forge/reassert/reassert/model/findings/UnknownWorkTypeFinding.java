@@ -2,7 +2,7 @@ package com.g2forge.reassert.reassert.model.findings;
 
 import org.slf4j.event.Level;
 
-import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.core.model.report.ITerminalFinding;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class UnknownWorkTypeFinding implements IFinding {
+public class UnknownWorkTypeFinding implements ITerminalFinding {
 	protected final Throwable throwable;
 
 	@Override

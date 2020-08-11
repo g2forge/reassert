@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class Copy extends DefaultEdge implements IEdge {
+public class Copy extends DefaultEdge implements IArtifactRelationEdge {
 	private static final long serialVersionUID = -1794936358174658546L;
 
 	@Override

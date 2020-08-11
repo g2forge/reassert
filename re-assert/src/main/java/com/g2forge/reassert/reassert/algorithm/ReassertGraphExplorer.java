@@ -28,7 +28,7 @@ import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
-import com.g2forge.reassert.reassert.Origins;
+import com.g2forge.reassert.core.model.report.IOrigins;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -52,7 +52,7 @@ public class ReassertGraphExplorer {
 
 	protected final IContext context;
 
-	public Graph<IVertex, IEdge> createGraph(Origins origins) {
+	public Graph<IVertex, IEdge> createGraph(IOrigins origins) {
 		final Graph<IVertex, IEdge> graph = HReassertModel.createGraph();
 		for (Artifact<?> origin : origins.getOrigins()) {
 			extendGraph(origin, graph);

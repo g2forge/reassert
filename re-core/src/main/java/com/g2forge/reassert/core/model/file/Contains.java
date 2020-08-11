@@ -2,7 +2,7 @@ package com.g2forge.reassert.core.model.file;
 
 import org.jgrapht.graph.DefaultEdge;
 
-import com.g2forge.reassert.core.model.IEdge;
+import com.g2forge.reassert.core.model.IArtifactRelationEdge;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class Contains extends DefaultEdge implements IEdge {
+public class Contains extends DefaultEdge implements IArtifactRelationEdge {
 	private static final long serialVersionUID = 558526486975433054L;
 
 	@Override

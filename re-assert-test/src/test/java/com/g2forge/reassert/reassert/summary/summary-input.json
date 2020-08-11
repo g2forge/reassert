@@ -1,0 +1,101 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "C artifact" ]
+      }, {
+        "edge" : "inherits",
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "Finding 0" ]
+      } ]
+    },
+    "C artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "C"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "commerical usage" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "GPL-3.0-or-later" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "BSD-3-Clause" ]
+      } ]
+    },
+    "GPL-3.0-or-later" : {
+      "vertex" : "GPL3OrLater"
+    },
+    "BSD-3-Clause" : {
+      "vertex" : "BSD3"
+    },
+    "commerical usage" : {
+      "vertex" : {
+        "@c" : "com.g2forge.reassert.core.model.contract.usage.Usage",
+        "name" : "Commercial Usage",
+        "terms" : [ {
+          "term" : "Commercial",
+          "relation" : "Included"
+        } ]
+      }
+    },
+    "Work 0" : {
+      "vertex" : {
+        "@c" : ".work.Work",
+        "name" : "Work 0",
+        "type" : {
+          "@c" : "com.g2forge.reassert.license.StandardWorkTypeFactory$GPLWorkType"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "workcontains",
+        "targets" : [ "B artifact", "A artifact", "C artifact" ]
+      }, {
+        "edge" : "worklicense",
+        "targets" : [ "GPL-3.0-or-later" ]
+      } ]
+    },
+    "Finding 0" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextualFinding",
+        "name" : "Finding 0",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.reassert.test.finding.TestFinding",
+          "level" : "ERROR",
+          "message" : "some finding"
+        }
+      }
+    }
+  }
+}

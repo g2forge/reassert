@@ -1,0 +1,5 @@
+level,artifact,findings,usages,licenses,paths
+WARN,A,"WARN: a finding","some usage","license 0",
+ERROR,B,"ERROR: finding 0
+INFO: finding 1","some usage","license 1
+license 2","A -> B"

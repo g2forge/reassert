@@ -5,7 +5,7 @@ import java.util.Set;
 import org.slf4j.event.Level;
 
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
-import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.core.model.report.ITerminalFinding;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class IncompatibleWorkLicenseFinding implements IFinding {
+public class IncompatibleWorkLicenseFinding implements ITerminalFinding {
 	@Singular("unknown")
 	protected final Set<ILicenseTerm> unknown;
 

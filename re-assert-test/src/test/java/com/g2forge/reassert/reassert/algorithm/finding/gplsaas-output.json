@@ -62,8 +62,10 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "SuspiciousUsageFinding 13",
         "finding" : {
+          "@c" : "com.g2forge.reassert.term.analyze.model.findings.ExpressionContextualFinding",
           "inputs" : [ "UseLink", "UseCopy", "UseModified" ],
           "finding" : {
+            "@c" : "com.g2forge.reassert.term.analyze.model.findings.SuspiciousUsageFinding",
             "result" : {
               "value" : "Unspecified",
               "operator" : "!",
