@@ -1,5 +1,9 @@
 package com.g2forge.reassert.reassert.summary;
 
+import java.util.List;
+
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.junit.Test;
 import org.slf4j.event.Level;
 
@@ -7,6 +11,8 @@ import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.io.dataaccess.ByteArrayDataSink;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.api.module.IContext;
+import com.g2forge.reassert.core.model.IEdge;
+import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.list.ListCoordinates;
@@ -24,9 +30,42 @@ import com.g2forge.reassert.reassert.test.contract.TestUsage;
 import com.g2forge.reassert.reassert.test.finding.TestFinding;
 
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Singular;
 
 public class TestReassertSummarizer extends ATestReassert {
+	@Data
+	@Builder(toBuilder = true)
+	@RequiredArgsConstructor
+	protected static class TestGraphPath implements GraphPath<IVertex, IEdge> {
+		@Singular("vertex")
+		protected final List<IVertex> vertexList;
+
+		@Override
+		public Graph<IVertex, IEdge> getGraph() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public IVertex getStartVertex() {
+			return getVertexList().get(0);
+		}
+
+		@Override
+		public IVertex getEndVertex() {
+			final List<IVertex> vertexList = getVertexList();
+			return vertexList.get(vertexList.size() - 1);
+		}
+
+		@Override
+		public double getWeight() {
+			throw new UnsupportedOperationException();
+		}
+	}
+
 	protected static class TestSummarizer extends ReassertSummarizer {
 		public TestSummarizer(IContext context) {
 			super(context);
@@ -52,7 +91,7 @@ public class TestReassertSummarizer extends ATestReassert {
 	public void artifacts() {
 		final ReportSummary.ReportSummaryBuilder summary = ReportSummary.builder();
 		summary.artifact(ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A")).finding(new TestFinding(Level.WARN, "a finding")).usage(new TestUsage("some usage", null)).license(new TestLicense("license 0", null, null)).build());
-		summary.artifact(ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B")).finding(new TestFinding(Level.ERROR, "finding 0")).finding(new TestFinding(Level.INFO, "finding 1")).usage(new TestUsage("some usage", null)).license(new TestLicense("license 1", null, null)).license(new TestLicense("license 2", null, null)).build());
+		summary.artifact(ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B")).finding(new TestFinding(Level.ERROR, "finding 0")).finding(new TestFinding(Level.INFO, "finding 1")).usage(new TestUsage("some usage", null)).license(new TestLicense("license 1", null, null)).license(new TestLicense("license 2", null, null)).path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build()).build());
 		assertOutput("artifacts", summary.build());
 	}
 

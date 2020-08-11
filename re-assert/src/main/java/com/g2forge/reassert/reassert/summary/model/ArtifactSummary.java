@@ -1,11 +1,12 @@
 package com.g2forge.reassert.reassert.summary.model;
 
 import java.util.Collection;
-import java.util.List;
 
+import org.jgrapht.GraphPath;
 import org.slf4j.event.Level;
 
 import com.g2forge.reassert.core.model.IEdge;
+import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
@@ -33,5 +34,5 @@ public class ArtifactSummary {
 	protected final Collection<ILicense> licenses;
 
 	@Singular
-	protected final Collection<List<IEdge>> paths;
+	protected final Collection<GraphPath<IVertex, IEdge>> paths;
 }

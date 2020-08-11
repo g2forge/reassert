@@ -1,5 +1,7 @@
 package com.g2forge.reassert.reassert.summary.convert;
 
+import org.jgrapht.GraphPath;
+
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -41,6 +43,7 @@ public class SummaryModule extends SimpleModule {
 				if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(vertexDescriber);
 				if (IContract.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(vertexDescriber);
 				if (IFinding.class.isAssignableFrom(description.getBeanClass())) return new FindingSerializer(createReportRenderer());
+				if (GraphPath.class.isAssignableFrom(description.getBeanClass())) return new PathSerializer(vertexDescriber);
 				return serializer;
 			}
 		});
