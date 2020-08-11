@@ -1,4 +1,5 @@
 level,artifact,findings,usages,licenses,paths
 ,A,,,,
-,B,,,"GPL3OrLater License",
-,C,,,,
+,B,,,"GPL 3.0 or later license
+BSD 3 Clause license",
+,C,,"Commercial Usage",,

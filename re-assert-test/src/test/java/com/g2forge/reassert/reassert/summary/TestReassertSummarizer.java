@@ -24,6 +24,7 @@ import com.g2forge.reassert.reassert.convert.ReportRenderer;
 import com.g2forge.reassert.reassert.convert.TestReportRenderer;
 import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
+import com.g2forge.reassert.reassert.summary.model.ArtifactSummary.ArtifactSummaryBuilder;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.test.contract.TestLicense;
 import com.g2forge.reassert.reassert.test.contract.TestUsage;
@@ -90,8 +91,23 @@ public class TestReassertSummarizer extends ATestReassert {
 	@Test
 	public void artifacts() {
 		final ReportSummary.ReportSummaryBuilder summary = ReportSummary.builder();
-		summary.artifact(ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A")).finding(new TestFinding(Level.WARN, "a finding")).usage(new TestUsage("some usage", null)).license(new TestLicense("license 0", null, null)).build());
-		summary.artifact(ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B")).finding(new TestFinding(Level.ERROR, "finding 0")).finding(new TestFinding(Level.INFO, "finding 1")).usage(new TestUsage("some usage", null)).license(new TestLicense("license 1", null, null)).license(new TestLicense("license 2", null, null)).path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build()).build());
+		{
+			final ArtifactSummaryBuilder a = ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A"));
+			a.finding(new TestFinding(Level.WARN, "a finding"));
+			a.usage(new TestUsage("some usage", null));
+			a.license(new TestLicense("license 0", null, null));
+			summary.artifact(a.build());
+		}
+		{
+			final ArtifactSummaryBuilder b = ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B"));
+			b.finding(new TestFinding(Level.ERROR, "finding 0"));
+			b.finding(new TestFinding(Level.INFO, "finding 1"));
+			b.usage(new TestUsage("some usage", null));
+			b.license(new TestLicense("license 1", null, null));
+			b.license(new TestLicense("license 2", null, null));
+			b.path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build());
+			summary.artifact(b.build());
+		}
 		assertOutput("artifacts", summary.build());
 	}
 

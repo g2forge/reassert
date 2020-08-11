@@ -22,6 +22,6 @@ public enum StandardLicense implements ILicense {
 
 	@Override
 	public String getName() {
-		return name() + " License";
+		return getSPDX().replace('-', ' ') + " license";
 	}
 }

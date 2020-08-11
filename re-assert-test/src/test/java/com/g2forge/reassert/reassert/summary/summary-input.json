@@ -29,7 +29,11 @@
           "system" : "mock",
           "text" : "C"
         }
-      }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "commerical usage" ]
+      } ]
     },
     "B artifact" : {
       "vertex" : {
@@ -42,10 +46,26 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "GPL-3.0-or-later" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "BSD-3-Clause" ]
       } ]
     },
     "GPL-3.0-or-later" : {
       "vertex" : "GPL3OrLater"
+    },
+    "BSD-3-Clause" : {
+      "vertex" : "BSD3"
+    },
+    "commerical usage" : {
+      "vertex" : {
+        "@c" : "com.g2forge.reassert.core.model.contract.usage.Usage",
+        "name" : "Commercial Usage",
+        "terms" : [ {
+          "term" : "Commercial",
+          "relation" : "Included"
+        } ]
+      }
     },
     "Work 0" : {
       "vertex" : {
