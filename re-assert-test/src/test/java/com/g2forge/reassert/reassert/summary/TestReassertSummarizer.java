@@ -24,11 +24,12 @@ import com.g2forge.reassert.reassert.convert.ReportRenderer;
 import com.g2forge.reassert.reassert.convert.TestReportRenderer;
 import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
-import com.g2forge.reassert.reassert.summary.model.ArtifactSummary.ArtifactSummaryBuilder;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
+import com.g2forge.reassert.reassert.summary.model.RiskSummary;
 import com.g2forge.reassert.reassert.test.contract.TestLicense;
 import com.g2forge.reassert.reassert.test.contract.TestUsage;
 import com.g2forge.reassert.reassert.test.finding.TestFinding;
+import com.g2forge.reassert.reassert.test.finding.TestRiskFinding;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -88,29 +89,6 @@ public class TestReassertSummarizer extends ATestReassert {
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
 	private final ReassertSummarizer summarizer = new TestSummarizer(ReassertContext.getContext());
 
-	@Test
-	public void artifacts() {
-		final ReportSummary.ReportSummaryBuilder summary = ReportSummary.builder();
-		{
-			final ArtifactSummaryBuilder a = ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A"));
-			a.finding(new TestFinding(Level.WARN, "a finding"));
-			a.usage(new TestUsage("some usage", null));
-			a.license(new TestLicense("license 0", null, null));
-			summary.artifact(a.build());
-		}
-		{
-			final ArtifactSummaryBuilder b = ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B"));
-			b.finding(new TestFinding(Level.ERROR, "finding 0"));
-			b.finding(new TestFinding(Level.INFO, "finding 1"));
-			b.usage(new TestUsage("some usage", null));
-			b.license(new TestLicense("license 1", null, null));
-			b.license(new TestLicense("license 2", null, null));
-			b.path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build());
-			summary.artifact(b.build());
-		}
-		assertOutput("artifacts", summary.build());
-	}
-
 	protected void assertOutput(final String name, final ReportSummary summary) {
 		final ReassertSummarizer summarizer = getSummarizer();
 
@@ -130,6 +108,35 @@ public class TestReassertSummarizer extends ATestReassert {
 	@Override
 	protected ExampleGraph load(Artifact<ListCoordinates> artifact) {
 		return new ExampleGraph(artifact);
+	}
+
+	@Test
+	public void rendering() {
+		final ReportSummary.ReportSummaryBuilder summary = ReportSummary.builder();
+		{
+			final ArtifactSummary.ArtifactSummaryBuilder a = ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A"));
+			a.finding(new TestFinding(Level.WARN, "a finding"));
+			a.usage(new TestUsage("some usage", null));
+			a.license(new TestLicense("license 0", null, null));
+			summary.artifact(a.build());
+		}
+		{
+			final ArtifactSummary.ArtifactSummaryBuilder b = ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B"));
+			b.finding(new TestFinding(Level.ERROR, "finding 0"));
+			b.finding(new TestFinding(Level.INFO, "finding 1"));
+			b.usage(new TestUsage("some usage", null));
+			b.license(new TestLicense("license 1", null, null));
+			b.license(new TestLicense("license 2", null, null));
+			b.path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build());
+			summary.artifact(b.build());
+		}
+		{
+			final RiskSummary.RiskSummaryBuilder risk = RiskSummary.builder();
+			risk.level(Level.INFO).artifact(new MockCoordinates("C"));
+			risk.risk(new TestRiskFinding(Level.INFO, "Some risk"));
+			summary.risk(risk.build());
+		}
+		assertOutput("rendering", summary.build());
 	}
 
 	@Test

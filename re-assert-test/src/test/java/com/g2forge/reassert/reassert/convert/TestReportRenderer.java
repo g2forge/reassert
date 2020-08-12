@@ -4,6 +4,7 @@ import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.reassert.reassert.test.finding.TestFinding;
+import com.g2forge.reassert.reassert.test.finding.TestRiskFinding;
 import com.g2forge.reassert.term.analyze.convert.IReportRenderContext;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
@@ -16,6 +17,7 @@ public class TestReportRenderer extends ReportRenderer {
 		protected void extend(TypeSwitch1.FunctionBuilder<Object, IExplicitRenderable<? super IReportRenderContext>> builder) {
 			super.extend(builder);
 			builder.add(TestFinding.class, e -> c -> c.append(e.getLevel()).append(": ").append(e.getMessage()));
+			builder.add(TestRiskFinding.class, e -> c -> c.append(e.getLevel()).append(": ").append(e.getDescription()));
 		}
 	}
 
