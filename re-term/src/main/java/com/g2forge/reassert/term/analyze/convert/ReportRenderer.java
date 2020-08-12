@@ -151,12 +151,12 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			});
 			builder.add(ConditionFinding.class, e -> c -> {
 				final IExpressionContext findingContext = c.getFindingContext();
-				final Collection<ITerm> outputs = findingContext.getOutputs();
+				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
 
-				c.append(e.getLevel()).append(": ");
+				c.append(e.getLevel()).append(": Condition");
 				if (outputs.size() > 1) c.append('s');
 				c.append(' ');
-				{
+				if (findingContext != null) {
 					final List<ITerm> list = new ArrayList<>(outputs);
 					final int size = list.size();
 					for (int i = 0; i < size; i++) {
@@ -167,9 +167,10 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 				c.append(' ').append(outputs.size() > 1 ? "are" : "is");
 				if (!e.isSatisfied()) c.append(" not");
-				c.append(" satisified based on ");
+				c.append(" satisfied");
 
-				{
+				if (findingContext != null) {
+					c.append(" based on ");
 					final List<ITerm> list = new ArrayList<>(findingContext.getInputs());
 					final int size = list.size();
 					for (int i = 0; i < size; i++) {
@@ -179,14 +180,15 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 
 				if ((!e.isSatisfied()) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-					c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
+					if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
 					c.append("Explanation: ").render(e.getResult());
 				}
 			});
 			builder.add(IRiskFinding.class, e -> c -> {
 				c.append(e.getLevel()).append(": ").append(e.getDescription());
 				if ((e.getLevel().compareTo(Level.WARN) <= 0) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-					c.append("Rule: ").render(c.getFindingContext().getExpression(), IExpression.class).newline();
+					final IExpressionContext findingContext = c.getFindingContext();
+					if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
 					c.append("Explanation: ").render(e.getResult());
 				}
 			});

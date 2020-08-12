@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.core.api.described.IDescription;
@@ -25,11 +26,15 @@ public class TermConstantSerializer extends StdSerializer<TermConstant> {
 
 	@Override
 	public void serialize(TermConstant value, JsonGenerator generator, SerializerProvider provider) throws IOException {
-		generator.getCodec().writeValue(generator, toStored(value));
+		generator.getCodec().writeValue(generator, toStored(false, value));
 	}
 
-	protected StoredTermConstant toStored(TermConstant value) {
+	public void serializeWithType(TermConstant value, JsonGenerator generator, SerializerProvider provider, TypeSerializer typeSerializer) throws IOException {
+		generator.getCodec().writeValue(generator, toStored(true, value));
+	}
+
+	protected StoredTermConstant toStored(boolean withType, TermConstant value) {
 		final String contract = getVertexDescriber().apply(value.getContract()).getName();
-		return new StoredTermConstant(value.getTerm(), contract);
+		return new StoredTermConstant(withType ? value.getClass().getName() : null, value.getTerm(), contract);
 	}
 }

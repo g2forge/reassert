@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import com.g2forge.alexandria.java.function.IThrowSupplier;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.license.StandardLicense;
 
@@ -26,16 +27,18 @@ public class StandardLicenseDeserializer extends StdDeserializer<IVertex> implem
 
 	@Override
 	public IVertex deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+		return (IVertex) deserialize(parser, () -> deserializer.deserialize(parser, context));
+	}
+
+	protected Object deserialize(JsonParser parser, IThrowSupplier<?, IOException> supplier) throws IOException {
 		final JsonToken token = parser.currentToken();
 		if (token == JsonToken.VALUE_STRING) return fromString(parser);
-		return (IVertex) deserializer.deserialize(parser, context);
+		return supplier.get();
 	}
 
 	@Override
 	public Object deserializeWithType(JsonParser parser, DeserializationContext context, TypeDeserializer typeDeserializer) throws IOException {
-		final JsonToken token = parser.currentToken();
-		if (token == JsonToken.VALUE_STRING) return fromString(parser);
-		return super.deserializeWithType(parser, context, typeDeserializer);
+		return deserialize(parser, () -> super.deserializeWithType(parser, context, typeDeserializer));
 	}
 
 	protected StandardLicense fromString(JsonParser parser) throws IOException {

@@ -21,7 +21,7 @@ import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.term.analyze.model.TermConstant;
 import com.g2forge.reassert.term.analyze.model.findings.ExpressionContextualFinding;
-import com.g2forge.reassert.term.eee.explain.model.IExplainedApplication;
+import com.g2forge.reassert.term.eee.explain.model.IExplained;
 import com.g2forge.reassert.term.eee.express.IExpression;
 
 import lombok.Getter;
@@ -35,8 +35,9 @@ public class FindingModule extends SimpleModule {
 		public abstract Level getLevel();
 	}
 
+	@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-	protected static abstract class ExplainedApplicationMixin {}
+	protected static abstract class ExplainedMixin {}
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected static abstract class ExpressionContextualFindingMixin extends ContextualFindingMixin {
@@ -60,7 +61,7 @@ public class FindingModule extends SimpleModule {
 		this.setMixInAnnotation(IFinding.class, FindingMixin.class);
 		this.setMixInAnnotation(IContextualFinding.class, ContextualFindingMixin.class);
 		this.setMixInAnnotation(ExpressionContextualFinding.class, ExpressionContextualFindingMixin.class);
-		this.setMixInAnnotation(IExplainedApplication.class, ExplainedApplicationMixin.class);
+		this.setMixInAnnotation(IExplained.class, ExplainedMixin.class);
 		super.setupModule(context);
 
 		context.addBeanDeserializerModifier(new BeanDeserializerModifier() {

@@ -22,7 +22,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "Finding 0" ]
+        "targets" : [ "Finding 0", "Finding 2" ]
       } ]
     },
     "C artifact" : {
@@ -48,10 +48,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "GPL-3.0-or-later" ]
-      }, {
-        "edge" : "notice",
-        "targets" : [ "BSD-3-Clause" ]
+        "targets" : [ "GPL-3.0-or-later", "BSD-3-Clause", "Finding 1" ]
       } ]
     },
     "GPL-3.0-or-later" : {
@@ -94,6 +91,34 @@
           "@c" : "com.g2forge.reassert.reassert.test.finding.TestFinding",
           "level" : "ERROR",
           "message" : "some finding"
+        }
+      }
+    },
+    "Finding 1" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextualFinding",
+        "name" : "Finding 1",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.term.analyze.model.findings.NoticeFinding",
+          "result" : {
+            "@c" : "com.g2forge.reassert.term.eee.express.Literal",
+            "name" : "Dummy",
+            "value" : "Included"
+          }
+        }
+      }
+    },
+    "Finding 2" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextualFinding",
+        "name" : "Finding 2",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.term.analyze.model.findings.ConditionFinding",
+          "result" : {
+            "@c" : "com.g2forge.reassert.term.eee.express.Literal",
+            "name" : "Dummy",
+            "value" : "Excluded"
+          }
         }
       }
     }
