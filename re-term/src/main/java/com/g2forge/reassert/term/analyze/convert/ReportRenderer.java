@@ -153,7 +153,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				final IExpressionContext findingContext = c.getFindingContext();
 				final Collection<ITerm> outputs = findingContext.getOutputs();
 
-				c.append(e.getLevel()).append(": ");
+				c.append(e.getLevel()).append(": Condition");
 				if (outputs.size() > 1) c.append('s');
 				c.append(' ');
 				{

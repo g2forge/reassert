@@ -46,6 +46,12 @@ public class TestReassertSummarizer extends ATestReassert {
 		protected final List<IVertex> vertexList;
 
 		@Override
+		public IVertex getEndVertex() {
+			final List<IVertex> vertexList = getVertexList();
+			return vertexList.get(vertexList.size() - 1);
+		}
+
+		@Override
 		public Graph<IVertex, IEdge> getGraph() {
 			throw new UnsupportedOperationException();
 		}
@@ -53,12 +59,6 @@ public class TestReassertSummarizer extends ATestReassert {
 		@Override
 		public IVertex getStartVertex() {
 			return getVertexList().get(0);
-		}
-
-		@Override
-		public IVertex getEndVertex() {
-			final List<IVertex> vertexList = getVertexList();
-			return vertexList.get(vertexList.size() - 1);
 		}
 
 		@Override
@@ -112,9 +112,19 @@ public class TestReassertSummarizer extends ATestReassert {
 	}
 
 	protected void assertOutput(final String name, final ReportSummary summary) {
-		final ByteArrayDataSink sink = new ByteArrayDataSink();
-		getSummarizer().renderArtifacts(summary, sink);
-		HAssert.assertEquals(new Resource(getClass(), name + "-output.csv"), sink.getStream().toString());
+		final ReassertSummarizer summarizer = getSummarizer();
+
+		{
+			final ByteArrayDataSink sink = new ByteArrayDataSink();
+			summarizer.renderArtifacts(summary, sink);
+			HAssert.assertEquals(new Resource(getClass(), name + "-output-artifacts.csv"), sink.getStream().toString());
+		}
+
+		{
+			final ByteArrayDataSink sink = new ByteArrayDataSink();
+			summarizer.renderRisks(summary, sink);
+			HAssert.assertEquals(new Resource(getClass(), name + "-output-risks.csv"), sink.getStream().toString());
+		}
 	}
 
 	@Override

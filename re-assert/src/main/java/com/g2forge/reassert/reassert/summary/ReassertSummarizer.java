@@ -36,6 +36,7 @@ import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
+import com.g2forge.reassert.reassert.summary.model.RiskSummary;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -54,17 +55,25 @@ public class ReassertSummarizer {
 		return new SummaryModule(getContext());
 	}
 
-	public void renderArtifacts(ReportSummary reportSummary, IDataSink sink) {
+	protected <T> void render(Class<T> type, Collection<T> value, IDataSink sink) {
 		final CsvMapper mapper = new CsvMapper();
 		mapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
 		mapper.registerModule(createSummaryModule());
 
-		final ObjectWriter writer = mapper.writerFor(ArtifactSummary.class).with(mapper.schemaFor(ArtifactSummary.class).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
+		final ObjectWriter writer = mapper.writerFor(type).with(mapper.schemaFor(type).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
 		try (final OutputStream stream = sink.getStream(ITypeRef.of(OutputStream.class))) {
-			writer.writeValues(stream).writeAll(reportSummary.getArtifacts());
+			writer.writeValues(stream).writeAll(value);
 		} catch (IOException e) {
 			throw new RuntimeIOException(e);
 		}
+	}
+
+	public void renderArtifacts(ReportSummary reportSummary, IDataSink sink) {
+		render(ArtifactSummary.class, reportSummary.getArtifacts(), sink);
+	}
+
+	public void renderRisks(ReportSummary reportSummary, IDataSink sink) {
+		render(RiskSummary.class, reportSummary.getRisks(), sink);
 	}
 
 	public ReportSummary summarize(IReport report) {
