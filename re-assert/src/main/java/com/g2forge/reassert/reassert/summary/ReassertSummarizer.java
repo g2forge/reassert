@@ -29,6 +29,7 @@ import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.report.GraphContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
@@ -37,6 +38,7 @@ import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.summary.model.RiskSummary;
+import com.g2forge.reassert.term.analyze.model.findings.IRiskFinding;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +102,12 @@ public class ReassertSummarizer {
 			final ArtifactSummary.ArtifactSummaryBuilder artifactSummary = ArtifactSummary.builder();
 			artifactSummary.artifact(artifact.getCoordinates());
 
+			// Find the license and usage
+			final Collection<ILicense> licenses = HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
+			final Collection<IUsage> usages = HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class));
+			artifactSummary.licenses(licenses);
+			artifactSummary.usages(usages);
+
 			// Find all the findings, and use that to compute the level
 			final Collection<GraphContextualFinding> findings = HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(GraphContextualFinding.class));
 			if (findings.isEmpty()) artifactSummary.level(Level.INFO);
@@ -107,12 +115,18 @@ public class ReassertSummarizer {
 				artifactSummary.level(findings.stream().map(IFinding::getLevel).min(ComparableComparator.create()).get());
 				for (GraphContextualFinding finding : findings) {
 					artifactSummary.finding(finding.getFinding());
+
+					final IFinding innermost = finding.getInnermostFinding();
+					if (innermost instanceof IRiskFinding) {
+						final RiskSummary.RiskSummaryBuilder riskSummary = RiskSummary.builder();
+						riskSummary.artifact(artifact.getCoordinates());
+						riskSummary.level(finding.getLevel()).risk((IRiskFinding) innermost);
+						riskSummary.usage(HCollection.getOne(usages));
+						riskSummary.license(licenses.size() == 1 ? HCollection.getOne(licenses) : UnspecifiedLicense.create());
+						retVal.risk(riskSummary.build());
+					}
 				}
 			}
-
-			// Find the license and usage
-			artifactSummary.licenses(HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class)));
-			artifactSummary.usages(HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class)));
 
 			// Compute paths to this artifact
 			if (!origins.contains(artifact)) artifactSummary.paths(paths.getAllPaths(origins, HCollection.asSet(artifact), true, Integer.MAX_VALUE));
