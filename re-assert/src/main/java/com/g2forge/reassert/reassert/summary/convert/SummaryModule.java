@@ -13,6 +13,7 @@ import com.g2forge.reassert.core.model.contract.IContract;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.reassert.convert.ReportRenderer;
+import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class SummaryModule extends SimpleModule {
 	protected final IContext context;
 
 	protected ReportRenderer createReportRenderer() {
-		return new ReportRenderer();
+		return new ReportRenderer(ExplanationMode.Summarize);
 	}
 
 	protected ReassertVertexDescriber createVertexDescriber() {

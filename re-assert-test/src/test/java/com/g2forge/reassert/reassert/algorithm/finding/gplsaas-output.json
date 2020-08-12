@@ -67,29 +67,34 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.term.analyze.model.findings.SuspiciousUsageFinding",
             "result" : {
+              "@c" : ".IdentityExplainedOperation",
               "value" : "Unspecified",
               "operator" : "!",
               "arguments" : [ {
                 "relevant" : true,
                 "argument" : {
+                  "@c" : ".IdentityExplainedOperation",
                   "value" : "Unspecified",
                   "operator" : "||",
                   "identity" : "Excluded",
                   "arguments" : [ {
                     "relevant" : true,
                     "argument" : {
+                      "@c" : "com.g2forge.reassert.term.analyze.model.TermConstant",
                       "term" : "UseLink",
                       "contract" : "SaaS Usage"
                     }
                   }, {
                     "relevant" : true,
                     "argument" : {
+                      "@c" : "com.g2forge.reassert.term.analyze.model.TermConstant",
                       "term" : "UseCopy",
                       "contract" : "SaaS Usage"
                     }
                   }, {
                     "relevant" : true,
                     "argument" : {
+                      "@c" : "com.g2forge.reassert.term.analyze.model.TermConstant",
                       "term" : "UseModified",
                       "contract" : "SaaS Usage"
                     }

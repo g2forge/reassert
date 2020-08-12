@@ -31,6 +31,7 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 import com.g2forge.reassert.core.model.report.GraphContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -121,7 +122,7 @@ public class ReassertSummarizer {
 						final RiskSummary.RiskSummaryBuilder riskSummary = RiskSummary.builder();
 						riskSummary.artifact(artifact.getCoordinates());
 						riskSummary.level(finding.getLevel()).risk((IRiskFinding) innermost);
-						riskSummary.usage(HCollection.getOne(usages));
+						riskSummary.usage(usages.size() == 1 ? HCollection.getOne(usages) : UnspecifiedUsage.create());
 						riskSummary.license(licenses.size() == 1 ? HCollection.getOne(licenses) : UnspecifiedLicense.create());
 						retVal.risk(riskSummary.build());
 					}
