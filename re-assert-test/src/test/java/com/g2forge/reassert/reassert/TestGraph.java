@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.algorithm.example;
+package com.g2forge.reassert.reassert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ExampleGraph {
+public class TestGraph {
 	protected static List<IGraphVisitor> getStandardVisitors() {
 		final List<IGraphVisitor> visitors = new ArrayList<>();
 		visitors.add(new ReassertLicenseVisitor());
@@ -45,7 +45,7 @@ public class ExampleGraph {
 
 	protected final List<IGraphVisitor> visitors;
 
-	public ExampleGraph(Artifact<?> origin, IGraphVisitor... visitors) {
+	public TestGraph(Artifact<?> origin, IGraphVisitor... visitors) {
 		this(origin, HCollection.asList(visitors));
 	}
 

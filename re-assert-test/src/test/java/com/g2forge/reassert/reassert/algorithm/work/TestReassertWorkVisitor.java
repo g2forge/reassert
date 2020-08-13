@@ -10,9 +10,9 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.license.StandardWorkTypeFactory;
 import com.g2forge.reassert.list.ListCoordinates;
+import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.algorithm.ATestVisitor;
 import com.g2forge.reassert.reassert.algorithm.ReassertWorkVisitor;
-import com.g2forge.reassert.reassert.algorithm.example.ExampleGraph;
 import com.g2forge.reassert.reassert.model.findings.UnknownWorkTypeFinding;
 
 public class TestReassertWorkVisitor extends ATestVisitor {
@@ -27,8 +27,8 @@ public class TestReassertWorkVisitor extends ATestVisitor {
 	}
 
 	@Override
-	protected ExampleGraph load(final Artifact<ListCoordinates> artifact) {
-		return new ExampleGraph(artifact, new ReassertWorkVisitor(StandardWorkTypeFactory.create()));
+	protected TestGraph load(final Artifact<ListCoordinates> artifact) {
+		return new TestGraph(artifact, new ReassertWorkVisitor(StandardWorkTypeFactory.create()));
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.test.contract;
+package com.g2forge.reassert.reassert.model.contract;
 
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.license.ILicense;

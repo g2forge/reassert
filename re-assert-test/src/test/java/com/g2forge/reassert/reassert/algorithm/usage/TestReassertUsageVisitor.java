@@ -4,9 +4,9 @@ import org.junit.Test;
 
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.list.ListCoordinates;
+import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.algorithm.ATestVisitor;
 import com.g2forge.reassert.reassert.algorithm.ReassertUsageVisitor;
-import com.g2forge.reassert.reassert.algorithm.example.ExampleGraph;
 import com.g2forge.reassert.term.StandardUsagePropogation;
 
 public class TestReassertUsageVisitor extends ATestVisitor {
@@ -16,8 +16,8 @@ public class TestReassertUsageVisitor extends ATestVisitor {
 	}
 	
 	@Override
-	protected ExampleGraph load(final Artifact<ListCoordinates> artifact) {
-		return new ExampleGraph(artifact, new ReassertUsageVisitor(StandardUsagePropogation.create()));
+	protected TestGraph load(final Artifact<ListCoordinates> artifact) {
+		return new TestGraph(artifact, new ReassertUsageVisitor(StandardUsagePropogation.create()));
 	}
 
 	@Test

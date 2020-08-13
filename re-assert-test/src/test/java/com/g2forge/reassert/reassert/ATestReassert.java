@@ -8,7 +8,6 @@ import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.list.ListRepository;
-import com.g2forge.reassert.reassert.algorithm.example.ExampleGraph;
 import com.g2forge.reassert.reassert.convert.finding.FindingModule;
 import com.g2forge.reassert.reassert.convert.license.StandardLicenseModule;
 import com.g2forge.reassert.reassert.convert.term.StandardTermModule;
@@ -36,9 +35,9 @@ public abstract class ATestReassert {
 		return repository;
 	}
 
-	protected abstract ExampleGraph load(final Artifact<ListCoordinates> artifact);
+	protected abstract TestGraph load(final Artifact<ListCoordinates> artifact);
 
-	protected ExampleGraph load(String name) {
+	protected TestGraph load(String name) {
 		return load(new Artifact<>(getRepository(), new ListCoordinates(new ResourceDataSource(new Resource(getClass(), name + "-input.json")))));
 	}
 }
