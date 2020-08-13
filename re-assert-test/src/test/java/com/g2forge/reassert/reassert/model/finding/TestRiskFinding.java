@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.test.finding;
+package com.g2forge.reassert.reassert.model.finding;
 
 import org.slf4j.event.Level;
 

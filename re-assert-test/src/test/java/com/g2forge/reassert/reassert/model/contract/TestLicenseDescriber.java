@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.test.contract;
+package com.g2forge.reassert.reassert.model.contract;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;

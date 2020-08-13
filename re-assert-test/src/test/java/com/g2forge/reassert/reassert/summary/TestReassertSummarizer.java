@@ -18,18 +18,18 @@ import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.mock.MockCoordinates;
 import com.g2forge.reassert.reassert.ATestReassert;
+import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.ReassertContext;
-import com.g2forge.reassert.reassert.algorithm.example.ExampleGraph;
 import com.g2forge.reassert.reassert.convert.ReportRenderer;
 import com.g2forge.reassert.reassert.convert.TestReportRenderer;
+import com.g2forge.reassert.reassert.model.contract.TestLicense;
+import com.g2forge.reassert.reassert.model.contract.TestUsage;
+import com.g2forge.reassert.reassert.model.finding.TestFinding;
+import com.g2forge.reassert.reassert.model.finding.TestRiskFinding;
 import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.summary.model.RiskSummary;
-import com.g2forge.reassert.reassert.test.contract.TestLicense;
-import com.g2forge.reassert.reassert.test.contract.TestUsage;
-import com.g2forge.reassert.reassert.test.finding.TestFinding;
-import com.g2forge.reassert.reassert.test.finding.TestRiskFinding;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -106,8 +106,8 @@ public class TestReassertSummarizer extends ATestReassert {
 	}
 
 	@Override
-	protected ExampleGraph load(Artifact<ListCoordinates> artifact) {
-		return new ExampleGraph(artifact);
+	protected TestGraph load(Artifact<ListCoordinates> artifact) {
+		return new TestGraph(artifact);
 	}
 
 	@Test
