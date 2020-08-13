@@ -51,5 +51,5 @@ jobs:
       with:
         path: reassert
     - name: Build with Maven
-      working-directory: ./enigma
+      working-directory: ./reassert
       run: mvn -B package --file pom.xml -P release -Dgpg.skip
