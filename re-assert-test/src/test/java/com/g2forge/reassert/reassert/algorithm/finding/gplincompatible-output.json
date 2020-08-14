@@ -97,7 +97,7 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "UnknownWorkTypeFinding 0",
         "finding" : {
-          "@c" : "com.g2forge.reassert.reassert.model.findings.UnknownWorkTypeFinding",
+          "@c" : "com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding",
           "level" : "ERROR"
         }
       }

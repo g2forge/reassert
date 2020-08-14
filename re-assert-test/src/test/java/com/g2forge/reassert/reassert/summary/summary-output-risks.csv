@@ -1,5 +1,5 @@
 level,artifact,risk,usage,license
-ERROR,A,"ERROR: Condition  is not satisfied
+ERROR,A,"ERROR: Condition is not satisfied
 	Explanation: Excluded - Dummy","Unspecified Usage","Unspecified License"
 WARN,B,"WARN: You must publish a copyright or license notice stating that you use this artifact
 	Explanation: Included - Dummy","Unspecified Usage","Unspecified License"
