@@ -28,7 +28,7 @@ public class DirectoryCacheStore implements ICacheStore<Path> {
 	public Path store(Path path, Path value) {
 		if (!path.isAbsolute()) throw new IllegalArgumentException();
 		try {
-			Files.createDirectories(path.resolve(".."));
+			Files.createDirectories(path.getParent());
 			try {
 				Files.move(value, path, StandardCopyOption.REPLACE_EXISTING);
 			} catch (DirectoryNotEmptyException e0) {
