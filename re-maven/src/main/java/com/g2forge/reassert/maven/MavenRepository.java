@@ -163,9 +163,6 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			final IProcess process = maven.dependencyCopy(path.getParent(), coordinates.toBuilder().packaging(MavenPackaging.POM).build(), path.getParent());
 			final ProcessOutputHandler<DownloadErrors> downloadOutputHandler = new ProcessOutputHandler<>(log, HCollection.asSet(DownloadErrors.values()), DownloadErrors::createMatcher);
 			final Set<DownloadErrors> errors = downloadOutputHandler.handle(process);
-			if (path.toString().contains("stax-ri")) {
-				System.out.println("WTF!");
-			}
 			if (HCollection.isOne(errors, DownloadErrors.MISSING_ARTIFACT)) {
 				Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).close();
 				return path;
