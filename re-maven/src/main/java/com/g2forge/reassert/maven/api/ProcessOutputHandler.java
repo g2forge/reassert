@@ -3,14 +3,17 @@ package com.g2forge.reassert.maven.api;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 
+import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.gearbox.command.process.IProcess;
@@ -46,21 +49,21 @@ public class ProcessOutputHandler<K> {
 	protected final IFunction1<? super K, ? extends IOutputMatcher> matcherFactory;
 
 	public Set<K> handle(IProcess process) {
-		final Map<K, IOutputMatcher> possible = new LinkedHashMap<>();
-		for (K key : getKeys()) {
-			final IOutputMatcher matcher = getMatcherFactory().apply(key);
-			if (!matcher.isApplicable(process.isSuccess())) continue;
-			possible.put(key, matcher);
-		}
+		final Map<K, IOutputMatcher> matchers = keys.stream().collect(Collectors.toMap(IFunction1.identity(), getMatcherFactory(), HCollector.mergeFail(), LinkedHashMap::new));
+		final Map<K, IOutputMatcher> possible = new LinkedHashMap<>(matchers);
 		final Set<K> retVal = new LinkedHashSet<>();
-
-		// Note that we proceed even if there are no matchers, because this is the process that logs the outputs, too
 
 		try {
 			stream(process, possible, retVal, true);
 			stream(process, possible, retVal, false);
 		} catch (IOException e) {
 			throw new RuntimeIOException(e);
+		}
+
+		final boolean success = process.isSuccess();
+		for (K key : new ArrayList<>(retVal)) {
+			final IOutputMatcher matcher = matchers.get(key);
+			if (!matcher.isApplicable(success)) retVal.remove(key);
 		}
 
 		return retVal;
