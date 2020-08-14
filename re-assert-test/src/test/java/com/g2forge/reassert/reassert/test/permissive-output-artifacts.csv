@@ -1,0 +1,4 @@
+level,artifact,findings,usages,licenses,paths
+INFO,A,,,,
+INFO,B,,,"BSD 3 Clause license","A -> B"
+INFO,C,,,"Apache 2.0 license","A -> C"
