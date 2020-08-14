@@ -17,7 +17,7 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.mock.MockCoordinates;
-import com.g2forge.reassert.reassert.ATestReassert;
+import com.g2forge.reassert.reassert.ATestFromList;
 import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.ReassertContext;
 import com.g2forge.reassert.reassert.convert.ReportRenderer;
@@ -38,7 +38,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Singular;
 
-public class TestReassertSummarizer extends ATestReassert {
+public class TestReassertSummarizer extends ATestFromList {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor

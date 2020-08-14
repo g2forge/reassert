@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class TestGraph {
-	protected static List<IGraphVisitor> getStandardVisitors() {
+	public static List<IGraphVisitor> getStandardVisitors() {
 		final List<IGraphVisitor> visitors = new ArrayList<>();
 		visitors.add(new ReassertLicenseVisitor());
 		visitors.add(new ReassertUsageVisitor(StandardUsagePropogation.create()));
