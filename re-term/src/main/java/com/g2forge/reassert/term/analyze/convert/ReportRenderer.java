@@ -8,6 +8,8 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.enums.EnumException;
+import com.g2forge.alexandria.java.core.error.HError;
+import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IConsumer2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
@@ -18,9 +20,13 @@ import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
+import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
+import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
 import com.g2forge.reassert.term.analyze.model.IExpressionContext;
 import com.g2forge.reassert.term.analyze.model.TermConstant;
 import com.g2forge.reassert.term.analyze.model.TermType;
@@ -31,8 +37,8 @@ import com.g2forge.reassert.term.analyze.model.findings.UnrecognizedTermFinding;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationRenderer;
 import com.g2forge.reassert.term.eee.explain.model.IExplained;
-import com.g2forge.reassert.term.eee.express.IExpression;
 import com.g2forge.reassert.term.eee.express.IConstant;
+import com.g2forge.reassert.term.eee.express.IExpression;
 import com.g2forge.reassert.term.eee.express.Operation;
 
 import lombok.AccessLevel;
@@ -130,6 +136,23 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				c.append(')');
 			});
 
+			builder.add(IContextualFinding.class, e -> c -> c.render(e.getFinding(), IFinding.class));
+			builder.add(ExpressionContextualFinding.class, e -> c -> {
+				try (final ICloseable findingContext = c.findingContext(e)) {
+					c.render(e.getFinding(), IFinding.class);
+				}
+			});
+
+			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> {
+				throw new NotYetImplementedError();
+			});
+			builder.add(MultiLicenseFinding.class, e -> c -> c.append(e.getLevel()).append(" Multiple, conflicting licenses detected for artifact"));
+			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
+				c.append(e.getLevel()).append(" Unknown work type");
+				try (final ICloseable indent = c.indent()) {
+					c.newline().append(HError.toString(e.getThrowable()));
+				}
+			});
 			builder.add(UnrecognizedTermFinding.class, e -> c -> {
 				final TermType termType = TermType.valueOf(e.getTerm());
 				c.append(e.getLevel()).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
@@ -144,11 +167,6 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						throw new EnumException(TermType.class, termType);
 				}
 			});
-			builder.add(ExpressionContextualFinding.class, e -> c -> {
-				try (final ICloseable findingContext = c.findingContext(e)) {
-					c.render(e.getFinding(), IFinding.class);
-				}
-			});
 			builder.add(ConditionFinding.class, e -> c -> {
 				final IExpressionContext findingContext = c.getFindingContext();
 				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
@@ -156,16 +174,17 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				c.append(e.getLevel()).append(": Condition");
 				if (outputs.size() > 1) c.append('s');
 				c.append(' ');
-				if (findingContext != null) {
+				if (!outputs.isEmpty()) {
 					final List<ITerm> list = new ArrayList<>(outputs);
 					final int size = list.size();
 					for (int i = 0; i < size; i++) {
 						if (i > 0) c.append((i == size - 1) ? " & " : ", ");
 						c.render(list.get(i), ITerm.class);
 					}
+					c.append(' ');
 				}
 
-				c.append(' ').append(outputs.size() > 1 ? "are" : "is");
+				c.append(outputs.size() > 1 ? "are" : "is");
 				if (!e.isSatisfied()) c.append(" not");
 				c.append(" satisfied");
 

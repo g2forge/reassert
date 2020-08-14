@@ -1,0 +1,230 @@
+level,artifact,risk,usage,license
+ERROR,A,"ERROR: Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""
+	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Commercial usage in Unspecified Usage
+		* Unspecified - Permission for commercial usage in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Public distribution"" is not satisfied based on ""Permission to distribute""
+	Rule: ((!""Public distribution"") || ""Permission to distribute"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Public distribution in Unspecified Usage
+		* Unspecified - Permission to distribute in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Private distribution"" is not satisfied based on ""Permission for private usage""
+	Rule: ((!""Private distribution"") || ""Permission for private usage"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Private distribution in Unspecified Usage
+		* Unspecified - Permission for private usage in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""SaaS distribution"" is not satisfied based on ""Requires distribution for SaaS"" & ""Permission to distribute""
+	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - SaaS distribution in Unspecified Usage
+		* Unspecified (!) - because there's a single argument: Unspecified - Requires distribution for SaaS in Unspecified License
+		* Unspecified - Permission to distribute in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Linked"" is not satisfied based on ""Permission for private usage""
+	Rule: ((!""Linked"") || ""Permission for private usage"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Linked in Unspecified Usage
+		* Unspecified - Permission for private usage in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Copied"" is not satisfied based on ""Permission for private usage""
+	Rule: ((!""Copied"") || ""Permission for private usage"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Copied in Unspecified Usage
+		* Unspecified - Permission for private usage in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Modified"" is not satisfied based on ""Permission for private usage"" & ""Permission to modify""
+	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Modified in Unspecified Usage
+		* Unspecified (&&) - because the && operator (with identity Included) was applied
+			* Unspecified - Permission for private usage in Unspecified License
+			* Unspecified - Permission to modify in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Binary distribution"" is not satisfied based on ""Permission for private usage""
+	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Binary distribution in Unspecified Usage
+		* Unspecified - Permission for private usage in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: Condition ""Source distribution"" is not satisfied based on ""Permission for private usage""
+	Rule: ((!""Source distribution"") || ""Permission for private usage"")
+	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified (!) - because there's a single argument: Unspecified - Source distribution in Unspecified Usage
+		* Unspecified - Permission for private usage in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: You must disclose the source for this artifact
+	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
+	Explanation: Unspecified (&&) - because the && operator (with identity Included) was applied
+		* Unspecified (||) - because the || operator (with identity Excluded) was applied
+			* Unspecified - Public distribution in Unspecified Usage
+			* Unspecified (&&) - because the && operator (with identity Included) was applied
+				* Unspecified - SaaS distribution in Unspecified Usage
+				* Unspecified - Requires distribution for SaaS in Unspecified License
+		* Unspecified - Requires source disclosure in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: You must publish a copyright or license notice stating that you use this artifact
+	Rule: (""Requires copyright notice"" && (""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")))
+	Explanation: Unspecified (&&) - because the && operator (with identity Included) was applied
+		* Unspecified - Requires copyright notice in Unspecified License
+		* Unspecified (||) - because the || operator (with identity Excluded) was applied
+			* Unspecified - Public distribution in Unspecified Usage
+			* Unspecified (&&) - because the && operator (with identity Included) was applied
+				* Unspecified - SaaS distribution in Unspecified Usage
+				* Unspecified - Requires distribution for SaaS in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: You must state the changes you have made to your copy of this artifact
+	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
+	Explanation: Unspecified (&&) - because the && operator (with identity Included) was applied
+		* Unspecified (||) - because the || operator (with identity Excluded) was applied
+			* Unspecified - Public distribution in Unspecified Usage
+			* Unspecified (&&) - because the && operator (with identity Included) was applied
+				* Unspecified - SaaS distribution in Unspecified Usage
+				* Unspecified - Requires distribution for SaaS in Unspecified License
+		* Unspecified - Modified in Unspecified Usage
+		* Unspecified - Requires statement of changes in Unspecified License","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Public distribution in Unspecified Usage
+		* Unspecified - Private distribution in Unspecified Usage
+		* Unspecified - SaaS distribution in Unspecified Usage","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Linked in Unspecified Usage
+		* Unspecified - Copied in Unspecified Usage
+		* Unspecified - Modified in Unspecified Usage","Unspecified Usage","Unspecified License"
+ERROR,A,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Binary distribution"" || ""Source distribution""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Binary distribution in Unspecified Usage
+		* Unspecified - Source distribution in Unspecified Usage","Unspecified Usage","Unspecified License"
+INFO,B,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
+	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for commercial usage in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
+	Rule: ((!""Public distribution"") || ""Permission to distribute"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission to distribute in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Private distribution"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""SaaS distribution"" is satisfied based on ""Requires distribution for SaaS"" & ""Permission to distribute""
+	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included (!) - because there's a single argument: Excluded - Requires distribution for SaaS in BSD 3 Clause license
+		* Included - Permission to distribute in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Linked"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Copied"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
+	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included (&&) - because the && operator (with identity Included) was applied","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Source distribution"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: You must disclose the source for this artifact
+	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
+	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
+		* Excluded - Requires source disclosure in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+ERROR,B,"ERROR: You must publish a copyright or license notice stating that you use this artifact
+	Rule: (""Requires copyright notice"" && (""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")))
+	Explanation: Unspecified (&&) - because the && operator (with identity Included) was applied
+		* Unspecified (||) - because the || operator (with identity Excluded) was applied
+			* Unspecified - Public distribution in Unspecified Usage","Unspecified Usage","BSD 3 Clause license"
+INFO,B,"INFO: You must state the changes you have made to your copy of this artifact
+	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
+	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
+		* Excluded - Requires statement of changes in BSD 3 Clause license","Unspecified Usage","BSD 3 Clause license"
+ERROR,B,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Public distribution in Unspecified Usage
+		* Unspecified - Private distribution in Unspecified Usage
+		* Unspecified - SaaS distribution in Unspecified Usage","Unspecified Usage","BSD 3 Clause license"
+ERROR,B,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Linked in Unspecified Usage
+		* Unspecified - Copied in Unspecified Usage
+		* Unspecified - Modified in Unspecified Usage","Unspecified Usage","BSD 3 Clause license"
+ERROR,B,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Binary distribution"" || ""Source distribution""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Binary distribution in Unspecified Usage
+		* Unspecified - Source distribution in Unspecified Usage","Unspecified Usage","BSD 3 Clause license"
+INFO,C,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
+	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for commercial usage in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
+	Rule: ((!""Public distribution"") || ""Permission to distribute"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission to distribute in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Private distribution"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""SaaS distribution"" is satisfied based on ""Requires distribution for SaaS"" & ""Permission to distribute""
+	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included (!) - because there's a single argument: Excluded - Requires distribution for SaaS in Apache 2.0 license
+		* Included - Permission to distribute in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Linked"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Copied"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
+	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included (&&) - because the && operator (with identity Included) was applied","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
+	Rule: ((!""Source distribution"") || ""Permission for private usage"")
+	Explanation: Included (||) - because Included is the zero of the || operator
+		* Included - Permission for private usage in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+INFO,C,"INFO: You must disclose the source for this artifact
+	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
+	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
+		* Excluded - Requires source disclosure in Apache 2.0 license","Unspecified Usage","Apache 2.0 license"
+ERROR,C,"ERROR: You must publish a copyright or license notice stating that you use this artifact
+	Rule: (""Requires copyright notice"" && (""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")))
+	Explanation: Unspecified (&&) - because the && operator (with identity Included) was applied
+		* Unspecified (||) - because the || operator (with identity Excluded) was applied
+			* Unspecified - Public distribution in Unspecified Usage","Unspecified Usage","Apache 2.0 license"
+ERROR,C,"ERROR: You must state the changes you have made to your copy of this artifact
+	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
+	Explanation: Unspecified (&&) - because the && operator (with identity Included) was applied
+		* Unspecified (||) - because the || operator (with identity Excluded) was applied
+			* Unspecified - Public distribution in Unspecified Usage
+		* Unspecified - Modified in Unspecified Usage","Unspecified Usage","Apache 2.0 license"
+ERROR,C,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Public distribution in Unspecified Usage
+		* Unspecified - Private distribution in Unspecified Usage
+		* Unspecified - SaaS distribution in Unspecified Usage","Unspecified Usage","Apache 2.0 license"
+ERROR,C,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Linked in Unspecified Usage
+		* Unspecified - Copied in Unspecified Usage
+		* Unspecified - Modified in Unspecified Usage","Unspecified Usage","Apache 2.0 license"
+ERROR,C,"ERROR: The usage for this artifact may not be properly specified
+	Rule: (!(""Binary distribution"" || ""Source distribution""))
+	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
+		* Unspecified - Binary distribution in Unspecified Usage
+		* Unspecified - Source distribution in Unspecified Usage","Unspecified Usage","Apache 2.0 license"

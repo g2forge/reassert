@@ -24,7 +24,9 @@ public class TestReportRenderer extends ReportRenderer {
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IRendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> renderingStatic = new TestReportRendering();
 
-	public TestReportRenderer() {}
+	public TestReportRenderer() {
+		super();
+	}
 
 	public TestReportRenderer(ExplanationMode mode) {
 		super(mode);

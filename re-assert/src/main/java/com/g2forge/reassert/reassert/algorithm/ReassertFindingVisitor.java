@@ -15,13 +15,13 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IWorkType;
 import com.g2forge.reassert.core.model.work.Work;
-import com.g2forge.reassert.reassert.model.findings.MultiLicenseFinding;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

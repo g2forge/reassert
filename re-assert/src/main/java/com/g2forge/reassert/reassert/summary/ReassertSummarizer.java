@@ -121,7 +121,7 @@ public class ReassertSummarizer {
 					if (innermost instanceof IRiskFinding) {
 						final RiskSummary.RiskSummaryBuilder riskSummary = RiskSummary.builder();
 						riskSummary.artifact(artifact.getCoordinates());
-						riskSummary.level(finding.getLevel()).risk((IRiskFinding) innermost);
+						riskSummary.level(finding.getLevel()).risk(finding.getFinding());
 						riskSummary.usage(usages.size() == 1 ? HCollection.getOne(usages) : UnspecifiedUsage.create());
 						riskSummary.license(licenses.size() == 1 ? HCollection.getOne(licenses) : UnspecifiedLicense.create());
 						retVal.risk(riskSummary.build());

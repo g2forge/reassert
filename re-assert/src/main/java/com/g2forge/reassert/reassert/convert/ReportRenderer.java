@@ -20,7 +20,9 @@ public class ReportRenderer extends com.g2forge.reassert.term.analyze.convert.Re
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IRendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> renderingStatic = new ReportRendering();
 
-	public ReportRenderer() {}
+	public ReportRenderer() {
+		super();
+	}
 
 	public ReportRenderer(ExplanationMode mode) {
 		super(mode);
