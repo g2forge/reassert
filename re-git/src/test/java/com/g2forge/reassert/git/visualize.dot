@@ -1,19 +1,19 @@
 digraph reassert {
-	https___github_com_g2forge_alexandria_git_artifact [label="https://github.com/g2forge/alexandria.git"];
-	https___github_com_g2forge_alexandria_git [label="https://github.com/g2forge/alexandria.git"];
-	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file [label="File\nhttps://github.com/g2forge/alexandria/blob/master/ax-filesystem-memory/LICENSE"];
-	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE [label="https://github.com/g2forge/alexandria/blob/master/ax-filesystem-memory/LICENSE"];
-	unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="Unknown License"];
-	https___github_com_g2forge_alexandria_blob_master_LICENSE_file [label="File\nhttps://github.com/g2forge/alexandria/blob/master/LICENSE"];
-	https___github_com_g2forge_alexandria_blob_master_LICENSE [label="https://github.com/g2forge/alexandria/blob/master/LICENSE"];
 	Apache_2_0 [label="Apache 2.0 license"];
-	https___github_com_g2forge_alexandria_git_artifact -> https___github_com_g2forge_alexandria_git [label="coordinates"];
-	https___github_com_g2forge_alexandria_git_artifact -> https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file [label="contains"];
+	https___github_com_g2forge_alexandria_blob_master_LICENSE [label="https://github.com/g2forge/alexandria/blob/master/LICENSE"];
+	https___github_com_g2forge_alexandria_blob_master_LICENSE_file [label="File\nhttps://github.com/g2forge/alexandria/blob/master/LICENSE"];
+	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE [label="https://github.com/g2forge/alexandria/blob/master/ax-filesystem-memory/LICENSE"];
+	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file [label="File\nhttps://github.com/g2forge/alexandria/blob/master/ax-filesystem-memory/LICENSE"];
+	https___github_com_g2forge_alexandria_git [label="https://github.com/g2forge/alexandria.git"];
+	https___github_com_g2forge_alexandria_git_artifact [label="https://github.com/g2forge/alexandria.git"];
+	unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="Unknown License"];
+	https___github_com_g2forge_alexandria_blob_master_LICENSE_file -> Apache_2_0 [label="parsed"];
+	https___github_com_g2forge_alexandria_blob_master_LICENSE_file -> https___github_com_g2forge_alexandria_blob_master_LICENSE [label="coordinates"];
 	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file -> https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE [label="coordinates"];
 	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file -> unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="parsed"];
-	https___github_com_g2forge_alexandria_git_artifact -> unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="notice"];
-	https___github_com_g2forge_alexandria_git_artifact -> https___github_com_g2forge_alexandria_blob_master_LICENSE_file [label="contains"];
-	https___github_com_g2forge_alexandria_blob_master_LICENSE_file -> https___github_com_g2forge_alexandria_blob_master_LICENSE [label="coordinates"];
-	https___github_com_g2forge_alexandria_blob_master_LICENSE_file -> Apache_2_0 [label="parsed"];
 	https___github_com_g2forge_alexandria_git_artifact -> Apache_2_0 [label="notice"];
+	https___github_com_g2forge_alexandria_git_artifact -> https___github_com_g2forge_alexandria_blob_master_LICENSE_file [label="contains"];
+	https___github_com_g2forge_alexandria_git_artifact -> https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file [label="contains"];
+	https___github_com_g2forge_alexandria_git_artifact -> https___github_com_g2forge_alexandria_git [label="coordinates"];
+	https___github_com_g2forge_alexandria_git_artifact -> unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="notice"];
 }

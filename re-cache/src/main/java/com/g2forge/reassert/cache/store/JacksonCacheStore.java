@@ -32,7 +32,7 @@ public class JacksonCacheStore<T> implements ICacheStore<T> {
 	public T store(Path path, T value) {
 		if (!path.isAbsolute()) throw new IllegalArgumentException();
 		try {
-			Files.createDirectories(path.resolve(".."));
+			Files.createDirectories(path.getParent());
 			getMapper().writeValue(path.toFile(), value);
 		} catch (IOException e) {
 			throw new RuntimeIOException(e);

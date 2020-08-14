@@ -1,9 +1,9 @@
 digraph reassert {
-	com_g2forge_alexandria_ax_root_0_0_13_artifact [label="com.g2forge.alexandria:ax-root:0.0.13"];
-	com_g2forge_alexandria_ax_root_0_0_13 [label="com.g2forge.alexandria:ax-root:0.0.13"];
-	com_g2forge_alexandria_ax_root_0_0_13_pom_pom [label="POM\ncom.g2forge.alexandria:ax-root:0.0.13:pom"];
 	Apache_2_0 [label="Apache 2.0 license"];
+	com_g2forge_alexandria_ax_root_0_0_13 [label="com.g2forge.alexandria:ax-root:0.0.13"];
+	com_g2forge_alexandria_ax_root_0_0_13_artifact [label="com.g2forge.alexandria:ax-root:0.0.13"];
+	com_g2forge_alexandria_ax_root_0_0_13_pom_pom [label="POM\ncom.g2forge.alexandria:ax-root:0.0.13:pom"];
+	com_g2forge_alexandria_ax_root_0_0_13_artifact -> Apache_2_0 [label="notice"];
 	com_g2forge_alexandria_ax_root_0_0_13_artifact -> com_g2forge_alexandria_ax_root_0_0_13 [label="coordinates"];
 	com_g2forge_alexandria_ax_root_0_0_13_pom_pom -> com_g2forge_alexandria_ax_root_0_0_13_artifact [label="describes"];
-	com_g2forge_alexandria_ax_root_0_0_13_artifact -> Apache_2_0 [label="notice"];
 }

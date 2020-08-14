@@ -32,39 +32,41 @@ public class LocalCache implements ICache {
 			final Path keyPath = directory.resolve(descriptor.getKeyName());
 			final Path valuePath = directory.resolve(descriptor.getValueName());
 
-			if (Files.isDirectory(directory)) {
-				K loadedKey = null;
-				try {
-					loadedKey = descriptor.getKeyConverter().load(keyPath);
-				} catch (Throwable throwable) { /* If anything failed here, just recompute anyway */ }
-				if (key.equals(loadedKey)) return descriptor.getValueConverter().load(valuePath);
-
-				try {
-					HFile.delete(directory, false);
-				} catch (IOException e) {
-					throw new RuntimeIOException(e);
-				}
-			}
-
-			boolean success = false;
-			try {
-				try {
-					Files.createDirectories(directory);
-				} catch (IOException e) {
-					throw new RuntimeIOException(e);
-				}
-
-				final V computed = descriptor.getFunction().apply(key, valuePath);
-				descriptor.getKeyConverter().store(keyPath, key);
-				final V retVal = descriptor.getValueConverter().store(valuePath, computed);
-				success = true;
-				return retVal;
-			} finally {
-				if (!success) {
+			synchronized (descriptor) {
+				if (Files.isDirectory(directory)) {
+					K loadedKey = null;
 					try {
-						HFile.delete(directory, true);
+						loadedKey = descriptor.getKeyConverter().load(keyPath);
+					} catch (Throwable throwable) { /* If anything failed here, just recompute anyway */ }
+					if (key.equals(loadedKey)) return descriptor.getValueConverter().load(valuePath);
+
+					try {
+						HFile.delete(directory, false);
 					} catch (IOException e) {
 						throw new RuntimeIOException(e);
+					}
+				}
+
+				boolean success = false;
+				try {
+					try {
+						Files.createDirectories(directory);
+					} catch (IOException e) {
+						throw new RuntimeIOException(e);
+					}
+
+					final V computed = descriptor.getFunction().apply(key, valuePath);
+					descriptor.getKeyConverter().store(keyPath, key);
+					final V retVal = descriptor.getValueConverter().store(valuePath, computed);
+					success = true;
+					return retVal;
+				} finally {
+					if (!success) {
+						try {
+							HFile.delete(directory, true);
+						} catch (IOException e) {
+							throw new RuntimeIOException(e);
+						}
 					}
 				}
 			}
