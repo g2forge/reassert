@@ -1,6 +1,6 @@
 level,artifact,findings,usages,licenses,paths
 ERROR,A,"some finding
 Condition is not satisfied",,,
-WARN,B,"You must publish a copyright or license notice stating that you use this artifact",,"GPL 3.0 or later license
+WARN,B,"You must publish a copyright and license notice stating that you use this artifact",,"GPL 3.0 or later license
 BSD 3 Clause license","A -> B"
 INFO,C,,"Commercial Usage",,"A -> C"

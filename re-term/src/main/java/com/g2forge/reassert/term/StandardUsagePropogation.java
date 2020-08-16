@@ -21,6 +21,9 @@ import com.g2forge.reassert.core.model.file.Contains;
 import com.g2forge.reassert.term.propogate.IUsagePropogation;
 import com.g2forge.reassert.term.propogate.UsageTermMapBuilder;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
 public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
 	private static final StandardUsagePropogation INSTANCE = new StandardUsagePropogation();
 
@@ -28,13 +31,43 @@ public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
 		return INSTANCE;
 	}
 
+	@Getter(lazy = true, value = AccessLevel.PROTECTED)
+	private final IFunction2<IEdge, IUsage, IUsage> function = computeFunction();
+
 	protected StandardUsagePropogation() {}
 
 	@Override
 	public IUsage apply(IEdge edge, IUsage usage) {
+		final IFunction2<IEdge, IUsage, IUsage> function = getFunction();
+		return function.apply(edge, usage);
+	}
+
+	protected <E extends IEdge> IUsage apply(Map<StandardUsageTerm, IFunction2<E, IUsage, TermRelation>> usageTermMap, E edge, IUsage usage) {
+		final Terms.TermsBuilder<IUsageTerm> termsBuilder = Terms.builder();
+		for (StandardUsageTerm term : StandardUsageTerm.values()) {
+			final IFunction2<E, IUsage, TermRelation> function = usageTermMap.get(term);
+			final TermRelation relation = function.apply(edge, usage);
+			termsBuilder.term(term, relation);
+		}
+
+		final Terms<IUsageTerm> terms = termsBuilder.build();
+		if (usage.getTerms().equals(terms)) return usage;
+		return new Usage(edge.toString() + " " + usage.getName(), terms);
+	}
+
+	protected IFunction2<IEdge, IUsage, IUsage> computeFunction() {
+		final Map<StandardUsageTerm, IFunction2<Inherits, IUsage, TermRelation>> inheritsUsageTermMap;
+		{
+			final UsageTermMapBuilder<Inherits> builder = new UsageTermMapBuilder<>();
+			builder.copy(StandardUsageTerm.Commercial).copy(StandardUsageTerm.DistributionPublic).copy(StandardUsageTerm.DistributionPrivate).copy(StandardUsageTerm.DistributionService);
+			builder.include(StandardUsageTerm.UseLink).exclude(StandardUsageTerm.UseCopy).exclude(StandardUsageTerm.UseModified);
+			builder.copy(StandardUsageTerm.DistributingBinary).copy(StandardUsageTerm.DistributingSource);
+			inheritsUsageTermMap = builder.build();
+		}
+
 		final Map<StandardUsageTerm, IFunction2<Depends, IUsage, TermRelation>> dependsUsageTermMap;
 		{
-			final UsageTermMapBuilder builder = new UsageTermMapBuilder();
+			final UsageTermMapBuilder<Depends> builder = new UsageTermMapBuilder<>();
 			builder.copy(StandardUsageTerm.Commercial);
 
 			builder.compute(StandardUsageTerm.DistributionPublic, and(StandardUsageTerm.DistributionPublic, context(Depends::isTransitive, TermRelation::valueOf), context(Depends::isRuntime, TermRelation::valueOf)));
@@ -48,24 +81,9 @@ public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
 		}
 
 		final TypeSwitch2.FunctionBuilder<IEdge, IUsage, IUsage> builder = new TypeSwitch2.FunctionBuilder<>();
-		builder.add(Inherits.class, IUsage.class, (e, u) -> null);
+		builder.add(Inherits.class, IUsage.class, (e, u) -> apply(inheritsUsageTermMap, e, u));
 		builder.add(Contains.class, IUsage.class, (e, u) -> u);
-		builder.add(Depends.class, IUsage.class, createFunction(dependsUsageTermMap));
-		return builder.build().apply(edge, usage);
-	}
-
-	protected <E extends IEdge> IFunction2<E, IUsage, IUsage> createFunction(Map<StandardUsageTerm, IFunction2<E, IUsage, TermRelation>> usageTermMap) {
-		return (e, u) -> {
-			final Terms.TermsBuilder<IUsageTerm> tBuilder = Terms.builder();
-			for (StandardUsageTerm term : StandardUsageTerm.values()) {
-				final IFunction2<E, IUsage, TermRelation> function = usageTermMap.get(term);
-				final TermRelation relation = function.apply(e, u);
-				tBuilder.term(term, relation);
-			}
-
-			final Terms<IUsageTerm> terms = tBuilder.build();
-			if (u.getTerms().equals(terms)) return u;
-			return new Usage(e.toString() + " " + u.getName(), terms);
-		};
+		builder.add(Depends.class, IUsage.class, (e, u) -> apply(dependsUsageTermMap, e, u));
+		return builder.build();
 	}
 }

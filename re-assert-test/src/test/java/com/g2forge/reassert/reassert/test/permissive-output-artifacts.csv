@@ -1,26 +1,4 @@
 level,artifact,findings,usages,licenses,paths
-ERROR,A,"Multiple, conflicting licenses detected for artifact
-Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""
-Condition ""Public distribution"" is not satisfied based on ""Permission to distribute""
-Condition ""Private distribution"" is not satisfied based on ""Permission for private usage""
-Condition ""SaaS distribution"" is not satisfied based on ""Requires distribution for SaaS"" & ""Permission to distribute""
-Condition ""Linked"" is not satisfied based on ""Permission for private usage""
-Condition ""Copied"" is not satisfied based on ""Permission for private usage""
-Condition ""Modified"" is not satisfied based on ""Permission for private usage"" & ""Permission to modify""
-Condition ""Binary distribution"" is not satisfied based on ""Permission for private usage""
-Condition ""Source distribution"" is not satisfied based on ""Permission for private usage""
-You must disclose the source for this artifact
-You must publish a copyright or license notice stating that you use this artifact
-You must state the changes you have made to your copy of this artifact
-The usage for this artifact may not be properly specified
-The usage for this artifact may not be properly specified
-The usage for this artifact may not be properly specified","Unspecified Usage",,
-ERROR,B,"You must publish a copyright or license notice stating that you use this artifact
-The usage for this artifact may not be properly specified
-The usage for this artifact may not be properly specified
-The usage for this artifact may not be properly specified","Unspecified Usage","BSD 3 Clause license","A -> B"
-ERROR,C,"You must publish a copyright or license notice stating that you use this artifact
-You must state the changes you have made to your copy of this artifact
-The usage for this artifact may not be properly specified
-The usage for this artifact may not be properly specified
-The usage for this artifact may not be properly specified","Unspecified Usage","Apache 2.0 license","A -> C"
+INFO,A,,"OSSLibrary usage","Owner license",
+WARN,B,"You must publish a copyright and license notice stating that you use this artifact","OSSLibrary usage","BSD 3 Clause license","A -> B"
+WARN,C,"You must publish a copyright and license notice stating that you use this artifact","OSSLibrary usage","Apache 2.0 license","A -> C"

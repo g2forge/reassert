@@ -102,7 +102,7 @@
                 }
               } ]
             },
-            "description" : "The usage for this artifact may not be properly specified",
+            "attribute" : "method of consumption",
             "level" : "ERROR"
           }
         }

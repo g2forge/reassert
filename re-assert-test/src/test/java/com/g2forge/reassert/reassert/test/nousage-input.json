@@ -20,9 +20,6 @@
       }, {
         "edge" : "inherits",
         "targets" : [ "B artifact" ]
-      }, {
-        "edge" : "notice",
-        "targets" : [ "Owner license", "OSSLibrary" ]
       } ]
     },
     "B artifact" : {
@@ -56,12 +53,6 @@
     },
     "Apache-2.0" : {
       "vertex" : "Apache2"
-    },
-    "Owner license" : {
-      "vertex" : "Owner"
-    },
-    "OSSLibrary" : {
-      "vertex" : "OSSLibrary"
     }
   }
 }

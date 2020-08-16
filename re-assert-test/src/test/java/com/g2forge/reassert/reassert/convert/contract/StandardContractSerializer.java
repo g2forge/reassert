@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.convert.license;
+package com.g2forge.reassert.reassert.convert.contract;
 
 import java.io.IOException;
 
@@ -11,13 +11,14 @@ import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.license.StandardLicense;
+import com.g2forge.reassert.usage.StandardUsage;
 
-public class StandardLicenseSerializer extends StdSerializer<IVertex> implements ResolvableSerializer {
+public class StandardContractSerializer extends StdSerializer<IVertex> implements ResolvableSerializer {
 	private static final long serialVersionUID = -6423425543439855466L;
 
 	protected final JsonSerializer<?> serializer;
 
-	protected StandardLicenseSerializer(JsonSerializer<?> serializer) {
+	protected StandardContractSerializer(JsonSerializer<?> serializer) {
 		super(IVertex.class);
 		this.serializer = serializer;
 	}
@@ -30,15 +31,16 @@ public class StandardLicenseSerializer extends StdSerializer<IVertex> implements
 	@Override
 	public void serialize(IVertex value, JsonGenerator generator, SerializerProvider provider) throws IOException {
 		if (value instanceof StandardLicense) generator.writeString(((StandardLicense) value).name());
+		else if (value instanceof StandardUsage) generator.writeString(((StandardUsage) value).name());
 		else {
 			@SuppressWarnings("unchecked")
 			final JsonSerializer<? super IVertex> cast = (JsonSerializer<? super IVertex>) serializer;
 			cast.serialize(value, generator, provider);
 		}
 	}
-	
+
 	public void serializeWithType(IVertex value, JsonGenerator generator, SerializerProvider provider, TypeSerializer typeSerializer) throws IOException {
-		if (value instanceof StandardLicense) serialize(value, generator, provider);
+		if ((value instanceof StandardLicense) || (value instanceof StandardUsage)) serialize(value, generator, provider);
 		else {
 			@SuppressWarnings("unchecked")
 			final JsonSerializer<? super IVertex> cast = (JsonSerializer<? super IVertex>) serializer;

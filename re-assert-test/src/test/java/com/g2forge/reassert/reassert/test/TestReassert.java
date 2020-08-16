@@ -25,4 +25,14 @@ public class TestReassert extends ATestReassertSummarizer {
 	public void permissiveRisks() {
 		test("permissive", Output.Risks);
 	}
+	
+	@Test
+	public void nousageArtifacts() {
+		test("nousage", Output.Artifacts);
+	}
+
+	@Test
+	public void nousageRisks() {
+		test("nousage", Output.Risks);
+	}
 }
