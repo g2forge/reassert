@@ -1,7 +1,5 @@
 package com.g2forge.reassert.reassert.summary.model;
 
-import org.slf4j.event.Level;
-
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
@@ -15,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class RiskSummary {
-	protected final Level level;
-	
 	protected final ICoordinates artifact;
 
 	protected final IFinding risk;

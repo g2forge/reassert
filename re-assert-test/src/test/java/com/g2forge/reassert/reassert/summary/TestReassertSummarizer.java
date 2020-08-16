@@ -84,7 +84,7 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 		}
 		{
 			final RiskSummary.RiskSummaryBuilder risk = RiskSummary.builder();
-			risk.level(Level.INFO).artifact(new MockCoordinates("C"));
+			risk.artifact(new MockCoordinates("C"));
 			risk.risk(new TestRiskFinding(Level.INFO, "Some risk"));
 			builder.risk(risk.build());
 		}

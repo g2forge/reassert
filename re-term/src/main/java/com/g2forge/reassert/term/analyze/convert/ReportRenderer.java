@@ -87,6 +87,11 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	}
 
 	protected static class ReportRendering extends ARenderer.ARendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> {
+		protected IReportRenderContext appendLevel(IFinding finding, IReportRenderContext context) {
+			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) context.append(finding.getLevel()).append(": ");
+			return context;
+		}
+
 		@Override
 		protected void extend(TypeSwitch1.FunctionBuilder<Object, IExplicitRenderable<? super IReportRenderContext>> builder) {
 			builder.add(IExplicitReportRenderable.class, e -> c -> ((IExplicitReportRenderable<?>) e).render(c));
@@ -146,16 +151,16 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> {
 				throw new NotYetImplementedError();
 			});
-			builder.add(MultiLicenseFinding.class, e -> c -> c.append(e.getLevel()).append(" Multiple, conflicting licenses detected for artifact"));
+			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
 			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
-				c.append(e.getLevel()).append(" Unknown work type");
-				try (final ICloseable indent = c.indent()) {
+				appendLevel(e, c).append("Unknown work type");
+				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
 					c.newline().append(HError.toString(e.getThrowable()));
 				}
 			});
 			builder.add(UnrecognizedTermFinding.class, e -> c -> {
 				final TermType termType = TermType.valueOf(e.getTerm());
-				c.append(e.getLevel()).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
+				appendLevel(e, c).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
 				switch (termType) {
 					case License:
 						c.append("whether the condition has been met.");
@@ -171,7 +176,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				final IExpressionContext findingContext = c.getFindingContext();
 				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
 
-				c.append(e.getLevel()).append(": Condition");
+				appendLevel(e, c).append("Condition");
 				if (outputs.size() > 1) c.append('s');
 				c.append(' ');
 				if (!outputs.isEmpty()) {
@@ -198,17 +203,21 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 					}
 				}
 
-				if ((!e.isSatisfied()) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-					if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
-					c.append("Explanation: ").render(e.getResult());
+				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) {
+					if ((!e.isSatisfied()) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
+						if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
+						c.append("Explanation: ").render(e.getResult());
+					}
 				}
 			});
 			builder.add(IRiskFinding.class, e -> c -> {
-				c.append(e.getLevel()).append(": ").append(e.getDescription());
-				if ((e.getLevel().compareTo(Level.WARN) <= 0) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-					final IExpressionContext findingContext = c.getFindingContext();
-					if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
-					c.append("Explanation: ").render(e.getResult());
+				appendLevel(e, c).append(e.getDescription());
+				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) {
+					if ((e.getLevel().compareTo(Level.WARN) <= 0) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
+						final IExpressionContext findingContext = c.getFindingContext();
+						if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
+						c.append("Explanation: ").render(e.getResult());
+					}
 				}
 			});
 		}

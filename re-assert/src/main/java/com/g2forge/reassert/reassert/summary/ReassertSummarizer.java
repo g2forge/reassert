@@ -35,6 +35,7 @@ import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 import com.g2forge.reassert.core.model.report.GraphContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
+import com.g2forge.reassert.reassert.summary.convert.RiskSummarySerializer;
 import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
@@ -58,12 +59,12 @@ public class ReassertSummarizer {
 		return new SummaryModule(getContext());
 	}
 
-	protected <T> void render(Class<T> type, Collection<T> value, IDataSink sink) {
+	protected <T> void render(Class<T> writenType, Class<?> schemaType, Collection<T> value, IDataSink sink) {
 		final CsvMapper mapper = new CsvMapper();
 		mapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
 		mapper.registerModule(createSummaryModule());
 
-		final ObjectWriter writer = mapper.writerFor(type).with(mapper.schemaFor(type).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
+		final ObjectWriter writer = mapper.writerFor(writenType).with(mapper.schemaFor(schemaType).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
 		try (final OutputStream stream = sink.getStream(ITypeRef.of(OutputStream.class))) {
 			writer.writeValues(stream).writeAll(value);
 		} catch (IOException e) {
@@ -72,11 +73,11 @@ public class ReassertSummarizer {
 	}
 
 	public void renderArtifacts(ReportSummary reportSummary, IDataSink sink) {
-		render(ArtifactSummary.class, reportSummary.getArtifacts(), sink);
+		render(ArtifactSummary.class, ArtifactSummary.class, reportSummary.getArtifacts(), sink);
 	}
 
 	public void renderRisks(ReportSummary reportSummary, IDataSink sink) {
-		render(RiskSummary.class, reportSummary.getRisks(), sink);
+		render(RiskSummary.class, RiskSummarySerializer.StoredRiskSummary.class, reportSummary.getRisks(), sink);
 	}
 
 	public ReportSummary summarize(IReport report) {
@@ -121,7 +122,7 @@ public class ReassertSummarizer {
 					if (innermost instanceof IRiskFinding) {
 						final RiskSummary.RiskSummaryBuilder riskSummary = RiskSummary.builder();
 						riskSummary.artifact(artifact.getCoordinates());
-						riskSummary.level(finding.getLevel()).risk(finding.getFinding());
+						riskSummary.risk(finding.getFinding());
 						riskSummary.usage(usages.size() == 1 ? HCollection.getOne(usages) : UnspecifiedUsage.create());
 						riskSummary.license(licenses.size() == 1 ? HCollection.getOne(licenses) : UnspecifiedLicense.create());
 						retVal.risk(riskSummary.build());

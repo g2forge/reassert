@@ -12,7 +12,8 @@ import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.IContract;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.reassert.convert.ReportRenderer;
+import com.g2forge.reassert.reassert.summary.model.RiskSummary;
+import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class SummaryModule extends SimpleModule {
 
 	protected final IContext context;
 
-	protected ReportRenderer createReportRenderer() {
-		return new ReportRenderer(ExplanationMode.Summarize);
+	protected ReportRenderer createReportRenderer(ExplanationMode mode) {
+		return new ReportRenderer(mode);
 	}
 
 	protected ReassertVertexDescriber createVertexDescriber() {
@@ -43,7 +44,8 @@ public class SummaryModule extends SimpleModule {
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
 				if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(vertexDescriber);
 				if (IContract.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(vertexDescriber);
-				if (IFinding.class.isAssignableFrom(description.getBeanClass())) return new FindingSerializer(createReportRenderer());
+				if (RiskSummary.class.isAssignableFrom(description.getBeanClass())) return new RiskSummarySerializer(createReportRenderer(ExplanationMode.Summarize));
+				if (IFinding.class.isAssignableFrom(description.getBeanClass())) return new FindingSerializer(createReportRenderer(ExplanationMode.Explain));
 				if (GraphPath.class.isAssignableFrom(description.getBeanClass())) return new PathSerializer(vertexDescriber);
 				return serializer;
 			}

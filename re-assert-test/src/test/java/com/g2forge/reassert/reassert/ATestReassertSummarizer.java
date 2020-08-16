@@ -6,11 +6,12 @@ import com.g2forge.alexandria.java.io.dataaccess.ByteArrayDataSink;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.reassert.convert.ReportRenderer;
 import com.g2forge.reassert.reassert.convert.TestReportRenderer;
 import com.g2forge.reassert.reassert.summary.ReassertSummarizer;
 import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
+import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
+import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,8 +33,8 @@ public abstract class ATestReassertSummarizer extends ATestFromList {
 				private static final long serialVersionUID = 4626951969629933615L;
 
 				@Override
-				protected ReportRenderer createReportRenderer() {
-					return new TestReportRenderer();
+				protected ReportRenderer createReportRenderer(ExplanationMode mode) {
+					return new TestReportRenderer(mode);
 				}
 			};
 		}
