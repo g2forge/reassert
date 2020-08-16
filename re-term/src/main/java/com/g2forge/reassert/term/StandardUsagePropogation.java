@@ -39,7 +39,9 @@ public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
 	@Override
 	public IUsage apply(IEdge edge, IUsage usage) {
 		final IFunction2<IEdge, IUsage, IUsage> function = getFunction();
-		return function.apply(edge, usage);
+		final IUsage result = function.apply(edge, usage);
+		if (result.getTerms().equals(usage.getTerms())) return usage;
+		return result;
 	}
 
 	protected <E extends IEdge> IUsage apply(Map<StandardUsageTerm, IFunction2<E, IUsage, TermRelation>> usageTermMap, E edge, IUsage usage) {
