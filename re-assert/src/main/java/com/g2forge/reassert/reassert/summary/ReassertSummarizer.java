@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.g2forge.alexandria.java.adt.ComparableComparator;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
@@ -35,12 +36,16 @@ import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 import com.g2forge.reassert.core.model.report.GraphContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
+import com.g2forge.reassert.reassert.summary.convert.ASummaryModule;
+import com.g2forge.reassert.reassert.summary.convert.ArtifactsSummaryModule;
 import com.g2forge.reassert.reassert.summary.convert.RiskSummarySerializer;
-import com.g2forge.reassert.reassert.summary.convert.SummaryModule;
+import com.g2forge.reassert.reassert.summary.convert.RisksSummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.summary.model.RiskSummary;
+import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
 import com.g2forge.reassert.term.analyze.model.findings.IRiskFinding;
+import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -55,14 +60,14 @@ public class ReassertSummarizer {
 		return subgraph.vertexSet().stream().filter(a -> subgraph.inDegreeOf(a) < 1).collect(Collectors.toSet());
 	}
 
-	protected SummaryModule createSummaryModule() {
-		return new SummaryModule(getContext());
+	protected IFunction1<? super ExplanationMode, ? extends ReportRenderer> createRendererFactory() {
+		return ReportRenderer::new;
 	}
 
-	protected <T> void render(Class<T> writenType, Class<?> schemaType, Collection<T> value, IDataSink sink) {
+	protected <T> void render(Class<T> writenType, Class<?> schemaType, Collection<T> value, IDataSink sink, ASummaryModule module) {
 		final CsvMapper mapper = new CsvMapper();
 		mapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
-		mapper.registerModule(createSummaryModule());
+		mapper.registerModule(module);
 
 		final ObjectWriter writer = mapper.writerFor(writenType).with(mapper.schemaFor(schemaType).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
 		try (final OutputStream stream = sink.getStream(ITypeRef.of(OutputStream.class))) {
@@ -73,11 +78,11 @@ public class ReassertSummarizer {
 	}
 
 	public void renderArtifacts(ReportSummary reportSummary, IDataSink sink) {
-		render(ArtifactSummary.class, ArtifactSummary.class, reportSummary.getArtifacts(), sink);
+		render(ArtifactSummary.class, ArtifactSummary.class, reportSummary.getArtifacts(), sink, new ArtifactsSummaryModule(getContext(), createRendererFactory()));
 	}
 
 	public void renderRisks(ReportSummary reportSummary, IDataSink sink) {
-		render(RiskSummary.class, RiskSummarySerializer.StoredRiskSummary.class, reportSummary.getRisks(), sink);
+		render(RiskSummary.class, RiskSummarySerializer.StoredRiskSummary.class, reportSummary.getRisks(), sink, new RisksSummaryModule(getContext(), createRendererFactory()));
 	}
 
 	public ReportSummary summarize(IReport report) {
@@ -116,7 +121,7 @@ public class ReassertSummarizer {
 			else {
 				artifactSummary.level(findings.stream().map(IFinding::getLevel).min(ComparableComparator.create()).get());
 				for (GraphContextualFinding finding : findings) {
-					artifactSummary.finding(finding.getFinding());
+					if (finding.getLevel().compareTo(Level.INFO) < 0) artifactSummary.finding(finding.getFinding());
 
 					final IFinding innermost = finding.getInnermostFinding();
 					if (innermost instanceof IRiskFinding) {
