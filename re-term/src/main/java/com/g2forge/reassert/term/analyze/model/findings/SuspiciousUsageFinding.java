@@ -13,8 +13,5 @@ import lombok.RequiredArgsConstructor;
 public class SuspiciousUsageFinding implements IRiskFinding {
 	protected final IExplained<TermRelation> result;
 
-	@Override
-	public String getDescription() {
-		return "The usage for this artifact may not be properly specified";
-	}
+	protected final String attribute;
 }

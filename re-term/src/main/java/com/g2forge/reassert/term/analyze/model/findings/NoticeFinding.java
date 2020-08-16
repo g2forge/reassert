@@ -12,9 +12,4 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NoticeFinding implements IRiskFinding {
 	protected final IExplained<TermRelation> result;
-
-	@Override
-	public String getDescription() {
-		return "You must publish a copyright or license notice stating that you use this artifact";
-	}
 }

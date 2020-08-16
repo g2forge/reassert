@@ -51,9 +51,9 @@ public class StandardLicenseUsageRules implements IRules, ISingleton {
 		rules.add(Rule.builder().satisfied(StandardLicenseTerm.StateChanges).expression$(and(or(StandardUsageTerm.DistributionPublic, and(StandardUsageTerm.DistributionService, StandardLicenseTerm.SaaSIsDistribution)), StandardUsageTerm.UseModified, StandardLicenseTerm.StateChanges)).finding(StateChangesFinding::new).build());
 
 		// Consistency rules
-		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributionPublic, StandardUsageTerm.DistributionPrivate, StandardUsageTerm.DistributionService))).finding(SuspiciousUsageFinding::new).build());
-		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.UseLink, StandardUsageTerm.UseCopy, StandardUsageTerm.UseModified))).finding(SuspiciousUsageFinding::new).build());
-		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributingBinary, StandardUsageTerm.DistributingSource))).finding(SuspiciousUsageFinding::new).build());
+		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributionPublic, StandardUsageTerm.DistributionPrivate, StandardUsageTerm.DistributionService))).finding(t -> new SuspiciousUsageFinding(t, "method of distribtion")).build());
+		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.UseLink, StandardUsageTerm.UseCopy, StandardUsageTerm.UseModified))).finding(t -> new SuspiciousUsageFinding(t, "method of consumption")).build());
+		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributingBinary, StandardUsageTerm.DistributingSource))).finding(t -> new SuspiciousUsageFinding(t, "format")).build());
 
 		// Ignored terms
 		rules.add(Rule.builder().satisfied(StandardLicenseTerm.SameLicense).build());

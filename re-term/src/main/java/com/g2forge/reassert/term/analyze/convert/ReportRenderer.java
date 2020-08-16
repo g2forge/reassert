@@ -31,8 +31,12 @@ import com.g2forge.reassert.term.analyze.model.IExpressionContext;
 import com.g2forge.reassert.term.analyze.model.TermConstant;
 import com.g2forge.reassert.term.analyze.model.TermType;
 import com.g2forge.reassert.term.analyze.model.findings.ConditionFinding;
+import com.g2forge.reassert.term.analyze.model.findings.DiscloseSourceFinding;
 import com.g2forge.reassert.term.analyze.model.findings.ExpressionContextualFinding;
 import com.g2forge.reassert.term.analyze.model.findings.IRiskFinding;
+import com.g2forge.reassert.term.analyze.model.findings.NoticeFinding;
+import com.g2forge.reassert.term.analyze.model.findings.StateChangesFinding;
+import com.g2forge.reassert.term.analyze.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.term.analyze.model.findings.UnrecognizedTermFinding;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationRenderer;
@@ -89,6 +93,17 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	protected static class ReportRendering extends ARenderer.ARendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> {
 		protected IReportRenderContext appendLevel(IFinding finding, IReportRenderContext context) {
 			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) context.append(finding.getLevel()).append(": ");
+			return context;
+		}
+
+		protected IReportRenderContext explain(IRiskFinding finding, IReportRenderContext context) {
+			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
+				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
+					final IExpressionContext findingContext = context.getFindingContext();
+					if (findingContext != null) context.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
+					context.append("Explanation: ").render(finding.getResult());
+				}
+			}
 			return context;
 		}
 
@@ -203,23 +218,12 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 					}
 				}
 
-				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) {
-					if ((!e.isSatisfied()) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-						if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
-						c.append("Explanation: ").render(e.getResult());
-					}
-				}
+				explain(e, c);
 			});
-			builder.add(IRiskFinding.class, e -> c -> {
-				appendLevel(e, c).append(e.getDescription());
-				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) {
-					if ((e.getLevel().compareTo(Level.WARN) <= 0) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-						final IExpressionContext findingContext = c.getFindingContext();
-						if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
-						c.append("Explanation: ").render(e.getResult());
-					}
-				}
-			});
+			builder.add(DiscloseSourceFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must disclose the source for this artifact")));
+			builder.add(NoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
+			builder.add(StateChangesFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must state the changes you have made to your copy of this artifact")));
+			builder.add(SuspiciousUsageFinding.class, e -> c -> explain(e, appendLevel(e, c).append("The usage for this artifact improperly specifies the ").append(e.getAttribute())));
 		}
 	}
 
