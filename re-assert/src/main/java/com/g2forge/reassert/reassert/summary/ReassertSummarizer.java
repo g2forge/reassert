@@ -27,6 +27,7 @@ import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
+import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
@@ -41,8 +42,8 @@ import com.g2forge.reassert.reassert.summary.convert.ArtifactsSummaryModule;
 import com.g2forge.reassert.reassert.summary.convert.FindingSummarySerializer;
 import com.g2forge.reassert.reassert.summary.convert.RisksSummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
-import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.summary.model.FindingSummary;
+import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
 import com.g2forge.reassert.term.analyze.model.findings.IRiskFinding;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
@@ -55,9 +56,10 @@ import lombok.RequiredArgsConstructor;
 public class ReassertSummarizer {
 	protected final IContext context;
 
-	protected Set<Artifact<?>> computeOrigins(IReport report, final Graph<Artifact<?>, IEdge> subgraph) {
-		if (subgraph.vertexSet().containsAll(report.getOrigins().getOrigins())) return new HashSet<>(report.getOrigins().getOrigins());
-		return subgraph.vertexSet().stream().filter(a -> subgraph.inDegreeOf(a) < 1).collect(Collectors.toSet());
+	protected Set<IVertex> computeOrigins(IReport report, final Graph<IVertex, IEdge> graph) {
+		if (graph.vertexSet().containsAll(report.getOrigins().getOrigins())) return new HashSet<>(report.getOrigins().getOrigins());
+		final ITypeRef<Artifact<?>> artifactType = new ATypeRef<Artifact<?>>() {};
+		return graph.vertexSet().stream().flatMap(artifactType::castIfInstance).filter(a -> !graph.incomingEdgesOf(a).stream().map(graph::getEdgeSource).anyMatch(artifactType::isInstance)).collect(Collectors.toSet());
 	}
 
 	protected IFunction1<? super ExplanationMode, ? extends ReportRenderer> createRendererFactory() {
@@ -101,9 +103,8 @@ public class ReassertSummarizer {
 			}
 		}).collect(Collectors.toList());
 
-		final Graph<Artifact<?>, IEdge> subgraph = HReassertModel.asArtifactGraph(report.getGraph());
-		final AllDirectedPaths<Artifact<?>, IEdge> paths = new AllDirectedPaths<>(subgraph);
-		final Set<Artifact<?>> origins = computeOrigins(report, subgraph);
+		final AllDirectedPaths<IVertex, IEdge> paths = new AllDirectedPaths<>(report.getGraph());
+		final Set<IVertex> origins = computeOrigins(report, report.getGraph());
 
 		for (Artifact<?> artifact : artifacts) {
 			final ArtifactSummary.ArtifactSummaryBuilder artifactSummary = ArtifactSummary.builder();
@@ -136,7 +137,7 @@ public class ReassertSummarizer {
 			}
 
 			// Compute paths to this artifact
-			if (!origins.contains(artifact)) artifactSummary.paths(paths.getAllPaths(origins, HCollection.asSet(artifact), true, Integer.MAX_VALUE));
+			if (!origins.contains(artifact)) artifactSummary.paths(paths.getAllPaths(origins, HCollection.<IVertex>asSet(artifact), true, Integer.MAX_VALUE));
 
 			retVal.artifact(artifactSummary.build());
 		}
