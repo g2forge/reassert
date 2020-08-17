@@ -3,8 +3,11 @@ package com.g2forge.reassert.reassert.test;
 import java.util.List;
 
 import org.junit.Test;
+import org.slf4j.event.Level;
 
+import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.model.artifact.Artifact;
+import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.reassert.ATestReassertSummarizer;
 import com.g2forge.reassert.reassert.TestGraph;
@@ -17,22 +20,26 @@ public class TestReassert extends ATestReassertSummarizer {
 	}
 
 	@Test
-	public void permissiveArtifacts() {
-		test("permissive", Output.Artifacts);
-	}
-
-	@Test
-	public void permissiveRisks() {
-		test("permissive", Output.Risks);
-	}
-	
-	@Test
 	public void nousageArtifacts() {
-		test("nousage", Output.Artifacts);
+		final IReport report = test("nousage", Output.Artifacts);
+		HAssert.assertEquals(Level.ERROR, report.getMinLevel());
 	}
 
 	@Test
-	public void nousageRisks() {
-		test("nousage", Output.Risks);
+	public void nousageFindings() {
+		final IReport report = test("nousage", Output.Findings);
+		HAssert.assertEquals(Level.ERROR, report.getMinLevel());
+	}
+
+	@Test
+	public void permissiveArtifacts() {
+		final IReport report = test("permissive", Output.Artifacts);
+		HAssert.assertEquals(Level.WARN, report.getMinLevel());
+	}
+
+	@Test
+	public void permissiveFindings() {
+		final IReport report = test("permissive", Output.Findings);
+		HAssert.assertEquals(Level.WARN, report.getMinLevel());
 	}
 }

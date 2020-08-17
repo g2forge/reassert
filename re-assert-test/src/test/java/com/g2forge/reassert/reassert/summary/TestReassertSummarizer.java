@@ -20,7 +20,7 @@ import com.g2forge.reassert.reassert.model.finding.TestFinding;
 import com.g2forge.reassert.reassert.model.finding.TestRiskFinding;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
-import com.g2forge.reassert.reassert.summary.model.RiskSummary;
+import com.g2forge.reassert.reassert.summary.model.FindingSummary;
 
 import lombok.Builder;
 import lombok.Data;
@@ -83,16 +83,16 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 			builder.artifact(b.build());
 		}
 		{
-			final RiskSummary.RiskSummaryBuilder risk = RiskSummary.builder();
+			final FindingSummary.FindingSummaryBuilder risk = FindingSummary.builder();
 			risk.artifact(new MockCoordinates("C"));
-			risk.risk(new TestRiskFinding(Level.INFO, "Some risk"));
+			risk.finding(new TestRiskFinding(Level.INFO, "Some risk"));
 			builder.risk(risk.build());
 		}
 
 		final ReportSummary summary = builder.build();
 
 		assertOutput("rendering", Output.Artifacts, summary);
-		assertOutput("rendering", Output.Risks, summary);
+		assertOutput("rendering", Output.Findings, summary);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 	}
 
 	@Test
-	public void summaryRisks() {
-		test("summary", Output.Risks);
+	public void summaryFindings() {
+		test("summary", Output.Findings);
 	}
 }

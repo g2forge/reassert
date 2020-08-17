@@ -19,7 +19,7 @@ import lombok.Getter;
 public abstract class ATestReassertSummarizer extends ATestFromList {
 	protected static enum Output {
 		Artifacts,
-		Risks;
+		Findings;
 	}
 
 	protected static class TestSummarizer extends ReassertSummarizer {
@@ -42,8 +42,8 @@ public abstract class ATestReassertSummarizer extends ATestFromList {
 			case Artifacts:
 				summarizer.renderArtifacts(summary, sink);
 				break;
-			case Risks:
-				summarizer.renderRisks(summary, sink);
+			case Findings:
+				summarizer.renderFindings(summary, sink);
 				break;
 			default:
 				throw new EnumException(Output.class, output);
@@ -51,9 +51,10 @@ public abstract class ATestReassertSummarizer extends ATestFromList {
 		HAssert.assertEquals(new Resource(getClass(), name + "-output-" + output.name().toLowerCase() + ".csv"), sink.getStream().toString());
 	}
 
-	protected void test(final String name, final Output output) {
+	protected IReport test(final String name, final Output output) {
 		final IReport report = load(name).getReport();
 		final ReportSummary summary = getSummarizer().summarize(report);
 		assertOutput(name, output, summary);
+		return report;
 	}
 }

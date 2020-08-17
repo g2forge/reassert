@@ -12,7 +12,7 @@ import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.reassert.summary.model.RiskSummary;
+import com.g2forge.reassert.reassert.summary.model.FindingSummary;
 
 import lombok.Builder;
 import lombok.Data;
@@ -20,11 +20,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-public class RiskSummarySerializer extends StdSerializer<RiskSummary> {
+public class FindingSummarySerializer extends StdSerializer<FindingSummary> {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
-	public static class StoredRiskSummary {
+	public static class StoredFindingSummary {
 		protected final Level level;
 
 		protected final ICoordinates artifact;
@@ -42,16 +42,16 @@ public class RiskSummarySerializer extends StdSerializer<RiskSummary> {
 
 	protected final IRenderer<? super IFinding> renderer;
 
-	protected RiskSummarySerializer(IRenderer<? super IFinding> renderer) {
-		super(RiskSummary.class);
+	protected FindingSummarySerializer(IRenderer<? super IFinding> renderer) {
+		super(FindingSummary.class);
 		this.renderer = renderer;
 	}
 
 	@Override
-	public void serialize(RiskSummary value, JsonGenerator generator, SerializerProvider provider) throws IOException {
-		final String message = renderer.render(value.getRisk());
-		final IFinding risk = value.getRisk();
-		final StoredRiskSummary stored = new StoredRiskSummary(risk.getLevel(), value.getArtifact(), message, value.getUsage(), value.getLicense(), risk);
+	public void serialize(FindingSummary value, JsonGenerator generator, SerializerProvider provider) throws IOException {
+		final IFinding finding = value.getFinding();
+		final String message = renderer.render(finding);
+		final StoredFindingSummary stored = new StoredFindingSummary(finding.getLevel(), value.getArtifact(), message, value.getUsage(), value.getLicense(), finding);
 		generator.getCodec().writeValue(generator, stored);
 	}
 }

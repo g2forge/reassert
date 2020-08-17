@@ -38,11 +38,11 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.reassert.summary.convert.ASummaryModule;
 import com.g2forge.reassert.reassert.summary.convert.ArtifactsSummaryModule;
-import com.g2forge.reassert.reassert.summary.convert.RiskSummarySerializer;
+import com.g2forge.reassert.reassert.summary.convert.FindingSummarySerializer;
 import com.g2forge.reassert.reassert.summary.convert.RisksSummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
-import com.g2forge.reassert.reassert.summary.model.RiskSummary;
+import com.g2forge.reassert.reassert.summary.model.FindingSummary;
 import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
 import com.g2forge.reassert.term.analyze.model.findings.IRiskFinding;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
@@ -81,8 +81,8 @@ public class ReassertSummarizer {
 		render(ArtifactSummary.class, ArtifactSummary.class, reportSummary.getArtifacts(), sink, new ArtifactsSummaryModule(getContext(), createRendererFactory()));
 	}
 
-	public void renderRisks(ReportSummary reportSummary, IDataSink sink) {
-		render(RiskSummary.class, RiskSummarySerializer.StoredRiskSummary.class, reportSummary.getRisks(), sink, new RisksSummaryModule(getContext(), createRendererFactory()));
+	public void renderFindings(ReportSummary reportSummary, IDataSink sink) {
+		render(FindingSummary.class, FindingSummarySerializer.StoredFindingSummary.class, reportSummary.getRisks(), sink, new RisksSummaryModule(getContext(), createRendererFactory()));
 	}
 
 	public ReportSummary summarize(IReport report) {
@@ -125,12 +125,12 @@ public class ReassertSummarizer {
 
 					final IFinding innermost = finding.getInnermostFinding();
 					if (innermost instanceof IRiskFinding) {
-						final RiskSummary.RiskSummaryBuilder riskSummary = RiskSummary.builder();
-						riskSummary.artifact(artifact.getCoordinates());
-						riskSummary.risk(finding.getFinding());
-						riskSummary.usage(usages.size() == 1 ? HCollection.getOne(usages) : UnspecifiedUsage.create());
-						riskSummary.license(licenses.size() == 1 ? HCollection.getOne(licenses) : UnspecifiedLicense.create());
-						retVal.risk(riskSummary.build());
+						final FindingSummary.FindingSummaryBuilder findingSummary = FindingSummary.builder();
+						findingSummary.artifact(artifact.getCoordinates());
+						findingSummary.finding(finding.getFinding());
+						findingSummary.usage(usages.size() == 1 ? HCollection.getOne(usages) : UnspecifiedUsage.create());
+						findingSummary.license(licenses.size() == 1 ? HCollection.getOne(licenses) : UnspecifiedLicense.create());
+						retVal.risk(findingSummary.build());
 					}
 				}
 			}

@@ -35,7 +35,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "unspecifiedusage" ]
+        "targets" : [ "Merged usage 1" ]
       } ]
     },
     "C artifact" : {
@@ -61,15 +61,29 @@
         } ]
       }
     },
-    "unspecifiedusage" : {
-      "vertex" : {
-        "@c" : ".contract.usage.UnspecifiedUsage"
-      }
-    },
     "Merged usage 0" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
         "name" : "Merged usage 0",
+        "terms" : [ {
+          "term" : "UseCopy",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseModified",
+          "relation" : "Excluded"
+        }, {
+          "term" : "Commercial",
+          "relation" : "Included"
+        }, {
+          "term" : "UseLink",
+          "relation" : "Included"
+        } ]
+      }
+    },
+    "Merged usage 1" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "Merged usage 1",
         "terms" : [ {
           "term" : "UseCopy",
           "relation" : "Excluded"

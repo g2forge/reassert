@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class RiskSummary {
+public class FindingSummary {
 	protected final ICoordinates artifact;
 
-	protected final IFinding risk;
+	protected final IFinding finding;
 	
 	protected final IUsage usage;
 
