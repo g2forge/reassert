@@ -1,0 +1,3 @@
+level,artifact,findings,usages,licenses,paths
+INFO,A,,"PrivateDistribution usage","Owner license",
+INFO,B,,"Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage","GPL 3.0 or later license","A -> B"

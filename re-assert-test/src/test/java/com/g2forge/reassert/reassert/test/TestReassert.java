@@ -26,6 +26,18 @@ public class TestReassert extends ATestReassertSummarizer {
 		HAssert.assertEquals(Level.WARN, report.getMinLevel());
 	}
 
+	@Test
+	public void gplprivateArtifacts() {
+		final IReport report = test("gplprivate", Output.Artifacts);
+		HAssert.assertEquals(Level.INFO, report.getMinLevel());
+	}
+
+	@Test
+	public void gplprivateFindings() {
+		final IReport report = test("gplprivate", Output.Findings);
+		HAssert.assertEquals(Level.INFO, report.getMinLevel());
+	}
+
 	@Override
 	protected TestGraph load(Artifact<ListCoordinates> artifact) {
 		return new TestGraph(artifact, (List<IGraphVisitor>) null);
