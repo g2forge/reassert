@@ -15,14 +15,14 @@ import com.g2forge.reassert.reassert.algorithm.IGraphVisitor;
 
 public class TestReassert extends ATestReassertSummarizer {
 	@Test
-	public void gplpublicArtifacts() {
-		final IReport report = test("gplpublic", Output.Artifacts);
+	public void changesArtifacts() {
+		final IReport report = test("changes", Output.Artifacts);
 		HAssert.assertEquals(Level.WARN, report.getMinLevel());
 	}
 
 	@Test
-	public void gplpublicFindings() {
-		final IReport report = test("gplpublic", Output.Findings);
+	public void changesFindings() {
+		final IReport report = test("changes", Output.Findings);
 		HAssert.assertEquals(Level.WARN, report.getMinLevel());
 	}
 
@@ -36,6 +36,18 @@ public class TestReassert extends ATestReassertSummarizer {
 	public void gplprivateFindings() {
 		final IReport report = test("gplprivate", Output.Findings);
 		HAssert.assertEquals(Level.INFO, report.getMinLevel());
+	}
+
+	@Test
+	public void gplpublicArtifacts() {
+		final IReport report = test("gplpublic", Output.Artifacts);
+		HAssert.assertEquals(Level.WARN, report.getMinLevel());
+	}
+
+	@Test
+	public void gplpublicFindings() {
+		final IReport report = test("gplpublic", Output.Findings);
+		HAssert.assertEquals(Level.WARN, report.getMinLevel());
 	}
 
 	@Override
