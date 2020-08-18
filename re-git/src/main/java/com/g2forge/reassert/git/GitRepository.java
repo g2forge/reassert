@@ -17,7 +17,7 @@ import org.eclipse.jgit.lib.Constants;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
-import com.g2forge.alexandria.java.adt.ComparableComparator;
+import com.g2forge.alexandria.java.adt.compare.ComparableComparator;
 import com.g2forge.alexandria.java.core.helpers.HBinary;
 import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.alexandria.java.function.IFunction1;

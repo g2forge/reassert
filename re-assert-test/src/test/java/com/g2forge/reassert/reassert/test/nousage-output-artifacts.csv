@@ -1,6 +1,5 @@
 level,artifact,findings,usages,licenses,paths
-ERROR,A,"Multiple, conflicting licenses detected for artifact
-Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""
+ERROR,A,"Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""
 Condition ""Public distribution"" is not satisfied based on ""Permission to distribute""
 Condition ""Private distribution"" is not satisfied based on ""Permission for private usage""
 Condition ""SaaS distribution"" is not satisfied based on ""Requires distribution for SaaS"" & ""Permission to distribute""

@@ -19,7 +19,7 @@ public class ArtifactsSummaryModule extends ASummaryModule {
 
 	protected JsonSerializer<?> modify(BeanDescription description, JsonSerializer<?> serializer) {
 		if (IFinding.class.isAssignableFrom(description.getBeanClass())) return new FindingSerializer(getRendererFactory().apply(ExplanationMode.Summarize));
-		if (GraphPath.class.isAssignableFrom(description.getBeanClass())) return new PathSerializer(getVertexDescriber());
+		if (GraphPath.class.isAssignableFrom(description.getBeanClass())) return new PathSerializer(true, getVertexDescriber());
 		return super.modify(description, serializer);
 	}
 }

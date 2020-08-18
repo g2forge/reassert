@@ -57,9 +57,12 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		final Collection<ILicense> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
 		if (licenses.size() == 1) return HCollection.getOne(licenses);
 
-		final IVertex finding = found(graph, artifact, new MultiLicenseFinding());
-		for (ILicense license : licenses) {
-			graph.addEdge(finding, license, new Notice());
+		if (licenses.size() > 1) {
+			// Notice: we don't need a finding if no license is specified, because an unspecified license will result in a usage failure
+			final IVertex finding = found(graph, artifact, new MultiLicenseFinding());
+			for (ILicense license : licenses) {
+				graph.addEdge(finding, license, new Notice());
+			}
 		}
 
 		return UnspecifiedLicense.create();

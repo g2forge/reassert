@@ -123,6 +123,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 		final TypeSwitch1.FunctionBuilder<ILicense, IWorkType> builder = new TypeSwitch1.FunctionBuilder<>();
 		builder.add(StandardLicense.class, l -> {
 			switch (l) {
+				case Owner:
 				case BSD3:
 				case Apache2:
 					return null;

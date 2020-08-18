@@ -1,2 +1,2 @@
-level,artifact,message,usage,license,details
-INFO,C,"Some risk",,,"INFO: Some risk"
+level,message,artifact,paths,details
+INFO,"Some risk",,,"INFO: Some risk"

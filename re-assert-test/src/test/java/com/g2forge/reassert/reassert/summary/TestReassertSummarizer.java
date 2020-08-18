@@ -83,10 +83,10 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 			builder.artifact(b.build());
 		}
 		{
-			final FindingSummary.FindingSummaryBuilder risk = FindingSummary.builder();
-			risk.artifact(new MockCoordinates("C"));
-			risk.finding(new TestRiskFinding(Level.INFO, "Some risk"));
-			builder.risk(risk.build());
+			final FindingSummary.FindingSummaryBuilder finding = FindingSummary.builder();
+			finding.finding(new TestRiskFinding(Level.INFO, "Some risk"));
+			finding.path(TestGraphPath.builder().vertex(new MockCoordinates("C")).build());
+			builder.finding(finding.build());
 		}
 
 		final ReportSummary summary = builder.build();
