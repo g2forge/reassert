@@ -14,6 +14,18 @@ import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.algorithm.IGraphVisitor;
 
 public class TestReassert extends ATestReassertSummarizer {
+	@Test
+	public void gplpublicArtifacts() {
+		final IReport report = test("gplpublic", Output.Artifacts);
+		HAssert.assertEquals(Level.WARN, report.getMinLevel());
+	}
+
+	@Test
+	public void gplpublicFindings() {
+		final IReport report = test("gplpublic", Output.Findings);
+		HAssert.assertEquals(Level.WARN, report.getMinLevel());
+	}
+
 	@Override
 	protected TestGraph load(Artifact<ListCoordinates> artifact) {
 		return new TestGraph(artifact, (List<IGraphVisitor>) null);

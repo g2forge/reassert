@@ -164,7 +164,27 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			});
 
 			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> {
-				throw new NotYetImplementedError();
+				appendLevel(e, c).append("A license is incompatible with a combined work that includes artifacts under this license");
+				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
+					if ((e.getUnknown() != null) && !e.getUnknown().isEmpty()) {
+						c.newline().append("License terms with unknown compatability: ");
+						final List<ILicenseTerm> unknown = new ArrayList<>(e.getUnknown());
+						final int size = unknown.size();
+						for (int i = 0; i < size; i++) {
+							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
+							c.render(unknown.get(i), ILicenseTerm.class);
+						}
+					}
+					if ((e.getMismatched() != null) && !e.getMismatched().isEmpty()) {
+						c.newline().append("Mistmatched license terms: ");
+						final List<ILicenseTerm> mistmatched = new ArrayList<>(e.getMismatched());
+						final int size = mistmatched.size();
+						for (int i = 0; i < size; i++) {
+							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
+							c.render(mistmatched.get(i), ILicenseTerm.class);
+						}
+					}
+				}
 			});
 			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
 			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
