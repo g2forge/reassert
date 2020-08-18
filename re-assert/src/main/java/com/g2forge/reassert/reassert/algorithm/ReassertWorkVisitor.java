@@ -22,10 +22,10 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.work.IWorkType;
 import com.g2forge.reassert.core.model.work.IWorkTypeFactory;
+import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
 import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.core.model.work.WorkContains;
 import com.g2forge.reassert.core.model.work.WorkLicense;
-import com.g2forge.reassert.reassert.model.findings.UnknownWorkTypeFinding;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

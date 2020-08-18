@@ -26,6 +26,7 @@
 		<module>re-git</module>
 		<module>re-term</module>
 		<module>re-license</module>
+		<module>re-usage</module>
 		<module>re-assert</module>
 		<module>re-assert-test</module>
 	</modules>

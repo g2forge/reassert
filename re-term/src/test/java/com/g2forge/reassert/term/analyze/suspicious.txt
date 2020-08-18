@@ -1,10 +1,10 @@
 Minimum finding level: WARN
-WARN: The usage for this artifact may not be properly specified
+WARN: The usage for this artifact improperly specifies the method of distribtion
 	Rule: (!("Public distribution" || "Private distribution" || "SaaS distribution"))
 	Explanation: Included (!) - because there's a single argument: Excluded (||) - because the || operator (with identity Excluded) was applied
-WARN: The usage for this artifact may not be properly specified
+WARN: The usage for this artifact improperly specifies the method of consumption
 	Rule: (!("Linked" || "Copied" || "Modified"))
 	Explanation: Included (!) - because there's a single argument: Excluded (||) - because the || operator (with identity Excluded) was applied
-WARN: The usage for this artifact may not be properly specified
+WARN: The usage for this artifact improperly specifies the format
 	Rule: (!("Binary distribution" || "Source distribution"))
 	Explanation: Included (!) - because there's a single argument: Excluded (||) - because the || operator (with identity Excluded) was applied

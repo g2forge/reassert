@@ -12,9 +12,4 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DiscloseSourceFinding implements IRiskFinding {
 	protected final IExplained<TermRelation> result;
-
-	@Override
-	public String getDescription() {
-		return "You must disclose the source for this artifact";
-	}
 }

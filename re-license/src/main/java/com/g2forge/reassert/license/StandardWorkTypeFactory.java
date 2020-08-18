@@ -68,6 +68,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 				unknown = HCollection.difference(union, intersection);
 				builder.unknown(unknown);
 			} else unknown = HCollection.emptySet();
+			builder.unknown(unknown);
 
 			for (ILicenseTerm term : licenseTerms.getSpecifiedTerms()) {
 				// Skip any terms that we already have a problem with, and oddly the GPL doesn't require you grant patents to other software for compatibility (example: https://www.gnu.org/licenses/license-list.en.html#ModifiedBSD)
@@ -122,6 +123,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 		final TypeSwitch1.FunctionBuilder<ILicense, IWorkType> builder = new TypeSwitch1.FunctionBuilder<>();
 		builder.add(StandardLicense.class, l -> {
 			switch (l) {
+				case Owner:
 				case BSD3:
 				case Apache2:
 					return null;

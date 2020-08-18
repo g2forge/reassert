@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.model.findings;
+package com.g2forge.reassert.core.model.contract.license;
 
 import org.slf4j.event.Level;
 

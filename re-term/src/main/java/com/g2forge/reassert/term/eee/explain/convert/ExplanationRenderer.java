@@ -68,7 +68,7 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 			});
 			builder.add(ZeroExplainedOperation.class, e -> c -> {
 				c.value(e.get()).append(" (").append(e.getOperator()).append(")").append(" - because ");
-				if (c.getMode().compareTo(ExplanationMode.Summarize) <= 0) {
+				if (c.getMode().compareTo(ExplanationMode.Describe) <= 0) {
 					final ZeroExplainedOperation.Argument example = ((ZeroExplainedOperation<?>) e).getArguments().stream().filter(ZeroExplainedOperation.Argument::isRelevant).findAny().get();
 					c.append("one or more arguments were ").value(e.getZero()).append(", for example: ").render(example.getArgument(), IExplained.class);
 				} else {
@@ -93,7 +93,7 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 			builder.add(IdentityExplainedOperation.class, e -> c -> {
 				c.value(e.get()).append(" (").append(e.getOperator()).append(")").append(" - because ");
 				final List<IdentityExplainedOperation.Argument> arguments = ((IdentityExplainedOperation<?>) e).getArguments();
-				if ((c.getMode().compareTo(ExplanationMode.Summarize) <= 0) && (arguments.stream().filter(IdentityExplainedOperation.Argument::isRelevant).collect(Collectors.counting()) == 1)) {
+				if ((c.getMode().compareTo(ExplanationMode.Describe) <= 0) && (arguments.stream().filter(IdentityExplainedOperation.Argument::isRelevant).collect(Collectors.counting()) == 1)) {
 					c.append("there's a single relevant argument: ").render(arguments.get(0).getArgument(), IExplained.class);
 				} else {
 					final boolean printArguments;

@@ -8,6 +8,7 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.enums.EnumException;
+import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IConsumer2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
@@ -18,21 +19,29 @@ import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
+import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
+import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
 import com.g2forge.reassert.term.analyze.model.IExpressionContext;
 import com.g2forge.reassert.term.analyze.model.TermConstant;
 import com.g2forge.reassert.term.analyze.model.TermType;
 import com.g2forge.reassert.term.analyze.model.findings.ConditionFinding;
+import com.g2forge.reassert.term.analyze.model.findings.DiscloseSourceFinding;
 import com.g2forge.reassert.term.analyze.model.findings.ExpressionContextualFinding;
 import com.g2forge.reassert.term.analyze.model.findings.IRiskFinding;
+import com.g2forge.reassert.term.analyze.model.findings.NoticeFinding;
+import com.g2forge.reassert.term.analyze.model.findings.StateChangesFinding;
+import com.g2forge.reassert.term.analyze.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.term.analyze.model.findings.UnrecognizedTermFinding;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 import com.g2forge.reassert.term.eee.explain.convert.ExplanationRenderer;
 import com.g2forge.reassert.term.eee.explain.model.IExplained;
-import com.g2forge.reassert.term.eee.express.IExpression;
 import com.g2forge.reassert.term.eee.express.IConstant;
+import com.g2forge.reassert.term.eee.express.IExpression;
 import com.g2forge.reassert.term.eee.express.Operation;
 
 import lombok.AccessLevel;
@@ -81,6 +90,22 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	}
 
 	protected static class ReportRendering extends ARenderer.ARendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> {
+		protected IReportRenderContext appendLevel(IFinding finding, IReportRenderContext context) {
+			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) context.append(finding.getLevel()).append(": ");
+			return context;
+		}
+
+		protected IReportRenderContext explain(IRiskFinding finding, IReportRenderContext context) {
+			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
+				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
+					final IExpressionContext findingContext = context.getFindingContext();
+					if (findingContext != null) context.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
+					context.append("Explanation: ").render(finding.getResult());
+				}
+			}
+			return context;
+		}
+
 		@Override
 		protected void extend(TypeSwitch1.FunctionBuilder<Object, IExplicitRenderable<? super IReportRenderContext>> builder) {
 			builder.add(IExplicitReportRenderable.class, e -> c -> ((IExplicitReportRenderable<?>) e).render(c));
@@ -130,9 +155,46 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				c.append(')');
 			});
 
+			builder.add(IContextualFinding.class, e -> c -> c.render(e.getFinding(), IFinding.class));
+			builder.add(ExpressionContextualFinding.class, e -> c -> {
+				try (final ICloseable findingContext = c.findingContext(e)) {
+					c.render(e.getFinding(), IFinding.class);
+				}
+			});
+
+			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> {
+				appendLevel(e, c).append("A license is incompatible with a combined work that includes artifacts under this license");
+				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
+					if ((e.getUnknown() != null) && !e.getUnknown().isEmpty()) {
+						c.newline().append("License terms with unknown compatability: ");
+						final List<ILicenseTerm> unknown = new ArrayList<>(e.getUnknown());
+						final int size = unknown.size();
+						for (int i = 0; i < size; i++) {
+							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
+							c.render(unknown.get(i), ILicenseTerm.class);
+						}
+					}
+					if ((e.getMismatched() != null) && !e.getMismatched().isEmpty()) {
+						c.newline().append("Mistmatched license terms: ");
+						final List<ILicenseTerm> mistmatched = new ArrayList<>(e.getMismatched());
+						final int size = mistmatched.size();
+						for (int i = 0; i < size; i++) {
+							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
+							c.render(mistmatched.get(i), ILicenseTerm.class);
+						}
+					}
+				}
+			});
+			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
+			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
+				appendLevel(e, c).append("Unknown work type");
+				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
+					c.newline().append((c.getMode().compareTo(ExplanationMode.Trace) >= 0) ? HError.toString(e.getThrowable()) : e.getThrowable().getMessage());
+				}
+			});
 			builder.add(UnrecognizedTermFinding.class, e -> c -> {
 				final TermType termType = TermType.valueOf(e.getTerm());
-				c.append(e.getLevel()).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
+				appendLevel(e, c).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
 				switch (termType) {
 					case License:
 						c.append("whether the condition has been met.");
@@ -144,28 +206,24 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						throw new EnumException(TermType.class, termType);
 				}
 			});
-			builder.add(ExpressionContextualFinding.class, e -> c -> {
-				try (final ICloseable findingContext = c.findingContext(e)) {
-					c.render(e.getFinding(), IFinding.class);
-				}
-			});
 			builder.add(ConditionFinding.class, e -> c -> {
 				final IExpressionContext findingContext = c.getFindingContext();
 				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
 
-				c.append(e.getLevel()).append(": Condition");
+				appendLevel(e, c).append("Condition");
 				if (outputs.size() > 1) c.append('s');
 				c.append(' ');
-				if (findingContext != null) {
+				if (!outputs.isEmpty()) {
 					final List<ITerm> list = new ArrayList<>(outputs);
 					final int size = list.size();
 					for (int i = 0; i < size; i++) {
 						if (i > 0) c.append((i == size - 1) ? " & " : ", ");
 						c.render(list.get(i), ITerm.class);
 					}
+					c.append(' ');
 				}
 
-				c.append(' ').append(outputs.size() > 1 ? "are" : "is");
+				c.append(outputs.size() > 1 ? "are" : "is");
 				if (!e.isSatisfied()) c.append(" not");
 				c.append(" satisfied");
 
@@ -179,19 +237,12 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 					}
 				}
 
-				if ((!e.isSatisfied()) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-					if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
-					c.append("Explanation: ").render(e.getResult());
-				}
+				explain(e, c);
 			});
-			builder.add(IRiskFinding.class, e -> c -> {
-				c.append(e.getLevel()).append(": ").append(e.getDescription());
-				if ((e.getLevel().compareTo(Level.WARN) <= 0) || (c.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = c.newline().indent()) {
-					final IExpressionContext findingContext = c.getFindingContext();
-					if (findingContext != null) c.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
-					c.append("Explanation: ").render(e.getResult());
-				}
-			});
+			builder.add(DiscloseSourceFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must disclose the source for this artifact")));
+			builder.add(NoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
+			builder.add(StateChangesFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must state the changes you have made to your copy of this artifact")));
+			builder.add(SuspiciousUsageFinding.class, e -> c -> explain(e, appendLevel(e, c).append("The usage for this artifact improperly specifies the ").append(e.getAttribute())));
 		}
 	}
 

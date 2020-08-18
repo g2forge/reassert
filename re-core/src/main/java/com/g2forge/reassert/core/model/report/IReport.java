@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.jgrapht.Graph;
 import org.slf4j.event.Level;
 
-import com.g2forge.alexandria.java.adt.ComparableComparator;
+import com.g2forge.alexandria.java.adt.compare.ComparableComparator;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 

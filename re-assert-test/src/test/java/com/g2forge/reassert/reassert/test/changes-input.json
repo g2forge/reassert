@@ -1,0 +1,58 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "Owner license", "OSSLibrary" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "Apache-2.0", "Changed usage" ]
+      } ]
+    },
+    "Apache-2.0" : {
+      "vertex" : "Apache2"
+    },
+    "Owner license" : {
+      "vertex" : "Owner"
+    },
+    "OSSLibrary" : {
+      "vertex" : "OSSLibrary"
+    },
+    "Changed usage" : {
+      "vertex" : {
+        "@c" : ".contract.usage.Usage",
+        "name" : "Changed usage",
+        "terms" : [ {
+          "term" : "UseModified",
+          "relation" : "Included"
+        } ]
+      }
+    }
+  }
+}

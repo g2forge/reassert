@@ -17,11 +17,6 @@ public class ConditionFinding implements IRiskFinding {
 	protected final IExplained<TermRelation> result;
 
 	@Override
-	public String getDescription() {
-		return "You must satisfy the relevant conditions";
-	}
-
-	@Override
 	public Level getLevel() {
 		final TermRelation relation = getResult().get();
 		switch (relation) {

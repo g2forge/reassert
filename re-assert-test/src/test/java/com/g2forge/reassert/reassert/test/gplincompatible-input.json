@@ -1,0 +1,67 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "NoSuchLicense", "PrivateDistribution usage" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "GPL-3.0-or-later" ]
+      } ]
+    },
+    "GPL-3.0-or-later" : {
+      "vertex" : "GPL3OrLater"
+    },
+    "NoSuchLicense" : {
+      "vertex" : {
+        "@c" : ".contract.license.License",
+        "name" : "No such license",
+        "terms" : [ {
+          "term" : "CommercialUse",
+          "relation" : "Excluded"
+        }, {
+          "term" : "PrivateUse",
+          "relation" : "Included"
+        }, {
+          "term" : "Notice",
+          "relation" : "Excluded"
+        }, {
+          "term" : "SaaSIsDistribution",
+          "relation" : "Excluded"
+        }, {
+          "term" : "Warranty",
+          "relation" : "Included"
+        } ]
+      }
+    },
+    "PrivateDistribution usage" : {
+      "vertex" : "PrivateDistribution"
+    }
+  }
+}

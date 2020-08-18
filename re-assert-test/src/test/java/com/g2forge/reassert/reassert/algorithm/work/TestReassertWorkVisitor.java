@@ -8,14 +8,14 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
 import com.g2forge.reassert.license.StandardWorkTypeFactory;
 import com.g2forge.reassert.list.ListCoordinates;
+import com.g2forge.reassert.reassert.ATestReassert;
 import com.g2forge.reassert.reassert.TestGraph;
-import com.g2forge.reassert.reassert.algorithm.ATestVisitor;
 import com.g2forge.reassert.reassert.algorithm.ReassertWorkVisitor;
-import com.g2forge.reassert.reassert.model.findings.UnknownWorkTypeFinding;
 
-public class TestReassertWorkVisitor extends ATestVisitor {
+public class TestReassertWorkVisitor extends ATestReassert {
 	@Test
 	public void bsd3() {
 		test("bsd3");

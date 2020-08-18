@@ -30,6 +30,13 @@ public class Terms<T> implements ITerms<T> {
 			}
 			return this;
 		}
+
+		public TermsBuilder<T> unspecified(@SuppressWarnings("unchecked") T... terms) {
+			for (T term : terms) {
+				term(term, TermRelation.Unspecified);
+			}
+			return this;
+		}
 	}
 
 	protected static ITerms<?> NONE = Terms.builder().build();

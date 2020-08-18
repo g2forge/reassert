@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.convert.license;
+package com.g2forge.reassert.reassert.convert.contract;
 
 import java.io.IOException;
 
@@ -11,16 +11,19 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import com.g2forge.alexandria.java.core.error.HError;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IThrowSupplier;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.license.StandardLicense;
+import com.g2forge.reassert.usage.StandardUsage;
 
-public class StandardLicenseDeserializer extends StdDeserializer<IVertex> implements ResolvableDeserializer {
+public class StandardContractDeserializer extends StdDeserializer<IVertex> implements ResolvableDeserializer {
 	private static final long serialVersionUID = -6856117256176037393L;
 
 	protected final JsonDeserializer<?> deserializer;
 
-	protected StandardLicenseDeserializer(JsonDeserializer<?> deserializer) {
+	protected StandardContractDeserializer(JsonDeserializer<?> deserializer) {
 		super(IVertex.class);
 		this.deserializer = deserializer;
 	}
@@ -41,8 +44,9 @@ public class StandardLicenseDeserializer extends StdDeserializer<IVertex> implem
 		return deserialize(parser, () -> super.deserializeWithType(parser, context, typeDeserializer));
 	}
 
-	protected StandardLicense fromString(JsonParser parser) throws IOException {
-		return StandardLicense.valueOf(parser.getText().trim());
+	protected IVertex fromString(JsonParser parser) throws IOException {
+		final String text = parser.getText().trim();
+		return HError.apply((IFunction1<String, IVertex> valueOf) -> valueOf.apply(text), String.format("Could not parse \"%1$s\" as a standard contract", text), StandardLicense::valueOf, StandardUsage::valueOf);
 	}
 
 	@Override

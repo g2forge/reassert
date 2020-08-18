@@ -1,4 +1,4 @@
-package com.g2forge.reassert.reassert.integration;
+package com.g2forge.reassert.reassert.test;
 
 import org.jgrapht.Graph;
 import org.junit.Test;
@@ -24,13 +24,13 @@ public class IntegrationAlexandria {
 
 	@Test
 	public void complete() {
-		HAssert.assertEquals(new Resource(getClass(), "alexandriacomplete.dot"), TestVisualizer.create().visualize(getTestGraph().getGraph()));
+		HAssert.assertEquals(new Resource(getClass(), "alexandria-complete.dot"), TestVisualizer.create().visualize(getTestGraph().getGraph()));
 	}
 
 	@Test
 	public void licenses() {
 		final Graph<IVertex, IEdge> graph = HReassertModel.clone(getTestGraph().getGraph());
 		new ReassertLicenseVisitor().accept(graph);
-		HAssert.assertEquals(new Resource(getClass(), "alexandrialicenses.dot"), TestVisualizer.create().visualize(HReassertModel.asLicenseGraph(graph)));
+		HAssert.assertEquals(new Resource(getClass(), "alexandria-licenses.dot"), TestVisualizer.create().visualize(HReassertModel.asLicenseGraph(graph)));
 	}
 }

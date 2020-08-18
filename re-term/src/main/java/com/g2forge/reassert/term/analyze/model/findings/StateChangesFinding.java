@@ -12,9 +12,4 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StateChangesFinding implements IRiskFinding {
 	protected final IExplained<TermRelation> result;
-
-	@Override
-	public String getDescription() {
-		return "You must state the changes you have made to your copy of this artifact";
-	}
 }

@@ -15,5 +15,5 @@ public class ReportSummary {
 	protected final Collection<ArtifactSummary> artifacts;
 	
 	@Singular
-	protected final Collection<RiskSummary> risks;
+	protected final Collection<FindingSummary> findings;
 }

@@ -15,13 +15,13 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IWorkType;
 import com.g2forge.reassert.core.model.work.Work;
-import com.g2forge.reassert.reassert.model.findings.MultiLicenseFinding;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +57,12 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		final Collection<ILicense> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
 		if (licenses.size() == 1) return HCollection.getOne(licenses);
 
-		final IVertex finding = found(graph, artifact, new MultiLicenseFinding());
-		for (ILicense license : licenses) {
-			graph.addEdge(finding, license, new Notice());
+		if (licenses.size() > 1) {
+			// Notice: we don't need a finding if no license is specified, because an unspecified license will result in a usage failure
+			final IVertex finding = found(graph, artifact, new MultiLicenseFinding());
+			for (ILicense license : licenses) {
+				graph.addEdge(finding, license, new Notice());
+			}
 		}
 
 		return UnspecifiedLicense.create();
