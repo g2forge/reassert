@@ -27,6 +27,18 @@ public class TestReassert extends ATestReassertSummarizer {
 	}
 
 	@Test
+	public void gplincompatibleArtifacts() {
+		final IReport report = test("gplincompatible", Output.Artifacts);
+		HAssert.assertEquals(Level.ERROR, report.getMinLevel());
+	}
+
+	@Test
+	public void gplincompatibleFindings() {
+		final IReport report = test("gplincompatible", Output.Findings);
+		HAssert.assertEquals(Level.ERROR, report.getMinLevel());
+	}
+
+	@Test
 	public void gplprivateArtifacts() {
 		final IReport report = test("gplprivate", Output.Artifacts);
 		HAssert.assertEquals(Level.INFO, report.getMinLevel());

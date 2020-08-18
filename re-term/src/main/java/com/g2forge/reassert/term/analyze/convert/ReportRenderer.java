@@ -9,7 +9,6 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.error.HError;
-import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IConsumer2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
@@ -190,7 +189,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
 				appendLevel(e, c).append("Unknown work type");
 				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
-					c.newline().append(HError.toString(e.getThrowable()));
+					c.newline().append((c.getMode().compareTo(ExplanationMode.Trace) >= 0) ? HError.toString(e.getThrowable()) : e.getThrowable().getMessage());
 				}
 			});
 			builder.add(UnrecognizedTermFinding.class, e -> c -> {
