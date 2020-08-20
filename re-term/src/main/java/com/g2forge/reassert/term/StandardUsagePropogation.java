@@ -9,6 +9,7 @@ import java.util.Map;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;
 import com.g2forge.reassert.core.model.artifact.Inherits;
@@ -24,6 +25,7 @@ import com.g2forge.reassert.term.propogate.UsageTermMapBuilder;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+@ReassertLegalOpinion
 public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
 	private static final StandardUsagePropogation INSTANCE = new StandardUsagePropogation();
 

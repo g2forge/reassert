@@ -8,6 +8,7 @@ import com.g2forge.alexandria.java.io.HTextIO;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.artifact.Artifact;
@@ -32,6 +33,7 @@ public class LicenseFileScanner implements IScanner {
 	@EqualsAndHashCode.Exclude
 	protected final IContext context;
 
+	@ReassertLegalOpinion
 	@Override
 	public boolean isRelevant(IScanner.IItem item) {
 		return item.getPath().getFileName().toString().toLowerCase().equals("license");

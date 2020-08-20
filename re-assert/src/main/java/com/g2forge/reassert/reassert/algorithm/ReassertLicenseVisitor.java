@@ -18,6 +18,7 @@ import org.jgrapht.traverse.TopologicalOrderIterator;
 import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -32,6 +33,7 @@ import com.g2forge.reassert.core.model.file.File;
 import com.g2forge.reassert.core.model.file.IDescriptor;
 import com.g2forge.reassert.core.model.file.Parsed;
 
+@ReassertLegalOpinion
 public class ReassertLicenseVisitor extends AGraphVisitor {
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {

@@ -8,6 +8,7 @@ import org.jgrapht.Graph;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -53,6 +54,7 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		}
 	}
 
+	@ReassertLegalOpinion
 	protected ILicense computeLicense(Graph<IVertex, IEdge> graph, Artifact<?> artifact) {
 		final Collection<ILicense> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
 		if (licenses.size() == 1) return HCollection.getOne(licenses);

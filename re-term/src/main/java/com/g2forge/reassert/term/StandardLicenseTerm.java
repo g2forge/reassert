@@ -1,5 +1,6 @@
 package com.g2forge.reassert.term;
 
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * Terms adapted from <a href="https://choosealicense.com/appendix/">choose-a-license</a>.
  */
+@ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicenseTerm implements ILicenseTerm {
