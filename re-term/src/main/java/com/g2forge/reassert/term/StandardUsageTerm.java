@@ -1,10 +1,12 @@
 package com.g2forge.reassert.term;
 
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
 public enum StandardUsageTerm implements IUsageTerm {

@@ -1,5 +1,6 @@
 package com.g2forge.reassert.license;
 
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.Terms;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
@@ -9,6 +10,7 @@ import com.g2forge.reassert.term.StandardLicenseTerm;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicense implements ILicense {

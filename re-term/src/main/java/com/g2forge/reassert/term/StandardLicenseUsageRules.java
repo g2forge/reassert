@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.term.analyze.model.findings.ConditionFinding;
 import com.g2forge.reassert.term.analyze.model.findings.DiscloseSourceFinding;
 import com.g2forge.reassert.term.analyze.model.findings.NoticeFinding;
@@ -16,6 +17,7 @@ import com.g2forge.reassert.term.analyze.model.rules.Rule;
 
 import lombok.Getter;
 
+@ReassertLegalOpinion
 public class StandardLicenseUsageRules implements IRules, ISingleton {
 	protected static final StandardLicenseUsageRules INSTANCE = new StandardLicenseUsageRules();
 

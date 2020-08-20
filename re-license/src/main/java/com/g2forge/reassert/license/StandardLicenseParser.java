@@ -3,6 +3,7 @@ package com.g2forge.reassert.license;
 import java.util.regex.Pattern;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
@@ -17,6 +18,7 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 
 	protected StandardLicenseParser() {}
 
+	@ReassertLegalOpinion
 	@Override
 	public ILicense parse(String text) {
 		if (text == null) return UnspecifiedLicense.create();

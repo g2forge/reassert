@@ -12,6 +12,7 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -96,6 +97,7 @@ public class ReassertUsageVisitor extends AGraphVisitor {
 		}
 	}
 
+	@ReassertLegalOpinion
 	protected IUsage merge(Collection<IUsage> usages) {
 		final TermsBuilder<IUsageTerm> builder = Terms.<IUsageTerm>builder();
 		for (IUsage usage : usages) {

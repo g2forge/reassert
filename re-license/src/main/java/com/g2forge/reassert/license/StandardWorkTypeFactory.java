@@ -17,6 +17,7 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
@@ -41,6 +42,7 @@ import com.g2forge.reassert.term.StandardLicenseTerm;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+@ReassertLegalOpinion
 public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 	protected static class GPLWorkType implements IWorkType {
 		@Getter(lazy = true, value = AccessLevel.PROTECTED)
