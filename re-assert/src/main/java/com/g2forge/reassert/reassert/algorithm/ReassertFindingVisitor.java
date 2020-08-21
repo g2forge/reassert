@@ -43,14 +43,16 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
 			final IUsage usage = HCollection.getOne(HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class)));
 			final ILicense license = computeLicense(graph, artifact);
-			found(graph, artifact, licenseUsageAnalyzer.report(usage, license));
+			final IReport report = licenseUsageAnalyzer.report(usage, license);
+			found(graph, artifact, report);
 		}
 	}
 
 	protected void analyzeWorks(Graph<IVertex, IEdge> graph) {
 		for (Work work : graph.vertexSet().stream().flatMap(ITypeRef.of(Work.class)::castIfInstance).collect(Collectors.toList())) {
 			final IWorkType workType = work.getType();
-			found(graph, work, workType.report(graph, work));
+			final IReport report = workType.report(graph, work);
+			found(graph, work, report);
 		}
 	}
 
