@@ -42,12 +42,12 @@ import com.g2forge.reassert.term.StandardLicenseTerm;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-@ReassertLegalOpinion
 public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 	protected static class GPLWorkType implements IWorkType {
 		@Getter(lazy = true, value = AccessLevel.PROTECTED)
 		private final IFunction1<IEdge, Boolean> function = computeFunction();
 
+		@ReassertLegalOpinion
 		protected IFunction1<IEdge, Boolean> computeFunction() {
 			final TypeSwitch1.FunctionBuilder<IEdge, Boolean> builder = new TypeSwitch1.FunctionBuilder<>();
 			builder.add(Depends.class, e -> true);
@@ -56,6 +56,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 			return builder.build();
 		}
 
+		@ReassertLegalOpinion
 		@Note(type = NoteType.TODO, value = "Use EEE logic package to explain our reasoning better (not really necessary, but it'll help)")
 		protected IncompatibleWorkLicenseFinding isCompatible(ILicense license, ILicense test) {
 			if ((license == test) || license.equals(test)) return null;
@@ -121,6 +122,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 
 	protected StandardWorkTypeFactory() {}
 
+	@ReassertLegalOpinion
 	protected IFunction1<ILicense, IWorkType> computeFunction() {
 		final TypeSwitch1.FunctionBuilder<ILicense, IWorkType> builder = new TypeSwitch1.FunctionBuilder<>();
 		builder.add(StandardLicense.class, l -> {
