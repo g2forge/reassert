@@ -21,17 +21,7 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>re-core-test</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-csv</artifactId>
-			<version>${jackson.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
