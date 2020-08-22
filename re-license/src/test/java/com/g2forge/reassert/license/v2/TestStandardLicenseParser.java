@@ -19,6 +19,7 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.license.StandardLicense;
 
 import lombok.AccessLevel;
@@ -33,7 +34,7 @@ public class TestStandardLicenseParser {
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
 	public static class TestCase {
-		protected final StandardLicense license;
+		protected final String license;
 
 		protected final String text;
 	}
@@ -53,7 +54,10 @@ public class TestStandardLicenseParser {
 			}
 		}
 
-		return licenses.stream().map(x -> new Object[] { x.getLicense(), x.getText() }).collect(Collectors.toList());
+		return licenses.stream().map(x -> {
+			final ILicense license = (x.getLicense().isEmpty()) ? new UnknownLicense(x.getText()) : StandardLicense.valueOf(x.getLicense());
+			return new Object[] { license, x.getText() };
+		}).collect(Collectors.toList());
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
@@ -61,7 +65,7 @@ public class TestStandardLicenseParser {
 
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(0)
-	public StandardLicense license;
+	public ILicense license;
 
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(1)

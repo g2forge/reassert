@@ -11,44 +11,55 @@ import lombok.RequiredArgsConstructor;
 public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	protected final StringBuilder builder;
 
-	protected boolean usable = true;
+	protected boolean current = true;
+
+	protected void assertCurrent() {
+		if (!isCurrent()) throw new IllegalStateException();
+	}
 
 	@Override
-	public IPatternBuilder<IPatternBuilder<T>> optional() {
-		if (!isUsable()) throw new IllegalStateException();
+	public IPatternBuilder<IPatternBuilder<T>> child(boolean required) {
+		assertCurrent();
 
-		final StringBuilder builder = getBuilder();
+		final StringBuilder builder = gap();
 		builder.append('(');
-		usable = false;
+		current = false;
 		final APatternBuilder<T> retVal = this;
 		return new APatternBuilder<IPatternBuilder<T>>(builder) {
 			@Override
 			public IPatternBuilder<T> build() {
-				retVal.usable = true;
-				builder.append(")?");
+				retVal.current = true;
+				builder.append(')');
+				if (!required) builder.append('?');
 				return retVal;
 			}
 		};
 	}
 
-	@Override
-	public IPatternBuilder<T> separator(boolean required) {
-		if (!isUsable()) throw new IllegalStateException();
-		getBuilder().append("[^\\p{Alnum}]").append(required ? '+' : '*');
-		return this;
+	protected StringBuilder gap() {
+		final StringBuilder builder = getBuilder();
+		if (!isEmpty()) builder.append("[-_\\p{Space}]*");
+		return builder;
+	}
+
+	protected boolean isEmpty() {
+		return builder.length() <= 0;
 	}
 
 	@Override
 	public IPatternBuilder<T> text(String text) {
-		if (!isUsable()) throw new IllegalStateException();
-		getBuilder().append(Pattern.quote(text));
+		assertCurrent();
+
+		gap().append(Pattern.quote(text));
 		return this;
 	}
 
 	@Override
 	public IPatternBuilder<T> version(int major, int minor) {
-		if (!isUsable()) throw new IllegalStateException();
-		final StringBuilder builder = getBuilder();
+		assertCurrent();
+
+		final StringBuilder builder = gap();
+		builder.append("v?");
 		builder.append(major);
 		if (minor == 0) builder.append("(\\.0)?");
 		else builder.append("\\.").append(minor);

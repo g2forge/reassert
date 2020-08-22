@@ -1,12 +1,9 @@
 package com.g2forge.reassert.license.v2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
@@ -32,15 +29,22 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 	protected StandardLicenseParser() {}
 
 	protected Map<StandardLicense, List<Pattern>> computePatterns() {
-		final Map<StandardLicense, List<Pattern>> retVal = new HashMap<>();
-		final Function<? super StandardLicense, ? extends List<Pattern>> creator = l -> new ArrayList<>();
-		retVal.computeIfAbsent(StandardLicense.Apache2, creator).add(new PatternBuilder().text("Apache").separator(false).version(2, 0).build());
-		retVal.computeIfAbsent(StandardLicense.GPL2Only, creator).add(new PatternBuilder().text("GPL").optional().separator(false).version(2, 0).build().build());
-		retVal.computeIfAbsent(StandardLicense.GPL3Only, creator).add(new PatternBuilder().text("GPL").separator(false).version(3, 0).build());
-		retVal.computeIfAbsent(StandardLicense.GPL3OrLater, creator).add(new PatternBuilder().text("GPL").separator(false).version(3, 0).separator(false).text("+").build());
-		retVal.computeIfAbsent(StandardLicense.LGPL21Only, creator).add(new PatternBuilder().text("LGPL").optional().separator(false).version(2, 1).build().build());
-		retVal.computeIfAbsent(StandardLicense.LGPL3Only, creator).add(new PatternBuilder().text("LGPL").separator(false).version(3, 0).build());
-		return retVal;
+		final PatternMapBuilder builder = new PatternMapBuilder();
+		builder.license(StandardLicense.Apache2).text("Apache").version(2, 0).build();
+		{
+			final String gpl = "GPL";
+			builder.license(StandardLicense.GPL2Only).text(gpl).child(false).version(2, 0).build().build();
+			builder.license(StandardLicense.GPL3Only).text(gpl).version(3, 0).build();
+			builder.license(StandardLicense.GPL3OrLater).text(gpl).version(3, 0).text("+").build();
+		}
+		{
+			final String lgpl = "LGPL";
+			builder.license(StandardLicense.LGPL21Only).text(lgpl).child(false).version(2, 1).build().build();
+			builder.license(StandardLicense.LGPL21OrLater).text(lgpl).version(2, 1).text("+").build();
+			builder.license(StandardLicense.LGPL3Only).text(lgpl).version(3, 0).build();
+			builder.license(StandardLicense.LGPL3OrLater).text(lgpl).version(3, 0).text("+").build();
+		}
+		return builder.build();
 	}
 
 	@Override
