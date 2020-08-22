@@ -30,16 +30,21 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 
 	protected Map<StandardLicense, List<Pattern>> computePatterns() {
 		final PatternMapBuilder builder = new PatternMapBuilder();
-		builder.license(StandardLicense.Apache2).text("Apache").version(2, 0).build();
+		{
+			builder.license(StandardLicense.Apache2).text("Apache").optional().optional().text("Software").build().text("License").build().optional().version(2, 0).build().build();
+		}
+		{
+			builder.license(StandardLicense.BSD3).text("BSD").text("3").optional().text("Clause").child(false, false).text("s").build().build().build();
+		}
 		{
 			final String gpl = "GPL";
-			builder.license(StandardLicense.GPL2Only).text(gpl).child(false).version(2, 0).build().build();
+			builder.license(StandardLicense.GPL2Only).text(gpl).optional().version(2, 0).build().build();
 			builder.license(StandardLicense.GPL3Only).text(gpl).version(3, 0).build();
 			builder.license(StandardLicense.GPL3OrLater).text(gpl).version(3, 0).text("+").build();
 		}
 		{
 			final String lgpl = "LGPL";
-			builder.license(StandardLicense.LGPL21Only).text(lgpl).child(false).version(2, 1).build().build();
+			builder.license(StandardLicense.LGPL21Only).text(lgpl).optional().version(2, 1).build().build();
 			builder.license(StandardLicense.LGPL21OrLater).text(lgpl).version(2, 1).text("+").build();
 			builder.license(StandardLicense.LGPL3Only).text(lgpl).version(3, 0).build();
 			builder.license(StandardLicense.LGPL3OrLater).text(lgpl).version(3, 0).text("+").build();

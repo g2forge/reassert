@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	protected final StringBuilder builder;
+	
+	protected final boolean gap;
 
 	protected boolean current = true;
 
@@ -18,14 +20,14 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	}
 
 	@Override
-	public IPatternBuilder<IPatternBuilder<T>> child(boolean required) {
+	public IPatternBuilder<IPatternBuilder<T>> child(boolean required, boolean gap) {
 		assertCurrent();
 
-		final StringBuilder builder = gap();
+		final StringBuilder builder = getBuilder();
 		builder.append('(');
 		current = false;
 		final APatternBuilder<T> retVal = this;
-		return new APatternBuilder<IPatternBuilder<T>>(builder) {
+		return new APatternBuilder<IPatternBuilder<T>>(builder, gap) {
 			@Override
 			public IPatternBuilder<T> build() {
 				retVal.current = true;
@@ -35,15 +37,20 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 			}
 		};
 	}
-
+	
 	protected StringBuilder gap() {
 		final StringBuilder builder = getBuilder();
-		if (!isEmpty()) builder.append("[-_\\p{Space}]*");
+		if (isGap() && !isEmpty()) builder.append("[-_\\p{Space}]*");
 		return builder;
 	}
 
 	protected boolean isEmpty() {
 		return builder.length() <= 0;
+	}
+
+	@Override
+	public IPatternBuilder<IPatternBuilder<T>> optional() {
+		return child(false, isGap());
 	}
 
 	@Override

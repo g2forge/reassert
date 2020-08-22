@@ -37,6 +37,8 @@ public class TestStandardLicenseParser {
 		protected final String license;
 
 		protected final String text;
+		
+		protected final String purpose;
 	}
 
 	@Parameters(name = "{1}")
@@ -56,7 +58,7 @@ public class TestStandardLicenseParser {
 
 		return licenses.stream().map(x -> {
 			final ILicense license = (x.getLicense().isEmpty()) ? new UnknownLicense(x.getText()) : StandardLicense.valueOf(x.getLicense());
-			return new Object[] { license, x.getText() };
+			return new Object[] { license, x.getText(), x.getPurpose() };
 		}).collect(Collectors.toList());
 	}
 
@@ -70,10 +72,14 @@ public class TestStandardLicenseParser {
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(1)
 	public String text;
+	
+	@Getter(AccessLevel.PROTECTED)
+	@Parameter(2)
+	public String purpose;
 
 	@Test
 	public void test() {
 		final ILicense actual = getParser().parse(getText());
-		HAssert.assertEquals(getLicense(), actual);
+		HAssert.assertEquals(getPurpose(), getLicense(), actual);
 	}
 }

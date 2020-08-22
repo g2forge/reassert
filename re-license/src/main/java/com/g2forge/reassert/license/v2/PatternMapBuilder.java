@@ -19,7 +19,7 @@ public class PatternMapBuilder implements IBuilder<Map<StandardLicense, List<Pat
 	}
 
 	public IPatternBuilder<PatternMapBuilder> license(StandardLicense license) {
-		return new APatternBuilder<PatternMapBuilder>(new StringBuilder()) {
+		return new APatternBuilder<PatternMapBuilder>(new StringBuilder(), true) {
 			@Override
 			public PatternMapBuilder build() {
 				retVal.computeIfAbsent(license, (Function<? super StandardLicense, ? extends List<Pattern>>) l -> new ArrayList<>()).add(Pattern.compile(getBuilder().toString(), Pattern.CASE_INSENSITIVE));
