@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.reassert.contract.analyze.model.TermConstant;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.model.IVertex;
-import com.g2forge.reassert.term.analyze.model.TermConstant;
 
 import lombok.Getter;
 

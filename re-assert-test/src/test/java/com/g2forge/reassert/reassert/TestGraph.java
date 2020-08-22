@@ -6,12 +6,15 @@ import java.util.List;
 import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.reassert.contract.analyze.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.license.StandardWorkTypeFactory;
+import com.g2forge.reassert.contract.term.StandardLicenseUsageRules;
+import com.g2forge.reassert.contract.term.StandardUsagePropogation;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.license.StandardWorkTypeFactory;
 import com.g2forge.reassert.reassert.Reassert;
 import com.g2forge.reassert.reassert.ReassertContext;
 import com.g2forge.reassert.reassert.algorithm.IGraphVisitor;
@@ -19,9 +22,6 @@ import com.g2forge.reassert.reassert.algorithm.ReassertFindingVisitor;
 import com.g2forge.reassert.reassert.algorithm.ReassertLicenseVisitor;
 import com.g2forge.reassert.reassert.algorithm.ReassertUsageVisitor;
 import com.g2forge.reassert.reassert.algorithm.ReassertWorkVisitor;
-import com.g2forge.reassert.term.StandardLicenseUsageRules;
-import com.g2forge.reassert.term.StandardUsagePropogation;
-import com.g2forge.reassert.term.analyze.LicenseUsageAnalyzer;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

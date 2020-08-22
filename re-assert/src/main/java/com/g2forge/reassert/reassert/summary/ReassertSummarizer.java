@@ -27,6 +27,8 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.contract.analyze.convert.ReportRenderer;
+import com.g2forge.reassert.contract.eee.explain.convert.ExplanationMode;
 import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.HReassertModel;
@@ -46,8 +48,6 @@ import com.g2forge.reassert.reassert.summary.convert.FindingsSummaryModule;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.FindingSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
-import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
-import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

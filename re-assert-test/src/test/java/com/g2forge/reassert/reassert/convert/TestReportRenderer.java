@@ -3,11 +3,11 @@ package com.g2forge.reassert.reassert.convert;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
+import com.g2forge.reassert.contract.analyze.convert.IReportRenderContext;
+import com.g2forge.reassert.contract.analyze.convert.ReportRenderer;
+import com.g2forge.reassert.contract.eee.explain.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.model.finding.TestFinding;
 import com.g2forge.reassert.reassert.model.finding.TestRiskFinding;
-import com.g2forge.reassert.term.analyze.convert.IReportRenderContext;
-import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
-import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -16,9 +16,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.reassert.contract.term.StandardLicenseTerm;
+import com.g2forge.reassert.contract.term.StandardUsageTerm;
 import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.term.StandardLicenseTerm;
-import com.g2forge.reassert.term.StandardUsageTerm;
 
 import lombok.AccessLevel;
 import lombok.Getter;
