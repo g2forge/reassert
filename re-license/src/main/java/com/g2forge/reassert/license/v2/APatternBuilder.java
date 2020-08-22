@@ -2,6 +2,8 @@ package com.g2forge.reassert.license.v2;
 
 import java.util.regex.Pattern;
 
+import com.g2forge.alexandria.java.function.IConsumer1;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,22 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	protected final boolean gap;
 
 	protected boolean current = true;
+
+	@Override
+	public IPatternBuilder<T> alt(@SuppressWarnings("unchecked") IConsumer1<? super IPatternBuilder<?>>... alternatives) {
+		final StringBuilder builder = getBuilder();
+		builder.append('(');
+		boolean first = true;
+		for (IConsumer1<? super IPatternBuilder<?>> alternative : alternatives) {
+			if (first) first = false;
+			else builder.append('|');
+			builder.append('(');
+			alternative.accept(this);
+			builder.append(')');
+		}
+		builder.append(')');
+		return this;
+	}
 
 	protected void assertCurrent() {
 		if (!isCurrent()) throw new IllegalStateException();

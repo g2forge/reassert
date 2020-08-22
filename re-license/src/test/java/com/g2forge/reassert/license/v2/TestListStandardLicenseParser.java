@@ -29,14 +29,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RunWith(Parameterized.class)
-public class TestStandardLicenseParser {
+public class TestListStandardLicenseParser {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
 	public static class TestCase {
 		protected final String license;
 
-		protected final String text;
+		protected final String description;
 		
 		protected final String purpose;
 	}
@@ -49,7 +49,7 @@ public class TestStandardLicenseParser {
 			final CsvMapper mapper = new CsvMapper();
 			mapper.registerModule(new ParanamerModule());
 			final ObjectReader reader = mapper.readerFor(TestCase.class).with(mapper.schemaFor(TestCase.class).withHeader().withColumnReordering(true));
-			try (final InputStream stream = HResource.getResourceAsStream(TestStandardLicenseParser.class, "licenses.csv", true)) {
+			try (final InputStream stream = HResource.getResourceAsStream(TestListStandardLicenseParser.class, "license descriptions.csv", true)) {
 				licenses = reader.<TestCase>readValues(stream).readAll();
 			} catch (IOException e) {
 				throw new RuntimeIOException(e);
@@ -57,8 +57,8 @@ public class TestStandardLicenseParser {
 		}
 
 		return licenses.stream().map(x -> {
-			final ILicense license = (x.getLicense().isEmpty()) ? new UnknownLicense(x.getText()) : StandardLicense.valueOf(x.getLicense());
-			return new Object[] { license, x.getText(), x.getPurpose() };
+			final ILicense license = (x.getLicense().isEmpty()) ? new UnknownLicense(x.getDescription()) : StandardLicense.valueOfSPDX(x.getLicense());
+			return new Object[] { license, x.getDescription(), x.getPurpose() };
 		}).collect(Collectors.toList());
 	}
 

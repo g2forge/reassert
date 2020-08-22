@@ -1,5 +1,7 @@
 package com.g2forge.reassert.license;
 
+import com.g2forge.alexandria.java.core.enums.HEnum;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.Terms;
@@ -31,6 +33,10 @@ public enum StandardLicense implements ILicense {
 	Owner(null, Terms.<ILicenseTerm>builder().include(StandardLicenseTerm.CommercialUse, StandardLicenseTerm.Distribution, StandardLicenseTerm.Modification, StandardLicenseTerm.PatentGrant, StandardLicenseTerm.PrivateUse).exclude(StandardLicenseTerm.DisclosureSource, StandardLicenseTerm.Notice, StandardLicenseTerm.SaaSIsDistribution, StandardLicenseTerm.SameLicense, StandardLicenseTerm.StateChanges, StandardLicenseTerm.PatentNonGrant, StandardLicenseTerm.Liability, StandardLicenseTerm.Trademark, StandardLicenseTerm.Warranty).build()),
 	ZLIB("Zlib", Terms.<ILicenseTerm>builder().include(StandardLicenseTerm.CommercialUse, StandardLicenseTerm.Distribution, StandardLicenseTerm.Modification, StandardLicenseTerm.PrivateUse, StandardLicenseTerm.Notice, StandardLicenseTerm.StateChanges, StandardLicenseTerm.Liability, StandardLicenseTerm.Warranty).exclude(StandardLicenseTerm.PatentGrant, StandardLicenseTerm.DisclosureSource, StandardLicenseTerm.SaaSIsDistribution, StandardLicenseTerm.SameLicense, StandardLicenseTerm.PatentNonGrant, StandardLicenseTerm.Trademark).build());
 	// @formatter:on
+
+	public static StandardLicense valueOfSPDX(String text) {
+		return HEnum.valueOf(StandardLicense.class, StandardLicense::getSPDX, IFunction1.identity(), text);
+	}
 
 	protected final String SPDX;
 
