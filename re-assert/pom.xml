@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>re-term</artifactId>
+			<artifactId>re-contract</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -27,12 +27,6 @@
 			<groupId>com.g2forge.alexandria</groupId>
 			<artifactId>ax-service</artifactId>
 			<version>${alexandria.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-csv</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 	</dependencies>
 </project>

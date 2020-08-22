@@ -41,11 +41,5 @@
 			<artifactId>re-core-test</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>re-usage</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 </project>
