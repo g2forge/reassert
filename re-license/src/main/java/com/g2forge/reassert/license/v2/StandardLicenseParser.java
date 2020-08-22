@@ -35,7 +35,9 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 			builder.license(StandardLicense.Apache2).text("Apache").optional().optional().text("Software").build().text("License").build().optional().version(2, 0).build().build();
 		}
 		{
-			builder.license(StandardLicense.BSD3).text("BSD").text("3").optional().text("Clause").child(false, false).text("s").build().build().build();
+			final IConsumer1<IPatternBuilder<?>> suffix = pattern -> pattern.optional().text(".").build().optional().text("Clause").child(false, false).text("s").build().build();
+			builder.license(StandardLicense.BSD2).text("BSD").text("2").with(suffix).build();
+			builder.license(StandardLicense.BSD3).text("BSD").text("3").with(suffix).build();
 		}
 		{
 			final IConsumer1<IPatternBuilder<?>> license = pattern -> pattern.optional().text("license").build();
@@ -48,11 +50,16 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 			}
 			{
 				final String lgpl = "LGPL";
+				builder.license(StandardLicense.LGPL2Only).text(lgpl).optional().version(2, 0).build().with(license).build();
+				builder.license(StandardLicense.LGPL2OrLater).text(lgpl).version(2, 0).text("+").with(license).build();
 				builder.license(StandardLicense.LGPL21Only).text(lgpl).optional().version(2, 1).build().with(license).build();
 				builder.license(StandardLicense.LGPL21OrLater).text(lgpl).version(2, 1).text("+").with(license).build();
 				builder.license(StandardLicense.LGPL3Only).text(lgpl).version(3, 0).with(license).build();
 				builder.license(StandardLicense.LGPL3OrLater).text(lgpl).version(3, 0).text("+").with(license).build();
 			}
+		}
+		{
+			builder.license(StandardLicense.ZLIB).text("ZLIB").build();
 		}
 		return builder.build();
 	}
