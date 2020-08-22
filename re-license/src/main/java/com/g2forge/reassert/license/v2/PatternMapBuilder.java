@@ -18,7 +18,7 @@ public class PatternMapBuilder implements IBuilder<Map<StandardLicense, List<Pat
 		return retVal;
 	}
 
-	public IPatternBuilder<PatternMapBuilder> license(StandardLicense license) {
+	public APatternBuilder<PatternMapBuilder> license(StandardLicense license) {
 		return new APatternBuilder<PatternMapBuilder>(new StringBuilder(), true) {
 			@Override
 			public PatternMapBuilder build() {

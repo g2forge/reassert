@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	protected final StringBuilder builder;
-	
+
 	protected final boolean gap;
 
 	protected boolean current = true;
@@ -37,7 +37,7 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 			}
 		};
 	}
-	
+
 	protected StringBuilder gap() {
 		final StringBuilder builder = getBuilder();
 		if (isGap() && !isEmpty()) builder.append("[-_\\p{Space}]*");
@@ -68,8 +68,10 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 		final StringBuilder builder = gap();
 		builder.append("v?");
 		builder.append(major);
-		if (minor == 0) builder.append("(\\.0)?");
-		else builder.append("\\.").append(minor);
+		final String separator = "[-.]";
+		if (minor == 0) builder.append('(').append(separator).append("0)?");
+		else builder.append(separator).append(minor);
+		builder.append("\\.?");
 		return this;
 	}
 }
