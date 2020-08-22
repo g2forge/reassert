@@ -19,5 +19,12 @@
 			<artifactId>re-term</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-csv</artifactId>
+			<version>${jackson.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
