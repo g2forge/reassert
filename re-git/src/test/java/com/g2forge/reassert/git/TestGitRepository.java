@@ -13,6 +13,7 @@ import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.enigma.diagram.dot.convert.DotRenderer;
+import com.g2forge.reassert.contract.license.StandardLicense;
 import com.g2forge.reassert.core.algorithm.ReassertGraphVisualizer;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.HReassertModel;
@@ -23,7 +24,6 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.core.test.ATestRepository;
-import com.g2forge.reassert.license.StandardLicense;
 
 import lombok.Getter;
 
