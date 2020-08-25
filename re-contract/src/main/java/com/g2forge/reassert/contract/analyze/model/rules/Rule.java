@@ -6,11 +6,11 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 import com.g2forge.reassert.contract.analyze.model.logic.HTermLogic;
 import com.g2forge.reassert.contract.analyze.model.logic.ITermLogicContext;
-import com.g2forge.reassert.contract.eee.explain.model.IExplained;
-import com.g2forge.reassert.contract.eee.express.IExpression;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.TermRelation;
 import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.expression.explain.model.IExplained;
+import com.g2forge.reassert.expression.express.IExpression;
 
 import lombok.Builder;
 import lombok.Data;

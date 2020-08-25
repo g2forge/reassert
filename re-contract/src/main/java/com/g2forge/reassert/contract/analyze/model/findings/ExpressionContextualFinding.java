@@ -3,11 +3,11 @@ package com.g2forge.reassert.contract.analyze.model.findings;
 import java.util.Collection;
 
 import com.g2forge.reassert.contract.analyze.model.IExpressionContext;
-import com.g2forge.reassert.contract.eee.express.IExpression;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.expression.express.IExpression;
 
 import lombok.Builder;
 import lombok.Data;

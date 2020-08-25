@@ -1,10 +1,10 @@
 package com.g2forge.reassert.contract.analyze.model;
 
-import com.g2forge.reassert.contract.eee.express.IConstant;
 import com.g2forge.reassert.core.model.contract.IContract;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.expression.express.IConstant;
 
 import lombok.Builder;
 import lombok.Data;

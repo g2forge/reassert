@@ -16,13 +16,13 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.analyze.model.TermConstant;
 import com.g2forge.reassert.contract.analyze.model.findings.ExpressionContextualFinding;
-import com.g2forge.reassert.contract.eee.explain.model.IExplained;
-import com.g2forge.reassert.contract.eee.express.IExpression;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.contract.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.expression.explain.model.IExplained;
+import com.g2forge.reassert.expression.express.IExpression;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

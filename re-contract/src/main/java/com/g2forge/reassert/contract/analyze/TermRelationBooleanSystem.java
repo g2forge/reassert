@@ -4,10 +4,10 @@ import java.util.function.BinaryOperator;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.contract.eee.evaluate.bool.BooleanOperator;
-import com.g2forge.reassert.contract.eee.evaluate.bool.IBooleanOperatorDescriptor;
-import com.g2forge.reassert.contract.eee.evaluate.bool.IBooleanSystem;
 import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.expression.evaluate.bool.BooleanOperator;
+import com.g2forge.reassert.expression.evaluate.bool.IBooleanOperatorDescriptor;
+import com.g2forge.reassert.expression.evaluate.bool.IBooleanSystem;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

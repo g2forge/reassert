@@ -42,6 +42,7 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 		{
 			final IConsumer1<IPatternBuilder<?>> license = pattern -> pattern.optional().text("license").build();
 			final IConsumer1<IPatternBuilder<?>> only = pattern -> pattern.optional().text("only").build();
+			@SuppressWarnings("unchecked")
 			final IConsumer1<IPatternBuilder<?>> orlater = pattern -> pattern.alt(p -> p.text("+"), p -> p.text("or").text("later"));
 			{
 				final String gpl = "GPL";

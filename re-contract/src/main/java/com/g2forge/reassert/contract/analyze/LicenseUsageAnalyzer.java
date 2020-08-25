@@ -14,10 +14,6 @@ import com.g2forge.reassert.contract.analyze.model.findings.UnrecognizedTermFind
 import com.g2forge.reassert.contract.analyze.model.logic.ITermLogicContext;
 import com.g2forge.reassert.contract.analyze.model.rules.IRules;
 import com.g2forge.reassert.contract.analyze.model.rules.Rule;
-import com.g2forge.reassert.contract.eee.evaluate.bool.ExplainedBooleanEvaluator;
-import com.g2forge.reassert.contract.eee.explain.model.IExplained;
-import com.g2forge.reassert.contract.eee.express.IConstant;
-import com.g2forge.reassert.contract.eee.express.IExpression;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.TermRelation;
@@ -28,6 +24,10 @@ import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
+import com.g2forge.reassert.expression.evaluate.bool.ExplainedBooleanEvaluator;
+import com.g2forge.reassert.expression.explain.model.IExplained;
+import com.g2forge.reassert.expression.express.IConstant;
+import com.g2forge.reassert.expression.express.IExpression;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

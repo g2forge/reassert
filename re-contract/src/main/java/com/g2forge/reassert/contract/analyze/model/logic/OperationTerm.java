@@ -3,8 +3,8 @@ package com.g2forge.reassert.contract.analyze.model.logic;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.contract.eee.express.Operation;
 import com.g2forge.reassert.core.model.contract.ITerm;
+import com.g2forge.reassert.expression.express.Operation;
 
 import lombok.Builder;
 import lombok.Data;

@@ -3,9 +3,9 @@ package com.g2forge.reassert.contract.analyze.model.findings;
 import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.core.enums.EnumException;
-import com.g2forge.reassert.contract.eee.explain.model.IExplained;
 import com.g2forge.reassert.core.model.contract.TermRelation;
 import com.g2forge.reassert.core.model.report.ITerminalFinding;
+import com.g2forge.reassert.expression.explain.model.IExplained;
 
 public interface IRiskFinding extends ITerminalFinding {
 	@Override

@@ -24,6 +24,8 @@
 		<module>re-maven</module>
 		<module>re-maven-modifier</module>
 		<module>re-git</module>
+		<module>re-express</module>
+		<module>re-express-test</module>
 		<module>re-contract</module>
 		<module>re-assert</module>
 		<module>re-assert-test</module>

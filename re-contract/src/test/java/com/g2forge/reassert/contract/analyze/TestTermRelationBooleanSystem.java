@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.analyze.TermRelationBooleanSystem;
-import com.g2forge.reassert.contract.eee.evaluate.ATestExplainedBooleanEvaluator;
-import com.g2forge.reassert.contract.eee.evaluate.bool.IBooleanSystem;
-import com.g2forge.reassert.contract.eee.express.Literal;
-import com.g2forge.reassert.contract.eee.express.Operation;
 import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.express.evaluate.ATestExplainedBooleanEvaluator;
+import com.g2forge.reassert.expression.evaluate.bool.IBooleanSystem;
+import com.g2forge.reassert.expression.express.Literal;
+import com.g2forge.reassert.expression.express.Operation;
 
 public class TestTermRelationBooleanSystem extends ATestExplainedBooleanEvaluator<TermRelation> {
 	@Test

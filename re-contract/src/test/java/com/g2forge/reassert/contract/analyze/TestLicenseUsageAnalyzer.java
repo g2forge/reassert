@@ -13,7 +13,6 @@ import com.g2forge.reassert.contract.analyze.convert.ReportRenderer;
 import com.g2forge.reassert.contract.analyze.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.analyze.model.rules.Rule;
 import com.g2forge.reassert.contract.analyze.model.rules.Rules;
-import com.g2forge.reassert.contract.eee.explain.convert.ExplanationMode;
 import com.g2forge.reassert.contract.term.StandardLicenseTerm;
 import com.g2forge.reassert.contract.term.StandardLicenseUsageRules;
 import com.g2forge.reassert.contract.term.StandardUsageTerm;
@@ -30,6 +29,7 @@ import com.g2forge.reassert.core.model.contract.usage.Usage;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
+import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
 
 public class TestLicenseUsageAnalyzer {
 	protected static boolean isSuspicious(IFinding finding) {

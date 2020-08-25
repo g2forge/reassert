@@ -7,13 +7,13 @@ import com.g2forge.alexandria.analysis.ISerializableFunction1;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.contract.eee.express.IExpression;
-import com.g2forge.reassert.contract.eee.express.Literal;
-import com.g2forge.reassert.contract.eee.express.Operation;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.TermRelation;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
+import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.expression.express.Literal;
+import com.g2forge.reassert.expression.express.Operation;
 
 import lombok.AccessLevel;
 import lombok.Getter;
