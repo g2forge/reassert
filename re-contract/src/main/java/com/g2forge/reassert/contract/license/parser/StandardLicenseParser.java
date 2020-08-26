@@ -14,6 +14,7 @@ import com.g2forge.reassert.contract.license.StandardLicense;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
+import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -74,6 +75,8 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 
 	@Override
 	public ILicense parse(String text) {
+		if (text == null) return UnspecifiedLicense.create();
+
 		final Set<StandardLicense> retVal = new LinkedHashSet<>();
 		final Map<StandardLicense, List<IPredicate1<String>>> predicates = getPatterns();
 		for (Map.Entry<StandardLicense, List<IPredicate1<String>>> entry : predicates.entrySet()) {

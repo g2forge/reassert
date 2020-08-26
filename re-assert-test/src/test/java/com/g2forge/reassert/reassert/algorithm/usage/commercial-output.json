@@ -35,7 +35,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "Merged usage 1" ]
+        "targets" : [ "Inherits() Commercial Usage" ]
       } ]
     },
     "C artifact" : {
@@ -48,7 +48,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "Merged usage 0" ]
+        "targets" : [ "Depends(transitive=true, runtime=true, testtime=true, compiletime=true) Commercial Usage" ]
       } ]
     },
     "Commercial Usage" : {
@@ -61,41 +61,41 @@
         } ]
       }
     },
-    "Merged usage 0" : {
+    "Depends(transitive=true, runtime=true, testtime=true, compiletime=true) Commercial Usage" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
-        "name" : "Merged usage 0",
+        "name" : "Depends(transitive=true, runtime=true, testtime=true, compiletime=true) Commercial Usage",
         "terms" : [ {
-          "term" : "UseCopy",
-          "relation" : "Excluded"
-        }, {
-          "term" : "UseModified",
-          "relation" : "Excluded"
-        }, {
           "term" : "Commercial",
           "relation" : "Included"
         }, {
           "term" : "UseLink",
           "relation" : "Included"
+        }, {
+          "term" : "UseCopy",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseModified",
+          "relation" : "Excluded"
         } ]
       }
     },
-    "Merged usage 1" : {
+    "Inherits() Commercial Usage" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
-        "name" : "Merged usage 1",
+        "name" : "Inherits() Commercial Usage",
         "terms" : [ {
-          "term" : "UseCopy",
-          "relation" : "Excluded"
-        }, {
-          "term" : "UseModified",
-          "relation" : "Excluded"
-        }, {
           "term" : "Commercial",
           "relation" : "Included"
         }, {
           "term" : "UseLink",
           "relation" : "Included"
+        }, {
+          "term" : "UseCopy",
+          "relation" : "Excluded"
+        }, {
+          "term" : "UseModified",
+          "relation" : "Excluded"
         } ]
       }
     }
