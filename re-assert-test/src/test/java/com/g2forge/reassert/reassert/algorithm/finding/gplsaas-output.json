@@ -46,7 +46,7 @@
         "@c" : ".work.Work",
         "name" : "Work 0",
         "type" : {
-          "@c" : "com.g2forge.reassert.license.StandardWorkTypeFactory$GPLWorkType"
+          "@c" : "com.g2forge.reassert.contract.license.StandardWorkTypeFactory$GPLWorkType"
         }
       },
       "outgoings" : [ {
@@ -62,10 +62,10 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "SuspiciousUsageFinding 13",
         "finding" : {
-          "@c" : "com.g2forge.reassert.term.analyze.model.findings.ExpressionContextualFinding",
+          "@c" : "com.g2forge.reassert.contract.analyze.model.findings.ExpressionContextualFinding",
           "inputs" : [ "UseLink", "UseCopy", "UseModified" ],
           "finding" : {
-            "@c" : "com.g2forge.reassert.term.analyze.model.findings.SuspiciousUsageFinding",
+            "@c" : "com.g2forge.reassert.contract.analyze.model.findings.SuspiciousUsageFinding",
             "result" : {
               "@c" : ".IdentityExplainedOperation",
               "value" : "Unspecified",
@@ -80,21 +80,21 @@
                   "arguments" : [ {
                     "relevant" : true,
                     "argument" : {
-                      "@c" : "com.g2forge.reassert.term.analyze.model.TermConstant",
+                      "@c" : "com.g2forge.reassert.contract.analyze.model.TermConstant",
                       "term" : "UseLink",
                       "contract" : "SaaS Usage"
                     }
                   }, {
                     "relevant" : true,
                     "argument" : {
-                      "@c" : "com.g2forge.reassert.term.analyze.model.TermConstant",
+                      "@c" : "com.g2forge.reassert.contract.analyze.model.TermConstant",
                       "term" : "UseCopy",
                       "contract" : "SaaS Usage"
                     }
                   }, {
                     "relevant" : true,
                     "argument" : {
-                      "@c" : "com.g2forge.reassert.term.analyze.model.TermConstant",
+                      "@c" : "com.g2forge.reassert.contract.analyze.model.TermConstant",
                       "term" : "UseModified",
                       "contract" : "SaaS Usage"
                     }
