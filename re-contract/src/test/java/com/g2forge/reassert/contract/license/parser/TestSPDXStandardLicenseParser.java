@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.license.v2;
+package com.g2forge.reassert.contract.license.parser;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.license.StandardLicense;
-import com.g2forge.reassert.contract.license.v2.StandardLicenseParser;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 

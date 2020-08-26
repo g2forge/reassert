@@ -3,7 +3,7 @@ package com.g2forge.reassert.contract;
 import com.g2forge.alexandria.annotations.service.Service;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.reassert.contract.license.StandardLicenseDescriber;
-import com.g2forge.reassert.contract.license.StandardLicenseParser;
+import com.g2forge.reassert.contract.license.parser.StandardLicenseParser;
 import com.g2forge.reassert.contract.usage.StandardUsageDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.module.IModule;

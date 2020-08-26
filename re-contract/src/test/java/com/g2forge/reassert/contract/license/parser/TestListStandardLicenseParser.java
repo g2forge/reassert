@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.license.v2;
+package com.g2forge.reassert.contract.license.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,6 @@ import com.g2forge.alexandria.java.core.resource.HResource;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.license.StandardLicense;
-import com.g2forge.reassert.contract.license.v2.StandardLicenseParser;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;

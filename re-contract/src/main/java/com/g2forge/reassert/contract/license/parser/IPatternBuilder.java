@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.license.v2;
+package com.g2forge.reassert.contract.license.parser;
 
 import com.g2forge.alexandria.java.function.IConsumer1;
 import com.g2forge.alexandria.java.function.builder.IBuilder;

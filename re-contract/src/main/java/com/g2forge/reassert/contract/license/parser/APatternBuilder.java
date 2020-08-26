@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.license.v2;
+package com.g2forge.reassert.contract.license.parser;
 
 import java.util.regex.Pattern;
 
@@ -56,9 +56,11 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 		};
 	}
 
+	protected static final String GAP_PATTERN = "[-_\\p{Space}]*";
+
 	protected StringBuilder gap() {
 		final StringBuilder builder = getBuilder();
-		if (isGap() && !isEmpty()) builder.append("[-_\\p{Space}]*");
+		if (isGap() && !isEmpty()) builder.append(GAP_PATTERN);
 		return builder;
 	}
 
@@ -83,8 +85,11 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	public IPatternBuilder<T> version(int major, int minor) {
 		assertCurrent();
 
-		final StringBuilder builder = gap();
-		builder.append("v?");
+		final StringBuilder builder = getBuilder();
+		if (isGap() && !isEmpty()) builder.append("((,?").append(GAP_PATTERN).append("v)|(,?").append(GAP_PATTERN);
+		else builder.append("(v|(");
+		builder.append("version").append(GAP_PATTERN).append(")|(").append(GAP_PATTERN).append("))");
+		
 		builder.append(major);
 		final String separator = "[-.]";
 		if (minor == 0) builder.append('(').append(separator).append("0)?");
