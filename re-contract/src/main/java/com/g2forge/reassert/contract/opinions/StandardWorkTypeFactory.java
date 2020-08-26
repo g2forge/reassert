@@ -66,15 +66,17 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 			final IncompatibleWorkLicenseFinding.IncompatibleWorkLicenseFindingBuilder builder = IncompatibleWorkLicenseFinding.builder();
 
 			final Collection<ILicenseTerm> unknown;
-			if (!licenseTerms.getSpecifiedTerms().equals(testTerms.getSpecifiedTerms())) {
-				final Set<ILicenseTerm> union = HCollection.union(licenseTerms.getSpecifiedTerms(), testTerms.getSpecifiedTerms());
-				final Set<ILicenseTerm> intersection = HCollection.intersection(licenseTerms.getSpecifiedTerms(), testTerms.getSpecifiedTerms());
+			final Set<ILicenseTerm> licenseSpecifiedTerms = licenseTerms.getTerms(true);
+			final Set<ILicenseTerm> testSpecifiedTerms = testTerms.getTerms(true);
+			if (!licenseSpecifiedTerms.equals(testSpecifiedTerms)) {
+				final Set<ILicenseTerm> union = HCollection.union(licenseSpecifiedTerms, testSpecifiedTerms);
+				final Set<ILicenseTerm> intersection = HCollection.intersection(licenseSpecifiedTerms, testSpecifiedTerms);
 				unknown = HCollection.difference(union, intersection);
 				builder.unknown(unknown);
 			} else unknown = HCollection.emptySet();
 			builder.unknown(unknown);
 
-			for (ILicenseTerm term : licenseTerms.getSpecifiedTerms()) {
+			for (ILicenseTerm term : licenseSpecifiedTerms) {
 				// Skip any terms that we already have a problem with, and oddly the GPL doesn't require you grant patents to other software for compatibility (example: https://www.gnu.org/licenses/license-list.en.html#ModifiedBSD)
 				if (unknown.contains(term) || StandardLicenseTerm.PatentGrant.equals(term)) continue;
 				switch (term.getType()) {

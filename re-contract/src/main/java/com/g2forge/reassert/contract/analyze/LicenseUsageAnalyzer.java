@@ -72,8 +72,8 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 	@Override
 	public IReport report(IUsage usage, ILicense license) {
 		// Sets of usage terms we need to approve and license conditions we need to meet
-		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getSpecifiedTerms());
-		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getSpecifiedTerms().stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));
+		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getTerms(true));
+		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getTerms(true).stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));
 
 		final Report.ReportBuilder retVal = Report.builder();
 		final RuleContextFactory contextFactory = new RuleContextFactory(usage, license);

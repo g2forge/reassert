@@ -23,6 +23,6 @@ public class TermsSerializer extends StdSerializer<ITerms<? extends ITerm>> {
 	}
 
 	protected <T extends ITerm> List<StoredTerm> toStored(ITerms<T> value) {
-		return value.getSpecifiedTerms().stream().map(term -> new StoredTerm(term, value.getRelation(term))).collect(Collectors.toList());
+		return value.getTerms(true).stream().map(term -> new StoredTerm(term, value.getRelation(term))).collect(Collectors.toList());
 	}
 }

@@ -102,13 +102,13 @@ public class ReassertUsageVisitor extends AGraphVisitor {
 		final TermsBuilder<IUsageTerm> builder = Terms.<IUsageTerm>builder();
 		for (IUsage usage : usages) {
 			final ITerms<IUsageTerm> terms = usage.getTerms();
-			for (IUsageTerm term : terms.getSpecifiedTerms()) {
+			for (IUsageTerm term : terms.getTerms(true)) {
 				if (!terms.isIncluded(term)) builder.exclude(term);
 			}
 		}
 		for (IUsage usage : usages) {
 			final ITerms<IUsageTerm> terms = usage.getTerms();
-			for (IUsageTerm term : terms.getSpecifiedTerms()) {
+			for (IUsageTerm term : terms.getTerms(true)) {
 				if (terms.isIncluded(term)) builder.include(term);
 			}
 		}

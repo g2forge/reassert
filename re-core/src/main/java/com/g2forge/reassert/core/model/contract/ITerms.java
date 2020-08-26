@@ -3,7 +3,6 @@ package com.g2forge.reassert.core.model.contract;
 import java.util.Map;
 import java.util.Set;
 
-import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 
 public interface ITerms<T> {
@@ -15,9 +14,9 @@ public interface ITerms<T> {
 
 	public TermRelation getRelation(T term);
 
-	public Map<T, TermRelation> getSpecifiedMap();
+	public Map<T, TermRelation> getRelations(boolean specified);
 
-	public Set<T> getSpecifiedTerms();
+	public Set<T> getTerms(boolean specified);
 
 	/**
 	 * Test whether the term is included in these terms.
