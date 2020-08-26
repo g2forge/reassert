@@ -32,7 +32,7 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 	protected StandardLicenseParser() {}
 
 	protected Map<StandardLicense, List<IPredicate1<String>>> computePatterns() {
-		final PatternMapBuilder builder = new PatternMapBuilder();
+		final PatternMapBuilder<StandardLicense> builder = new PatternMapBuilder<>();
 		{
 			builder.license(StandardLicense.Apache2).optional().text("The").build().text("Apache").optional().optional().text("Software").build().text("License").build().optional().version(2, 0).build().build();
 			builder.license(StandardLicense.Apache2, text -> {

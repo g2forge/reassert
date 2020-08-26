@@ -60,7 +60,7 @@ public class TermsMapper {
 		return getMapper().getTypeFactory().constructParametricType(Entry.class, contractClass, termClass);
 	}
 
-	public <C, T> Map<C, ITerms<T>> read(Class<C> contractClass, Class<T> termClass, IDataSource source) {
+	public <C, T> Map<C, ITerms<T>> read(Class<C> contractClass, Class<? extends T> termClass, IDataSource source) {
 		final List<Entry<C, T>> entries;
 		final JavaType type = createType(contractClass, termClass);
 		final ObjectReader reader = getMapper().readerFor(type).with(getMapper().schemaFor(type).withHeader().withColumnReordering(true));
@@ -72,7 +72,7 @@ public class TermsMapper {
 		return entries.stream().collect(Collectors.toMap(Entry::getContract, e -> new Terms<>(e.getTerms())));
 	}
 
-	public <C, T> void write(Class<C> contractClass, Class<T> termClass, IDataSink sink, Map<C, ITerms<T>> contracts) {
+	public <C, T> void write(Class<C> contractClass, Class<T> termClass, IDataSink sink, Map<? super C, ? extends ITerms<? super T>> contracts) {
 		final List<Map<Object, Object>> collection = contracts.entrySet().stream().map(entry -> {
 			final Map<Object, Object> retVal = new LinkedHashMap<>();
 			retVal.put("contract", entry.getKey());
