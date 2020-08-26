@@ -7,9 +7,9 @@ import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.reassert.contract.analyze.LicenseUsageAnalyzer;
-import com.g2forge.reassert.contract.license.StandardWorkTypeFactory;
-import com.g2forge.reassert.contract.term.StandardLicenseUsageRules;
-import com.g2forge.reassert.contract.term.StandardUsagePropogation;
+import com.g2forge.reassert.contract.opinions.StandardLicenseUsageRules;
+import com.g2forge.reassert.contract.opinions.StandardWorkTypeFactory;
+import com.g2forge.reassert.contract.opinions.propogate.StandardUsagePropogation;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;

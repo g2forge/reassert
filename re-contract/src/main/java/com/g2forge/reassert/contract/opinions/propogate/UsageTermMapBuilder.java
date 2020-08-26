@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.term.propogate;
+package com.g2forge.reassert.contract.opinions.propogate;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import com.g2forge.reassert.contract.analyze.TermRelationBooleanSystem;
 import com.g2forge.reassert.contract.analyze.model.TermConstant;
 import com.g2forge.reassert.contract.analyze.model.logic.HTermLogic;
 import com.g2forge.reassert.contract.analyze.model.logic.ITermLogicContext;
-import com.g2forge.reassert.contract.term.StandardUsageTerm;
+import com.g2forge.reassert.contract.usage.StandardUsageTerm;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.TermRelation;

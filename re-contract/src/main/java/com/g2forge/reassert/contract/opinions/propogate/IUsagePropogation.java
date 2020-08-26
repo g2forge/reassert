@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.term.propogate;
+package com.g2forge.reassert.contract.opinions.propogate;
 
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.reassert.core.model.IEdge;

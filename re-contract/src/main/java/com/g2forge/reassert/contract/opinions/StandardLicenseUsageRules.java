@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.term;
+package com.g2forge.reassert.contract.opinions;
 
 import static com.g2forge.reassert.contract.analyze.model.logic.HTermLogic.and;
 import static com.g2forge.reassert.contract.analyze.model.logic.HTermLogic.not;
@@ -15,6 +15,8 @@ import com.g2forge.reassert.contract.analyze.model.findings.StateChangesFinding;
 import com.g2forge.reassert.contract.analyze.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.analyze.model.rules.IRules;
 import com.g2forge.reassert.contract.analyze.model.rules.Rule;
+import com.g2forge.reassert.contract.license.StandardLicenseTerm;
+import com.g2forge.reassert.contract.usage.StandardUsageTerm;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 
 import lombok.Getter;

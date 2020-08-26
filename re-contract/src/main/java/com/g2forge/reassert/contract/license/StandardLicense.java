@@ -2,7 +2,6 @@ package com.g2forge.reassert.contract.license;
 
 import com.g2forge.alexandria.java.core.enums.HEnum;
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.contract.term.StandardLicenseTerm;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.Terms;

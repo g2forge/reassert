@@ -1,6 +1,5 @@
 package com.g2forge.reassert.contract.usage;
 
-import com.g2forge.reassert.contract.term.StandardUsageTerm;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.Terms;

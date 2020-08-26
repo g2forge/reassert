@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.term;
+package com.g2forge.reassert.contract.opinions.propogate;
 
 import static com.g2forge.reassert.contract.analyze.model.logic.HTermLogic.and;
 import static com.g2forge.reassert.contract.analyze.model.logic.HTermLogic.context;
@@ -9,8 +9,7 @@ import java.util.Map;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.contract.term.propogate.IUsagePropogation;
-import com.g2forge.reassert.contract.term.propogate.UsageTermMapBuilder;
+import com.g2forge.reassert.contract.usage.StandardUsageTerm;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.license;
+package com.g2forge.reassert.contract.opinions;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +17,8 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.contract.term.StandardLicenseTerm;
+import com.g2forge.reassert.contract.license.StandardLicense;
+import com.g2forge.reassert.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.HReassertModel;

@@ -9,8 +9,8 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.contract.analyze.LicenseUsageAnalyzer;
-import com.g2forge.reassert.contract.license.StandardWorkTypeFactory;
-import com.g2forge.reassert.contract.term.StandardLicenseUsageRules;
+import com.g2forge.reassert.contract.opinions.StandardLicenseUsageRules;
+import com.g2forge.reassert.contract.opinions.StandardWorkTypeFactory;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
