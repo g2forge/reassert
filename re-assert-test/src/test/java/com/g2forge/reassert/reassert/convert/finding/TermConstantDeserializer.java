@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.g2forge.alexandria.java.core.error.NotYetImplementedError;
-import com.g2forge.reassert.contract.analyze.model.TermConstant;
+import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.core.model.contract.IContract;
 import com.g2forge.reassert.core.model.contract.ITerms;
 

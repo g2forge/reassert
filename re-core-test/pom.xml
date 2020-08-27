@@ -21,7 +21,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>re-standard</artifactId>
+			<artifactId>re-standard-module</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

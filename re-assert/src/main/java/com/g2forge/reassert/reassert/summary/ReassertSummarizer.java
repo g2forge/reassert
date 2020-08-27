@@ -27,7 +27,7 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.contract.analyze.convert.ReportRenderer;
+import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.HReassertModel;

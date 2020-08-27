@@ -7,6 +7,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.AsUnmodifiableGraph;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
+import com.g2forge.reassert.core.algorithm.visitor.ReassertGraphExplorer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -15,8 +17,6 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IOrigins;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
-import com.g2forge.reassert.reassert.algorithm.IGraphVisitor;
-import com.g2forge.reassert.reassert.algorithm.ReassertGraphExplorer;
 
 import lombok.AccessLevel;
 import lombok.Getter;

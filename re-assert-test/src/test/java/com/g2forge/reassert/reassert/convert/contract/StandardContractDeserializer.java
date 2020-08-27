@@ -14,9 +14,9 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IThrowSupplier;
-import com.g2forge.reassert.contract.license.StandardLicense;
-import com.g2forge.reassert.contract.usage.StandardUsage;
 import com.g2forge.reassert.core.model.IVertex;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
+import com.g2forge.reassert.standard.model.contract.usage.StandardUsage;
 
 public class StandardContractDeserializer extends StdDeserializer<IVertex> implements ResolvableDeserializer {
 	private static final long serialVersionUID = -6856117256176037393L;

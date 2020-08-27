@@ -6,22 +6,20 @@ import java.util.List;
 import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.contract.analyze.LicenseUsageAnalyzer;
-import com.g2forge.reassert.contract.opinions.StandardLicenseUsageRules;
-import com.g2forge.reassert.contract.opinions.StandardWorkTypeFactory;
-import com.g2forge.reassert.contract.opinions.propogate.StandardUsagePropogation;
+import com.g2forge.reassert.contract.LicenseUsageAnalyzer;
+import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
+import com.g2forge.reassert.core.algorithm.visitor.ReassertFindingVisitor;
+import com.g2forge.reassert.core.algorithm.visitor.ReassertWorkVisitor;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.reassert.Reassert;
-import com.g2forge.reassert.reassert.ReassertContext;
-import com.g2forge.reassert.reassert.algorithm.IGraphVisitor;
-import com.g2forge.reassert.reassert.algorithm.ReassertFindingVisitor;
-import com.g2forge.reassert.reassert.algorithm.ReassertLicenseVisitor;
-import com.g2forge.reassert.reassert.algorithm.ReassertUsageVisitor;
-import com.g2forge.reassert.reassert.algorithm.ReassertWorkVisitor;
+import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor;
+import com.g2forge.reassert.standard.algorithm.StandardUsageAssignmentVisitor;
+import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
+import com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory;
+import com.g2forge.reassert.standard.algorithm.propogate.StandardUsagePropogation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class TestGraph {
 	public static List<IGraphVisitor> getStandardVisitors() {
 		final List<IGraphVisitor> visitors = new ArrayList<>();
-		visitors.add(new ReassertLicenseVisitor());
-		visitors.add(new ReassertUsageVisitor(StandardUsagePropogation.create()));
+		visitors.add(new StandardLicenseInheritanceVisitor());
+		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropogation.create()));
 		visitors.add(new ReassertWorkVisitor(StandardWorkTypeFactory.create()));
 		visitors.add(new ReassertFindingVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
 		return visitors;

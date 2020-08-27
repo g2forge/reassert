@@ -13,7 +13,7 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.git.GitCoordinates;
 import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.TestVisualizer;
-import com.g2forge.reassert.reassert.algorithm.ReassertLicenseVisitor;
+import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,7 +30,7 @@ public class IntegrationAlexandria {
 	@Test
 	public void licenses() {
 		final Graph<IVertex, IEdge> graph = HReassertModel.clone(getTestGraph().getGraph());
-		new ReassertLicenseVisitor().accept(graph);
+		new StandardLicenseInheritanceVisitor().accept(graph);
 		HAssert.assertEquals(new Resource(getClass(), "alexandria-licenses.dot"), TestVisualizer.create().visualize(HReassertModel.asLicenseGraph(graph)));
 	}
 }

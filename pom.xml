@@ -23,6 +23,7 @@
 		<module>re-core</module>
 		<module>re-contract</module>
 		<module>re-standard</module>
+		<module>re-standard-module</module>
 		<module>re-core-test</module>
 		<module>re-list</module>
 		<module>re-maven</module>

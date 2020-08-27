@@ -6,12 +6,12 @@ import org.junit.Test;
 import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.reassert.ATestReassertSummarizer;
 import com.g2forge.reassert.reassert.TestGraph;
-import com.g2forge.reassert.reassert.algorithm.IGraphVisitor;
 
 public class TestReassert extends ATestReassertSummarizer {
 	@Test
