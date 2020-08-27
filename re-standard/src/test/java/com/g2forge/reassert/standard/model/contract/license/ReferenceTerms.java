@@ -35,7 +35,7 @@ public enum ReferenceTerms implements ILicense {
 	// @formatter:on
 
 	public static ReferenceTerms valueOfSPDX(String text) {
-		return HEnum.valueOf(ReferenceTerms.class, ILicense::getSPDX, IFunction1.identity(), text);
+		return HEnum.valueOf(ReferenceTerms.class, ILicense::getSPDX, true, IFunction1.identity(), text);
 	}
 
 	protected final String SPDX;

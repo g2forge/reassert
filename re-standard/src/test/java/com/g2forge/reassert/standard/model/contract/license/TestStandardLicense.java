@@ -10,8 +10,9 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
+import com.g2forge.alexandria.test.HAssume;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,9 +29,14 @@ public class TestStandardLicense {
 	public StandardLicense license;
 
 	protected ReferenceTerms getReference(final StandardLicense license) {
-		final ReferenceTerms retVal0 = ReferenceTerms.valueOfSPDX(license.getSPDX());
-		if (retVal0 != null) return retVal0;
-		return ReferenceTerms.valueOf(license.name());
+		try {
+			return ReferenceTerms.valueOfSPDX(license.getSPDX());
+		} catch (IllegalArgumentException exception) {}
+		try {
+			return ReferenceTerms.valueOf(license.name());
+		} catch (IllegalArgumentException exception) {}
+		HAssume.assumeTrue("Failed to find reference terms for " + license.getName(), false);
+		throw new UnreachableCodeError();
 	}
 
 	@Test

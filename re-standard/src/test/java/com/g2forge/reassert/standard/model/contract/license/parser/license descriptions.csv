@@ -80,6 +80,12 @@ BSD-3-Clause,"BSD 3",
 ,none,Literally unspecified
 ,None,Literally unspecified
 ,other,Literally unspecified
+PublicDomain,public domain,
+PublicDomain,Public domain,
+PublicDomain,Public Domain,
+PublicDomain,public-domain,
+PublicDomain,Public-domain,
+WTFPL,WTFPL,
 Zlib,zlib,
 Zlib,Zlib,
 Zlib,ZLIB,

@@ -1,10 +1,6 @@
 package com.g2forge.reassert.standard.model.contract.usage;
 
-import java.util.Map;
-
-import com.g2forge.alexandria.java.core.resource.Resource;
-import com.g2forge.alexandria.java.io.dataaccess.ResourceDataSource;
-import com.g2forge.reassert.contract.TermsMapper;
+import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
@@ -24,19 +20,10 @@ public enum StandardUsage implements IUsage {
 	CommercialSaaS;
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final Map<StandardUsage, ITerms<IUsageTerm>> allTerms = computeAllTerms();
-
-	protected static Map<StandardUsage, ITerms<IUsageTerm>> computeAllTerms() {
-		final Class<StandardUsage> klass = StandardUsage.class;
-		return new TermsMapper().<StandardUsage, IUsageTerm>read(klass, StandardUsageTerm.class, new ResourceDataSource(new Resource(klass, klass.getSimpleName().toLowerCase() + ".csv")));
-	}
+	private static final TermsLoader<StandardUsage, IUsageTerm> loader = new TermsLoader<>(StandardUsage.class, StandardUsageTerm.class);
 
 	@Getter(lazy = true)
-	private final ITerms<IUsageTerm> terms = computeTerms();
-
-	protected ITerms<IUsageTerm> computeTerms() {
-		return getAllTerms().get(this);
-	}
+	private final ITerms<IUsageTerm> terms = getLoader().getTerms(this);
 
 	@Override
 	public String getName() {

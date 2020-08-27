@@ -37,7 +37,7 @@ public class TestListStandardLicenseParser {
 		protected final String license;
 
 		protected final String description;
-		
+
 		protected final String purpose;
 	}
 
@@ -57,7 +57,22 @@ public class TestListStandardLicenseParser {
 		}
 
 		return licenses.stream().map(x -> {
-			final ILicense license = (x.getLicense().isEmpty()) ? new UnknownLicense(x.getDescription()) : StandardLicense.valueOfSPDX(x.getLicense());
+			final ILicense license;
+			if (x.getLicense().isEmpty()) license = new UnknownLicense(x.getDescription());
+			else {
+				ILicense temp = null;
+				try {
+					temp = StandardLicense.valueOfSPDX(x.getLicense());
+				} catch (IllegalArgumentException e0) {
+					try {
+					temp = StandardLicense.valueOf(x.getLicense());
+					} catch (IllegalArgumentException e1) {
+						e1.addSuppressed(e0);
+						throw e1;
+					}
+				}
+				license = temp;
+			}
 			return new Object[] { license, x.getDescription(), x.getPurpose() };
 		}).collect(Collectors.toList());
 	}
@@ -72,7 +87,7 @@ public class TestListStandardLicenseParser {
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(1)
 	public String text;
-	
+
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(2)
 	public String purpose;

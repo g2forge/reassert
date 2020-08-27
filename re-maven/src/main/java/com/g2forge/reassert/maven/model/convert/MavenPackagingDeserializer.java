@@ -21,6 +21,6 @@ public class MavenPackagingDeserializer extends StdDeserializer<MavenPackaging> 
 	public MavenPackaging deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
 		final JsonToken token = parser.currentToken();
 		if (token != JsonToken.VALUE_STRING) context.handleUnexpectedToken(MavenPackaging.class, parser);
-		return HEnum.valueOf(MavenPackaging.class, Object::toString, String::toLowerCase, parser.getText().trim());
+		return HEnum.valueOf(MavenPackaging.class, Object::toString, true, String::toLowerCase, parser.getText().trim());
 	}
 }

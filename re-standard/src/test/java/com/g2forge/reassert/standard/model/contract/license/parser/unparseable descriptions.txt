@@ -2,7 +2,6 @@ Known term licenses
 	AFL-2.1
 	Eclipse 1.0
 	Eclipse 2.0
-	AGPL
 	AGPL 3.0
 	AGPL-3+
 	Apache 1.1
@@ -53,7 +52,6 @@ Known term licenses
 	Postgres
 	PostgreSQL
 	SIL-OFL-1.1
-	WTFPL
 
 Parentheticals
 	The MIT License (MIT)
@@ -94,8 +92,7 @@ Exceptions
 	LGPL-3 with static linking exception
 
 License Families
-	Mozilla Public License
-	MOZILLA PUBLIC LICENSE
+	AGPL
 	BSD
 	BSD LICENCE
 	BSD license
@@ -113,6 +110,8 @@ License Families
 	GPL-any
 	GPL-licensed
 	GNU Library or Lesser General Public License (LGPL) (LGPL)
+	Mozilla Public License
+	MOZILLA PUBLIC LICENSE
 	Python
 	Python Software Foundation License (BSD)
 	Python Software Foundation License (PSF license)
@@ -180,11 +179,6 @@ Messes
 	OSI Approved
 	OSI Approved (BSD)
 	OSI Approved (new BSD)
-	public domain
-	Public domain
-	Public Domain
-	public-domain
-	Public-domain
 	SWL
 	Tcl
 	Tcl-BSDish

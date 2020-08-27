@@ -68,6 +68,8 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 			}
 		}
 		{
+			builder.license(StandardLicense.PublicDomain).text("Public").text("Domain").build();
+			builder.license(StandardLicense.WTFPL).text("WTFPL").build();
 			builder.license(StandardLicense.ZLIB).text("ZLIB").build();
 		}
 		return builder.build();

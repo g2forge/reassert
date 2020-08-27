@@ -1,12 +1,8 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
-import java.util.Map;
-
 import com.g2forge.alexandria.java.core.enums.HEnum;
-import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.alexandria.java.io.dataaccess.ResourceDataSource;
-import com.g2forge.reassert.contract.TermsMapper;
+import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
@@ -34,28 +30,26 @@ public enum StandardLicense implements ILicense {
 	LGPL3Only("LGPL-3.0-only"),
 	LGPL3OrLater("LGPL-3.0-or-later"),
 	Owner(null),
+	/**
+	 * Note that this isn't a real license. This is usually an attempt by the author to put the work into the public domain. The
+	 * <a href="https://creativecommons.org/share-your-work/public-domain/cc0/">creative commons CC0</a> description does a good job of outlining why "public
+	 * domain" isn't a generally considered a license.
+	 */
+	PublicDomain(null),
+	WTFPL("WTFPL"),
 	ZLIB("Zlib");
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final Map<StandardLicense, ITerms<ILicenseTerm>> allTerms = computeAllTerms();
-
-	protected static Map<StandardLicense, ITerms<ILicenseTerm>> computeAllTerms() {
-		final Class<StandardLicense> klass = StandardLicense.class;
-		return new TermsMapper().<StandardLicense, ILicenseTerm>read(klass, StandardLicenseTerm.class, new ResourceDataSource(new Resource(klass, klass.getSimpleName().toLowerCase() + ".csv")));
-	}
+	private static final TermsLoader<StandardLicense, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, StandardLicenseTerm.class);
 
 	public static StandardLicense valueOfSPDX(String text) {
-		return HEnum.valueOf(StandardLicense.class, ILicense::getSPDX, IFunction1.identity(), text);
+		return HEnum.valueOf(StandardLicense.class, ILicense::getSPDX, true, IFunction1.identity(), text);
 	}
 
 	protected final String SPDX;
 
 	@Getter(lazy = true)
-	private final ITerms<ILicenseTerm> terms = computeTerms();
-
-	protected ITerms<ILicenseTerm> computeTerms() {
-		return getAllTerms().get(this);
-	}
+	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(this);
 
 	@Override
 	public String getName() {
