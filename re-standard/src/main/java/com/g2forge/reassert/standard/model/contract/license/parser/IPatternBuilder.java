@@ -12,10 +12,10 @@ public interface IPatternBuilder<T> extends IBuilder<T> {
 
 	public IPatternBuilder<T> text(String text);
 
-	public IPatternBuilder<T> version(int major, int minor);
+	public IPatternBuilder<T> version(int major, int minor, int patch);
 
 	public default IPatternBuilder<T> version(LicenseVersion version) {
-		return version(version.getMajor(), version.getMinor());
+		return version(version.getMajor(), version.getMinor(), version.getPatch());
 	}
 
 	public default IPatternBuilder<T> with(IConsumer1<? super IPatternBuilder<?>> wither) {

@@ -11,4 +11,6 @@ public class LicenseVersion {
 	protected final int major;
 
 	protected final int minor;
+	
+	protected final int patch;
 }
