@@ -19,7 +19,7 @@ import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor
 import com.g2forge.reassert.standard.algorithm.StandardUsageAssignmentVisitor;
 import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory;
-import com.g2forge.reassert.standard.algorithm.propogate.StandardUsagePropogation;
+import com.g2forge.reassert.standard.algorithm.propagate.StandardUsagePropagation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class TestGraph {
 	public static List<IGraphVisitor> getStandardVisitors() {
 		final List<IGraphVisitor> visitors = new ArrayList<>();
 		visitors.add(new StandardLicenseInheritanceVisitor());
-		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropogation.create()));
+		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropagation.create()));
 		visitors.add(new ReassertWorkVisitor(StandardWorkTypeFactory.create()));
 		visitors.add(new ReassertFindingVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
 		return visitors;

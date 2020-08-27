@@ -1,4 +1,4 @@
-package com.g2forge.reassert.standard.algorithm.propogate;
+package com.g2forge.reassert.standard.algorithm.propagate;
 
 import java.util.EnumMap;
 import java.util.Map;

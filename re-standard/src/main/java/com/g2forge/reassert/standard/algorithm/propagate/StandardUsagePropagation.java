@@ -1,4 +1,4 @@
-package com.g2forge.reassert.standard.algorithm.propogate;
+package com.g2forge.reassert.standard.algorithm.propagate;
 
 import static com.g2forge.reassert.contract.model.logic.HTermLogic.and;
 import static com.g2forge.reassert.contract.model.logic.HTermLogic.context;
@@ -25,17 +25,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 @ReassertLegalOpinion
-public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
-	private static final StandardUsagePropogation INSTANCE = new StandardUsagePropogation();
+public class StandardUsagePropagation implements IUsagePropagation, ISingleton {
+	private static final StandardUsagePropagation INSTANCE = new StandardUsagePropagation();
 
-	public static StandardUsagePropogation create() {
+	public static StandardUsagePropagation create() {
 		return INSTANCE;
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final IFunction2<IEdge, IUsage, IUsage> function = computeFunction();
 
-	protected StandardUsagePropogation() {}
+	protected StandardUsagePropagation() {}
 
 	@Override
 	public IUsage apply(IEdge edge, IUsage usage) {
