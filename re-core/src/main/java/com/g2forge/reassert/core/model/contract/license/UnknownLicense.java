@@ -13,8 +13,13 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class UnknownLicense implements ILicense {
+public class UnknownLicense implements ILicenseSpecific {
 	protected final String text;
+
+	@Override
+	public ILicenseFamily getFamily() {
+		return null;
+	}
 
 	@Override
 	public String getName() {
@@ -22,7 +27,12 @@ public class UnknownLicense implements ILicense {
 	}
 
 	@Override
-	public String getSPDX() {
+	public String getShortID() {
+		return "UnknownLicense";
+	}
+
+	@Override
+	public String getSPDXShortID() {
 		return null;
 	}
 
@@ -32,5 +42,20 @@ public class UnknownLicense implements ILicense {
 	@Override
 	public ITerms<ILicenseTerm> getTerms() {
 		return Terms.createNone();
+	}
+
+	@Override
+	public LicenseVersion getVersion() {
+		return null;
+	}
+
+	@Override
+	public boolean isChild(ILicenseFamily license) {
+		return false;
+	}
+
+	@Override
+	public boolean isOrLater() {
+		return false;
 	}
 }

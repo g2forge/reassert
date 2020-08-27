@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * An edge from an artifact to a notice about it, including {@link IContract contracts} like licenses.
+ * An edge from an artifact to a notice about it, including {@link IContractApplied contracts} like licenses.
  */
 @Getter
 @Setter

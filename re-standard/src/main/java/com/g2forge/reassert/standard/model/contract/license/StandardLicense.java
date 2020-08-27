@@ -4,8 +4,10 @@ import com.g2forge.alexandria.java.core.enums.HEnum;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
+import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 
 import lombok.AccessLevel;
@@ -15,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
-public enum StandardLicense implements ILicense {
+public enum StandardLicense implements ILicenseSpecific {
 	Apache2("Apache-2.0"),
 	BSD2("BSD-2-Clause"),
 	BSD3("BSD-3-Clause"),
@@ -85,17 +87,42 @@ public enum StandardLicense implements ILicense {
 	private static final TermsLoader<StandardLicense, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, StandardLicenseTerm.class);
 
 	public static StandardLicense valueOfSPDX(String text) {
-		return HEnum.valueOf(StandardLicense.class, ILicense::getSPDX, true, IFunction1.identity(), text);
+		return HEnum.valueOf(StandardLicense.class, ILicenseSpecific::getSPDXShortID, true, IFunction1.identity(), text);
 	}
 
-	protected final String SPDX;
+	protected final String SPDXShortID;
 
 	@Getter(lazy = true)
 	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(this);
 
 	@Override
+	public ILicenseFamily getFamily() {
+		return null;
+	}
+
+	@Override
 	public String getName() {
-		final String string = (getSPDX() == null) ? name() : getSPDX().replace('-', ' ');
-		return string + " license";
+		return getShortID() + " license";
+	}
+
+	@Override
+	public String getShortID() {
+		final String spdxShortID = getSPDXShortID();
+		return (spdxShortID == null) ? name() : spdxShortID;
+	}
+
+	@Override
+	public LicenseVersion getVersion() {
+		return null;
+	}
+
+	@Override
+	public boolean isChild(ILicenseFamily license) {
+		return false;
+	}
+
+	@Override
+	public boolean isOrLater() {
+		return false;
 	}
 }

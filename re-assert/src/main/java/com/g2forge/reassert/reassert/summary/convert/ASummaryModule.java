@@ -9,7 +9,7 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
-import com.g2forge.reassert.core.model.contract.IContract;
+import com.g2forge.reassert.core.model.contract.IContractApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
 
@@ -35,7 +35,7 @@ public abstract class ASummaryModule extends SimpleModule {
 
 	protected JsonSerializer<?> modify(BeanDescription description, JsonSerializer<?> serializer) {
 		if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(getVertexDescriber());
-		if (IContract.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(getVertexDescriber());
+		if (IContractApplied.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(getVertexDescriber());
 		return serializer;
 	}
 

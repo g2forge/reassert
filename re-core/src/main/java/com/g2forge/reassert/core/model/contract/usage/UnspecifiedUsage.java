@@ -7,7 +7,7 @@ import com.g2forge.reassert.core.model.contract.terms.Terms;
 /**
  * Indicates that no usage was specified.
  */
-public class UnspecifiedUsage implements IUsage, ISingleton {
+public class UnspecifiedUsage implements IUsageSpecific, ISingleton {
 	protected static final UnspecifiedUsage INSTANCE = new UnspecifiedUsage();
 
 	public static UnspecifiedUsage create() {
@@ -19,6 +19,11 @@ public class UnspecifiedUsage implements IUsage, ISingleton {
 	@Override
 	public String getName() {
 		return "Unspecified Usage";
+	}
+
+	@Override
+	public String getShortID() {
+		return "UnspecifiedUsage";
 	}
 
 	/**

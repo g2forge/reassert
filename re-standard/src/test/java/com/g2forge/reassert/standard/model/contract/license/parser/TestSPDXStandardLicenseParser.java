@@ -22,7 +22,7 @@ import lombok.Getter;
 public class TestSPDXStandardLicenseParser {
 	@Parameters(name = "{0}")
 	public static List<Object[]> computeTestParameters() {
-		return Stream.of(StandardLicense.values()).filter(license -> license.getSPDX() != null).map(license -> new Object[] { license }).collect(Collectors.toList());
+		return Stream.of(StandardLicense.values()).filter(license -> license.getSPDXShortID() != null).map(license -> new Object[] { license }).collect(Collectors.toList());
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
@@ -35,7 +35,7 @@ public class TestSPDXStandardLicenseParser {
 	@Test
 	public void test() {
 		final StandardLicense license = getLicense();
-		final ILicense actual = getParser().parse(license.getSPDX());
+		final ILicense actual = getParser().parse(license.getSPDXShortID());
 		HAssert.assertEquals(license, actual);
 	}
 }

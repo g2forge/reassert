@@ -24,7 +24,7 @@ public class StandardLicenseDescriber implements IDescriber<StandardLicense>, IS
 		return new IDescription() {
 			@Override
 			public String getIdentifier() {
-				return value.getSPDX() == null ? value.name().toLowerCase() : value.getSPDX();
+				return value.getShortID();
 			}
 
 			@Override
