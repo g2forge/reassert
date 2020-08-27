@@ -6,7 +6,7 @@ digraph reassert {
 	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file [label="File\nhttps://github.com/g2forge/alexandria/blob/master/ax-filesystem-memory/LICENSE"];
 	https___github_com_g2forge_alexandria_git [label="https://github.com/g2forge/alexandria.git"];
 	https___github_com_g2forge_alexandria_git_artifact [label="https://github.com/g2forge/alexandria.git"];
-	unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="Unknown License"];
+	unknownlicense_7D31ACA8B07EC968F4E25EB577AD14C79DE1BD8D [label="Unknown License: This license for ax-filesystem-memory code ONLY.  This license applies"];
 	https___github_com_g2forge_alexandria_blob_master_LICENSE_file -> Apache_2_0 [label="parsed"];
 	https___github_com_g2forge_alexandria_blob_master_LICENSE_file -> https___github_com_g2forge_alexandria_blob_master_LICENSE [label="coordinates"];
 	https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE_file -> https___github_com_g2forge_alexandria_blob_master_ax_filesystem_memory_LICENSE [label="coordinates"];

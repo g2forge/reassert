@@ -32,7 +32,9 @@ public class UnknownLicenseDescriber implements IDescriber<UnknownLicense>, ISin
 
 			@Override
 			public String getName() {
-				return value.getName();
+				final String text = value.getText();
+				final String line = text.split("\\R", 2)[0];
+				return value.getName() + ": " + line;
 			}
 		};
 	}
