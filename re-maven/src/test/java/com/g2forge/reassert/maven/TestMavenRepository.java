@@ -21,10 +21,10 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.file.Describes;
 import com.g2forge.reassert.core.test.ATestRepository;
-import com.g2forge.reassert.license.StandardLicense;
 import com.g2forge.reassert.maven.model.MavenLicense;
 import com.g2forge.reassert.maven.model.MavenPOM;
 import com.g2forge.reassert.maven.model.MavenPackaging;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
 
 import lombok.Getter;
 

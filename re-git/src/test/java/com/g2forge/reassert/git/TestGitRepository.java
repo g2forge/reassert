@@ -23,7 +23,7 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.core.test.ATestRepository;
-import com.g2forge.reassert.license.StandardLicense;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
 
 import lombok.Getter;
 

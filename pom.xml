@@ -17,16 +17,18 @@
 
 	<modules>
 		<module>re-project</module>
-		<module>re-core</module>
-		<module>re-core-test</module>
+		<module>re-express</module>
+		<module>re-express-test</module>
 		<module>re-cache</module>
+		<module>re-core</module>
+		<module>re-contract</module>
+		<module>re-standard</module>
+		<module>re-standard-module</module>
+		<module>re-core-test</module>
 		<module>re-list</module>
 		<module>re-maven</module>
 		<module>re-maven-modifier</module>
 		<module>re-git</module>
-		<module>re-term</module>
-		<module>re-license</module>
-		<module>re-usage</module>
 		<module>re-assert</module>
 		<module>re-assert-test</module>
 	</modules>

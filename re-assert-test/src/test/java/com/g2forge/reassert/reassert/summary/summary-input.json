@@ -72,7 +72,7 @@
         "@c" : ".work.Work",
         "name" : "Work 0",
         "type" : {
-          "@c" : "com.g2forge.reassert.license.StandardWorkTypeFactory$GPLWorkType"
+          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
         }
       },
       "outgoings" : [ {
@@ -99,9 +99,9 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "Finding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.term.analyze.model.findings.NoticeFinding",
+          "@c" : "com.g2forge.reassert.contract.model.findings.NoticeFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.term.eee.express.Literal",
+            "@c" : "com.g2forge.reassert.expression.express.Literal",
             "name" : "Dummy",
             "value" : "Included"
           }
@@ -113,9 +113,9 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "Finding 2",
         "finding" : {
-          "@c" : "com.g2forge.reassert.term.analyze.model.findings.ConditionFinding",
+          "@c" : "com.g2forge.reassert.contract.model.findings.ConditionFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.term.eee.express.Literal",
+            "@c" : "com.g2forge.reassert.expression.express.Literal",
             "name" : "Dummy",
             "value" : "Excluded"
           }

@@ -107,7 +107,7 @@
         "@c" : ".work.Work",
         "name" : "Work 0",
         "type" : {
-          "@c" : "com.g2forge.reassert.license.StandardWorkTypeFactory$GPLWorkType"
+          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
         }
       },
       "outgoings" : [ {
@@ -127,7 +127,7 @@
         "name" : "IncompatibleWorkLicenseFinding 30",
         "finding" : {
           "@c" : "com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding",
-          "unknown" : [ "Distribution", "Modification", "PatentGrant", "DisclosureSource", "Notice", "SameLicense", "StateChanges", "Liability", "SaaSIsDistribution", "PatentNonGrant", "Trademark" ],
+          "unknown" : [ "Distribution", "Modification", "PatentGrant", "DisclosureSource", "Notice", "SaaSIsDistribution", "SameLicense", "StateChanges", "PatentNonGrant", "Liability", "Trademark" ],
           "mismatched" : [ "CommercialUse" ],
           "level" : "ERROR"
         }

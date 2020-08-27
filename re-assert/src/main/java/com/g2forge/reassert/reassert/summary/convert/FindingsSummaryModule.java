@@ -5,11 +5,11 @@ import org.jgrapht.GraphPath;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.summary.model.FindingSummary;
-import com.g2forge.reassert.term.analyze.convert.ReportRenderer;
-import com.g2forge.reassert.term.eee.explain.convert.ExplanationMode;
 
 public class FindingsSummaryModule extends ASummaryModule {
 	private static final long serialVersionUID = 840399436131646940L;

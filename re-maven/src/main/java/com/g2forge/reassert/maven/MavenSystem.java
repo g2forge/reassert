@@ -78,7 +78,7 @@ public class MavenSystem implements ISystem<MavenCoordinates> {
 		final Matcher matcher = Pattern.compile("([^:]+):([^:]+):([^:]+)(:([^:]+))?").matcher(string);
 		if (!matcher.matches()) throw new IllegalArgumentException();
 		final String packagingGroup = matcher.group(4);
-		final MavenPackaging packaging = ((packagingGroup != null) && (packagingGroup.length() > 0)) ? HEnum.valueOf(MavenPackaging.class, Object::toString, String::toLowerCase, matcher.group(5)) : MavenPackaging.JAR;
+		final MavenPackaging packaging = ((packagingGroup != null) && (packagingGroup.length() > 0)) ? HEnum.valueOf(MavenPackaging.class, Object::toString, true, String::toLowerCase, matcher.group(5)) : MavenPackaging.JAR;
 		return new MavenCoordinates(this, matcher.group(1), matcher.group(2), matcher.group(3), packaging);
 	}
 

@@ -10,8 +10,8 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.g2forge.reassert.core.model.IVertex;
-import com.g2forge.reassert.license.StandardLicense;
-import com.g2forge.reassert.usage.StandardUsage;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
+import com.g2forge.reassert.standard.model.contract.usage.StandardUsage;
 
 public class StandardContractSerializer extends StdSerializer<IVertex> implements ResolvableSerializer {
 	private static final long serialVersionUID = -6423425543439855466L;

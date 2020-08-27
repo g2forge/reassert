@@ -1,0 +1,5 @@
+﻿contract,Commercial,DistributionPublic,DistributionPrivate,DistributionService,UseLink,UseCopy,UseModified,DistributingBinary,DistributingSource
+PrivateDistribution,Excluded,Excluded,Included,Included,Excluded,Included,Excluded,Included,Excluded
+OSSLibrary,Excluded,Included,Included,Excluded,Included,Excluded,Excluded,Included,Included
+CommercialDistribution,Included,Included,Included,Excluded,Excluded,Included,Excluded,Included,Excluded
+CommercialSaaS,Included,Included,Included,Included,Excluded,Included,Excluded,Included,Excluded

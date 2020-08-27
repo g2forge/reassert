@@ -15,7 +15,6 @@ import com.g2forge.reassert.core.api.licenseparser.CompositeLicenseParser;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.scanner.CompositeScanner;
 import com.g2forge.reassert.core.api.scanner.IScanner;
-import com.g2forge.reassert.core.api.scanner.LicenseFileScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
 
 import lombok.AccessLevel;
@@ -58,7 +57,7 @@ public class Context implements IContext {
 	}
 
 	public Context(Iterable<? extends IModule> modules) {
-		final IModule.Loaded.LoadedBuilder builder = IModule.Loaded.builder().scanner(new LicenseFileScanner(this));
+		final IModule.Loaded.LoadedBuilder builder = IModule.Loaded.builder();
 		for (IModule module : modules) {
 			final IModule.Loaded loaded = module.load(this);
 			if (loaded == null) continue;

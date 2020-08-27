@@ -1,6 +1,6 @@
 level,message,artifact,paths,details
 ERROR,"A license is incompatible with a combined work that includes artifacts under this license",,,"ERROR: A license is incompatible with a combined work that includes artifacts under this license	
-	License terms with unknown compatability: ""Permission to distribute"", ""Permission to modify"", ""Permission to use patents"", ""Requires source disclosure"", ""Requires compatible licenses"", ""Requires statement of changes"", ""Does not idemnify against liability"", ""Does not grant patent usage"" & ""Does not grant trademark usage""
+	License terms with unknown compatability: ""Permission to distribute"", ""Permission to modify"", ""Permission to use patents"", ""Requires source disclosure"", ""Requires compatible licenses"", ""Requires statement of changes"", ""Does not grant patent usage"", ""Does not idemnify against liability"" & ""Does not grant trademark usage""
 	Mistmatched license terms: ""Permission for commercial usage"""
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",A,A,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
 	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
