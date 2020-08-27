@@ -14,6 +14,10 @@ public interface IPatternBuilder<T> extends IBuilder<T> {
 
 	public IPatternBuilder<T> version(int major, int minor);
 
+	public default IPatternBuilder<T> version(LicenseVersion version) {
+		return version(version.getMajor(), version.getMinor());
+	}
+
 	public default IPatternBuilder<T> with(IConsumer1<? super IPatternBuilder<?>> wither) {
 		wither.accept(this);
 		return this;
