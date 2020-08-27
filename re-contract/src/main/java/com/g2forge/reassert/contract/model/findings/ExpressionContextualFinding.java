@@ -3,8 +3,8 @@ package com.g2forge.reassert.contract.model.findings;
 import java.util.Collection;
 
 import com.g2forge.reassert.contract.model.IExpressionContext;
-import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.expression.express.IExpression;

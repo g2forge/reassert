@@ -1,9 +1,9 @@
 package com.g2forge.reassert.contract.model;
 
 import com.g2forge.reassert.core.model.contract.IContract;
-import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.expression.express.IConstant;
 
 import lombok.Builder;

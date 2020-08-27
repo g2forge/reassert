@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.reassert.contract.model.TermType;
-import com.g2forge.reassert.core.model.contract.ITerm;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.g2forge.reassert.reassert.convert.finding;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.g2forge.reassert.core.model.contract.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
 
 import lombok.Builder;
 import lombok.Data;

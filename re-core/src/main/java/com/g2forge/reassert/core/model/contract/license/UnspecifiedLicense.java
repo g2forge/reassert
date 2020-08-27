@@ -1,8 +1,8 @@
 package com.g2forge.reassert.core.model.contract.license;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.Terms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
 
 /**
  * Indicates that no license was specified.

@@ -1,6 +1,6 @@
 package com.g2forge.reassert.reassert.model.contract;
 
-import com.g2forge.reassert.core.model.contract.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 

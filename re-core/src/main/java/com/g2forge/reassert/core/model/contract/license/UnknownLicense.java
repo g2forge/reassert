@@ -1,7 +1,7 @@
 package com.g2forge.reassert.core.model.contract.license;
 
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.Terms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
 
 import lombok.Builder;
 import lombok.Data;

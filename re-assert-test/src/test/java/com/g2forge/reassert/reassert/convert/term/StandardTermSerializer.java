@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.g2forge.reassert.core.model.contract.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
 
 public class StandardTermSerializer extends StdSerializer<ITerm> {
 	private static final long serialVersionUID = 3043637284673288902L;

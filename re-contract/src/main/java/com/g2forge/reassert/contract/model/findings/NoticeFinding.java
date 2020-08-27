@@ -1,7 +1,7 @@
 package com.g2forge.reassert.contract.model.findings;
 
 import com.g2forge.reassert.contract.model.findings.IRiskFinding;
-import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.expression.explain.model.IExplained;
 
 import lombok.Builder;

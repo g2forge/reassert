@@ -1,7 +1,7 @@
 package com.g2forge.reassert.core.model.contract.license;
 
 import com.g2forge.reassert.core.model.contract.IContract;
-import com.g2forge.reassert.core.model.contract.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
 
 public interface ILicense extends IContract {
 	/**
