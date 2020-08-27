@@ -1,6 +1,6 @@
 package com.g2forge.reassert.contract.model;
 
-import com.g2forge.reassert.core.model.contract.IContractApplied;
+import com.g2forge.reassert.core.model.contract.IContractTerms;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class TermConstant implements IConstant<TermRelation> {
 	protected final ITerm term;
 
-	protected final IContractApplied contract;
+	protected final IContractTerms contract;
 
 	@Override
 	public TermRelation get() {

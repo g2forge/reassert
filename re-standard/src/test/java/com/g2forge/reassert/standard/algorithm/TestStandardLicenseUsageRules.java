@@ -27,7 +27,6 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
 import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
-import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
@@ -38,15 +37,16 @@ public class TestStandardLicenseUsageRules {
 
 	@Test
 	public void allowed() {
-		final IUsage usage = new Usage("Usage", Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.Commercial).build());
-		final ILicense license = new License("License", null, Terms.<ILicenseTerm>builder().exclude(StandardLicenseTerm.Notice).include(StandardLicenseTerm.CommercialUse).build());
+		
+		final IUsage usage = Usage.builder().name("Usage").terms(Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.Commercial).build()).build();
+		final ILicense license = License.builder().name("License").terms(Terms.<ILicenseTerm>builder().exclude(StandardLicenseTerm.Notice).include(StandardLicenseTerm.CommercialUse).build()).build();
 		test(usage, license, Level.INFO, "allowed.txt", IPredicate1.create(TestStandardLicenseUsageRules::isSuspicious).negate());
 	}
 
 	@Test
 	public void distributionNotice() {
-		final IUsage usage = new Usage("Usage", Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.DistributionPublic).build());
-		final ILicense license = new License("License", null, Terms.<ILicenseTerm>builder().exclude(StandardLicenseTerm.Notice).include(StandardLicenseTerm.DisclosureSource).include(StandardLicenseTerm.Distribution).build());
+		final IUsage usage = Usage.builder().name("Usage").terms(Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.DistributionPublic).build()).build();
+		final ILicense license = License.builder().name("License").terms(Terms.<ILicenseTerm>builder().exclude(StandardLicenseTerm.Notice).include(StandardLicenseTerm.DisclosureSource).include(StandardLicenseTerm.Distribution).build()).build();
 		test(usage, license, Level.WARN, "distributionNotice.txt", IPredicate1.create(TestStandardLicenseUsageRules::isSuspicious).negate());
 	}
 
@@ -59,7 +59,7 @@ public class TestStandardLicenseUsageRules {
 
 	@Test
 	public void suspicious() {
-		final IUsage usage = new Usage("Usage", Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).build());
+		final IUsage usage = Usage.builder().name("Usage").terms(Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).build()).build();
 		final ILicense license = UnspecifiedLicense.create();
 		test(usage, license, Level.ERROR, "suspicious.txt", TestStandardLicenseUsageRules::isSuspicious);
 	}
@@ -77,7 +77,7 @@ public class TestStandardLicenseUsageRules {
 
 	@Test
 	public void unspecified() {
-		final IUsage usage = new Usage("Usage", Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.Commercial).build());
+		final IUsage usage = Usage.builder().name("Usage").terms(Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.Commercial).build()).build();
 		final ILicense license = UnspecifiedLicense.create();
 		test(usage, license, Level.ERROR, "unspecified.txt", IPredicate1.create(TestStandardLicenseUsageRules::isSuspicious).negate());
 	}

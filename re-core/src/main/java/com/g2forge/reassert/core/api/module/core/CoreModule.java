@@ -21,10 +21,12 @@ public class CoreModule implements IModule, ISingleton {
 		final LoadedBuilder builder = IModule.Loaded.builder();
 		builder.describer(ArtifactDescriber.create());
 		builder.describer(FileDescriber.create());
-		builder.describer(UnknownLicenseDescriber.create());
-		builder.describer(UnspecifiedLicenseDescriber.create());
-		builder.describer(UnspecifiedUsageDescriber.create());
+
 		builder.describer(StringNamedDescriber.create());
+
+		builder.describer(ContractIdentifiedDescriber.create());
+		builder.describer(UnknownLicenseDescriber.create());
+
 		return builder.build();
 	}
 }
