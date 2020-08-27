@@ -65,6 +65,7 @@ public enum StandardLicense implements ILicense {
 	Beerware("Beerware"),
 	BSD1("BSD-1-Clause"),
 	BSD5(null),
+	CDDL1("CDDL-1.0"),
 	CDDL11("CDDL-1.1"),
 	EDL1(null),
 	FTL("FTL"),
@@ -76,7 +77,9 @@ public enum StandardLicense implements ILicense {
 	GFDL13OrLater("GFDL-1.3-or-later"),
 	Perl5(null),
 	PSF2("PSF-2.0"),
-	Python2("Python-2.0");
+	Python2("Python-2.0"),
+	IndianaExtreme111(null),
+	CPL1("CPL-1.0");
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final TermsLoader<StandardLicense, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, StandardLicenseTerm.class);

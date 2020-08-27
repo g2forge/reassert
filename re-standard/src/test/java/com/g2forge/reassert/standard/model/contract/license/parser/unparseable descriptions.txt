@@ -1,6 +1,3 @@
-Known term licenses
-	
-
 Parentheticals
 	The MIT License (MIT)
 	MIT License (MIT License)
@@ -15,6 +12,8 @@ Parentheticals
 	LGPL (>= 2.1)
 	BSD License (2-clause BSD)
 	BSD License (BSD-3-Clause)
+	CDDL-1.0,"COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0",
+	CDDL-1.0,"Common Development and Distribution License (CDDL) v1.0",
 
 Exceptions
 	Apache-2.0 with GPL exception
@@ -38,6 +37,9 @@ Exceptions
 	LGPL-2.1 with static linking exception
 	LGPL-2+ with Libtool exception
 	LGPL-3 with static linking exception
+	GPLv2+CE
+	GNU General Public License (GPL), version 2, with the Classpath exception
+	Expat-with-advertising-restriction
 
 License Families
 	Artistic
@@ -68,6 +70,22 @@ License Families
 	Python Software Foundation License (PSF license)
 	Python Software Foundation License (PSF)
 	GFDL
+	BSD-style license
+	Mozilla Public License
+	GNU LESSER GENERAL PUBLIC LICENSE
+	GNU Lesser General Public License
+	BSD License
+	GNU Lesser Public License
+	The BSD License
+	lgpl
+	BSD
+	LGPL
+	BSD style
+	Apache Software Licenses
+	New BSD License
+	Revised BSD
+	New BSD license
+	CDDL
 
 Complex BSD
 	BSD-2-Clause-alike
@@ -92,6 +110,13 @@ Complex BSD
 	BSD-4-clause-POWERDOG
 	BSD-5-clause-Peter-Wemm
 
+Compound
+	The H2 License, Version 1.0
+		http://www.h2database.com/html/license.html
+		MPL/EPL
+	CDDL + GPLv2 with classpath exception
+	Perl5,Perl 5 License (GPL or Artistic)
+	
 Messes
 	MIT X11
 	MIT/X11
@@ -99,7 +124,6 @@ Messes
 	GPL-compatible licenses
 	GPL-only
 	GPL-unspecified
-	Expat-with-advertising-restriction
 	Historical Permission Notice and Disclaimer (HPND)
 	ISC+IBM
 	MIT-1
@@ -128,3 +152,20 @@ Messes
 	OpenSSH
 	OPL-1+
 	GZip
+	Similar to Apache License but with the acknowledgment clause removed
+	Java HTML Tidy License
+	The W3C License
+	The Werken Company License
+	Unlicense
+	Jason Hunter License
+	HSQLDB License, a BSD open source license
+	The SAX License
+	Public domain, Sun Microsoystems
+	The GSBase Software License
+	SLF4J License
+	BEA JSR 173 RI
+	The HtmlUnit Software License
+	HSQLDB License
+		This is like BSD, but different?
+		http://hsqldb.org/web/hsqlLicense.html
+
