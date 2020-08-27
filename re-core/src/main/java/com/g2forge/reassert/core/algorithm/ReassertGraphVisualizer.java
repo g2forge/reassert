@@ -31,10 +31,10 @@ import lombok.Getter;
 
 public class ReassertGraphVisualizer {
 	@Getter(value = AccessLevel.PROTECTED)
-	protected final IFunction1<IVertex, IDescription> describer;
+	protected final IFunction1<? super IVertex, ? extends IDescription> describer;
 
 	public ReassertGraphVisualizer(IContext context) {
-		describer = new ReassertVertexDescriber(context);
+		describer = new ReassertObjectDescriber(context);
 	}
 
 	protected <T> void add(final FunctionBuilder<IVertex, IDescription> builder, IDescriber<T> describer) {
@@ -50,7 +50,7 @@ public class ReassertGraphVisualizer {
 	}
 
 	public DotGraph visualize(Graph<IVertex, IEdge> graph) {
-		final IFunction1<IVertex, IDescription> describer = getDescriber();
+		final IFunction1<? super IVertex, ? extends IDescription> describer = getDescriber();
 		final Map<IVertex, DotNode> vertices = new LinkedHashMap<>();
 		final List<DotNode> nodes = new ArrayList<>();
 		for (IVertex vertex : graph.vertexSet()) {

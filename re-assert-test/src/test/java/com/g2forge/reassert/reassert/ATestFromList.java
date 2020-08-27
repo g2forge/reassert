@@ -3,7 +3,6 @@ package com.g2forge.reassert.reassert;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.io.dataaccess.ResourceDataSource;
-import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.list.ListCoordinates;
@@ -21,14 +20,13 @@ public abstract class ATestFromList {
 
 	public ListRepository computeRepository() {
 		final IContext context = ReassertContext.getContext();
-		final ReassertVertexDescriber vertexDescriber = new ReassertVertexDescriber(context);
-		final ListRepository repository = new ListRepository(context, vertexDescriber) {
+		final ListRepository repository = new ListRepository(context) {
 			@Override
 			protected ObjectMapper computeMapper() {
 				final ObjectMapper mapper = super.computeMapper();
 				mapper.registerModule(new StandardContractModule());
 				mapper.registerModule(new StandardTermModule());
-				mapper.registerModule(new FindingModule(vertexDescriber));
+				mapper.registerModule(new FindingModule(context::describe));
 				mapper.registerModule(new WorkModule());
 				return mapper;
 			}

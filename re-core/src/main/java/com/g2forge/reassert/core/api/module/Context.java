@@ -10,7 +10,9 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 import com.g2forge.reassert.cache.ICache;
 import com.g2forge.reassert.cache.LocalCache;
+import com.g2forge.reassert.core.algorithm.ReassertObjectDescriber;
 import com.g2forge.reassert.core.api.described.IDescriber;
+import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.licenseparser.CompositeLicenseParser;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.scanner.CompositeScanner;
@@ -52,6 +54,9 @@ public class Context implements IContext {
 
 	protected final ICache cache = new LocalCache(Paths.get(System.getProperty("user.home")).resolve(".reassert"));
 
+	@Getter(lazy = true, value = AccessLevel.PROTECTED)
+	private final ReassertObjectDescriber describer = new ReassertObjectDescriber(this);
+
 	public Context(IModule... modules) {
 		this(HCollection.asList(modules));
 	}
@@ -73,5 +78,10 @@ public class Context implements IContext {
 		setLicenseParser(new CompositeLicenseParser(loaded.getLicenseParsers()));
 		setSystems(loaded.getSystems());
 		setDescribers(loaded.getDescribers());
+	}
+
+	@Override
+	public IDescription describe(Object object) {
+		return getDescriber().apply(object);
 	}
 }

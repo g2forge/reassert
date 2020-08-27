@@ -17,7 +17,6 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.contract.model.findings.ExpressionContextualFinding;
 import com.g2forge.reassert.core.api.described.IDescription;
-import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
@@ -54,7 +53,7 @@ public class FindingModule extends SimpleModule {
 
 	private static final long serialVersionUID = -1153968277342886689L;
 
-	protected final IFunction1<IVertex, IDescription> vertexDescriber;
+	protected final IFunction1<? super Object, ? extends IDescription> describer;
 
 	@Override
 	public void setupModule(SetupContext context) {
@@ -73,7 +72,7 @@ public class FindingModule extends SimpleModule {
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
-				if (TermConstant.class.isAssignableFrom(description.getBeanClass())) return new TermConstantSerializer(getVertexDescriber());
+				if (TermConstant.class.isAssignableFrom(description.getBeanClass())) return new TermConstantSerializer(getDescriber());
 				return serializer;
 			}
 		});

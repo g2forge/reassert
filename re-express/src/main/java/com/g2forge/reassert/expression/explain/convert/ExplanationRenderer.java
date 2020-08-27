@@ -31,12 +31,15 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 	protected class ExplanationRenderContext extends ARenderContext implements IExplanationRenderContext {
 		protected final StackGlobalState<ExplanationMode> state;
 
-		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext;
+		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer;
 
-		public ExplanationRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext) {
+		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer;
+
+		public ExplanationRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer) {
 			super(builder);
 			this.state = new StackGlobalState<ExplanationMode>(mode);
-			this.valueContext = valueContext;
+			this.valueRenderer = valueRenderer;
+			this.nameRenderer = nameRenderer;
 		}
 
 		@Override
@@ -50,8 +53,14 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 		}
 
 		@Override
+		public IExplanationRenderContext name(IConstant<?> constant) {
+			nameRenderer.accept(getBuilder(), constant);
+			return getThis();
+		}
+
+		@Override
 		public IExplanationRenderContext value(Object value) {
-			valueContext.accept(getBuilder(), value);
+			valueRenderer.accept(getBuilder(), value);
 			return getThis();
 		}
 	}
@@ -64,7 +73,7 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 				final IConstant<?> castE = (IConstant<?>) e;
 				c.value(castE.get());
 				final String name = castE.getName();
-				if (name != null) c.append(" - ").append(name);
+				if (name != null) c.append(" - ").name(castE);
 			});
 			builder.add(ZeroExplainedOperation.class, e -> c -> {
 				c.value(e.get()).append(" (").append(e.getOperator()).append(")").append(" - because ");
@@ -134,19 +143,21 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 
 	protected final ExplanationMode mode;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext;
+	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer;
+
+	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer;
 
 	public ExplanationRenderer() {
 		this(ExplanationMode.Explain);
 	}
 
 	public ExplanationRenderer(ExplanationMode mode) {
-		this(mode, (builder, value) -> builder.expression(value));
+		this(mode, (builder, value) -> builder.expression(value), (builder, constant) -> builder.expression(constant.getName()));
 	}
 
 	@Override
 	protected ExplanationRenderContext createContext(TextNestedModified.TextNestedModifiedBuilder builder) {
-		return new ExplanationRenderContext(builder, getMode(), getValueContext());
+		return new ExplanationRenderContext(builder, getMode(), getValueRenderer(), getNameRenderer());
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import com.g2forge.reassert.contract.model.findings.NoticeFinding;
 import com.g2forge.reassert.contract.model.findings.StateChangesFinding;
 import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
+import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
@@ -58,16 +59,13 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 		protected final ExplanationRenderer explanationRenderer;
 
-		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext;
-
 		@Getter(AccessLevel.PUBLIC)
 		protected IExpressionContext findingContext;
 
-		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext) {
+		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer) {
 			super(builder);
 			this.mode = mode;
-			this.explanationRenderer = new ExplanationRenderer(getMode());
-			this.valueContext = valueContext;
+			this.explanationRenderer = new ExplanationRenderer(getMode(), valueRenderer, nameRenderer);
 		}
 
 		@Override
@@ -251,19 +249,24 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 	protected final ExplanationMode mode;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext;
+	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer;
 
-	public ReportRenderer() {
-		this(ExplanationMode.Explain);
+	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer;
+
+	public ReportRenderer(IContext context) {
+		this(ExplanationMode.Explain, context);
 	}
 
-	public ReportRenderer(ExplanationMode mode) {
-		this(mode, (builder, value) -> builder.expression(value));
+	public ReportRenderer(ExplanationMode mode, IContext context) {
+		this(mode, (builder, value) -> builder.expression(value), (builder, constant) -> {
+			context.getDescribers();
+			builder.expression(constant.getName());
+		});
 	}
 
 	@Override
 	protected ReportRenderContext createContext(TextNestedModified.TextNestedModifiedBuilder builder) {
-		return new ReportRenderContext(builder, getMode(), getValueContext());
+		return new ReportRenderContext(builder, getMode(), getValueRenderer(), getNameRenderer());
 	}
 
 	@Override
