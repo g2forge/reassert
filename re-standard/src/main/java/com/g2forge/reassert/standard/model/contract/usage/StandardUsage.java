@@ -3,7 +3,7 @@ package com.g2forge.reassert.standard.model.contract.usage;
 import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
-import com.g2forge.reassert.core.model.contract.usage.IUsageSpecific;
+import com.g2forge.reassert.core.model.contract.usage.IUsageSpecificEnum;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 
 import lombok.AccessLevel;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
-public enum StandardUsage implements IUsageSpecific {
+public enum StandardUsage implements IUsageSpecificEnum {
 	PrivateDistribution,
 	OSSLibrary,
 	CommercialDistribution,
@@ -24,14 +24,4 @@ public enum StandardUsage implements IUsageSpecific {
 
 	@Getter(lazy = true)
 	private final ITerms<IUsageTerm> terms = getLoader().getTerms(this);
-
-	@Override
-	public String getName() {
-		return name() + " usage";
-	}
-
-	@Override
-	public String getShortID() {
-		return name();
-	}
 }

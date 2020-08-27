@@ -6,6 +6,7 @@ import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
+import com.g2forge.reassert.core.model.contract.license.ILicenseSpecificEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
-public enum StandardLicense implements ILicenseSpecific {
+public enum StandardLicense implements ILicenseSpecificEnum {
 	Apache2("Apache-2.0"),
 	BSD2("BSD-2-Clause"),
 	BSD3("BSD-3-Clause"),
@@ -98,17 +99,6 @@ public enum StandardLicense implements ILicenseSpecific {
 	@Override
 	public ILicenseFamily getFamily() {
 		return null;
-	}
-
-	@Override
-	public String getName() {
-		return getShortID() + " license";
-	}
-
-	@Override
-	public String getShortID() {
-		final String spdxShortID = getSPDXShortID();
-		return (spdxShortID == null) ? name() : spdxShortID;
 	}
 
 	@Override
