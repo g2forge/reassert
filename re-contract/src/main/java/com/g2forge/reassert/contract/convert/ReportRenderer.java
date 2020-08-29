@@ -10,13 +10,16 @@ import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.alexandria.java.function.IConsumer2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.ARenderer;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ISimpleTextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
+import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNestedModifiedBuilder;
 import com.g2forge.reassert.contract.model.IExpressionContext;
 import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.contract.model.TermType;
@@ -28,6 +31,7 @@ import com.g2forge.reassert.contract.model.findings.NoticeFinding;
 import com.g2forge.reassert.contract.model.findings.StateChangesFinding;
 import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
+import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
@@ -53,6 +57,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContext> {
 	@Getter(AccessLevel.PROTECTED)
+	@RequiredArgsConstructor
+	protected static class NameRenderer implements ISimpleTextualRenderer<Object> {
+		protected final IContext context;
+
+		@Override
+		public void render(TextNestedModifiedBuilder builder, Object renderable) {
+			final TermConstant constant = (TermConstant) renderable;
+
+			builder.expression(constant.getTerm().getDescription()).expression(" in ");
+
+			final IDescription description = getContext().describe(constant.getContract());
+			builder.expression(description.getName());
+		}
+	}
+
+	@Getter(AccessLevel.PROTECTED)
 	protected class ReportRenderContext extends ARenderContext implements IReportRenderContext {
 		@Getter(AccessLevel.PUBLIC)
 		protected final ExplanationMode mode;
@@ -62,7 +82,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 		@Getter(AccessLevel.PUBLIC)
 		protected IExpressionContext findingContext;
 
-		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer) {
+		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, ITextualRenderer<Object> valueRenderer, ITextualRenderer<Object> nameRenderer) {
 			super(builder);
 			this.mode = mode;
 			this.explanationRenderer = new ExplanationRenderer(getMode(), valueRenderer, nameRenderer);
@@ -249,19 +269,16 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 	protected final ExplanationMode mode;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer;
+	protected final ITextualRenderer<Object> valueRenderer;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer;
+	protected final ITextualRenderer<Object> nameRenderer;
+
+	public ReportRenderer(ExplanationMode mode, IContext context) {
+		this(mode, ToStringTextualRenderer.create(), new NameRenderer(context));
+	}
 
 	public ReportRenderer(IContext context) {
 		this(ExplanationMode.Explain, context);
-	}
-
-	public ReportRenderer(ExplanationMode mode, IContext context) {
-		this(mode, (builder, value) -> builder.expression(value), (builder, constant) -> {
-			context.getDescribers();
-			builder.expression(constant.getName());
-		});
 	}
 
 	@Override

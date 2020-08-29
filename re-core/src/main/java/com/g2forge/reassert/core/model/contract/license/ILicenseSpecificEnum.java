@@ -2,10 +2,10 @@ package com.g2forge.reassert.core.model.contract.license;
 
 public interface ILicenseSpecificEnum extends ILicenseSpecific {
 	public String name();
-	
+
 	@Override
 	public default String getName() {
-		return getShortID() + " license";
+		return getShortID().replace('-', ' ') + " license";
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import com.g2forge.reassert.contract.LicenseUsageAnalyzer;
 import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertFindingVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertWorkVisitor;
+import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -48,7 +49,7 @@ public class TestGraph {
 	}
 
 	protected IReport computeReport() {
-		final IContext context = ReassertContext.getContext();
+		final IContext context = Context.getContext();
 		final List<IGraphVisitor> visitors = getVisitors() == null ? getStandardVisitors() : getVisitors();
 		return new Reassert(context, visitors).report(getOrigin());
 	}

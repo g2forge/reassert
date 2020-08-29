@@ -24,8 +24,8 @@ public class TermConstant implements IConstant<TermRelation> {
 	}
 
 	@Override
-	public String getName() {
-		return String.format("%1$s in %2$s", getTerm().getDescription(), getContract().getName());
+	public Object getName() {
+		return this;
 	}
 
 	@Override

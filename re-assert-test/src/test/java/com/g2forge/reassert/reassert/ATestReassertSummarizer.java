@@ -6,6 +6,7 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.io.dataaccess.ByteArrayDataSink;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
+import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
@@ -27,13 +28,13 @@ public abstract class ATestReassertSummarizer extends ATestFromList {
 			super(context);
 		}
 
-		protected IFunction1<? super ExplanationMode, ? extends ReportRenderer> createRendererFactory() {
-			return TestReportRenderer::new;
+		protected IFunction1<? super ExplanationMode, ? extends ReportRenderer> createRendererFactory(IContext context) {
+			return mode -> new TestReportRenderer(mode, context);
 		}
 	}
 
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
-	private final TestSummarizer summarizer = new TestSummarizer(ReassertContext.getContext());
+	private final TestSummarizer summarizer = new TestSummarizer(Context.getContext());
 
 	protected void assertOutput(final String name, final Output output, final ReportSummary summary) throws EnumException {
 		final ReassertSummarizer summarizer = getSummarizer();

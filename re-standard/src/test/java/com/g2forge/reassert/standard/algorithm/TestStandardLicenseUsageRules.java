@@ -13,6 +13,7 @@ import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.model.rules.Rule;
 import com.g2forge.reassert.contract.model.rules.Rules;
+import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -68,7 +69,7 @@ public class TestStandardLicenseUsageRules {
 		final IReport reportRaw = new LicenseUsageAnalyzer(StandardLicenseUsageRules.create()).report(usage, license);
 		final IReport reportClean = filter != null ? Report.builder().findings(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList())).build() : reportRaw;
 
-		final ReportRenderer reportRenderer = new ReportRenderer(ExplanationMode.Explain);
+		final ReportRenderer reportRenderer = new ReportRenderer(ExplanationMode.Explain, Context.getContext());
 
 		HAssert.assertTrue(reportRenderer.render(reportRaw), reportClean.getMinLevel().compareTo(exepctedMinLevel) >= 0);
 		final String rendered = reportRenderer.render(Report.builder().findings(reportClean.getFindings().stream().filter(finding -> finding.getLevel().compareTo(Level.WARN) <= 0).collect(Collectors.toList())).build());

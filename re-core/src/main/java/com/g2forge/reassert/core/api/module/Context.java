@@ -8,6 +8,8 @@ import java.util.Objects;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
+import com.g2forge.alexandria.service.BasicServiceLoader;
+import com.g2forge.alexandria.service.DefaultInstantiator;
 import com.g2forge.reassert.cache.ICache;
 import com.g2forge.reassert.cache.LocalCache;
 import com.g2forge.reassert.core.algorithm.ReassertObjectDescriber;
@@ -40,8 +42,17 @@ public class Context implements IContext {
 		}
 	}
 
+	@Getter(lazy = true)
+	private static final IContext context = computeContext();
+
 	public static ContextBuilder builder() {
 		return new ContextBuilder();
+	}
+
+	protected static IContext computeContext() {
+		final DefaultInstantiator<IModule> instantiator = new DefaultInstantiator<>(null, IModule.class);
+		final BasicServiceLoader<IModule> loader = new BasicServiceLoader<>(null, IModule.class, null, instantiator);
+		return new Context(loader.load());
 	}
 
 	protected ILicenseParser licenseParser;

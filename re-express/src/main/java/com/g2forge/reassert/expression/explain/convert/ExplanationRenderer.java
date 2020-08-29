@@ -5,19 +5,20 @@ import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.alexandria.java.function.IConsumer2;
 import com.g2forge.alexandria.java.nestedstate.StackGlobalState;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.ARenderer;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.reassert.expression.explain.model.IExplained;
 import com.g2forge.reassert.expression.explain.model.IExplainedApplication;
+import com.g2forge.reassert.expression.explain.model.IExplainedApplication.Argument;
 import com.g2forge.reassert.expression.explain.model.IdentityExplainedOperation;
 import com.g2forge.reassert.expression.explain.model.ZeroExplainedOperation;
-import com.g2forge.reassert.expression.explain.model.IExplainedApplication.Argument;
 import com.g2forge.reassert.expression.express.IConstant;
 
 import lombok.AccessLevel;
@@ -31,11 +32,11 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 	protected class ExplanationRenderContext extends ARenderContext implements IExplanationRenderContext {
 		protected final StackGlobalState<ExplanationMode> state;
 
-		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer;
+		protected final ITextualRenderer<Object> valueRenderer;
 
-		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer;
+		protected final ITextualRenderer<Object> nameRenderer;
 
-		public ExplanationRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer) {
+		public ExplanationRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, ITextualRenderer<Object> valueRenderer, ITextualRenderer<Object> nameRenderer) {
 			super(builder);
 			this.state = new StackGlobalState<ExplanationMode>(mode);
 			this.valueRenderer = valueRenderer;
@@ -53,14 +54,14 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 		}
 
 		@Override
-		public IExplanationRenderContext name(IConstant<?> constant) {
-			nameRenderer.accept(getBuilder(), constant);
+		public IExplanationRenderContext name(Object name) {
+			nameRenderer.render(getBuilder(), name);
 			return getThis();
 		}
 
 		@Override
 		public IExplanationRenderContext value(Object value) {
-			valueRenderer.accept(getBuilder(), value);
+			valueRenderer.render(getBuilder(), value);
 			return getThis();
 		}
 	}
@@ -72,8 +73,8 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 			builder.add(IConstant.class, e -> c -> {
 				final IConstant<?> castE = (IConstant<?>) e;
 				c.value(castE.get());
-				final String name = castE.getName();
-				if (name != null) c.append(" - ").name(castE);
+				final Object name = castE.getName();
+				if (name != null) c.append(" - ").name(name);
 			});
 			builder.add(ZeroExplainedOperation.class, e -> c -> {
 				c.value(e.get()).append(" (").append(e.getOperator()).append(")").append(" - because ");
@@ -143,16 +144,16 @@ public class ExplanationRenderer extends ATextualRenderer<IExplained<?>, IExplan
 
 	protected final ExplanationMode mode;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueRenderer;
+	protected final ITextualRenderer<Object> valueRenderer;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, ? super IConstant<?>> nameRenderer;
+	protected final ITextualRenderer<Object> nameRenderer;
 
 	public ExplanationRenderer() {
 		this(ExplanationMode.Explain);
 	}
 
 	public ExplanationRenderer(ExplanationMode mode) {
-		this(mode, (builder, value) -> builder.expression(value), (builder, constant) -> builder.expression(constant.getName()));
+		this(mode, ToStringTextualRenderer.create(), ToStringTextualRenderer.create());
 	}
 
 	@Override
