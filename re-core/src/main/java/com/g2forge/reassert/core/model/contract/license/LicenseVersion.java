@@ -1,4 +1,4 @@
-package com.g2forge.reassert.standard.model.contract.license.parser;
+package com.g2forge.reassert.core.model.contract.license;
 
 import lombok.Builder;
 import lombok.Data;

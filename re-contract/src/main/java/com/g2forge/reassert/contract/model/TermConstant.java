@@ -1,9 +1,9 @@
 package com.g2forge.reassert.contract.model;
 
-import com.g2forge.reassert.core.model.contract.IContract;
-import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.core.model.contract.IContractTerms;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.expression.express.IConstant;
 
 import lombok.Builder;
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class TermConstant implements IConstant<TermRelation> {
 	protected final ITerm term;
 
-	protected final IContract contract;
+	protected final IContractTerms contract;
 
 	@Override
 	public TermRelation get() {
@@ -24,8 +24,8 @@ public class TermConstant implements IConstant<TermRelation> {
 	}
 
 	@Override
-	public String getName() {
-		return String.format("%1$s in %2$s", getTerm().getDescription(), getContract().getName());
+	public Object getName() {
+		return this;
 	}
 
 	@Override

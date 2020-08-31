@@ -24,9 +24,9 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSource;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.TermRelation;
-import com.g2forge.reassert.core.model.contract.Terms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
 
 import lombok.AccessLevel;
 import lombok.Getter;

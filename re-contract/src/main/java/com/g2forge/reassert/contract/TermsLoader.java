@@ -4,8 +4,8 @@ import java.util.Map;
 
 import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.io.dataaccess.ResourceDataSource;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.Terms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

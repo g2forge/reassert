@@ -22,7 +22,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "unspecifiedusage" ]
+        "targets" : [ "UnspecifiedUsage" ]
       } ]
     },
     "B artifact" : {
@@ -35,7 +35,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "unspecifiedusage" ]
+        "targets" : [ "UnspecifiedUsage" ]
       } ]
     },
     "C artifact" : {
@@ -48,10 +48,10 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "unspecifiedusage" ]
+        "targets" : [ "UnspecifiedUsage" ]
       } ]
     },
-    "unspecifiedusage" : {
+    "UnspecifiedUsage" : {
       "vertex" : {
         "@c" : ".contract.usage.UnspecifiedUsage"
       }

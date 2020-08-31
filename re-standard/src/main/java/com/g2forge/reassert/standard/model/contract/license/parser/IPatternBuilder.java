@@ -2,6 +2,7 @@ package com.g2forge.reassert.standard.model.contract.license.parser;
 
 import com.g2forge.alexandria.java.function.IConsumer1;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
+import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 
 public interface IPatternBuilder<T> extends IBuilder<T> {
 	public IPatternBuilder<T> alt(@SuppressWarnings("unchecked") IConsumer1<? super IPatternBuilder<?>>... alternatives);

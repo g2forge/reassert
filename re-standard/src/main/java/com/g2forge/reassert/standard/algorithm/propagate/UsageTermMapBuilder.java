@@ -1,4 +1,4 @@
-package com.g2forge.reassert.standard.algorithm.propogate;
+package com.g2forge.reassert.standard.algorithm.propagate;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -10,9 +10,9 @@ import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.contract.model.logic.HTermLogic;
 import com.g2forge.reassert.contract.model.logic.ITermLogicContext;
 import com.g2forge.reassert.core.model.IEdge;
-import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.core.model.contract.TermRelation;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.expression.evaluate.IEvaluator;

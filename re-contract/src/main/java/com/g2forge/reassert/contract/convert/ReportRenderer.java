@@ -10,13 +10,16 @@ import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.alexandria.java.function.IConsumer2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.ARenderer;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ISimpleTextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
+import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNestedModifiedBuilder;
 import com.g2forge.reassert.contract.model.IExpressionContext;
 import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.contract.model.TermType;
@@ -28,9 +31,11 @@ import com.g2forge.reassert.contract.model.findings.NoticeFinding;
 import com.g2forge.reassert.contract.model.findings.StateChangesFinding;
 import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
-import com.g2forge.reassert.core.model.contract.ITerm;
+import com.g2forge.reassert.core.api.described.IDescription;
+import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
@@ -52,22 +57,37 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContext> {
 	@Getter(AccessLevel.PROTECTED)
+	@RequiredArgsConstructor
+	protected static class NameRenderer implements ISimpleTextualRenderer<Object> {
+		protected final IContext context;
+
+		@Override
+		public void render(TextNestedModifiedBuilder builder, Object renderable) {
+			if (renderable instanceof TermConstant) {
+				final TermConstant constant = (TermConstant) renderable;
+
+				builder.expression(constant.getTerm().getDescription()).expression(" in ");
+
+				final IDescription description = getContext().describe(constant.getContract());
+				builder.expression(description.getName());
+			} else builder.expression(renderable);
+		}
+	}
+
+	@Getter(AccessLevel.PROTECTED)
 	protected class ReportRenderContext extends ARenderContext implements IReportRenderContext {
 		@Getter(AccessLevel.PUBLIC)
 		protected final ExplanationMode mode;
 
 		protected final ExplanationRenderer explanationRenderer;
 
-		protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext;
-
 		@Getter(AccessLevel.PUBLIC)
 		protected IExpressionContext findingContext;
 
-		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext) {
+		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, ITextualRenderer<Object> valueRenderer, ITextualRenderer<Object> nameRenderer) {
 			super(builder);
 			this.mode = mode;
-			this.explanationRenderer = new ExplanationRenderer(getMode());
-			this.valueContext = valueContext;
+			this.explanationRenderer = new ExplanationRenderer(getMode(), valueRenderer, nameRenderer);
 		}
 
 		@Override
@@ -251,19 +271,21 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 	protected final ExplanationMode mode;
 
-	protected final IConsumer2<TextNestedModified.TextNestedModifiedBuilder, Object> valueContext;
+	protected final ITextualRenderer<Object> valueRenderer;
 
-	public ReportRenderer() {
-		this(ExplanationMode.Explain);
+	protected final ITextualRenderer<Object> nameRenderer;
+
+	public ReportRenderer(ExplanationMode mode, IContext context) {
+		this(mode, ToStringTextualRenderer.create(), new NameRenderer(context));
 	}
 
-	public ReportRenderer(ExplanationMode mode) {
-		this(mode, (builder, value) -> builder.expression(value));
+	public ReportRenderer(IContext context) {
+		this(ExplanationMode.Explain, context);
 	}
 
 	@Override
 	protected ReportRenderContext createContext(TextNestedModified.TextNestedModifiedBuilder builder) {
-		return new ReportRenderContext(builder, getMode(), getValueContext());
+		return new ReportRenderContext(builder, getMode(), getValueRenderer(), getNameRenderer());
 	}
 
 	@Override

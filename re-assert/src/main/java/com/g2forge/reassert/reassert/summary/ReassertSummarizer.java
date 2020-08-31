@@ -28,7 +28,6 @@ import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
-import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
@@ -63,8 +62,8 @@ public class ReassertSummarizer {
 		return graph.vertexSet().stream().flatMap(artifactType::castIfInstance).filter(a -> !graph.incomingEdgesOf(a).stream().map(graph::getEdgeSource).anyMatch(artifactType::isInstance)).collect(Collectors.toSet());
 	}
 
-	protected IFunction1<? super ExplanationMode, ? extends ReportRenderer> createRendererFactory() {
-		return ReportRenderer::new;
+	protected IFunction1<? super ExplanationMode, ? extends ReportRenderer> createRendererFactory(IContext context) {
+		return mode -> new ReportRenderer(mode, context);
 	}
 
 	protected <T> void render(Class<T> writenType, Class<?> schemaType, Collection<T> value, IDataSink sink, ASummaryModule module) {
@@ -81,11 +80,13 @@ public class ReassertSummarizer {
 	}
 
 	public void renderArtifacts(ReportSummary reportSummary, IDataSink sink) {
-		render(ArtifactSummary.class, ArtifactSummary.class, reportSummary.getArtifacts(), sink, new ArtifactsSummaryModule(getContext(), createRendererFactory()));
+		final IContext context = getContext();
+		render(ArtifactSummary.class, ArtifactSummary.class, reportSummary.getArtifacts(), sink, new ArtifactsSummaryModule(context, createRendererFactory(context)));
 	}
 
 	public void renderFindings(ReportSummary reportSummary, IDataSink sink) {
-		render(FindingSummary.class, FindingSummarySerializer.StoredFindingSummary.class, reportSummary.getFindings(), sink, new FindingsSummaryModule(getContext(), createRendererFactory()));
+		final IContext context = getContext();
+		render(FindingSummary.class, FindingSummarySerializer.StoredFindingSummary.class, reportSummary.getFindings(), sink, new FindingsSummaryModule(context, createRendererFactory(context)));
 	}
 
 	public ReportSummary summarize(IReport report) {
@@ -95,14 +96,11 @@ public class ReassertSummarizer {
 		final Set<IVertex> origins = computeOrigins(report, report.getGraph());
 
 		final Comparator<IVertex> vertexComparator = new Comparator<IVertex>() {
-			@Getter
-			protected final ReassertVertexDescriber describer = new ReassertVertexDescriber(getContext());
-
 			@Override
 			public int compare(IVertex o1, IVertex o2) {
-				final ReassertVertexDescriber describer = getDescriber();
-				final String n1 = describer.apply(o1).getName();
-				final String n2 = describer.apply(o2).getName();
+				final IContext context = getContext();
+				final String n1 = context.describe(o1).getName();
+				final String n2 = context.describe(o2).getName();
 				return n1.compareTo(n2);
 			}
 		};

@@ -2,7 +2,7 @@ package com.g2forge.reassert.contract.model.findings;
 
 import org.slf4j.event.Level;
 
-import com.g2forge.reassert.core.model.contract.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.report.ITerminalFinding;
 
 import lombok.Builder;

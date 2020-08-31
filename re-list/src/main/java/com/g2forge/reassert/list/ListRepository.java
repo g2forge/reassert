@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.java.adt.identity.Identified;
-import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSink;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSource;
@@ -45,14 +44,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter(AccessLevel.PROTECTED)
 public class ListRepository extends ARepository<ListCoordinates, ListSystem> {
-	
-
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final ObjectMapper mapper = computeMapper();
 
 	protected final IContext context;
-
-	protected final IFunction1<IVertex, IDescription> describer;
 
 	protected ObjectMapper computeMapper() {
 		final ObjectMapper mapper = new ObjectMapper();
@@ -124,12 +119,15 @@ public class ListRepository extends ARepository<ListCoordinates, ListSystem> {
 				});
 
 				for (Identified<IEdge> key : keys) {
-					final List<String> targets = grouped.get(key).stream().map(graph::getEdgeTarget).map(getDescriber()).map(IDescription::getIdentifier).collect(Collectors.toList());
+					final List<String> targets = grouped.get(key).stream().map(graph::getEdgeTarget).map(context::describe).map(IDescription::getIdentifier).collect(Collectors.toList());
 					storedVertexBuilder.outgoing(new StoredEdge(key.get(), targets));
 				}
 			}
 
-			final String identifier = getDescriber().apply(vertex).getIdentifier();
+			final String identifier = context.describe(vertex).getIdentifier();
+			if (identifier == null) {
+				throw new NullPointerException(String.format("Null identifier for vertex: %1$s", vertex));
+			}
 			storedGraphBuilder.vertex(identifier, storedVertexBuilder.build());
 		}
 		final StoredGraph storedGraph = storedGraphBuilder.build();

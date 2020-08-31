@@ -10,12 +10,12 @@ import org.slf4j.event.Level;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
+import com.g2forge.reassert.core.model.contract.license.License;
+import com.g2forge.reassert.core.model.contract.usage.Usage;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.mock.MockCoordinates;
 import com.g2forge.reassert.reassert.ATestReassertSummarizer;
 import com.g2forge.reassert.reassert.TestGraph;
-import com.g2forge.reassert.reassert.model.contract.TestLicense;
-import com.g2forge.reassert.reassert.model.contract.TestUsage;
 import com.g2forge.reassert.reassert.model.finding.TestFinding;
 import com.g2forge.reassert.reassert.model.finding.TestRiskFinding;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
@@ -68,17 +68,17 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 		{
 			final ArtifactSummary.ArtifactSummaryBuilder a = ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A"));
 			a.finding(new TestFinding(Level.WARN, "a finding"));
-			a.usage(new TestUsage("some usage", null));
-			a.license(new TestLicense("license 0", null, null));
+			a.usage(Usage.builder().name("some usage").build());
+			a.license(License.builder().name("license 0").build());
 			builder.artifact(a.build());
 		}
 		{
 			final ArtifactSummary.ArtifactSummaryBuilder b = ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B"));
 			b.finding(new TestFinding(Level.ERROR, "finding 0"));
 			b.finding(new TestFinding(Level.INFO, "finding 1"));
-			b.usage(new TestUsage("some usage", null));
-			b.license(new TestLicense("license 1", null, null));
-			b.license(new TestLicense("license 2", null, null));
+			b.usage(Usage.builder().name("some usage").build());
+			b.license(License.builder().name("license 1").build());
+			b.license(License.builder().name("license 2").build());
 			b.path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build());
 			builder.artifact(b.build());
 		}

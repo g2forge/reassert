@@ -3,7 +3,7 @@ package com.g2forge.reassert.standard.algorithm;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
@@ -18,14 +18,10 @@ import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
-import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.Terms;
-import com.g2forge.reassert.core.model.contract.Terms.TermsBuilder;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
-import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
+import com.g2forge.reassert.core.model.contract.usage.MergedUsage;
 import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
-import com.g2forge.reassert.core.model.contract.usage.Usage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 	protected final IFunction2<? super IEdge, ? super IUsage, ? extends IUsage> propagate;
-
-	protected final AtomicInteger mergeSequence = new AtomicInteger(0);
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
@@ -66,7 +60,7 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 
 			// Compute the original usages, and create a collection for the new ones to merge
 			final Collection<IUsage> originalUsages = usageEdges.stream().map(graph::getEdgeTarget).map(IUsage.class::cast).collect(Collectors.toCollection(LinkedHashSet::new));
-			final Collection<IUsage> usages = new LinkedHashSet<>(originalUsages);
+			final Set<IUsage> usages = new LinkedHashSet<>(originalUsages);
 
 			// Find all the usages which could affect this vertex
 			for (IEdge edge : incomingEdges) {
@@ -99,26 +93,12 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 	}
 
 	@ReassertLegalOpinion
-	protected IUsage merge(Collection<IUsage> usages) {
-		final TermsBuilder<IUsageTerm> builder = Terms.<IUsageTerm>builder();
+	protected IUsage merge(Set<IUsage> usages) {
+		final MergedUsage merged = new MergedUsage(usages);
 		for (IUsage usage : usages) {
-			final ITerms<IUsageTerm> terms = usage.getTerms();
-			for (IUsageTerm term : terms.getTerms(true)) {
-				if (!terms.isIncluded(term)) builder.exclude(term);
-			}
+			if (usage.getTerms().equals(merged.getTerms())) return usage;
 		}
-		for (IUsage usage : usages) {
-			final ITerms<IUsageTerm> terms = usage.getTerms();
-			for (IUsageTerm term : terms.getTerms(true)) {
-				if (terms.isIncluded(term)) builder.include(term);
-			}
-		}
-
-		final Terms<IUsageTerm> terms = builder.build();
-		for (IUsage usage : usages) {
-			if (usage.getTerms().equals(terms)) return usage;
-		}
-		return new Usage("Merged usage " + mergeSequence.getAndIncrement(), terms);
+		return merged;
 	}
 
 	protected IUsage propagate(IEdge edge, IUsage usage) {

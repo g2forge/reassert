@@ -6,5 +6,7 @@ import com.g2forge.reassert.expression.explain.model.IExplained;
 public interface IExplanationRenderContext extends ITextualRenderContext<IExplained<?>, IExplanationRenderContext> {
 	public ExplanationMode getMode();
 
+	public IExplanationRenderContext name(Object name);
+	
 	public IExplanationRenderContext value(Object value);
 }

@@ -5,6 +5,7 @@ import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.reassert.contract.convert.IReportRenderContext;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
+import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.model.finding.TestFinding;
 import com.g2forge.reassert.reassert.model.finding.TestRiskFinding;
@@ -25,12 +26,12 @@ public class TestReportRenderer extends ReportRenderer {
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IRendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> renderingStatic = new TestReportRendering();
 
-	public TestReportRenderer() {
-		super();
+	public TestReportRenderer(IContext context) {
+		super(context);
 	}
 
-	public TestReportRenderer(ExplanationMode mode) {
-		super(mode);
+	public TestReportRenderer(ExplanationMode mode, IContext context) {
+		super(mode, context);
 	}
 
 	@Override

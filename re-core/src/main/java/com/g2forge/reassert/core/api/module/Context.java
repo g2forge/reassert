@@ -8,9 +8,13 @@ import java.util.Objects;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
+import com.g2forge.alexandria.service.BasicServiceLoader;
+import com.g2forge.alexandria.service.DefaultInstantiator;
 import com.g2forge.reassert.cache.ICache;
 import com.g2forge.reassert.cache.LocalCache;
+import com.g2forge.reassert.core.algorithm.ReassertObjectDescriber;
 import com.g2forge.reassert.core.api.described.IDescriber;
+import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.licenseparser.CompositeLicenseParser;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.scanner.CompositeScanner;
@@ -38,8 +42,17 @@ public class Context implements IContext {
 		}
 	}
 
+	@Getter(lazy = true)
+	private static final IContext context = computeContext();
+
 	public static ContextBuilder builder() {
 		return new ContextBuilder();
+	}
+
+	protected static IContext computeContext() {
+		final DefaultInstantiator<IModule> instantiator = new DefaultInstantiator<>(null, IModule.class);
+		final BasicServiceLoader<IModule> loader = new BasicServiceLoader<>(null, IModule.class, null, instantiator);
+		return new Context(loader.load());
 	}
 
 	protected ILicenseParser licenseParser;
@@ -51,6 +64,9 @@ public class Context implements IContext {
 	protected Collection<IDescriber<?>> describers;
 
 	protected final ICache cache = new LocalCache(Paths.get(System.getProperty("user.home")).resolve(".reassert"));
+
+	@Getter(lazy = true, value = AccessLevel.PROTECTED)
+	private final ReassertObjectDescriber describer = new ReassertObjectDescriber(this);
 
 	public Context(IModule... modules) {
 		this(HCollection.asList(modules));
@@ -73,5 +89,10 @@ public class Context implements IContext {
 		setLicenseParser(new CompositeLicenseParser(loaded.getLicenseParsers()));
 		setSystems(loaded.getSystems());
 		setDescribers(loaded.getDescribers());
+	}
+
+	@Override
+	public IDescription describe(Object object) {
+		return getDescriber().apply(object);
 	}
 }

@@ -7,9 +7,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
-import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
-import com.g2forge.reassert.core.model.contract.IContract;
+import com.g2forge.reassert.core.model.contract.IContractApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
 
@@ -26,16 +25,9 @@ public abstract class ASummaryModule extends SimpleModule {
 
 	protected final IFunction1<? super ExplanationMode, ? extends ReportRenderer> rendererFactory;
 
-	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final ReassertVertexDescriber vertexDescriber = createVertexDescriber();
-
-	protected ReassertVertexDescriber createVertexDescriber() {
-		return new ReassertVertexDescriber(getContext());
-	}
-
 	protected JsonSerializer<?> modify(BeanDescription description, JsonSerializer<?> serializer) {
-		if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(getVertexDescriber());
-		if (IContract.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(getVertexDescriber());
+		if (ICoordinates.class.isAssignableFrom(description.getBeanClass())) return new CoordinateNameSerializer(getContext()::describe);
+		if (IContractApplied.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(getContext()::describe);
 		return serializer;
 	}
 

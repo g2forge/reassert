@@ -2,12 +2,12 @@ package com.g2forge.reassert.maven;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.described.IDescription;
+import com.g2forge.reassert.core.model.coordinates.ICoordinatesDescriber;
 
 import lombok.Getter;
 
-public class MavenCoordinatesDescriber implements IDescriber<MavenCoordinates>, ISingleton {
+public class MavenCoordinatesDescriber implements ICoordinatesDescriber<MavenCoordinates>, ISingleton {
 	protected static final MavenCoordinatesDescriber INSTANCE = new MavenCoordinatesDescriber();
 
 	public static MavenCoordinatesDescriber create() {

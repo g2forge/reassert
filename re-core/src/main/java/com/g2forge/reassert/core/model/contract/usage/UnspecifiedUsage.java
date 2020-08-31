@@ -1,13 +1,16 @@
 package com.g2forge.reassert.core.model.contract.usage;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.Terms;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
+
+import lombok.EqualsAndHashCode;
 
 /**
  * Indicates that no usage was specified.
  */
-public class UnspecifiedUsage implements IUsage, ISingleton {
+@EqualsAndHashCode
+public class UnspecifiedUsage implements IUsageSpecific, ISingleton {
 	protected static final UnspecifiedUsage INSTANCE = new UnspecifiedUsage();
 
 	public static UnspecifiedUsage create() {
@@ -19,6 +22,11 @@ public class UnspecifiedUsage implements IUsage, ISingleton {
 	@Override
 	public String getName() {
 		return "Unspecified Usage";
+	}
+
+	@Override
+	public String getShortID() {
+		return "UnspecifiedUsage";
 	}
 
 	/**

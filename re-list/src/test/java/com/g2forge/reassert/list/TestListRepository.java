@@ -10,8 +10,6 @@ import com.g2forge.alexandria.java.io.dataaccess.ResourceDataSource;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.enigma.diagram.dot.convert.DotRenderer;
 import com.g2forge.reassert.core.algorithm.ReassertGraphVisualizer;
-import com.g2forge.reassert.core.algorithm.ReassertVertexDescriber;
-import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.system.ISystem;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
@@ -28,8 +26,7 @@ public class TestListRepository extends ATestRepository<ListCoordinates> {
 
 	@Override
 	protected ListRepository getRepository() {
-		final IContext context = getContext();
-		return new ListRepository(context, new ReassertVertexDescriber(context));
+		return new ListRepository(getContext());
 	}
 
 	@Override

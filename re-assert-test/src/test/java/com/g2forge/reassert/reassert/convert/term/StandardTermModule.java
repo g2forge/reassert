@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.core.model.contract.ITerms;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 
 public class StandardTermModule extends SimpleModule {

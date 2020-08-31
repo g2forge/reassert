@@ -30,7 +30,7 @@ public class TestStandardLicense {
 
 	protected ReferenceTerms getReference(final StandardLicense license) {
 		try {
-			return ReferenceTerms.valueOfSPDX(license.getSPDX());
+			return ReferenceTerms.valueOfSPDX(license.getSPDXShortID());
 		} catch (IllegalArgumentException exception) {}
 		try {
 			return ReferenceTerms.valueOf(license.name());

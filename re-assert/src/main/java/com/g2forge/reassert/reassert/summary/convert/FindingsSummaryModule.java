@@ -21,7 +21,7 @@ public class FindingsSummaryModule extends ASummaryModule {
 	protected JsonSerializer<?> modify(BeanDescription description, JsonSerializer<?> serializer) {
 		if (FindingSummary.class.isAssignableFrom(description.getBeanClass())) return new FindingSummarySerializer(getRendererFactory().apply(ExplanationMode.Summarize));
 		if (IFinding.class.isAssignableFrom(description.getBeanClass())) return new FindingSerializer(getRendererFactory().apply(ExplanationMode.Explain));
-		if (GraphPath.class.isAssignableFrom(description.getBeanClass())) return new PathSerializer(false, getVertexDescriber());
+		if (GraphPath.class.isAssignableFrom(description.getBeanClass())) return new PathSerializer(false, getContext()::describe);
 		return super.modify(description, serializer);
 	}
 }

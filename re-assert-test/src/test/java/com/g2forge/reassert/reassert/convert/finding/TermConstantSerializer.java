@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.core.api.described.IDescription;
-import com.g2forge.reassert.core.model.IVertex;
+import com.g2forge.reassert.core.model.contract.IContractTerms;
 
 import lombok.Getter;
 
@@ -17,11 +17,11 @@ import lombok.Getter;
 public class TermConstantSerializer extends StdSerializer<TermConstant> {
 	private static final long serialVersionUID = 4188997795853592234L;
 
-	protected final IFunction1<IVertex, IDescription> vertexDescriber;
+	protected final IFunction1<? super IContractTerms, ? extends IDescription> describer;
 
-	protected TermConstantSerializer(IFunction1<IVertex, IDescription> vertexDescriber) {
+	protected TermConstantSerializer(IFunction1<? super IContractTerms, ? extends IDescription> describer) {
 		super(TermConstant.class);
-		this.vertexDescriber = vertexDescriber;
+		this.describer = describer;
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class TermConstantSerializer extends StdSerializer<TermConstant> {
 	}
 
 	protected StoredTermConstant toStored(boolean withType, TermConstant value) {
-		final String contract = getVertexDescriber().apply(value.getContract()).getName();
+		final String contract = getDescriber().apply(value.getContract()).getName();
 		return new StoredTermConstant(withType ? value.getClass().getName() : null, value.getTerm(), contract);
 	}
 }

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.standard.algorithm.propogate;
+package com.g2forge.reassert.standard.algorithm.propagate;
 
 import static com.g2forge.reassert.contract.model.logic.HTermLogic.and;
 import static com.g2forge.reassert.contract.model.logic.HTermLogic.context;
@@ -13,11 +13,11 @@ import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;
 import com.g2forge.reassert.core.model.artifact.Inherits;
-import com.g2forge.reassert.core.model.contract.TermRelation;
-import com.g2forge.reassert.core.model.contract.Terms;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
-import com.g2forge.reassert.core.model.contract.usage.Usage;
+import com.g2forge.reassert.core.model.contract.usage.PropagatedUsage;
 import com.g2forge.reassert.core.model.file.Contains;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
@@ -25,17 +25,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 @ReassertLegalOpinion
-public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
-	private static final StandardUsagePropogation INSTANCE = new StandardUsagePropogation();
+public class StandardUsagePropagation implements IUsagePropagation, ISingleton {
+	private static final StandardUsagePropagation INSTANCE = new StandardUsagePropagation();
 
-	public static StandardUsagePropogation create() {
+	public static StandardUsagePropagation create() {
 		return INSTANCE;
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final IFunction2<IEdge, IUsage, IUsage> function = computeFunction();
 
-	protected StandardUsagePropogation() {}
+	protected StandardUsagePropagation() {}
 
 	@Override
 	public IUsage apply(IEdge edge, IUsage usage) {
@@ -55,7 +55,7 @@ public class StandardUsagePropogation implements IUsagePropogation, ISingleton {
 
 		final Terms<IUsageTerm> terms = termsBuilder.build();
 		if (usage.getTerms().equals(terms)) return usage;
-		return new Usage(edge.toString() + " " + usage.getName(), terms);
+		return new PropagatedUsage(edge, usage, terms);
 	}
 
 	protected IFunction2<IEdge, IUsage, IUsage> computeFunction() {

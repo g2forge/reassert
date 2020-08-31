@@ -1,4 +1,4 @@
-package com.g2forge.reassert.core.model.contract;
+package com.g2forge.reassert.core.model.contract.terms;
 
 public enum TermRelation {
 	Unspecified,

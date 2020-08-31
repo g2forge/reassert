@@ -1,4 +1,4 @@
-package com.g2forge.reassert.core.model.contract;
+package com.g2forge.reassert.core.model.contract.terms;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;

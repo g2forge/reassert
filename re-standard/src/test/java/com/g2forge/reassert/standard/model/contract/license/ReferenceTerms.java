@@ -3,11 +3,13 @@ package com.g2forge.reassert.standard.model.contract.license;
 import com.g2forge.alexandria.java.core.enums.HEnum;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
-import com.g2forge.reassert.core.model.contract.ITerms;
-import com.g2forge.reassert.core.model.contract.Terms;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
+import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
+import com.g2forge.reassert.core.model.contract.license.ILicenseSpecificEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
+import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.terms.Terms;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
-public enum ReferenceTerms implements ILicense {
+public enum ReferenceTerms implements ILicenseSpecificEnum {
 	// @formatter:off
 	Apache2("Apache-2.0", Terms.<ILicenseTerm>builder().include(StandardLicenseTerm.CommercialUse, StandardLicenseTerm.Distribution, StandardLicenseTerm.Modification, StandardLicenseTerm.PatentGrant, StandardLicenseTerm.PrivateUse, StandardLicenseTerm.Notice, StandardLicenseTerm.StateChanges, StandardLicenseTerm.Liability, StandardLicenseTerm.Trademark, StandardLicenseTerm.Warranty).exclude(StandardLicenseTerm.DisclosureSource, StandardLicenseTerm.SaaSIsDistribution, StandardLicenseTerm.SameLicense, StandardLicenseTerm.PatentNonGrant).build()),
 	BSD2("BSD-2-Clause", Terms.<ILicenseTerm>builder().include(StandardLicenseTerm.CommercialUse, StandardLicenseTerm.Distribution, StandardLicenseTerm.Modification, StandardLicenseTerm.PrivateUse, StandardLicenseTerm.Notice, StandardLicenseTerm.Liability, StandardLicenseTerm.Warranty).exclude(StandardLicenseTerm.PatentGrant, StandardLicenseTerm.DisclosureSource, StandardLicenseTerm.SaaSIsDistribution, StandardLicenseTerm.SameLicense, StandardLicenseTerm.StateChanges, StandardLicenseTerm.PatentNonGrant, StandardLicenseTerm.Trademark).build()),
@@ -35,16 +37,30 @@ public enum ReferenceTerms implements ILicense {
 	// @formatter:on
 
 	public static ReferenceTerms valueOfSPDX(String text) {
-		return HEnum.valueOf(ReferenceTerms.class, ILicense::getSPDX, true, IFunction1.identity(), text);
+		return HEnum.valueOf(ReferenceTerms.class, ILicenseSpecific::getSPDXShortID, true, IFunction1.identity(), text);
 	}
 
-	protected final String SPDX;
+	protected final String SPDXShortID;
 
 	protected final ITerms<ILicenseTerm> terms;
 
 	@Override
-	public String getName() {
-		final String string = (getSPDX() == null) ? name() : getSPDX().replace('-', ' ');
-		return string + " license";
+	public ILicenseFamily getFamily() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public LicenseVersion getVersion() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isChild(ILicenseFamily license) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isOrLater() {
+		throw new UnsupportedOperationException();
 	}
 }

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.TermRelationBooleanSystem;
-import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.evaluate.ATestExplainedBooleanEvaluator;
 import com.g2forge.reassert.expression.evaluate.bool.IBooleanSystem;
 import com.g2forge.reassert.expression.express.Literal;

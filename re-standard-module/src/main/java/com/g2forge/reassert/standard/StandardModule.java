@@ -6,9 +6,7 @@ import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.module.IModule;
 import com.g2forge.reassert.core.api.module.IModule.Loaded.LoadedBuilder;
 import com.g2forge.reassert.standard.api.scanner.LicenseFileScanner;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicenseDescriber;
 import com.g2forge.reassert.standard.model.contract.license.parser.StandardLicenseParser;
-import com.g2forge.reassert.standard.model.contract.usage.StandardUsageDescriber;
 
 @Service(IModule.class)
 public class StandardModule implements IModule, ISingleton {
@@ -25,8 +23,6 @@ public class StandardModule implements IModule, ISingleton {
 		final LoadedBuilder builder = IModule.Loaded.builder();
 		builder.scanner(new LicenseFileScanner(context));
 		builder.licenseParser(StandardLicenseParser.create());
-		builder.describer(StandardLicenseDescriber.create());
-		builder.describer(StandardUsageDescriber.create());
 		return builder.build();
 	}
 }

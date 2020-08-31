@@ -1,8 +1,8 @@
 package com.g2forge.reassert.contract.model.logic;
 
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.core.model.contract.ITerm;
-import com.g2forge.reassert.core.model.contract.TermRelation;
+import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 
 import lombok.Builder;
 import lombok.Data;
