@@ -2,12 +2,12 @@ package com.g2forge.reassert.mock;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.described.IDescription;
+import com.g2forge.reassert.core.model.coordinates.ICoordinatesDescriber;
 
 import lombok.Getter;
 
-public class MockCoordinatesDescriber implements IDescriber<MockCoordinates>, ISingleton {
+public class MockCoordinatesDescriber implements ICoordinatesDescriber<MockCoordinates>, ISingleton {
 	protected static final MockCoordinatesDescriber INSTANCE = new MockCoordinatesDescriber();
 
 	public static MockCoordinatesDescriber create() {

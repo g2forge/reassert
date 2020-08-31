@@ -19,7 +19,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "GPL-3.0-or-later", "Private Usage" ]
+        "targets" : [ "GPL-3.0-or-later", "private-usage" ]
       } ]
     },
     "B artifact" : {
@@ -32,13 +32,13 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "No such license", "Private Usage" ]
+        "targets" : [ "no-such-license", "private-usage" ]
       } ]
     },
     "GPL-3.0-or-later" : {
       "vertex" : "GPL3OrLater"
     },
-    "No such license" : {
+    "no-such-license" : {
       "vertex" : {
         "@c" : ".contract.license.License",
         "name" : "No such license",
@@ -58,7 +58,7 @@
         "targets" : [ "UnknownWorkTypeFinding 0" ]
       } ]
     },
-    "Private Usage" : {
+    "private-usage" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
         "name" : "Private Usage",

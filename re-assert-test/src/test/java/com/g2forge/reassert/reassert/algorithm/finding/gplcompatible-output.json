@@ -19,7 +19,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "GPL-3.0-or-later", "Private Usage" ]
+        "targets" : [ "GPL-3.0-or-later", "private-usage" ]
       } ]
     },
     "B artifact" : {
@@ -32,7 +32,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "BSD-3-Clause", "Private Usage" ]
+        "targets" : [ "BSD-3-Clause", "private-usage" ]
       } ]
     },
     "GPL-3.0-or-later" : {
@@ -41,7 +41,7 @@
     "BSD-3-Clause" : {
       "vertex" : "BSD3"
     },
-    "Private Usage" : {
+    "private-usage" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
         "name" : "Private Usage",

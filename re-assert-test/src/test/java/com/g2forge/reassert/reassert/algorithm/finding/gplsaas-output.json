@@ -10,10 +10,10 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "SaaS Usage", "GPL-3.0-or-later", "SuspiciousUsageFinding 13" ]
+        "targets" : [ "saas-usage", "GPL-3.0-or-later", "SuspiciousUsageFinding 13" ]
       } ]
     },
-    "SaaS Usage" : {
+    "saas-usage" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
         "name" : "SaaS Usage",

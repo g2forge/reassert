@@ -13,28 +13,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class UnknownLicense implements ILicenseSpecific {
+public class UnknownLicense implements ILicense {
 	protected final String text;
-
-	@Override
-	public ILicenseFamily getFamily() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return "Unknown License";
-	}
-
-	@Override
-	public String getShortID() {
-		return "UnknownLicense";
-	}
-
-	@Override
-	public String getSPDXShortID() {
-		return null;
-	}
 
 	/**
 	 * An unknown license has no terms, which means it has no permissions and thus artifacts with this license cannot cannot be used.
@@ -42,20 +22,5 @@ public class UnknownLicense implements ILicenseSpecific {
 	@Override
 	public ITerms<ILicenseTerm> getTerms() {
 		return Terms.createNone();
-	}
-
-	@Override
-	public LicenseVersion getVersion() {
-		return null;
-	}
-
-	@Override
-	public boolean isChild(ILicenseFamily license) {
-		return false;
-	}
-
-	@Override
-	public boolean isOrLater() {
-		return false;
 	}
 }

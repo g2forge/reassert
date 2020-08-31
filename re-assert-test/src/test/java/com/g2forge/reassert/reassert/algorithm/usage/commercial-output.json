@@ -22,7 +22,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "Commercial Usage" ]
+        "targets" : [ "commercial-usage" ]
       } ]
     },
     "B artifact" : {
@@ -35,7 +35,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "Inherits() Commercial Usage" ]
+        "targets" : [ "PropagatedUsage-Inherits()-commercial-usage" ]
       } ]
     },
     "C artifact" : {
@@ -48,10 +48,10 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "Depends(transitive=true, runtime=true, testtime=true, compiletime=true) Commercial Usage" ]
+        "targets" : [ "PropagatedUsage-Depends(transitive=true, runtime=true, testtime=true, compiletime=true)-commercial-usage" ]
       } ]
     },
-    "Commercial Usage" : {
+    "commercial-usage" : {
       "vertex" : {
         "@c" : ".contract.usage.Usage",
         "name" : "Commercial Usage",
@@ -61,10 +61,24 @@
         } ]
       }
     },
-    "Depends(transitive=true, runtime=true, testtime=true, compiletime=true) Commercial Usage" : {
+    "PropagatedUsage-Depends(transitive=true, runtime=true, testtime=true, compiletime=true)-commercial-usage" : {
       "vertex" : {
-        "@c" : ".contract.usage.Usage",
-        "name" : "Depends(transitive=true, runtime=true, testtime=true, compiletime=true) Commercial Usage",
+        "@c" : ".contract.usage.PropagatedUsage",
+        "edge" : {
+          "@c" : ".artifact.Depends",
+          "transitive" : true,
+          "runtime" : true,
+          "testtime" : true,
+          "compiletime" : true
+        },
+        "usage" : {
+          "@c" : ".Usage",
+          "name" : "Commercial Usage",
+          "terms" : [ {
+            "term" : "Commercial",
+            "relation" : "Included"
+          } ]
+        },
         "terms" : [ {
           "term" : "Commercial",
           "relation" : "Included"
@@ -80,10 +94,18 @@
         } ]
       }
     },
-    "Inherits() Commercial Usage" : {
+    "PropagatedUsage-Inherits()-commercial-usage" : {
       "vertex" : {
-        "@c" : ".contract.usage.Usage",
-        "name" : "Inherits() Commercial Usage",
+        "@c" : ".contract.usage.PropagatedUsage",
+        "edge" : "inherits",
+        "usage" : {
+          "@c" : ".Usage",
+          "name" : "Commercial Usage",
+          "terms" : [ {
+            "term" : "Commercial",
+            "relation" : "Included"
+          } ]
+        },
         "terms" : [ {
           "term" : "Commercial",
           "relation" : "Included"

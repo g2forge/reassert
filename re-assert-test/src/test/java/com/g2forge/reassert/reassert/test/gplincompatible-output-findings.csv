@@ -70,12 +70,12 @@ INFO,"The usage for this artifact improperly specifies the format",A,A,"INFO: Th
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",B,"A -> B","INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
 	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
 	Explanation: Included (||) - because Included is the zero of the || operator
-		* Included (!) - because there's a single argument: Excluded - Commercial usage in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage
+		* Included (!) - because there's a single argument: Excluded - Commercial usage in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
 		* Included - Permission for commercial usage in GPL 3.0 or later license"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
 	Rule: ((!""Public distribution"") || ""Permission to distribute"")
 	Explanation: Included (||) - because Included is the zero of the || operator
-		* Included (!) - because there's a single argument: Excluded - Public distribution in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage
+		* Included (!) - because there's a single argument: Excluded - Public distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
 		* Included - Permission to distribute in GPL 3.0 or later license"
 INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Private distribution"") || ""Permission for private usage"")
@@ -93,12 +93,12 @@ INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Copied"") || ""Permission for private usage"")
 	Explanation: Included (||) - because Included is the zero of the || operator
-		* Included (!) - because there's a single argument: Excluded - Copied in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage
+		* Included (!) - because there's a single argument: Excluded - Copied in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
 		* Included - Permission for private usage in GPL 3.0 or later license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",B,"A -> B","INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
 	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
 	Explanation: Included (||) - because Included is the zero of the || operator
-		* Included (!) - because there's a single argument: Excluded - Modified in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage
+		* Included (!) - because there's a single argument: Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
 		* Included (&&) - because the && operator (with identity Included) was applied"
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
@@ -107,7 +107,7 @@ INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for p
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Source distribution"") || ""Permission for private usage"")
 	Explanation: Included (||) - because Included is the zero of the || operator
-		* Included (!) - because there's a single argument: Excluded - Source distribution in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage
+		* Included (!) - because there's a single argument: Excluded - Source distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
 		* Included - Permission for private usage in GPL 3.0 or later license"
 INFO,"You must disclose the source for this artifact",B,"A -> B","INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
@@ -121,19 +121,19 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded (||) - because the || operator (with identity Excluded) was applied
-		* Excluded - Modified in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage"
+		* Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"The usage for this artifact improperly specifies the method of distribtion",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribtion
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
-		* Included - Private distribution in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage
-		* Included - SaaS distribution in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage"
+		* Included - Private distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
+		* Included - SaaS distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"The usage for this artifact improperly specifies the method of consumption",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of consumption
 	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
-		* Included - Linked in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage"
+		* Included - Linked in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"The usage for this artifact improperly specifies the format",B,"A -> B","INFO: The usage for this artifact improperly specifies the format
 	Rule: (!(""Binary distribution"" || ""Source distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
-		* Included - Binary distribution in Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage"
+		* Included - Binary distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 ERROR,"Unknown work type",,"A -> No such license","ERROR: Unknown work type	
-	There was no fallback, and no case was found for: License(name=No such license, sPDX=null, terms=Terms(terms={CommercialUse=Excluded, PrivateUse=Included, Notice=Excluded, SaaSIsDistribution=Excluded, Warranty=Included}))"
+	There was no fallback, and no case was found for: License(name=No such license, shortID=null, SPDXShortID=null, terms=Terms(terms={CommercialUse=Excluded, PrivateUse=Included, Notice=Excluded, SaaSIsDistribution=Excluded, Warranty=Included}), version=null, orLater=false)"

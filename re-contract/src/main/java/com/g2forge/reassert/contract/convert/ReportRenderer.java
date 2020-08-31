@@ -63,12 +63,14 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 		@Override
 		public void render(TextNestedModifiedBuilder builder, Object renderable) {
-			final TermConstant constant = (TermConstant) renderable;
+			if (renderable instanceof TermConstant) {
+				final TermConstant constant = (TermConstant) renderable;
 
-			builder.expression(constant.getTerm().getDescription()).expression(" in ");
+				builder.expression(constant.getTerm().getDescription()).expression(" in ");
 
-			final IDescription description = getContext().describe(constant.getContract());
-			builder.expression(description.getName());
+				final IDescription description = getContext().describe(constant.getContract());
+				builder.expression(description.getName());
+			} else builder.expression(renderable);
 		}
 	}
 

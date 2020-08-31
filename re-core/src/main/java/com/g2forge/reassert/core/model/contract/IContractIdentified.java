@@ -2,7 +2,7 @@ package com.g2forge.reassert.core.model.contract;
 
 import com.g2forge.alexandria.java.adt.name.IStringNamed;
 
-public interface IContractIdentified extends IStringNamed {
+public interface IContractIdentified extends IStringNamed, IContract {
 	/**
 	 * Get a human readable name for this contract.
 	 * 

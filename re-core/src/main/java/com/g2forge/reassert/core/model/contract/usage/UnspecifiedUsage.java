@@ -4,9 +4,12 @@ import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * Indicates that no usage was specified.
  */
+@EqualsAndHashCode
 public class UnspecifiedUsage implements IUsageSpecific, ISingleton {
 	protected static final UnspecifiedUsage INSTANCE = new UnspecifiedUsage();
 
