@@ -1,13 +1,22 @@
 package com.g2forge.reassert.core.api.module;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.fluent.optional.IOptional;
+import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
+import com.g2forge.alexandria.java.io.RuntimeIOException;
+import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.service.BasicServiceLoader;
 import com.g2forge.alexandria.service.DefaultInstantiator;
 import com.g2forge.reassert.cache.ICache;
@@ -17,6 +26,7 @@ import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.licenseparser.CompositeLicenseParser;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
+import com.g2forge.reassert.core.api.module.config.IConfig;
 import com.g2forge.reassert.core.api.scanner.CompositeScanner;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
@@ -24,9 +34,11 @@ import com.g2forge.reassert.core.api.system.ISystem;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter(AccessLevel.PROTECTED)
+@Slf4j
 public class Context implements IContext {
 	public static class ContextBuilder implements IBuilder<IContext> {
 		protected final List<IModule> modules = new ArrayList<>();
@@ -94,5 +106,28 @@ public class Context implements IContext {
 	@Override
 	public IDescription describe(Object object) {
 		return getDescriber().apply(object);
+	}
+
+	@Override
+	public IConfig getConfig() {
+		final ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new ParanamerModule());
+		
+		final Path configRoot = Paths.get("").toAbsolutePath();
+		log.warn(String.format("Loading reassert configurations from %1$s", configRoot));
+		
+		return new IConfig() {
+			@Override
+			public <T> IOptional<T> load(ITypeRef<T> type) {
+				final Class<T> klass = type.getErasedType();
+				final Path path = configRoot.resolve(klass.getSimpleName() + ".json");
+				if (!Files.exists(path)) return NullableOptional.empty();
+				try {
+					return NullableOptional.of(mapper.readValue(path.toFile(), klass));
+				} catch (IOException e) {
+					throw new RuntimeIOException(e);
+				}
+			}
+		};
 	}
 }
