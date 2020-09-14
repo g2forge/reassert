@@ -26,7 +26,7 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.artifact.Inherits;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.file.Contains;
 import com.g2forge.reassert.core.model.file.Describes;
@@ -40,14 +40,14 @@ public class StandardLicenseInheritanceVisitor extends AGraphVisitor {
 	public void accept(Graph<IVertex, IEdge> graph) {
 		final List<Artifact<?>> order = HStream.toStream(new TopologicalOrderIterator<>(new EdgeReversedGraph<>(new MaskSubgraph<>(graph, v -> !(v instanceof Artifact), e -> !(e instanceof Inherits))))).map(a -> (Artifact<?>) a).collect(Collectors.toList());
 
-		final Set<ILicense> removed = new HashSet<>();
-		final Map<Artifact<?>, Collection<ILicense>> licenseMap = new HashMap<>();
+		final Set<ILicenseApplied> removed = new HashSet<>();
+		final Map<Artifact<?>, Collection<ILicenseApplied>> licenseMap = new HashMap<>();
 		for (Artifact<?> artifact : order) {
-			final Map<Boolean, List<Notice>> notices = graph.outgoingEdgesOf(artifact).stream().filter(Notice.class::isInstance).filter(e -> graph.getEdgeTarget(e) instanceof ILicense).map(Notice.class::cast).collect(Collectors.toList()).stream().collect(Collectors.groupingBy(e -> (graph.getEdgeTarget(e) instanceof UnspecifiedLicense)));
+			final Map<Boolean, List<Notice>> notices = graph.outgoingEdgesOf(artifact).stream().filter(Notice.class::isInstance).filter(e -> graph.getEdgeTarget(e) instanceof ILicenseApplied).map(Notice.class::cast).collect(Collectors.toList()).stream().collect(Collectors.groupingBy(e -> (graph.getEdgeTarget(e) instanceof UnspecifiedLicense)));
 			final List<Notice> specified = notices.get(false);
 			// If there is a specified license for this artifact, then we needn't try to find one
 			if ((specified != null) && !specified.isEmpty()) {
-				licenseMap.computeIfAbsent(artifact, a -> new ArrayList<>()).addAll(specified.stream().map(graph::getEdgeTarget).map(ILicense.class::cast).collect(Collectors.toList()));
+				licenseMap.computeIfAbsent(artifact, a -> new ArrayList<>()).addAll(specified.stream().map(graph::getEdgeTarget).map(ILicenseApplied.class::cast).collect(Collectors.toList()));
 				continue;
 			}
 
@@ -65,21 +65,21 @@ public class StandardLicenseInheritanceVisitor extends AGraphVisitor {
 			if (!artifactContainers.equals(parentContainers)) continue;
 
 			// Add the newly found licenses
-			final Set<ILicense> licenses = parents.stream().map(licenseMap::get).flatMap(Collection::stream).collect(Collectors.toSet());
+			final Set<ILicenseApplied> licenses = parents.stream().map(licenseMap::get).flatMap(Collection::stream).collect(Collectors.toSet());
 			licenseMap.put(artifact, licenses);
-			for (ILicense license : licenses) {
+			for (ILicenseApplied license : licenses) {
 				graph.addEdge(artifact, license, new Notice());
 			}
 
 			// Remove any unspecified license edges
 			final List<Notice> unspecified = notices.get(true);
 			if (unspecified != null) {
-				unspecified.stream().map(graph::getEdgeTarget).map(ILicense.class::cast).forEach(removed::add);
+				unspecified.stream().map(graph::getEdgeTarget).map(ILicenseApplied.class::cast).forEach(removed::add);
 				graph.removeAllEdges(unspecified);
 			}
 		}
 
-		for (ILicense license : removed) {
+		for (ILicenseApplied license : removed) {
 			if (graph.degreeOf(license) == 0) graph.removeVertex(license);
 		}
 	}

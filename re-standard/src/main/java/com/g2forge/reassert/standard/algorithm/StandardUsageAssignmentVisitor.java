@@ -20,6 +20,7 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.MergedUsage;
 import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class StandardUsageAssignmentVisitor extends AGraphVisitor {
-	protected final IFunction2<? super IEdge, ? super IUsage, ? extends IUsage> propagate;
+	protected final IFunction2<? super IEdge, ? super IUsageApplied, ? extends IUsage> propagate;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
@@ -41,7 +42,7 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 
 		// Make sure all artifacts have a usage specified (even if it's unknown) and queue up any artifacts that have a real usage
 		for (Artifact<?> artifact : artifacts) {
-			final Collection<IUsage> usages = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class));
+			final Collection<IUsageApplied> usages = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class));
 			if (usages.isEmpty()) graph.addEdge(artifact, unspecifiedUsage, new Notice());
 			else queue.addAll(HReassertModel.get(graph, artifact, true, IEdge::isDirected, new ATypeRef<Artifact<?>>() {}));
 		}
@@ -55,7 +56,7 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 				iterator.remove();
 			}
 
-			final Collection<IEdge> usageEdges = HReassertModel.getEdges(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class));
+			final Collection<IEdge> usageEdges = HReassertModel.getEdges(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class));
 			final Collection<IEdge> incomingEdges = HReassertModel.getEdges(graph, artifact, false, IEdge::isDirected, new ATypeRef<Artifact<?>>() {});
 
 			// Compute the original usages, and create a collection for the new ones to merge
@@ -65,8 +66,8 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 			// Find all the usages which could affect this vertex
 			for (IEdge edge : incomingEdges) {
 				final IVertex otherArtifact = graph.getEdgeSource(edge);
-				final Collection<IUsage> otherUsages = HReassertModel.get(graph, otherArtifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class));
-				for (IUsage otherUsage : otherUsages) {
+				final Collection<IUsageApplied> otherUsages = HReassertModel.get(graph, otherArtifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class));
+				for (IUsageApplied otherUsage : otherUsages) {
 					final IUsage modified = propagate(edge, otherUsage);
 					if ((modified != null) && !unspecifiedUsage.equals(modified)) usages.add(modified);
 				}
@@ -101,7 +102,7 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 		return merged;
 	}
 
-	protected IUsage propagate(IEdge edge, IUsage usage) {
+	protected IUsage propagate(IEdge edge, IUsageApplied usage) {
 		return getPropagate().apply(edge, usage);
 	}
 }

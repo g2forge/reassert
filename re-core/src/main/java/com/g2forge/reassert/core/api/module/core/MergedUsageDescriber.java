@@ -6,7 +6,7 @@ import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.IContractDescriber;
-import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.MergedUsage;
 
 import lombok.AccessLevel;
@@ -30,7 +30,7 @@ public class MergedUsageDescriber implements IContractDescriber<MergedUsage>, IS
 			protected String computeCode() {
 				final IContext context = getContext();
 				long sum = 0;
-				for (IUsage usage : value.getUsages()) {
+				for (IUsageApplied usage : value.getUsages()) {
 					sum += context.describe(usage).getIdentifier().hashCode();
 				}
 				final int hashCode = (int) ((sum & 0xFFFFFFFF) ^ (sum >>> 32));

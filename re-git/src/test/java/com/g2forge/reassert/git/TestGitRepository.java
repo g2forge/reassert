@@ -20,7 +20,7 @@ import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.core.test.ATestRepository;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
@@ -44,8 +44,8 @@ public class TestGitRepository extends ATestRepository<GitCoordinates> {
 	public void licenses() {
 		final Graph<IVertex, IEdge> graph = getGraph();
 		final Artifact<GitCoordinates> artifact = HReassertModel.findArtifact(graph, getCoordinates());
-		final Collection<ILicense> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
-		final Map<Class<?>, List<ILicense>> grouped = licenses.stream().collect(Collectors.groupingBy(Object::getClass));
+		final Collection<ILicenseApplied> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
+		final Map<Class<?>, List<ILicenseApplied>> grouped = licenses.stream().collect(Collectors.groupingBy(Object::getClass));
 		HAssert.assertTrue(grouped.get(UnknownLicense.class).size() == 1);
 		HAssert.assertEquals(HCollection.asList(StandardLicense.Apache2), grouped.get(StandardLicense.class));
 	}

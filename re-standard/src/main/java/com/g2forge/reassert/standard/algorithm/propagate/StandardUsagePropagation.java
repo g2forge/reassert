@@ -16,6 +16,7 @@ import com.g2forge.reassert.core.model.artifact.Inherits;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.contract.usage.PropagatedUsage;
 import com.g2forge.reassert.core.model.file.Contains;
@@ -33,15 +34,15 @@ public class StandardUsagePropagation implements IUsagePropagation, ISingleton {
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final IFunction2<IEdge, IUsage, IUsage> function = computeFunction();
+	private final IFunction2<IEdge, IUsageApplied, IUsageApplied> function = computeFunction();
 
 	protected StandardUsagePropagation() {}
 
 	@Override
-	public IUsage apply(IEdge edge, IUsage usage) {
-		final IFunction2<IEdge, IUsage, IUsage> function = getFunction();
-		final IUsage result = function.apply(edge, usage);
-		if (result.getTerms().equals(usage.getTerms())) return usage;
+	public IUsageApplied apply(IEdge edge, IUsageApplied usage) {
+		final IFunction2<IEdge, IUsageApplied, IUsageApplied> function = getFunction();
+		final IUsageApplied result = function.apply(edge, usage);
+		if (result.equals(usage)) return usage;
 		return result;
 	}
 
@@ -58,8 +59,8 @@ public class StandardUsagePropagation implements IUsagePropagation, ISingleton {
 		return new PropagatedUsage(edge, usage, terms);
 	}
 
-	protected IFunction2<IEdge, IUsage, IUsage> computeFunction() {
-		final Map<StandardUsageTerm, IFunction2<Inherits, IUsage, TermRelation>> inheritsUsageTermMap;
+	protected IFunction2<IEdge, IUsageApplied, IUsageApplied> computeFunction() {
+		final Map<StandardUsageTerm, IFunction2<Inherits, IUsageApplied, TermRelation>> inheritsUsageTermMap;
 		{
 			final UsageTermMapBuilder<Inherits> builder = new UsageTermMapBuilder<>();
 			builder.copy(StandardUsageTerm.Commercial).copy(StandardUsageTerm.DistributionPublic).copy(StandardUsageTerm.DistributionPrivate).copy(StandardUsageTerm.DistributionService);

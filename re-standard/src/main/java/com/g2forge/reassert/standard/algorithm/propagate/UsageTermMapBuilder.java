@@ -14,6 +14,7 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.expression.evaluate.IEvaluator;
 import com.g2forge.reassert.expression.evaluate.bool.BooleanEvaluator;
@@ -23,14 +24,14 @@ import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public class UsageTermMapBuilder<E extends IEdge> implements IBuilder<Map<StandardUsageTerm, IFunction2<E, IUsage, TermRelation>>> {
+public class UsageTermMapBuilder<E extends IEdge> implements IBuilder<Map<StandardUsageTerm, IFunction2<E, IUsageApplied, TermRelation>>> {
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IEvaluator<TermRelation, TermRelation> evaluator = new BooleanEvaluator<TermRelation>(TermRelationBooleanSystem.create());
 
-	protected final Map<StandardUsageTerm, IFunction2<E, IUsage, TermRelation>> map = new EnumMap<>(StandardUsageTerm.class);
+	protected final Map<StandardUsageTerm, IFunction2<E, IUsageApplied, TermRelation>> map = new EnumMap<>(StandardUsageTerm.class);
 
 	@Override
-	public Map<StandardUsageTerm, IFunction2<E, IUsage, TermRelation>> build() {
+	public Map<StandardUsageTerm, IFunction2<E, IUsageApplied, TermRelation>> build() {
 		return map;
 	}
 

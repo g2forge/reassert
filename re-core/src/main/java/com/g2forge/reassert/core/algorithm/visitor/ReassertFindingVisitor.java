@@ -14,10 +14,10 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
-import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IWorkType;
@@ -40,8 +40,8 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 	protected void analyzeLicenseUsage(Graph<IVertex, IEdge> graph) {
 		final ILicenseUsageAnalyzer licenseUsageAnalyzer = getLicenseUsageAnalyzer();
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
-			final IUsage usage = HCollection.getOne(HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsage.class)));
-			final ILicense license = computeLicense(graph, artifact);
+			final IUsageApplied usage = HCollection.getOne(HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class)));
+			final ILicenseApplied license = computeLicense(graph, artifact);
 			final IReport report = licenseUsageAnalyzer.report(usage, license);
 			found(graph, artifact, report);
 		}
@@ -55,14 +55,14 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		}
 	}
 
-	protected ILicense computeLicense(Graph<IVertex, IEdge> graph, Artifact<?> artifact) {
-		final Collection<ILicense> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
+	protected ILicenseApplied computeLicense(Graph<IVertex, IEdge> graph, Artifact<?> artifact) {
+		final Collection<ILicenseApplied> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
 		if (licenses.size() == 1) return HCollection.getOne(licenses);
 
 		if (licenses.size() > 1) {
 			// Notice: we don't need a finding if no license is specified, because an unspecified license will result in a usage failure
 			final IVertex finding = found(graph, artifact, new MultiLicenseFinding());
-			for (ILicense license : licenses) {
+			for (ILicenseApplied license : licenses) {
 				graph.addEdge(finding, license, new Notice());
 			}
 		}

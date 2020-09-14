@@ -18,7 +18,7 @@ import com.g2forge.alexandria.java.core.resource.HResource;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
 
@@ -57,10 +57,10 @@ public class TestListStandardLicenseParser {
 		}
 
 		return licenses.stream().map(x -> {
-			final ILicense license;
+			final ILicenseApplied license;
 			if (x.getLicense().isEmpty()) license = new UnknownLicense(x.getDescription());
 			else {
-				ILicense temp = null;
+				ILicenseApplied temp = null;
 				try {
 					temp = StandardLicense.valueOfSPDX(x.getLicense());
 				} catch (IllegalArgumentException e0) {
@@ -82,7 +82,7 @@ public class TestListStandardLicenseParser {
 
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(0)
-	public ILicense license;
+	public ILicenseApplied license;
 
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(1)
@@ -94,7 +94,7 @@ public class TestListStandardLicenseParser {
 
 	@Test
 	public void test() {
-		final ILicense actual = getParser().parse(getText());
+		final ILicenseApplied actual = getParser().parse(getText());
 		HAssert.assertEquals(getPurpose(), getLicense(), actual);
 	}
 }

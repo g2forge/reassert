@@ -1,8 +1,8 @@
 package com.g2forge.reassert.core.api.licenseparser;
 
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 
 @FunctionalInterface
 public interface ILicenseParser {
-	public ILicense parse(String text);
+	public ILicenseApplied parse(String text);
 }

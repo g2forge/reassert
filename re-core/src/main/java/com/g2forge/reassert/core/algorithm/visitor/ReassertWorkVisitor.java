@@ -19,7 +19,7 @@ import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.work.IWorkType;
 import com.g2forge.reassert.core.model.work.IWorkTypeFactory;
 import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
@@ -39,9 +39,9 @@ public class ReassertWorkVisitor extends AGraphVisitor {
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
-		Map<ILicense, IWorkType> licenses = new LinkedHashMap<>();
+		Map<ILicenseApplied, IWorkType> licenses = new LinkedHashMap<>();
 		final IWorkTypeFactory workTypeFactory = getWorkTypeFactory();
-		for (ILicense license : graph.vertexSet().stream().flatMap(ITypeRef.of(ILicense.class)::castIfInstance).collect(Collectors.toCollection(LinkedHashSet::new))) {
+		for (ILicenseApplied license : graph.vertexSet().stream().flatMap(ITypeRef.of(ILicenseApplied.class)::castIfInstance).collect(Collectors.toCollection(LinkedHashSet::new))) {
 			final IWorkType workType;
 			try {
 				workType = workTypeFactory.computeWorkType(license);
@@ -55,7 +55,7 @@ public class ReassertWorkVisitor extends AGraphVisitor {
 		final LinkedHashSet<WorkContains> queue = new LinkedHashSet<>();
 
 		// Start with all the vertices which have licenses assigned
-		for (Map.Entry<ILicense, ? extends IWorkType> entry : licenses.entrySet()) {
+		for (Map.Entry<ILicenseApplied, ? extends IWorkType> entry : licenses.entrySet()) {
 			final IWorkType workType = entry.getValue();
 			for (Artifact<?> artifact : HReassertModel.get(graph, entry.getKey(), false, Notice.class::isInstance, new ATypeRef<Artifact<?>>() {})) {
 				final int index = workSequence.getAndIncrement();
