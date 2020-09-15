@@ -18,6 +18,8 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
+import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
+import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IWorkType;
@@ -40,7 +42,7 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 	protected void analyzeLicenseUsage(Graph<IVertex, IEdge> graph) {
 		final ILicenseUsageAnalyzer licenseUsageAnalyzer = getLicenseUsageAnalyzer();
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
-			final IUsageApplied usage = HCollection.getOne(HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class)));
+			final IUsageApplied usage = computeUsage(graph, artifact);
 			final ILicenseApplied license = computeLicense(graph, artifact);
 			final IReport report = licenseUsageAnalyzer.report(usage, license);
 			found(graph, artifact, report);
@@ -68,6 +70,20 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		}
 
 		return UnspecifiedLicense.create();
+	}
+
+	protected IUsageApplied computeUsage(Graph<IVertex, IEdge> graph, Artifact<?> artifact) {
+		final Collection<IUsageApplied> usages = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class));
+		if (usages.size() == 1) return HCollection.getOne(usages);
+
+		if (usages.size() > 1) {
+			final IVertex finding = found(graph, artifact, new MultiUsageFinding());
+			for (IUsageApplied usage : usages) {
+				graph.addEdge(finding, usage, new Notice());
+			}
+		}
+
+		return UnspecifiedUsage.create();
 	}
 
 	protected void found(Graph<IVertex, IEdge> graph, IVertex vertex, final IReport report) {

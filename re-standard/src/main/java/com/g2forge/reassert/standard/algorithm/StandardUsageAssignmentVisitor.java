@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
@@ -30,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class StandardUsageAssignmentVisitor extends AGraphVisitor {
-	protected final IFunction2<? super IEdge, ? super IUsageApplied, ? extends IUsage> propagate;
+	protected final IFunction2<? super IEdge, ? super IUsageApplied, ? extends IUsageApplied> propagate;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
@@ -60,24 +61,23 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 			final Collection<IEdge> incomingEdges = HReassertModel.getEdges(graph, artifact, false, IEdge::isDirected, new ATypeRef<Artifact<?>>() {});
 
 			// Compute the original usages, and create a collection for the new ones to merge
-			final Collection<IUsage> originalUsages = usageEdges.stream().map(graph::getEdgeTarget).map(IUsage.class::cast).collect(Collectors.toCollection(LinkedHashSet::new));
-			final Set<IUsage> usages = new LinkedHashSet<>(originalUsages);
+			final IUsageApplied originalUsage = usageEdges.stream().map(graph::getEdgeTarget).map(IUsageApplied.class::cast).collect(HCollector.toOne());
+			final Set<IUsageApplied> usages = new LinkedHashSet<>();
+			usages.add(originalUsage);
 
 			// Find all the usages which could affect this vertex
 			for (IEdge edge : incomingEdges) {
 				final IVertex otherArtifact = graph.getEdgeSource(edge);
-				final Collection<IUsageApplied> otherUsages = HReassertModel.get(graph, otherArtifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class));
-				for (IUsageApplied otherUsage : otherUsages) {
-					final IUsage modified = propagate(edge, otherUsage);
-					if ((modified != null) && !unspecifiedUsage.equals(modified)) usages.add(modified);
-				}
+				final IUsageApplied otherUsage = HCollection.getOne(HReassertModel.get(graph, otherArtifact, true, Notice.class::isInstance, ITypeRef.of(IUsageApplied.class)));
+				final IUsageApplied modified = propagate(edge, otherUsage);
+				if ((modified != null) && !unspecifiedUsage.equals(modified)) usages.add(modified);
 			}
 
 			// If nothing can have changed, and we don't need to merge multiple initial usages, then continue
-			if (usages.equals(originalUsages) && (originalUsages.size() == 1)) continue;
-			final IUsage merged = merge(usages);
+			if ((usages.size() == 1) && HCollection.getOne(usages).equals(originalUsage)) continue;
+			final IUsageApplied merged = merge(usages);
 			// If nothing actual changed after merging, then continue;
-			if ((originalUsages.size() == 1) && HCollection.getOne(originalUsages).getTerms().equals(merged.getTerms())) continue;
+			if (IUsage.isEqualTerms(originalUsage, merged)) continue;
 
 			// Update the usage for artifact
 			for (IEdge edge : usageEdges) {
@@ -94,15 +94,15 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 	}
 
 	@ReassertLegalOpinion
-	protected IUsage merge(Set<IUsage> usages) {
+	protected IUsageApplied merge(Set<IUsageApplied> usages) {
 		final MergedUsage merged = new MergedUsage(usages);
-		for (IUsage usage : usages) {
-			if (usage.getTerms().equals(merged.getTerms())) return usage;
+		for (IUsageApplied usage : usages) {
+			if (IUsage.isEqualTerms(usage, merged)) return usage;
 		}
 		return merged;
 	}
 
-	protected IUsage propagate(IEdge edge, IUsageApplied usage) {
+	protected IUsageApplied propagate(IEdge edge, IUsageApplied usage) {
 		return getPropagate().apply(edge, usage);
 	}
 }

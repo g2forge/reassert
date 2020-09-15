@@ -3,6 +3,8 @@ package com.g2forge.reassert.standard.algorithm.propagate;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 import com.g2forge.reassert.contract.TermRelationBooleanSystem;
@@ -40,7 +42,7 @@ public class UsageTermMapBuilder<E extends IEdge> implements IBuilder<Map<Standa
 			final IExpression<TermRelation> compiled = HTermLogic.getCompiler().apply(new ITermLogicContext() {
 				@Override
 				public Object getContext() {
-					return d;	
+					return d;
 				}
 
 				@Override
@@ -48,9 +50,10 @@ public class UsageTermMapBuilder<E extends IEdge> implements IBuilder<Map<Standa
 					throw new UnsupportedOperationException();
 				}
 
+				@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 				@Override
 				public IExpression<TermRelation> term(IUsageTerm usageTerm) {
-					return new TermConstant(usageTerm, u);
+					return new TermConstant(usageTerm, (IUsage) u);
 				}
 			}, expression);
 			return getEvaluator().eval(compiled);
@@ -58,8 +61,9 @@ public class UsageTermMapBuilder<E extends IEdge> implements IBuilder<Map<Standa
 		return this;
 	}
 
+	@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 	public UsageTermMapBuilder<E> copy(StandardUsageTerm term) {
-		map.put(term, (d, u) -> u.getTerms().getRelation(term));
+		map.put(term, (d, u) -> ((IUsage) u).getTerms().getRelation(term));
 		return this;
 	}
 
