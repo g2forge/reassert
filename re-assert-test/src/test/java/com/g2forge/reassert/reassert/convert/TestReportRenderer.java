@@ -7,8 +7,8 @@ import com.g2forge.reassert.contract.convert.IReportRenderContext;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
-import com.g2forge.reassert.reassert.model.finding.TestFinding;
-import com.g2forge.reassert.reassert.model.finding.TestRiskFinding;
+import com.g2forge.reassert.reassert.model.report.TestFinding;
+import com.g2forge.reassert.reassert.model.report.TestRiskFinding;
 
 import lombok.AccessLevel;
 import lombok.Getter;

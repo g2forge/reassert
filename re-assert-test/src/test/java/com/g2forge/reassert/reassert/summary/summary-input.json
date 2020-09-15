@@ -88,7 +88,7 @@
         "@c" : ".report.GraphContextualFinding",
         "name" : "Finding 0",
         "finding" : {
-          "@c" : "com.g2forge.reassert.reassert.model.finding.TestFinding",
+          "@c" : "com.g2forge.reassert.reassert.model.report.TestFinding",
           "level" : "ERROR",
           "message" : "some finding"
         }
