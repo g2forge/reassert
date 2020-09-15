@@ -36,7 +36,7 @@ public class TestListStandardLicenseParser {
 	public static class TestCase {
 		protected final String license;
 
-		protected final String description;
+		protected final String text;
 
 		protected final String purpose;
 	}
@@ -49,7 +49,7 @@ public class TestListStandardLicenseParser {
 			final CsvMapper mapper = new CsvMapper();
 			mapper.registerModule(new ParanamerModule());
 			final ObjectReader reader = mapper.readerFor(TestCase.class).with(mapper.schemaFor(TestCase.class).withHeader().withColumnReordering(true));
-			try (final InputStream stream = HResource.getResourceAsStream(TestListStandardLicenseParser.class, "license descriptions.csv", true)) {
+			try (final InputStream stream = HResource.getResourceAsStream(TestListStandardLicenseParser.class, "license texts.csv", true)) {
 				licenses = reader.<TestCase>readValues(stream).readAll();
 			} catch (IOException e) {
 				throw new RuntimeIOException(e);
@@ -58,7 +58,7 @@ public class TestListStandardLicenseParser {
 
 		return licenses.stream().map(x -> {
 			final ILicenseApplied license;
-			if (x.getLicense().isEmpty()) license = new UnknownLicense(x.getDescription());
+			if (x.getLicense().isEmpty()) license = new UnknownLicense(x.getText());
 			else {
 				ILicenseApplied temp = null;
 				try {
@@ -73,7 +73,7 @@ public class TestListStandardLicenseParser {
 				}
 				license = temp;
 			}
-			return new Object[] { license, x.getDescription(), x.getPurpose() };
+			return new Object[] { license, x.getText(), x.getPurpose() };
 		}).collect(Collectors.toList());
 	}
 

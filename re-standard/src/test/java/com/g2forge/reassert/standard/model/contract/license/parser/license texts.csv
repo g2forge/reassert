@@ -1,4 +1,4 @@
-license,description,purpose
+license,text,purpose
 ,foobar,Ensure a totally bogus string isn't recognized
 Apache-2.0,Apache2,
 Apache-2.0,"Apache2 ",
