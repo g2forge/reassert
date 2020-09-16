@@ -19,70 +19,70 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicense implements ILicenseSpecificEnum {
-	Apache2("Apache-2.0"),
-	BSD2("BSD-2-Clause"),
-	BSD3("BSD-3-Clause"),
-	GPL2Only("GPL-2.0-only"),
-	GPL2OrLater("GPL-2.0-or-later"),
-	GPL3Only("GPL-3.0-only"),
-	GPL3OrLater("GPL-3.0-or-later"),
-	LGPL2Only("LGPL-2.0-only"),
-	LGPL2OrLater("LGPL-2.0-or-later"),
-	LGPL21Only("LGPL-2.1-only"),
-	LGPL21OrLater("LGPL-2.1-or-later"),
-	LGPL3Only("LGPL-3.0-only"),
-	LGPL3OrLater("LGPL-3.0-or-later"),
-	Owner(null),
+	Apache2("Apache-2.0", null, new LicenseVersion(2, 0), false),
+	BSD2("BSD-2-Clause", StandardLicenseFamily.BSD, null, false),
+	BSD3("BSD-3-Clause", StandardLicenseFamily.BSD, null, false),
+	GPL2Only("GPL-2.0-only", StandardLicenseFamily.GPL, new LicenseVersion(2, 0), false),
+	GPL2OrLater("GPL-2.0-or-later", StandardLicenseFamily.GPL, new LicenseVersion(2, 0), true),
+	GPL3Only("GPL-3.0-only", StandardLicenseFamily.GPL, new LicenseVersion(3, 0), false),
+	GPL3OrLater("GPL-3.0-or-later", StandardLicenseFamily.GPL, new LicenseVersion(3, 0), true),
+	LGPL2Only("LGPL-2.0-only", StandardLicenseFamily.LGPL, new LicenseVersion(2, 0), false),
+	LGPL2OrLater("LGPL-2.0-or-later", StandardLicenseFamily.LGPL, new LicenseVersion(2, 0), true),
+	LGPL21Only("LGPL-2.1-only", StandardLicenseFamily.LGPL, new LicenseVersion(2, 1), false),
+	LGPL21OrLater("LGPL-2.1-or-later", StandardLicenseFamily.LGPL, new LicenseVersion(2, 1), true),
+	LGPL3Only("LGPL-3.0-only", StandardLicenseFamily.LGPL, new LicenseVersion(3, 0), false),
+	LGPL3OrLater("LGPL-3.0-or-later", StandardLicenseFamily.LGPL, new LicenseVersion(3, 0), true),
+	Owner(null, null, null, false),
 	/**
 	 * Note that this isn't a real license. This is usually an attempt by the author to put the work into the public domain. The
 	 * <a href="https://creativecommons.org/share-your-work/public-domain/cc0/">creative commons CC0</a> description does a good job of outlining why "public
 	 * domain" isn't a generally considered a license.
 	 */
-	PublicDomain(null),
-	WTFPL("WTFPL"),
-	ZLIB("Zlib"),
-	AFL21("AFL-2.1"),
-	AGPL3Only("AGPL-3.0-only"),
-	AGPL3OrLater("AGPL-3.0-or-later"),
-	Apache11("Apache-1.1"),
-	Artistic1("Artistic-1.0"),
-	Artistic2("Artistic-2.0"),
-	BSD4("BSD-4-Clause"),
-	BSL1("BSL-1.0"),
-	CC01("CC0-1.0"),
-	CCBY3("CC-BY-3.0"),
-	CCBYSA2("CC-BY-SA-2.0"),
-	CCBYSA3("CC-BY-SA-3.0"),
-	EPL1("EPL-1.0"),
-	EPL2("EPL-2.0"),
-	GPL1Only("GPL-1.0-only"),
-	GPL1OrLater("GPL-1.0-or-later"),
-	GPL21Only("GPL-2.1-only"),
-	GPL21OrLater("GPL-2.1-or-later"),
-	ISC("ISC"),
-	MIT("MIT"),
-	MPL11("MPL-1.1"),
-	MPL2("MPL-2.0"),
-	OFL11("OFL-1.1"),
-	PostgreSQL("PostgreSQL"),
-	Beerware("Beerware"),
-	BSD1("BSD-1-Clause"),
-	BSD5(null),
-	CDDL1("CDDL-1.0"),
-	CDDL11("CDDL-1.1"),
-	EDL1(null),
-	FTL("FTL"),
-	GFDL11Only("GFDL-1.1-only"),
-	GFDL11OrLater("GFDL-1.1-or-later"),
-	GFDL12Only("GFDL-1.2-only"),
-	GFDL12OrLater("GFDL-1.2-or-later"),
-	GFDL13Only("GFDL-1.3-only"),
-	GFDL13OrLater("GFDL-1.3-or-later"),
-	Perl5(null),
-	PSF2("PSF-2.0"),
-	Python2("Python-2.0"),
-	IndianaExtreme111(null),
-	CPL1("CPL-1.0");
+	PublicDomain(null, null, null, false),
+	WTFPL("WTFPL", null, null, false),
+	ZLIB("Zlib", null, null, false),
+	AFL21("AFL-2.1", null, new LicenseVersion(2, 1), false),
+	AGPL3Only("AGPL-3.0-only", null, new LicenseVersion(3, 0), false),
+	AGPL3OrLater("AGPL-3.0-or-later", null, new LicenseVersion(3, 0), true),
+	Apache11("Apache-1.1", null, new LicenseVersion(1, 1), false),
+	Artistic1("Artistic-1.0", null, new LicenseVersion(1, 0), false),
+	Artistic2("Artistic-2.0", null, new LicenseVersion(2, 0), false),
+	BSD4("BSD-4-Clause", StandardLicenseFamily.BSD, null, false),
+	BSL1("BSL-1.0", null, new LicenseVersion(1, 0), false),
+	CC01("CC0-1.0", null, new LicenseVersion(1, 0), false),
+	CCBY3("CC-BY-3.0", null, new LicenseVersion(3, 0), false),
+	CCBYSA2("CC-BY-SA-2.0", null, new LicenseVersion(2, 0), false),
+	CCBYSA3("CC-BY-SA-3.0", null, new LicenseVersion(3, 0), false),
+	EPL1("EPL-1.0", null, new LicenseVersion(1, 0), false),
+	EPL2("EPL-2.0", null, new LicenseVersion(2, 0), false),
+	GPL1Only("GPL-1.0-only", StandardLicenseFamily.GPL, new LicenseVersion(1, 0), false),
+	GPL1OrLater("GPL-1.0-or-later", StandardLicenseFamily.GPL, new LicenseVersion(1, 0), true),
+	GPL21Only("GPL-2.1-only", StandardLicenseFamily.GPL, new LicenseVersion(2, 1), false),
+	GPL21OrLater("GPL-2.1-or-later", StandardLicenseFamily.GPL, new LicenseVersion(2, 1), true),
+	ISC("ISC", null, null, false),
+	MIT("MIT", null, null, false),
+	MPL11("MPL-1.1", null, new LicenseVersion(1, 1), false),
+	MPL2("MPL-2.0", null, new LicenseVersion(2, 0), false),
+	OFL11("OFL-1.1", null, new LicenseVersion(1, 1), false),
+	PostgreSQL("PostgreSQL", null, null, false),
+	Beerware("Beerware", null, null, false),
+	BSD1("BSD-1-Clause", StandardLicenseFamily.BSD, null, false),
+	BSD5(null, StandardLicenseFamily.BSD, null, false),
+	CDDL1("CDDL-1.0", null, new LicenseVersion(1, 0), false),
+	CDDL11("CDDL-1.1", null, new LicenseVersion(1, 1), false),
+	EDL1(null, null, new LicenseVersion(1, 0), false),
+	FTL("FTL", null, null, false),
+	GFDL11Only("GFDL-1.1-only", StandardLicenseFamily.GFDL, new LicenseVersion(1, 1), false),
+	GFDL11OrLater("GFDL-1.1-or-later", StandardLicenseFamily.GFDL, new LicenseVersion(1, 1), true),
+	GFDL12Only("GFDL-1.2-only", StandardLicenseFamily.GFDL, new LicenseVersion(1, 2), false),
+	GFDL12OrLater("GFDL-1.2-or-later", StandardLicenseFamily.GFDL, new LicenseVersion(1, 2), true),
+	GFDL13Only("GFDL-1.3-only", StandardLicenseFamily.GFDL, new LicenseVersion(1, 3), false),
+	GFDL13OrLater("GFDL-1.3-or-later", StandardLicenseFamily.GFDL, new LicenseVersion(1, 3), true),
+	Perl5(null, null, null, false),
+	PSF2("PSF-2.0", null, null, false),
+	Python2("Python-2.0", null, null, false),
+	IndianaExtreme111(null, null, new LicenseVersion(1, 1, 1), false),
+	CPL1("CPL-1.0", null, new LicenseVersion(1, 0), false);
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final TermsLoader<StandardLicense, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, StandardLicenseTerm.class);
@@ -93,26 +93,17 @@ public enum StandardLicense implements ILicenseSpecificEnum {
 
 	protected final String SPDXShortID;
 
+	protected final ILicenseFamily family;
+
+	protected final LicenseVersion version;
+
+	protected final boolean orLater;
+
 	@Getter(lazy = true)
 	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(this);
 
 	@Override
-	public ILicenseFamily getFamily() {
-		return null;
-	}
-
-	@Override
-	public LicenseVersion getVersion() {
-		return null;
-	}
-
-	@Override
 	public boolean isChild(ILicenseFamily license) {
-		return false;
-	}
-
-	@Override
-	public boolean isOrLater() {
 		return false;
 	}
 }

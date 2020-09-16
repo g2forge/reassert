@@ -1,11 +1,9 @@
 package com.g2forge.reassert.core.model.contract.license;
 
 public interface ILicenseSpecificEnum extends ILicenseSpecific {
-	public String name();
-
 	@Override
 	public default String getName() {
-		return getShortID().replace('-', ' ') + " license";
+		return getShortID().replace('-', ' ') + " License";
 	}
 
 	@Override
@@ -13,4 +11,6 @@ public interface ILicenseSpecificEnum extends ILicenseSpecific {
 		final String spdxShortID = getSPDXShortID();
 		return (spdxShortID == null) ? name() : spdxShortID;
 	}
+
+	public String name();
 }
