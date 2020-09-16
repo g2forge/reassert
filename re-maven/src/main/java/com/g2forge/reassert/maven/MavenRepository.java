@@ -33,7 +33,7 @@ import com.g2forge.reassert.cache.CacheAreaDescriptor.CacheAreaDescriptorBuilder
 import com.g2forge.reassert.cache.store.FileCacheStore;
 import com.g2forge.reassert.cache.store.JacksonCacheStore;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder;
-import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
+import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.api.system.ARepository;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.artifact.Depends;
@@ -179,7 +179,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 
 	protected Set<ILicenseApplied> getLicenses(final MavenPOM pom) {
 		if ((pom.getLicenses() == null) || pom.getLicenses().isEmpty()) return HCollection.asSet(UnspecifiedLicense.create());
-		final ILicenseParser licenseParser = getSystem().getContext().getLicenseParser();
+		final IParser<ILicenseApplied> licenseParser = getSystem().getContext().getLicenseParser();
 		return pom.getLicenses().stream().map(mavenLicense -> licenseParser.parse(mavenLicense.getName())).collect(Collectors.toSet());
 
 	}

@@ -24,12 +24,15 @@ import com.g2forge.reassert.cache.LocalCache;
 import com.g2forge.reassert.core.algorithm.ReassertObjectDescriber;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.described.IDescription;
-import com.g2forge.reassert.core.api.licenseparser.CompositeLicenseParser;
-import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.module.config.IConfig;
+import com.g2forge.reassert.core.api.parser.CompositeLicenseParser;
+import com.g2forge.reassert.core.api.parser.CompositeUsageParser;
+import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.api.scanner.CompositeScanner;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -67,7 +70,9 @@ public class Context implements IContext {
 		return new Context(loader.load());
 	}
 
-	protected ILicenseParser licenseParser;
+	protected IParser<ILicenseApplied> licenseParser;
+
+	protected IParser<IUsageApplied> usageParser;
 
 	protected IScanner scanner;
 
@@ -90,6 +95,7 @@ public class Context implements IContext {
 			final IModule.Loaded loaded = module.load(this);
 			if (loaded == null) continue;
 			loaded.getLicenseParsers().forEach(builder::licenseParser);
+			loaded.getUsageParsers().forEach(builder::usageParser);
 			loaded.getScanners().forEach(builder::scanner);
 			loaded.getSystems().forEach(builder::system);
 			loaded.getSystems().stream().map(ISystem::getScanner).filter(Objects::nonNull).forEach(builder::scanner);
@@ -99,6 +105,7 @@ public class Context implements IContext {
 		final IModule.Loaded loaded = builder.build();
 		setScanner(new CompositeScanner(loaded.getScanners()));
 		setLicenseParser(new CompositeLicenseParser(loaded.getLicenseParsers()));
+		setUsageParser(new CompositeUsageParser(loaded.getUsageParsers()));
 		setSystems(loaded.getSystems());
 		setDescribers(loaded.getDescribers());
 	}
@@ -112,10 +119,10 @@ public class Context implements IContext {
 	public IConfig getConfig() {
 		final ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new ParanamerModule());
-		
+
 		final Path configRoot = Paths.get("").toAbsolutePath();
 		log.warn(String.format("Loading reassert configurations from %1$s", configRoot));
-		
+
 		return new IConfig() {
 			@Override
 			public <T> IOptional<T> load(ITypeRef<T> type) {

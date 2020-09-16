@@ -5,8 +5,8 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamilyEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
-import com.g2forge.reassert.core.model.contract.license.ILicenseSpecificEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
-public enum StandardLicense implements ILicenseSpecificEnum {
+public enum StandardLicense implements ILicenseFamilyEnum, ILicenseSpecific {
 	Apache2("Apache-2.0", StandardLicenseFamily.Apache, new LicenseVersion(2, 0), false),
 	BSD2("BSD-2-Clause", StandardLicenseFamily.BSD, null, false),
 	BSD3("BSD-3-Clause", StandardLicenseFamily.BSD, null, false),

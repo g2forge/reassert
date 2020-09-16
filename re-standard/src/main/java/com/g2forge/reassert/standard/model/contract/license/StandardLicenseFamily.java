@@ -3,6 +3,7 @@ package com.g2forge.reassert.standard.model.contract.license;
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamilyEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 
@@ -11,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum StandardLicenseFamily implements ILicenseFamily {
+public enum StandardLicenseFamily implements ILicenseFamilyEnum {
 	GPL("GNU General Public License"),
 	LGPL("GNU Lesser General Public License"),
 	GFDL("GNU Free Documentation License"),
@@ -23,10 +24,6 @@ public enum StandardLicenseFamily implements ILicenseFamily {
 	@Override
 	public ILicenseFamily getFamily() {
 		return null;
-	}
-
-	public String getShortID() {
-		return name();
 	}
 
 	@Override

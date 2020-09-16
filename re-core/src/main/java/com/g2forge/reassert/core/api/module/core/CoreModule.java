@@ -26,6 +26,7 @@ public class CoreModule implements IModule, ISingleton {
 
 		builder.describer(ContractIdentifiedDescriber.create());
 		builder.describer(UnknownLicenseDescriber.create());
+		builder.describer(UnknownUsageDescriber.create());
 		builder.describer(new MergedUsageDescriber(context));
 		builder.describer(new PropagatedUsageDescriber(context));
 

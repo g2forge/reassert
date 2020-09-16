@@ -36,10 +36,10 @@
       } ]
     },
     "GPL-3.0-or-later" : {
-      "vertex" : "GPL3OrLater"
+      "vertex" : "GPL-3.0-or-later"
     },
     "BSD-3-Clause" : {
-      "vertex" : "BSD3"
+      "vertex" : "BSD-3-Clause"
     },
     "private-usage" : {
       "vertex" : {

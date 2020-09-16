@@ -16,9 +16,9 @@ import lombok.Getter;
 public class ContractSerializer extends StdSerializer<IContractApplied> {
 	private static final long serialVersionUID = 437022414208677193L;
 
-	protected final IFunction1<IVertex, IDescription> vertexDescriber;
+	protected final IFunction1<? super IVertex, ? extends IDescription> vertexDescriber;
 
-	protected ContractSerializer(IFunction1<IVertex, IDescription> vertexDescriber) {
+	public ContractSerializer(IFunction1<? super IVertex, ? extends IDescription> vertexDescriber) {
 		super(IContractApplied.class);
 		this.vertexDescriber = vertexDescriber;
 	}

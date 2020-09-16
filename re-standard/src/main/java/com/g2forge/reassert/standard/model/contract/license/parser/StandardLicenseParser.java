@@ -13,7 +13,7 @@ import com.g2forge.alexandria.java.function.IConsumer3;
 import com.g2forge.alexandria.java.function.IFunction3;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
-import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
+import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
@@ -23,7 +23,7 @@ import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public class StandardLicenseParser implements ILicenseParser, ISingleton {
+public class StandardLicenseParser implements IParser<ILicenseApplied>, ISingleton {
 	protected static final StandardLicenseParser INSTANCE = new StandardLicenseParser();
 
 	public static StandardLicenseParser create() {
@@ -167,6 +167,7 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 			builder.license(StandardLicense.FTL).text("FTL").build();
 			builder.license(StandardLicense.IndianaExtreme111).text("Indiana").text("University").text("Extreme!").text("Lab").text("Software").with(licenseReq).version(1, 1, 1).build();
 			builder.license(StandardLicense.ISC).text("ISC").optional().text("original").build().build();
+			builder.license(StandardLicense.Owner).text("Owner").build();
 			builder.license(StandardLicense.Perl5).text("Perl").text("5").with(licenseOpt).optional().text("(").text("GPL").text("or").text("Artistic").text(")").build().build();
 			builder.license(StandardLicense.PostgreSQL).text("Postgres").child(false, false).text("ql").build().build();
 			builder.license(StandardLicense.PSF2).text("PSF").version(2, 0, 0).build();

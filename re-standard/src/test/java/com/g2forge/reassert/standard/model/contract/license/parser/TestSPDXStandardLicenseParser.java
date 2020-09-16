@@ -11,7 +11,7 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
+import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
 
@@ -26,7 +26,7 @@ public class TestSPDXStandardLicenseParser {
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final ILicenseParser parser = StandardLicenseParser.create();
+	private final IParser<ILicenseApplied> parser = StandardLicenseParser.create();
 
 	@Getter(AccessLevel.PROTECTED)
 	@Parameter(0)
