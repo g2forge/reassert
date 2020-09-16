@@ -10,7 +10,7 @@ digraph reassert {
 	MIT [label="MIT license"];
 	MPL_1_1 [label="MPL 1.1 license"];
 	PublicDomain [label="PublicDomain license"];
-	UnspecifiedLicense [label="Unspecified License"];
+	UnspecifiedLicense [label="Unspecified license"];
 	_____org_osgi_________org_osgi_core_________5_0_0____pom [label="POM\n\n    org.osgi\n  :\n    org.osgi.core\n  :\n    5.0.0\n  "];
 	activation_activation_1_0_2 [label="activation:activation:1.0.2"];
 	activation_activation_1_0_2_artifact [label="activation:activation:1.0.2"];

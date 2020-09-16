@@ -13,7 +13,7 @@ import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.core.model.artifact.Artifact;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.coordinates.Coordinates;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 
@@ -38,7 +38,7 @@ public class HReassertModel {
 	}
 
 	public static Graph<IVertex, IEdge> asLicenseGraph(Graph<IVertex, IEdge> graph) {
-		return new MaskSubgraph<>(graph, v -> !((v instanceof Artifact) || (v instanceof ILicense)), e -> false);
+		return new MaskSubgraph<>(graph, v -> !((v instanceof Artifact) || (v instanceof ILicenseApplied)), e -> false);
 	}
 
 	public static Graph<Artifact<?>, IEdge> asArtifactGraph(Graph<IVertex, IEdge> graph) {

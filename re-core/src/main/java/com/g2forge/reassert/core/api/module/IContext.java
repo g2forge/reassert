@@ -7,6 +7,7 @@ import com.g2forge.reassert.cache.ICache;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
+import com.g2forge.reassert.core.api.module.config.IConfig;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
@@ -27,6 +28,8 @@ public interface IContext {
 			throw new IllegalArgumentException(String.format("Failed to find system for coordinates: %1$s", coordinates), exception);
 		}
 	}
+	
+	public IConfig getConfig();
 
 	public ICache getCache();
 

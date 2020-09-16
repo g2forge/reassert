@@ -2,4 +2,4 @@ Minimum finding level: ERROR
 ERROR: Condition "Commercial usage" is not satisfied based on "Permission for commercial usage"
 	Rule: ((!"Commercial usage") || "Permission for commercial usage")
 	Explanation: Unspecified (||) - because the || operator (with identity Excluded) was applied
-		* Unspecified - Permission for commercial usage in Unspecified License
+		* Unspecified - Permission for commercial usage in Unspecified license

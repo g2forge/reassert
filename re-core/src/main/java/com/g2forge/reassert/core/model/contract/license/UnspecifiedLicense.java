@@ -23,7 +23,7 @@ public class UnspecifiedLicense implements ILicenseSpecific, ISingleton {
 
 	@Override
 	public String getName() {
-		return "Unspecified License";
+		return "Unspecified license";
 	}
 
 	@Override

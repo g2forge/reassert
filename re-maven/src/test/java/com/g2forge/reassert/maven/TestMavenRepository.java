@@ -18,7 +18,7 @@ import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.file.Describes;
 import com.g2forge.reassert.core.test.ATestRepository;
 import com.g2forge.reassert.maven.model.MavenLicense;
@@ -45,7 +45,7 @@ public class TestMavenRepository extends ATestRepository<MavenCoordinates> {
 	public void licenses() {
 		final Graph<IVertex, IEdge> graph = getGraph();
 		final Artifact<MavenCoordinates> artifact = HReassertModel.findArtifact(graph, getCoordinates());
-		final Collection<ILicense> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class));
+		final Collection<ILicenseApplied> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
 		HAssert.assertEquals(HCollection.asList(StandardLicense.Apache2), licenses);
 	}
 

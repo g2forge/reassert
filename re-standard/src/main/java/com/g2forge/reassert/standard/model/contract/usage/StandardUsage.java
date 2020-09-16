@@ -20,7 +20,7 @@ public enum StandardUsage implements IUsageSpecificEnum {
 	CommercialSaaS;
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final TermsLoader<StandardUsage, IUsageTerm> loader = new TermsLoader<>(StandardUsage.class, StandardUsageTerm.class);
+	private static final TermsLoader<StandardUsage, IUsageTerm> loader = new TermsLoader<>(StandardUsage.class, StandardUsage.class, StandardUsageTerm.class);
 
 	@Getter(lazy = true)
 	private final ITerms<IUsageTerm> terms = getLoader().getTerms(this);

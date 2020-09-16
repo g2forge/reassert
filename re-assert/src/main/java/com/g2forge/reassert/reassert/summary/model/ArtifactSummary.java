@@ -7,8 +7,8 @@ import org.slf4j.event.Level;
 
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
-import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.core.model.report.IFinding;
 
@@ -29,10 +29,10 @@ public class ArtifactSummary {
 	protected final Collection<IFinding> findings;
 
 	@Singular
-	protected final Collection<IUsage> usages;
+	protected final Collection<IUsageApplied> usages;
 
 	@Singular
-	protected final Collection<ILicense> licenses;
+	protected final Collection<ILicenseApplied> licenses;
 
 	@Singular
 	protected final Collection<GraphPath<? extends IVertex, ? extends IEdge>> paths;

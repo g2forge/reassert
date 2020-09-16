@@ -14,6 +14,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter(AccessLevel.PROTECTED)
 public class TermsLoader<C, T> {
+	protected final Class<?> resourceClass;
+
 	protected final Class<C> contractClass;
 
 	protected final Class<? extends T> termClass;
@@ -24,8 +26,9 @@ public class TermsLoader<C, T> {
 	private final Map<C, ITerms<T>> allTerms = computeAllTerms();
 
 	protected Map<C, ITerms<T>> computeAllTerms() {
-		final Class<C> klass = getContractClass();
-		return new TermsMapper().<C, T>read(klass, getTermClass(), new ResourceDataSource(new Resource(klass, klass.getSimpleName().toLowerCase() + ".csv")));
+		final Class<?> klass = getResourceClass();
+		final ResourceDataSource source = new ResourceDataSource(new Resource(klass, klass.getSimpleName().toLowerCase() + ".csv"));
+		return new TermsMapper().<C, T>read(getContractClass(), getTermClass(), source);
 	}
 
 	public ITerms<T> getTerms(C contract) {

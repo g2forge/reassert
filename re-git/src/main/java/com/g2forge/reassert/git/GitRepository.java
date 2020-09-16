@@ -84,25 +84,28 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 			public Path load(Path path) {
 				final Path retVal = super.load(path);
 
-				final boolean update;
-				try {
-					final FileTime lastModifiedTime = Files.walk(retVal.resolve(Constants.DOT_GIT).resolve(Constants.LOGS)).map(p -> {
-						try {
-							return Files.getLastModifiedTime(p);
-						} catch (IOException e) {
-							throw new RuntimeIOException(e);
-						}
-					}).max(ComparableComparator.create()).get();
-					update = Instant.now().minus(1, ChronoUnit.DAYS).compareTo(lastModifiedTime.toInstant()) >= 0;
-				} catch (IOException e) {
-					throw new RuntimeIOException(e);
-				}
-
-				if (update) {
+				final GitConfig config = getSystem().getContext().getConfig().load(ITypeRef.of(GitConfig.class)).or(new GitConfig(1, ChronoUnit.DAYS));
+				if ((config.getAmount() != 0) || (config.getUnit() != null)) {
+					final boolean update;
 					try {
-						Git.open(retVal.toFile()).pull().call();
-					} catch (GitAPIException | IOException e) {
-						throw new RuntimeException(e);
+						final FileTime lastModifiedTime = Files.walk(retVal.resolve(Constants.DOT_GIT).resolve(Constants.LOGS)).map(p -> {
+							try {
+								return Files.getLastModifiedTime(p);
+							} catch (IOException e) {
+								throw new RuntimeIOException(e);
+							}
+						}).max(ComparableComparator.create()).get();
+						update = Instant.now().minus(config.getAmount(), config.getUnit()).compareTo(lastModifiedTime.toInstant()) >= 0;
+					} catch (IOException e) {
+						throw new RuntimeIOException(e);
+					}
+
+					if (update) {
+						try {
+							Git.open(retVal.toFile()).pull().call();
+						} catch (GitAPIException | IOException e) {
+							throw new RuntimeException(e);
+						}
 					}
 				}
 

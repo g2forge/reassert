@@ -56,14 +56,12 @@ public class TermsMapper {
 		return mapper;
 	}
 
-	protected static <C, T> JavaType createType(Class<C> contractClass, Class<T> termClass) {
-		return getMapper().getTypeFactory().constructParametricType(Entry.class, contractClass, termClass);
-	}
-
 	public <C, T> Map<C, ITerms<T>> read(Class<C> contractClass, Class<? extends T> termClass, IDataSource source) {
+		final CsvMapper mapper = getMapper();
+		final JavaType type = mapper.getTypeFactory().constructParametricType(Entry.class, contractClass, termClass);
+		final ObjectReader reader = mapper.readerFor(type).with(mapper.schemaFor(type).withHeader().withColumnReordering(true));
+
 		final List<Entry<C, T>> entries;
-		final JavaType type = createType(contractClass, termClass);
-		final ObjectReader reader = getMapper().readerFor(type).with(getMapper().schemaFor(type).withHeader().withColumnReordering(true));
 		try (final InputStream stream = source.getStream(ITypeRef.of(InputStream.class))) {
 			entries = reader.<Entry<C, T>>readValues(stream).readAll();
 		} catch (IOException e) {
@@ -72,7 +70,8 @@ public class TermsMapper {
 		return entries.stream().collect(Collectors.toMap(Entry::getContract, e -> new Terms<>(e.getTerms())));
 	}
 
-	public <C, T> void write(Class<C> contractClass, Class<T> termClass, IDataSink sink, Map<? super C, ? extends ITerms<? super T>> contracts) {
+	public <C, T> void write(IDataSink sink, Map<? super C, ? extends ITerms<? super T>> contracts) {
+		// Map the contracts into a generic data structure (list of maps, one map per row)
 		final List<Map<Object, Object>> collection = contracts.entrySet().stream().map(entry -> {
 			final Map<Object, Object> retVal = new LinkedHashMap<>();
 			retVal.put("contract", entry.getKey());

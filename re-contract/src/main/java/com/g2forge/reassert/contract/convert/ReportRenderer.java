@@ -37,6 +37,7 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
+import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -206,6 +207,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 			});
 			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
+			builder.add(MultiUsageFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting usages detected for artifact"));
 			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
 				appendLevel(e, c).append("Unknown work type");
 				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {

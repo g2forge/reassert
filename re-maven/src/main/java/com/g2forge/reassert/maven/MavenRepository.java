@@ -39,7 +39,7 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.artifact.Depends;
 import com.g2forge.reassert.core.model.artifact.Inherits;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.coordinates.Coordinates;
 import com.g2forge.reassert.core.model.file.Describes;
@@ -177,7 +177,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 		return path;
 	}
 
-	protected Set<ILicense> getLicenses(final MavenPOM pom) {
+	protected Set<ILicenseApplied> getLicenses(final MavenPOM pom) {
 		if ((pom.getLicenses() == null) || pom.getLicenses().isEmpty()) return HCollection.asSet(UnspecifiedLicense.create());
 		final ILicenseParser licenseParser = getSystem().getContext().getLicenseParser();
 		return pom.getLicenses().stream().map(mavenLicense -> licenseParser.parse(mavenLicense.getName())).collect(Collectors.toSet());
@@ -217,8 +217,8 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			final MavenPOM pom = readPom(pomPath);
 			builder.vertex(pom).edge(pom, artifact, new Describes());
 
-			final Collection<ILicense> licenses = getLicenses(pom);
-			for (ILicense license : licenses) {
+			final Collection<ILicenseApplied> licenses = getLicenses(pom);
+			for (ILicenseApplied license : licenses) {
 				builder.vertex(license).edge(artifact, license, new Notice());
 			}
 

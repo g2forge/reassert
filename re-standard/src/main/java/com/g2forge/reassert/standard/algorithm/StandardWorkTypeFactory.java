@@ -27,6 +27,7 @@ import com.g2forge.reassert.core.model.artifact.Depends;
 import com.g2forge.reassert.core.model.artifact.Inherits;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -58,8 +59,12 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 		}
 
 		@ReassertLegalOpinion
-		@Note(type = NoteType.TODO, value = "Use EEE logic package to explain our reasoning better (not really necessary, but it'll help)")
-		protected IncompatibleWorkLicenseFinding isCompatible(ILicense license, ILicense test) {
+		@Note(type = NoteType.TODO, value = "Implement support for license operations", issue="G2-919")
+		@Note(type = NoteType.TODO, value = "Use EEE logic package to explain our reasoning better (not really necessary, but it'll help)", issue = "G2-918")
+		protected IncompatibleWorkLicenseFinding isCompatible(ILicenseApplied licenseApplied, ILicenseApplied testApplied) {
+			final ILicense license = (ILicense) licenseApplied;
+			final ILicense test = (ILicense) testApplied;
+
 			if ((license == test) || license.equals(test)) return null;
 
 			final ITerms<ILicenseTerm> licenseTerms = license.getTerms(), testTerms = test.getTerms();
@@ -102,11 +107,11 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 		@Override
 		public IReport report(Graph<IVertex, IEdge> graph, Work work) {
 			final Collection<Artifact<?>> artifacts = HReassertModel.get(graph, work, true, WorkContains.class::isInstance, new ATypeRef<Artifact<?>>() {});
-			final Map<ILicense, List<Artifact<?>>> licenses = artifacts.stream().collect(HCollector.multiGroupingBy(artifact -> HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicense.class))));
+			final Map<ILicenseApplied, List<Artifact<?>>> licenses = artifacts.stream().collect(HCollector.multiGroupingBy(artifact -> HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class))));
 
-			final ILicense license = HCollection.getOne(HReassertModel.get(graph, work, true, WorkLicense.class::isInstance, ITypeRef.of(ILicense.class)));
+			final ILicenseApplied license = HCollection.getOne(HReassertModel.get(graph, work, true, WorkLicense.class::isInstance, ITypeRef.of(ILicenseApplied.class)));
 			final Report.ReportBuilder report = Report.builder();
-			for (Map.Entry<ILicense, List<Artifact<?>>> entry : licenses.entrySet()) {
+			for (Map.Entry<ILicenseApplied, List<Artifact<?>>> entry : licenses.entrySet()) {
 				final IncompatibleWorkLicenseFinding finding = isCompatible(license, entry.getKey());
 				if (finding != null) report.finding(finding);
 			}
@@ -121,13 +126,13 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final IFunction1<ILicense, IWorkType> function = computeFunction();
+	private final IFunction1<ILicenseApplied, IWorkType> function = computeFunction();
 
 	protected StandardWorkTypeFactory() {}
 
 	@ReassertLegalOpinion
-	protected IFunction1<ILicense, IWorkType> computeFunction() {
-		final TypeSwitch1.FunctionBuilder<ILicense, IWorkType> builder = new TypeSwitch1.FunctionBuilder<>();
+	protected IFunction1<ILicenseApplied, IWorkType> computeFunction() {
+		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkType> builder = new TypeSwitch1.FunctionBuilder<>();
 		builder.add(StandardLicense.class, l -> {
 			switch (l) {
 				case Owner:
@@ -144,7 +149,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 	}
 
 	@Override
-	public IWorkType computeWorkType(ILicense license) {
+	public IWorkType computeWorkType(ILicenseApplied license) {
 		return getFunction().apply(license);
 	}
 }

@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class PropagatedUsage implements IUsage {
 	protected final IEdge edge;
 
-	protected final IUsage usage;
+	protected final IUsageApplied usage;
 
 	protected final ITerms<IUsageTerm> terms;
 }

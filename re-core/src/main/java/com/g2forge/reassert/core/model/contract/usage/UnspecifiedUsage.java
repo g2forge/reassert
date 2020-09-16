@@ -21,7 +21,7 @@ public class UnspecifiedUsage implements IUsageSpecific, ISingleton {
 
 	@Override
 	public String getName() {
-		return "Unspecified Usage";
+		return "Unspecified usage";
 	}
 
 	@Override

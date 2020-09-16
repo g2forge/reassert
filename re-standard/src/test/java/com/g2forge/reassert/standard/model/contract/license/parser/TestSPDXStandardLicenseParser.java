@@ -12,7 +12,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
 
 import lombok.AccessLevel;
@@ -35,7 +35,7 @@ public class TestSPDXStandardLicenseParser {
 	@Test
 	public void test() {
 		final StandardLicense license = getLicense();
-		final ILicense actual = getParser().parse(license.getSPDXShortID());
+		final ILicenseApplied actual = getParser().parse(license.getSPDXShortID());
 		HAssert.assertEquals(license, actual);
 	}
 }

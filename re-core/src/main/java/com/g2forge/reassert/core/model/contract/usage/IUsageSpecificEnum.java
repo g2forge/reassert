@@ -3,7 +3,7 @@ package com.g2forge.reassert.core.model.contract.usage;
 public interface IUsageSpecificEnum extends IUsageSpecific {
 	@Override
 	public default String getName() {
-		return name() + " usage";
+		return getShortID() + " usage";
 	}
 
 	@Override

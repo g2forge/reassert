@@ -14,7 +14,7 @@ import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.coordinates.Coordinates;
 import com.g2forge.reassert.core.model.file.File;
 import com.g2forge.reassert.core.model.file.Parsed;
@@ -48,7 +48,7 @@ public class LicenseFileScanner implements IScanner {
 				final File file = new File(item.getCoordinates());
 				builder.vertex(file).vertex(item.getCoordinates()).edge(file, item.getCoordinates(), new Coordinates());
 
-				final ILicense license = licenseParser.parse(HTextIO.readAll(input, true));
+				final ILicenseApplied license = licenseParser.parse(HTextIO.readAll(input, true));
 				builder.vertex(license).edge(file, license, new Parsed());
 				builder.edge(container, license, new Notice());
 			} catch (IOException exception) {

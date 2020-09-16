@@ -14,7 +14,7 @@ import com.g2forge.alexandria.java.function.IFunction3;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
@@ -179,7 +179,7 @@ public class StandardLicenseParser implements ILicenseParser, ISingleton {
 	}
 
 	@Override
-	public ILicense parse(String text) {
+	public ILicenseApplied parse(String text) {
 		if (text == null) return UnspecifiedLicense.create();
 
 		final Set<StandardLicense> retVal = new LinkedHashSet<>();

@@ -5,6 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.function.IFunction1;
@@ -16,10 +18,12 @@ import com.g2forge.reassert.contract.model.rules.IRules;
 import com.g2forge.reassert.contract.model.rules.Rule;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -69,8 +73,12 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 
 	protected final IRules ruleSet;
 
+	@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 	@Override
-	public IReport report(IUsage usage, ILicense license) {
+	public IReport report(IUsageApplied usageApplied, ILicenseApplied licenseApplied) {
+		final IUsage usage = (IUsage) usageApplied;
+		final ILicense license = (ILicense) licenseApplied;
+
 		// Sets of usage terms we need to approve and license conditions we need to meet
 		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getTerms(true));
 		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getTerms(true).stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));

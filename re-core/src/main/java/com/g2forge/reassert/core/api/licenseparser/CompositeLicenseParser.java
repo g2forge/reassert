@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 
 import lombok.Getter;
@@ -22,8 +22,8 @@ public class CompositeLicenseParser implements ILicenseParser {
 	}
 
 	@Override
-	public ILicense parse(String text) {
-		final Set<ILicense> licenses = getParsers().stream().map(parser -> parser.parse(text)).filter(Objects::nonNull).filter(license -> !(license instanceof UnknownLicense)).collect(Collectors.toSet());
+	public ILicenseApplied parse(String text) {
+		final Set<ILicenseApplied> licenses = getParsers().stream().map(parser -> parser.parse(text)).filter(Objects::nonNull).filter(license -> !(license instanceof UnknownLicense)).collect(Collectors.toSet());
 		if (licenses.size() != 1) return new UnknownLicense(text);
 		return HCollection.getOne(licenses);
 	}
