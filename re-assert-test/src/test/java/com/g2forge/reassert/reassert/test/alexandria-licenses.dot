@@ -10,7 +10,7 @@ digraph reassert {
 	MIT [label="MIT license"];
 	MPL_1_1 [label="MPL 1.1 license"];
 	PublicDomain [label="PublicDomain license"];
-	UnspecifiedLicense [label="Unspecified License"];
+	UnspecifiedLicense [label="Unspecified license"];
 	activation_activation_1_0_2_artifact [label="activation:activation:1.0.2"];
 	ant_ant_1_5_1_artifact [label="ant:ant:1.5.1"];
 	ant_ant_1_5_2_artifact [label="ant:ant:1.5.2"];

@@ -43,29 +43,29 @@ public class TestListStandardLicenseParser {
 
 	@Parameters(name = "{1}")
 	public static List<Object[]> computeTestParameters() {
-		final List<TestCase> licenses;
+		final List<TestCase> testCases;
 
 		{
 			final CsvMapper mapper = new CsvMapper();
 			mapper.registerModule(new ParanamerModule());
 			final ObjectReader reader = mapper.readerFor(TestCase.class).with(mapper.schemaFor(TestCase.class).withHeader().withColumnReordering(true));
 			try (final InputStream stream = HResource.getResourceAsStream(TestListStandardLicenseParser.class, "license texts.csv", true)) {
-				licenses = reader.<TestCase>readValues(stream).readAll();
+				testCases = reader.<TestCase>readValues(stream).readAll();
 			} catch (IOException e) {
 				throw new RuntimeIOException(e);
 			}
 		}
 
-		return licenses.stream().map(x -> {
+		return testCases.stream().map(testCase -> {
 			final ILicenseApplied license;
-			if (x.getLicense().isEmpty()) license = new UnknownLicense(x.getText());
+			if (testCase.getLicense().isEmpty()) license = new UnknownLicense(testCase.getText());
 			else {
 				ILicenseApplied temp = null;
 				try {
-					temp = StandardLicense.valueOfSPDX(x.getLicense());
+					temp = StandardLicense.valueOfSPDX(testCase.getLicense());
 				} catch (IllegalArgumentException e0) {
 					try {
-					temp = StandardLicense.valueOf(x.getLicense());
+					temp = StandardLicense.valueOf(testCase.getLicense());
 					} catch (IllegalArgumentException e1) {
 						e1.addSuppressed(e0);
 						throw e1;
@@ -73,7 +73,7 @@ public class TestListStandardLicenseParser {
 				}
 				license = temp;
 			}
-			return new Object[] { license, x.getText(), x.getPurpose() };
+			return new Object[] { license, testCase.getText(), testCase.getPurpose() };
 		}).collect(Collectors.toList());
 	}
 

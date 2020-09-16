@@ -26,7 +26,7 @@ public class TestTermsMapper {
 	public void write() {
 		final Map<String, ITerms<String>> contracts = new MapBuilder<String, ITerms<String>>().put("TestContract", Terms.<String>builder().include("A").exclude("B").unspecified("C").build()).build();
 		final ByteArrayDataSink sink = new ByteArrayDataSink();
-		new TermsMapper().write(String.class, String.class, sink, contracts);
+		new TermsMapper().write(sink, contracts);
 		HAssert.assertEquals(new Resource(getClass(), "test.csv"), sink.getStream().toString());
 	}
 }

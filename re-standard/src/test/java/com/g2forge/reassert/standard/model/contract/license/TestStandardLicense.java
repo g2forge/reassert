@@ -30,6 +30,16 @@ public class TestStandardLicense {
 	@Parameter(0)
 	public StandardLicense license;
 
+	@Test
+	public void family() {
+		final StandardLicense license = getLicense();
+		final ILicenseFamily family = license.getFamily();
+		HAssume.assumeNotNull("Licenses without a family are always family consistent, of course", family);
+
+		HAssert.assertNull(family.getSPDXShortID());
+		HAssert.assertTrue(String.format("Short ID \"%1$s\" did not contain family short ID \"%2$s\"!", license.getShortID(), family.getShortID()), license.getShortID().contains(family.getShortID()));
+	}
+
 	protected ReferenceTerms getReference(final StandardLicense license) {
 		try {
 			return ReferenceTerms.valueOfSPDX(license.getSPDXShortID());
@@ -39,6 +49,13 @@ public class TestStandardLicense {
 		} catch (IllegalArgumentException exception) {}
 		HAssume.assumeTrue("Failed to find reference terms for " + license.getName(), false);
 		throw new UnreachableCodeError();
+	}
+
+	@Test
+	public void name() {
+		final StandardLicense license = getLicense();
+		final String expected = license.getShortID().replace('-', ' ') + " license";
+		HAssert.assertEquals(expected, license.getName());
 	}
 
 	@Test
@@ -57,15 +74,5 @@ public class TestStandardLicense {
 		final String versionString = version.toString();
 		if (license.getSPDXShortID() != null) HAssert.assertTrue(String.format("SPDX short ID \"%1$s\" did not contain version number \"%2$s\"!", license.getShortID(), versionString), license.getSPDXShortID().contains(versionString));
 		else HAssert.assertTrue(String.format("Short ID \"%1$s\" did not contain version number \"%2$s\"!", license.getShortID(), versionString), license.getShortID().contains(versionString.replace(".0", "").replace(".", "")));
-	}
-
-	@Test
-	public void family() {
-		final StandardLicense license = getLicense();
-		final ILicenseFamily family = license.getFamily();
-		HAssume.assumeNotNull("Licenses without a family are always family consistent, of course", family);
-
-		HAssert.assertNull(family.getSPDXShortID());
-		HAssert.assertTrue(String.format("Short ID \"%1$s\" did not contain family short ID \"%2$s\"!", license.getShortID(), family.getShortID()), license.getShortID().contains(family.getShortID()));
 	}
 }

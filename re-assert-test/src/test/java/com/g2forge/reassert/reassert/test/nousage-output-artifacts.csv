@@ -13,13 +13,13 @@ You must publish a copyright and license notice stating that you use this artifa
 You must state the changes you have made to your copy of this artifact
 The usage for this artifact improperly specifies the method of distribtion
 The usage for this artifact improperly specifies the method of consumption
-The usage for this artifact improperly specifies the format","Unspecified Usage",,
+The usage for this artifact improperly specifies the format","Unspecified usage",,
 ERROR,B,"You must publish a copyright and license notice stating that you use this artifact
 The usage for this artifact improperly specifies the method of distribtion
 The usage for this artifact improperly specifies the method of consumption
-The usage for this artifact improperly specifies the format","Unspecified Usage","BSD 3 Clause license","A -> B"
+The usage for this artifact improperly specifies the format","Unspecified usage","BSD 3 Clause license","A -> B"
 ERROR,C,"You must publish a copyright and license notice stating that you use this artifact
 You must state the changes you have made to your copy of this artifact
 The usage for this artifact improperly specifies the method of distribtion
 The usage for this artifact improperly specifies the method of consumption
-The usage for this artifact improperly specifies the format","Unspecified Usage","Apache 2.0 license","A -> C"
+The usage for this artifact improperly specifies the format","Unspecified usage","Apache 2.0 license","A -> C"

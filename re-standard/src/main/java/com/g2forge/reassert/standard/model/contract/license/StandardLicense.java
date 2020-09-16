@@ -85,7 +85,7 @@ public enum StandardLicense implements ILicenseSpecificEnum {
 	CPL1("CPL-1.0", null, new LicenseVersion(1, 0), false);
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final TermsLoader<StandardLicense, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, StandardLicenseTerm.class);
+	private static final TermsLoader<String, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, String.class, StandardLicenseTerm.class);
 
 	public static StandardLicense valueOfSPDX(String text) {
 		return HEnum.valueOf(StandardLicense.class, ILicenseSpecific::getSPDXShortID, true, IFunction1.identity(), text);
@@ -100,7 +100,7 @@ public enum StandardLicense implements ILicenseSpecificEnum {
 	protected final boolean orLater;
 
 	@Getter(lazy = true)
-	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(this);
+	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(getShortID());
 
 	@Override
 	public boolean isChild(ILicenseFamily license) {
