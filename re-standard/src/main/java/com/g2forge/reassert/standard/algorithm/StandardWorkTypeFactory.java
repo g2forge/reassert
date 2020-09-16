@@ -28,6 +28,7 @@ import com.g2forge.reassert.core.model.artifact.Inherits;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -39,6 +40,7 @@ import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.core.model.work.WorkContains;
 import com.g2forge.reassert.core.model.work.WorkLicense;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicenseFamily;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 
 import lombok.AccessLevel;
@@ -59,7 +61,7 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 		}
 
 		@ReassertLegalOpinion
-		@Note(type = NoteType.TODO, value = "Implement support for license operations", issue="G2-919")
+		@Note(type = NoteType.TODO, value = "Implement support for license operations", issue = "G2-919")
 		@Note(type = NoteType.TODO, value = "Use EEE logic package to explain our reasoning better (not really necessary, but it'll help)", issue = "G2-918")
 		protected IncompatibleWorkLicenseFinding isCompatible(ILicenseApplied licenseApplied, ILicenseApplied testApplied) {
 			final ILicense license = (ILicense) licenseApplied;
@@ -82,7 +84,8 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 			builder.unknown(unknown);
 
 			for (ILicenseTerm term : licenseSpecifiedTerms) {
-				// Skip any terms that we already have a problem with, and oddly the GPL doesn't require you grant patents to other software for compatibility (example: https://www.gnu.org/licenses/license-list.en.html#ModifiedBSD)
+				// Skip any terms that we already have a problem with, and oddly the GPL doesn't require you grant patents to other software for compatibility
+				// (example: https://www.gnu.org/licenses/license-list.en.html#ModifiedBSD)
 				if (unknown.contains(term) || StandardLicenseTerm.PatentGrant.equals(term)) continue;
 				switch (term.getType()) {
 					case Permission:
@@ -132,20 +135,32 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 
 	@ReassertLegalOpinion
 	protected IFunction1<ILicenseApplied, IWorkType> computeFunction() {
-		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkType> builder = new TypeSwitch1.FunctionBuilder<>();
-		builder.add(StandardLicense.class, l -> {
+		final TypeSwitch1.FunctionBuilder<ILicenseFamily, IWorkType> familyBuilder = new TypeSwitch1.FunctionBuilder<>();
+		familyBuilder.add(StandardLicenseFamily.class, l -> {
 			switch (l) {
-				case Owner:
-				case BSD3:
-				case Apache2:
+				case BSD:
+				case Apache:
 					return null;
-				case GPL3OrLater:
+				case GPL:
 					return new GPLWorkType();
 				default:
-					throw new EnumException(StandardLicense.class, l);
+					throw new EnumException(StandardLicenseFamily.class, l);
 			}
 		});
-		return builder.build();
+		final IFunction1<ILicenseFamily, IWorkType> familyFunction = familyBuilder.build();
+
+		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkType> licenseBuilder = new TypeSwitch1.FunctionBuilder<>();
+		licenseBuilder.add(StandardLicense.class, l -> {
+			switch (l) {
+				case Owner:
+					return null;
+				default:
+					final ILicenseFamily family = l.getFamily();
+					if (family == null) throw new EnumException(StandardLicense.class, l);
+					return familyFunction.apply(family);
+			}
+		});
+		return licenseBuilder.build();
 	}
 
 	@Override

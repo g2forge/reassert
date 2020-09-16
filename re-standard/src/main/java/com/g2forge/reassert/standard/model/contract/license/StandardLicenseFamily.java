@@ -15,7 +15,8 @@ public enum StandardLicenseFamily implements ILicenseFamily {
 	GPL("GNU General Public License"),
 	LGPL("GNU Lesser General Public License"),
 	GFDL("GNU Free Documentation License"),
-	BSD("Berkeley Software Distribution License");
+	BSD("Berkeley Software Distribution License"),
+	Apache("Apache Software License");
 
 	protected final String name;
 

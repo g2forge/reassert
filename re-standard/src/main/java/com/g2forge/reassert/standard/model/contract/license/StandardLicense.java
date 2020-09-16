@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicense implements ILicenseSpecificEnum {
-	Apache2("Apache-2.0", null, new LicenseVersion(2, 0), false),
+	Apache2("Apache-2.0", StandardLicenseFamily.Apache, new LicenseVersion(2, 0), false),
 	BSD2("BSD-2-Clause", StandardLicenseFamily.BSD, null, false),
 	BSD3("BSD-3-Clause", StandardLicenseFamily.BSD, null, false),
 	GPL2Only("GPL-2.0-only", StandardLicenseFamily.GPL, new LicenseVersion(2, 0), false),
@@ -44,7 +44,7 @@ public enum StandardLicense implements ILicenseSpecificEnum {
 	AFL21("AFL-2.1", null, new LicenseVersion(2, 1), false),
 	AGPL3Only("AGPL-3.0-only", null, new LicenseVersion(3, 0), false),
 	AGPL3OrLater("AGPL-3.0-or-later", null, new LicenseVersion(3, 0), true),
-	Apache11("Apache-1.1", null, new LicenseVersion(1, 1), false),
+	Apache11("Apache-1.1", StandardLicenseFamily.Apache, new LicenseVersion(1, 1), false),
 	Artistic1("Artistic-1.0", null, new LicenseVersion(1, 0), false),
 	Artistic2("Artistic-2.0", null, new LicenseVersion(2, 0), false),
 	BSD4("BSD-4-Clause", StandardLicenseFamily.BSD, null, false),
