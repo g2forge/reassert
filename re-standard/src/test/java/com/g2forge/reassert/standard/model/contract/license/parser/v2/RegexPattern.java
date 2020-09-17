@@ -47,21 +47,35 @@ public class RegexPattern<Result> implements IPattern<Result> {
 		protected abstract Builder getThis();
 
 		@Override
-		public IGroupBuilder<Void, Result, RegexPattern<?>, ? extends Builder> group(ISerializableFunction1<? super Result, ?> field, boolean required, Void arguments) {
+		public IGroupBuilder<Void, Result, RegexPattern<?>, ? extends Builder> group(ISerializableFunction1<? super Result, ?> field, Void arguments) {
 			assertActive();
 			if (arguments != null) throw new IllegalArgumentException("Arguments must be null!");
 
 			final RegexBuilder builder = getBuilder();
 			builder.startGroup(field == null ? null : field.asMethodAnalyzer().getPath());
 			active = false;
-			return new RegexGroupBuilder<>(builder, required, getThis());
+			return new RegexGroupBuilder<>(builder, getThis());
+		}
+
+		@Override
+		public Builder plus() {
+			return pattern("+");
+		}
+
+		@Override
+		public Builder opt() {
+			return pattern("?");
+		}
+
+		protected Builder pattern(final String string) {
+			assertActive();
+			getBuilder().append(string);
+			return getThis();
 		}
 
 		@Override
 		public Builder text(String text) {
-			assertActive();
-			getBuilder().append(Pattern.quote(text));
-			return getThis();
+			return pattern(Pattern.quote(text));
 		}
 
 		@Override
@@ -78,6 +92,11 @@ public class RegexPattern<Result> implements IPattern<Result> {
 				builder.fields.put(entry.getKey(), entry.getValue() + builder.nGroups);
 			}
 			builder.nGroups += pattern.getNGroups();
+		}
+
+		@Override
+		public Builder star() {
+			return pattern("*");
 		}
 	}
 
@@ -111,13 +130,10 @@ public class RegexPattern<Result> implements IPattern<Result> {
 
 	@Getter(AccessLevel.PROTECTED)
 	protected static class RegexGroupBuilder<Result, ParentBuilder> extends ARegexPatternBuilder<Result, ParentBuilder, IGroupBuilder<Void, Result, RegexPattern<?>, ParentBuilder>> implements IGroupBuilder<Void, Result, RegexPattern<?>, ParentBuilder> {
-		protected final boolean required;
-
 		protected final ParentBuilder parent;
 
-		protected RegexGroupBuilder(RegexBuilder builder, boolean required, ParentBuilder parent) {
+		protected RegexGroupBuilder(RegexBuilder builder, ParentBuilder parent) {
 			super(builder);
-			this.required = required;
 			this.parent = parent;
 		}
 
@@ -127,7 +143,6 @@ public class RegexPattern<Result> implements IPattern<Result> {
 			this.active = false;
 			final RegexBuilder builder = getBuilder();
 			builder.endGroup();
-			if (!isRequired()) builder.append('?');
 			return parent;
 		}
 

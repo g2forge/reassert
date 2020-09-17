@@ -29,7 +29,14 @@ public class TestRegexPattern {
 		protected final Integer patch;
 	}
 
-	protected static final RegexPattern<Version> version = RegexPattern.<Version>builder().group(Version::getMajor, true, null).text("0").build().group(false).text(".").group(Version::getMinor, true, null).text("1").build().group(false).text(".").group(Version::getPatch, true, null).text("2").build().build().build().build(TestRegexPattern.Version::createVersion);
+	protected static final RegexPattern<Version> version = computeVersion();
+
+	protected static RegexPattern<Version> computeVersion() {
+		final IPatternBuilder<Void, Version, RegexPattern<?>, RegexPattern<Version>> builder = RegexPattern.<Version>builder();
+		builder.group(Version::getMajor, null).text("0").build();
+		builder.group().text(".").group(Version::getMinor, null).text("1").build().group().text(".").group(Version::getPatch, null).text("2").build().build().opt().build().opt();
+		return builder.build(TestRegexPattern.Version::createVersion);
+	}
 
 	@Test
 	public void alt() {
@@ -40,19 +47,19 @@ public class TestRegexPattern {
 
 	@Test
 	public void groupNullArguments() {
-		RegexPattern.builder().group(true);
+		RegexPattern.builder().group();
 	}
 
 	@Test
 	public void groupOptional() {
-		final RegexPattern<?> pattern = RegexPattern.builder().text("a").group(false).text("b").build().build();
+		final RegexPattern<?> pattern = RegexPattern.builder().text("a").group().text("b").build().opt().build();
 		HAssert.assertFalse(pattern.match("a").isEmpty());
 		HAssert.assertFalse(pattern.match("ab").isEmpty());
 	}
 
 	@Test
 	public void groupRequired() {
-		final RegexPattern<?> pattern = RegexPattern.builder().text("a").group(true).text("b").build().build();
+		final RegexPattern<?> pattern = RegexPattern.builder().text("a").group().text("b").build().build();
 		HAssert.assertTrue(pattern.match("a").isEmpty());
 		HAssert.assertFalse(pattern.match("ab").isEmpty());
 	}
@@ -65,6 +72,22 @@ public class TestRegexPattern {
 	@Test
 	public void nonmatch() {
 		HAssert.assertTrue(RegexPattern.builder().text("a").build().match("").isEmpty());
+	}
+
+	@Test
+	public void plus() {
+		final RegexPattern<?> pattern = RegexPattern.builder().text("a").text("b").plus().build();
+		HAssert.assertTrue(pattern.match("a").isEmpty());
+		HAssert.assertFalse(pattern.match("ab").isEmpty());
+		HAssert.assertFalse(pattern.match("abb").isEmpty());
+	}
+
+	@Test
+	public void star() {
+		final RegexPattern<?> pattern = RegexPattern.builder().text("a").text("b").star().build();
+		HAssert.assertFalse(pattern.match("a").isEmpty());
+		HAssert.assertFalse(pattern.match("ab").isEmpty());
+		HAssert.assertFalse(pattern.match("abb").isEmpty());
 	}
 
 	@Test
