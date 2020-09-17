@@ -15,7 +15,7 @@
     },
     "saas-usage" : {
       "vertex" : {
-        "@c" : ".contract.usage.Usage",
+        "@c" : ".contract.usage.GeneralUsage",
         "name" : "SaaS Usage",
         "terms" : [ {
           "term" : "Commercial",

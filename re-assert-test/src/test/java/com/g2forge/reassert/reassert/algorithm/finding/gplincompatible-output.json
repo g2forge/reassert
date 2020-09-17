@@ -40,7 +40,7 @@
     },
     "no-such-license" : {
       "vertex" : {
-        "@c" : ".contract.license.License",
+        "@c" : ".contract.license.GeneralLicense",
         "name" : "No such license",
         "terms" : [ {
           "term" : "CommercialUse",
@@ -60,7 +60,7 @@
     },
     "private-usage" : {
       "vertex" : {
-        "@c" : ".contract.usage.Usage",
+        "@c" : ".contract.usage.GeneralUsage",
         "name" : "Private Usage",
         "terms" : [ {
           "term" : "Commercial",

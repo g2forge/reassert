@@ -59,7 +59,7 @@
     },
     "commerical usage" : {
       "vertex" : {
-        "@c" : "com.g2forge.reassert.core.model.contract.usage.Usage",
+        "@c" : "com.g2forge.reassert.core.model.contract.usage.GeneralUsage",
         "name" : "Commercial Usage",
         "terms" : [ {
           "term" : "Commercial",

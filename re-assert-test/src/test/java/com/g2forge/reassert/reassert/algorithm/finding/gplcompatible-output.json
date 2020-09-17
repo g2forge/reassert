@@ -43,7 +43,7 @@
     },
     "private-usage" : {
       "vertex" : {
-        "@c" : ".contract.usage.Usage",
+        "@c" : ".contract.usage.GeneralUsage",
         "name" : "Private Usage",
         "terms" : [ {
           "term" : "Commercial",

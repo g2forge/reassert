@@ -1,5 +1,7 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.core.enums.HEnum;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.TermsLoader;
@@ -102,6 +104,7 @@ public enum StandardLicense implements ILicenseFamilyEnum, ILicenseSpecific {
 	@Getter(lazy = true)
 	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(getShortID());
 
+	@Note(type = NoteType.TODO, value = "Implement license families", issue = "G2-928")
 	@Override
 	public boolean isChild(ILicenseFamily license) {
 		return false;

@@ -82,23 +82,23 @@ public abstract class APatternBuilder<T> implements IPatternBuilder<T> {
 	}
 
 	@Override
-	public IPatternBuilder<T> version(int major, int minor, int patch) {
+	public IPatternBuilder<T> version(int major, Integer minor, Integer patch) {
 		assertCurrent();
 
 		final StringBuilder builder = getBuilder();
 		if (isGap() && !isEmpty()) builder.append("((,?").append(GAP_PATTERN).append("v ?)|(,?").append(GAP_PATTERN);
 		else builder.append("((v ?)|(");
 		builder.append("ve(r?)sion").append(GAP_PATTERN).append(")|(").append(GAP_PATTERN).append("))");
-		
+
 		builder.append(major);
-		
+
 		final String separator = "[-.]";
-		
-		if (minor == 0) builder.append('(').append(separator).append("0)?");
+
+		if ((minor == null) || (minor == 0)) builder.append('(').append(separator).append("0)?");
 		else builder.append(separator).append(minor);
-		
-		if (patch != 0) builder.append(separator).append(patch);
-		
+
+		if ((patch != null) && (patch != 0)) builder.append(separator).append(patch);
+
 		builder.append("\\.?");
 		return this;
 	}

@@ -13,13 +13,21 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicenseFamily implements ILicenseFamilyEnum {
-	GPL("GNU General Public License"),
-	LGPL("GNU Lesser General Public License"),
-	GFDL("GNU Free Documentation License"),
-	BSD("Berkeley Software Distribution License"),
-	Apache("Apache Software License");
+	GPL("GNU General Public License", Versioning.VariableAllowed),
+	LGPL("GNU Lesser General Public License", Versioning.VariableAllowed),
+	GFDL("GNU Free Documentation License", Versioning.VariableAllowed),
+	BSD("Berkeley Software Distribution License", Versioning.Unversioned),
+	Apache("Apache Software License", Versioning.FixedOnly);
+
+	public enum Versioning {
+		Unversioned,
+		FixedOnly,
+		VariableAllowed;
+	}
 
 	protected final String name;
+
+	protected final Versioning versioning;
 
 	@Override
 	public ILicenseFamily getFamily() {

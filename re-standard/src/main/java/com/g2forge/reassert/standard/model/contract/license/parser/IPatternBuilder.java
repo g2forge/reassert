@@ -13,7 +13,7 @@ public interface IPatternBuilder<T> extends IBuilder<T> {
 
 	public IPatternBuilder<T> text(String text);
 
-	public IPatternBuilder<T> version(int major, int minor, int patch);
+	public IPatternBuilder<T> version(int major, Integer minor, Integer patch);
 
 	public default IPatternBuilder<T> version(LicenseVersion version) {
 		return version(version.getMajor(), version.getMinor(), version.getPatch());

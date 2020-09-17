@@ -136,4 +136,4 @@ INFO,"The usage for this artifact improperly specifies the format",B,"A -> B","I
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Binary distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 ERROR,"Unknown work type",,"A -> No such license","ERROR: Unknown work type	
-	There was no fallback, and no case was found for: License(name=No such license, shortID=null, SPDXShortID=null, terms=Terms(terms={CommercialUse=Excluded, PrivateUse=Included, Notice=Excluded, SaaSIsDistribution=Excluded, Warranty=Included}), version=null, orLater=false)"
+	There was no fallback, and no case was found for: GeneralLicense(name=No such license, shortID=null, SPDXShortID=null, terms=Terms(terms={CommercialUse=Excluded, PrivateUse=Included, Notice=Excluded, SaaSIsDistribution=Excluded, Warranty=Included}), version=null, orLater=false)"
