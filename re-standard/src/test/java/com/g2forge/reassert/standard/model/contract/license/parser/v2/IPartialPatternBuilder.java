@@ -18,6 +18,8 @@ public interface IPartialPatternBuilder<Arguments, Result, Pattern extends IPatt
 
 	public IGroupBuilder<Arguments, Result, Pattern, ? extends Builder> group(ISerializableFunction1<? super Result, ?> field, Arguments arguments);
 
+	public Builder named(NamedCharacterClass named);
+
 	public Builder opt();
 
 	public Builder plus();

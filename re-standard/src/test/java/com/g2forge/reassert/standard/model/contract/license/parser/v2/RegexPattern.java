@@ -75,6 +75,13 @@ public class RegexPattern<Result> implements IPattern<Result> {
 				}
 
 				@Override
+				public ICharacterClassBuilder<Builder> named(NamedCharacterClass named) {
+					assertActive();
+					getBuilder().append(named.getRegex());
+					return this;
+				}
+
+				@Override
 				public ICharacterClassBuilder<Builder> range(char start, char end) {
 					assertActive();
 					getBuilder().append(start).append('-').append(end);
@@ -97,6 +104,11 @@ public class RegexPattern<Result> implements IPattern<Result> {
 		}
 
 		@Override
+		public Builder named(NamedCharacterClass named) {
+			return pattern(named.getRegex());
+		}
+
+		@Override
 		public Builder opt() {
 			return pattern("?");
 		}
@@ -111,7 +123,7 @@ public class RegexPattern<Result> implements IPattern<Result> {
 		public Builder plus() {
 			return pattern("+");
 		}
-
+		
 		@Override
 		public Builder star() {
 			return pattern("*");

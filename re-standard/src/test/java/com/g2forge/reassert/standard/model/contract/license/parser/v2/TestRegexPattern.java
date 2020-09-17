@@ -81,6 +81,15 @@ public class TestRegexPattern {
 	}
 
 	@Test
+	public void named() {
+		final RegexPattern<?> pattern = RegexPattern.builder().named(NamedCharacterClass.Space).build();
+		HAssert.assertFalse(pattern.match(" ").isEmpty());
+		HAssert.assertFalse(pattern.match("\t").isEmpty());
+		HAssert.assertTrue(pattern.match("").isEmpty());
+		HAssert.assertTrue(pattern.match("a").isEmpty());
+	}
+
+	@Test
 	public void nonmatch() {
 		HAssert.assertTrue(RegexPattern.builder().text("a").build().match("").isEmpty());
 	}
