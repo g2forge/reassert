@@ -33,8 +33,8 @@ public class TestRegexPattern {
 
 	protected static RegexPattern<Version> computeVersion() {
 		final IPatternBuilder<Void, Version, RegexPattern<?>, RegexPattern<Version>> builder = RegexPattern.<Version>builder();
-		builder.group(Version::getMajor, null).text("0").build();
-		builder.group().text(".").group(Version::getMinor, null).text("1").build().group().text(".").group(Version::getPatch, null).text("2").build().build().opt().build().opt();
+		builder.group(Version::getMajor, null).digit(10).plus().build();
+		builder.group().text(".").group(Version::getMinor, null).digit(10).plus().build().group().text(".").group(Version::getPatch, null).digit(10).plus().build().build().opt().build().opt();
 		return builder.build(TestRegexPattern.Version::createVersion);
 	}
 
@@ -43,6 +43,17 @@ public class TestRegexPattern {
 		final RegexPattern<?> pattern = RegexPattern.builder().alt(RegexPattern.builder().text("a").build(), RegexPattern.builder().text("b").build()).build();
 		HAssert.assertFalse(pattern.match("a").isEmpty());
 		HAssert.assertFalse(pattern.match("b").isEmpty());
+	}
+
+	@Test
+	public void characterClass() {
+		final RegexPattern<?> charClass = RegexPattern.builder().charClass().range('0', '9').build().build();
+		final RegexPattern<?> digit = RegexPattern.builder().digit(10).build();
+		for (int i = 0; i < 10; i++) {
+			final String string = Character.toString((char) ('0' + i));
+			HAssert.assertFalse(string, charClass.match(string).isEmpty());
+			HAssert.assertFalse(string, digit.match(string).isEmpty());
+		}
 	}
 
 	@Test
@@ -97,12 +108,12 @@ public class TestRegexPattern {
 
 	@Test
 	public void versionMinor() {
-		HAssert.assertEquals(new Version(0, 1, null), version.match("0.1").get());
+		HAssert.assertEquals(new Version(7, 200, null), version.match("7.200").get());
 	}
 
 	@Test
 	public void versionPatch() {
-		HAssert.assertEquals(new Version(0, 1, 2), version.match("0.1.2").get());
+		HAssert.assertEquals(new Version(3, 1, 4), version.match("3.1.4").get());
 	}
 
 	@Test

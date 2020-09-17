@@ -44,6 +44,45 @@ public class RegexPattern<Result> implements IPattern<Result> {
 			if (!active) throw new IllegalStateException("Attempt to manipulate inactive builder, perhaps you forgot to close the parent?");
 		}
 
+		@Override
+		public ICharacterClassBuilder<? extends Builder> charClass() {
+			assertActive();
+
+			active = false;
+			getBuilder().append('[');
+			final Builder retVal = getThis();
+			return new ICharacterClassBuilder<Builder>() {
+				protected boolean active = true;
+
+				protected void assertActive() {
+					if (!active) throw new IllegalStateException("Attempt to manipulate inactive builder, perhaps you forgot to close the parent?");
+				}
+
+				@Override
+				public Builder build() {
+					assertActive();
+					getBuilder().append(']');
+					((ARegexPatternBuilder<?, ?, ?>) retVal).active = true;
+					active = false;
+					return retVal;
+				}
+
+				@Override
+				public ICharacterClassBuilder<Builder> character(char character) {
+					assertActive();
+					getBuilder().append(character);
+					return this;
+				}
+
+				@Override
+				public ICharacterClassBuilder<Builder> range(char start, char end) {
+					assertActive();
+					getBuilder().append(start).append('-').append(end);
+					return this;
+				}
+			};
+		}
+
 		protected abstract Builder getThis();
 
 		@Override
@@ -52,14 +91,9 @@ public class RegexPattern<Result> implements IPattern<Result> {
 			if (arguments != null) throw new IllegalArgumentException("Arguments must be null!");
 
 			final RegexBuilder builder = getBuilder();
-			builder.startGroup(field == null ? null : field.asMethodAnalyzer().getPath());
+			getBuilder().startGroup(field == null ? null : field.asMethodAnalyzer().getPath());
 			active = false;
 			return new RegexGroupBuilder<>(builder, getThis());
-		}
-
-		@Override
-		public Builder plus() {
-			return pattern("+");
 		}
 
 		@Override
@@ -71,6 +105,16 @@ public class RegexPattern<Result> implements IPattern<Result> {
 			assertActive();
 			getBuilder().append(string);
 			return getThis();
+		}
+
+		@Override
+		public Builder plus() {
+			return pattern("+");
+		}
+
+		@Override
+		public Builder star() {
+			return pattern("*");
 		}
 
 		@Override
@@ -92,11 +136,6 @@ public class RegexPattern<Result> implements IPattern<Result> {
 				builder.fields.put(entry.getKey(), entry.getValue() + builder.nGroups);
 			}
 			builder.nGroups += pattern.getNGroups();
-		}
-
-		@Override
-		public Builder star() {
-			return pattern("*");
 		}
 	}
 

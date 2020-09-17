@@ -5,6 +5,13 @@ import com.g2forge.alexandria.analysis.ISerializableFunction1;
 public interface IPartialPatternBuilder<Arguments, Result, Pattern extends IPattern<?>, Built, Builder> {
 	public Builder alt(Pattern pattern0, Pattern pattern1, @SuppressWarnings("unchecked") Pattern... patterns);
 
+	public ICharacterClassBuilder<? extends Builder> charClass();
+
+	public default Builder digit(int base) {
+		if (base < 1 || base > 10) throw new IllegalArgumentException("We currently only support bases up to 10!");
+		return charClass().range('0', (char) ('0' + (base - 1))).build();
+	}
+
 	public default IGroupBuilder<Arguments, Result, Pattern, ? extends Builder> group() {
 		return group(null, null);
 	}
