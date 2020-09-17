@@ -10,10 +10,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.core.api.described.IDescription;
-import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.model.IVertex;
-import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
-import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +22,7 @@ public class ContractModule extends SimpleModule {
 
 	protected final IFunction1<? super Object, ? extends IDescription> describer;
 
-	protected final IParser<ILicenseApplied> licenseParser;
-
-	protected final IParser<IUsageApplied> usageParser;
+	protected final ContractParser parser;
 
 	@Override
 	public void setupModule(SetupContext context) {
@@ -35,14 +30,14 @@ public class ContractModule extends SimpleModule {
 
 		context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
 			public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription description, JsonDeserializer<?> deserializer) {
-				if (IVertex.class.isAssignableFrom(description.getBeanClass())) return new ContractDeserializer(deserializer, getLicenseParser(), getUsageParser());
+				if (IVertex.class.isAssignableFrom(description.getBeanClass())) return new ContractDeserializer(deserializer, getParser());
 				return deserializer;
 			}
 		});
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
-				if (IVertex.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(serializer, getDescriber());
+				if (IVertex.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(serializer, getDescriber(), getParser());
 				return serializer;
 			}
 		});
