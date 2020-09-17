@@ -6,10 +6,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.g2forge.alexandria.analysis.ISerializableFunction1;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HPrimitive;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.regex.IGroupBuilder;
 import com.g2forge.alexandria.regex.IPatternBuilder;
 import com.g2forge.alexandria.regex.NamedCharacterClass;
@@ -20,7 +22,6 @@ import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
-import com.g2forge.reassert.core.model.contract.license.LicenseVersion.Field;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.standard.model.contract.license.FamilyVersionLicense;
@@ -48,16 +49,18 @@ public class StandardLicenseParser2 implements IParser<ILicenseApplied>, ISingle
 			prefix.build().opt();
 		}
 
-		return builder.build(fields -> {
-			final int major = Integer.parseInt(fields.apply(LicenseVersion::getMajor));
-			final Integer minor = HPrimitive.parseInteger(fields.apply(LicenseVersion::getMinor));
-			final Integer patch = HPrimitive.parseInteger(fields.apply(LicenseVersion::getPatch));
-			return new LicenseVersion(major, minor, patch);
-		});
+		return builder.build(StandardLicenseParser2::createLicenseVersion);
 	}
 
 	public static StandardLicenseParser2 create() {
 		return INSTANCE;
+	}
+
+	protected static LicenseVersion createLicenseVersion(IFunction1<ISerializableFunction1<? super LicenseVersion, ?>, String> fields) {
+		final int major = Integer.parseInt(fields.apply(LicenseVersion::getMajor));
+		final Integer minor = HPrimitive.parseInteger(fields.apply(LicenseVersion::getMinor));
+		final Integer patch = HPrimitive.parseInteger(fields.apply(LicenseVersion::getPatch));
+		return new LicenseVersion(major, minor, patch);
 	}
 
 	protected static <T> IPatternBuilder<Set<Flag>, T, RegexPattern<?>, RegexPattern<T>> pattern() {
@@ -147,15 +150,18 @@ public class StandardLicenseParser2 implements IParser<ILicenseApplied>, ISingle
 			}
 		}*/
 		{
+			// TODO: Switch to group parsing for orlater flag
 			final RegexPattern<Object> only = pattern().group().with(gap).text("only").build().opt().with(licenseOpt).build();
 			final RegexPattern<Object> orlater = pattern().with(gap).alt(pattern().text("+").build(), pattern().text("or").with(gap).text("later").build()).with(licenseOpt).build();
 
-			final RegexPattern<LicenseVersion> version = computeVersionPattern(LicenseVersion.Field.MINOR);
+			final RegexPattern<LicenseVersion> versionPattern = computeVersionPattern(LicenseVersion.Field.MINOR);
 			for (StandardLicenseFamily family : new StandardLicenseFamily[] { StandardLicenseFamily.GPL }) {
 				final String name = family.getName();
-				
-				StandardLicenseParser2.<ILicenseFamily>pattern().with(the).with(version).build(fields -> {
-					return new FamilyVersionLicense(family, null, false);
+
+				StandardLicenseParser2.<ILicenseFamily>pattern().with(the).with(versionPattern).build(fields -> {
+					// TODO: Find a way to parse misc fields
+					final LicenseVersion version = null;//createLicenseVersion(fields);
+					return new FamilyVersionLicense(family, version, false);
 				});
 			}
 		}
