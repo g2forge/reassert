@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.g2forge.alexandria</groupId>
-			<artifactId>ax-regex</artifactId>
+			<artifactId>ax-parse</artifactId>
 			<version>${alexandria.version}</version>
 		</dependency>
 		<dependency>

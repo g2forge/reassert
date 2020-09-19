@@ -1,6 +1,6 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
-import com.g2forge.alexandria.regex.IMatch;
+import com.g2forge.alexandria.parse.IMatch;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamilyEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
