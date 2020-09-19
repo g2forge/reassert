@@ -1,8 +1,9 @@
-package com.g2forge.reassert.express.v2.model;
+package com.g2forge.reassert.express.v2.model.operation;
 
 import org.junit.Test;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.validate.ValidationFailureException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 import com.g2forge.reassert.express.v2.model.operation.BooleanOperation;
@@ -16,7 +17,7 @@ public class TestBooleanOperation {
 		HAssert.assertEquals(HCollection.asList(new Literal<>("A", false)), operation.getArguments());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = ValidationFailureException.class)
 	public void invalid() {
 		BooleanOperation.Operator.Not.<String, Boolean>builder().argument$("A", false).argument$(true).valid();
 	}

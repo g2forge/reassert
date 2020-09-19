@@ -3,6 +3,7 @@ package com.g2forge.reassert.express.v2.eval.bool;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.eval.operation.AOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
@@ -22,8 +23,8 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 		}
 
 		@Override
-		public boolean isValid(IOperation<?, Boolean> operation) {
-			return operation.getOperator().isValid(operation.getArguments());
+		public IValidation validate(IOperation<?, Boolean> operation) {
+			return operation.getOperator().validate(operation.getArguments());
 		}
 	}
 

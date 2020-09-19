@@ -74,7 +74,7 @@ public class ReassertGraphExplorer {
 		while (!queue.isEmpty()) {
 			handle(graph, queue, queue.remove(), failures);
 		}
-		if (!failures.isEmpty()) throw HError.multithrow("Failed to load one or more artifacts!", failures);
+		if (!failures.isEmpty()) throw HError.withSuppressed(new RuntimeException("Failed to load one or more artifacts!"), failures);
 	}
 
 	protected <Coordinates extends ICoordinates> void handle(final Graph<IVertex, IEdge> graph, final Collection<IReassertGraphBuilder.ICallback<?>> queue, final ICallback<Coordinates> callback, final Collection<Throwable> failures) {

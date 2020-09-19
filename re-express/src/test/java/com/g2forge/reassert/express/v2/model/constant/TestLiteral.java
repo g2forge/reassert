@@ -1,4 +1,4 @@
-package com.g2forge.reassert.express.v2.model;
+package com.g2forge.reassert.express.v2.model.constant;
 
 import org.junit.Test;
 

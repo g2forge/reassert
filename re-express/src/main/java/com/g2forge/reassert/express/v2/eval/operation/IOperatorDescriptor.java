@@ -1,9 +1,8 @@
 package com.g2forge.reassert.express.v2.eval.operation;
 
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.model.operation.IOperation;
 
 public interface IOperatorDescriptor<Value> {
@@ -37,6 +36,5 @@ public interface IOperatorDescriptor<Value> {
 	 */
 	public IOptional<? extends Value> getZero();
 
-	@Note(type = NoteType.TODO, value = "Validation should include explanations")
-	public boolean isValid(IOperation<?, Value> operation);
+	public IValidation validate(IOperation<?, Value> operation);
 }
