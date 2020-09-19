@@ -15,7 +15,7 @@
     },
     "NoSuchLicense" : {
       "vertex" : {
-        "@c" : ".contract.license.License",
+        "@c" : ".contract.license.GeneralLicense",
         "name" : "No such license",
         "terms" : [ {
           "term" : "Warranty",

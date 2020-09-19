@@ -46,7 +46,7 @@
     },
     "Changed usage" : {
       "vertex" : {
-        "@c" : ".contract.usage.Usage",
+        "@c" : ".contract.usage.GeneralUsage",
         "name" : "Changed usage",
         "terms" : [ {
           "term" : "UseModified",

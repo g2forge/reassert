@@ -10,8 +10,8 @@ import org.slf4j.event.Level;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
-import com.g2forge.reassert.core.model.contract.license.License;
-import com.g2forge.reassert.core.model.contract.usage.Usage;
+import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
+import com.g2forge.reassert.core.model.contract.usage.GeneralUsage;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.mock.MockCoordinates;
 import com.g2forge.reassert.reassert.ATestReassertSummarizer;
@@ -68,17 +68,17 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 		{
 			final ArtifactSummary.ArtifactSummaryBuilder a = ArtifactSummary.builder().level(Level.WARN).artifact(new MockCoordinates("A"));
 			a.finding(new TestFinding(Level.WARN, "a finding"));
-			a.usage(Usage.builder().name("some usage").build());
-			a.license(License.builder().name("license 0").build());
+			a.usage(GeneralUsage.builder().name("some usage").build());
+			a.license(GeneralLicense.builder().name("license 0").build());
 			builder.artifact(a.build());
 		}
 		{
 			final ArtifactSummary.ArtifactSummaryBuilder b = ArtifactSummary.builder().level(Level.ERROR).artifact(new MockCoordinates("B"));
 			b.finding(new TestFinding(Level.ERROR, "finding 0"));
 			b.finding(new TestFinding(Level.INFO, "finding 1"));
-			b.usage(Usage.builder().name("some usage").build());
-			b.license(License.builder().name("license 1").build());
-			b.license(License.builder().name("license 2").build());
+			b.usage(GeneralUsage.builder().name("some usage").build());
+			b.license(GeneralLicense.builder().name("license 1").build());
+			b.license(GeneralLicense.builder().name("license 2").build());
 			b.path(TestGraphPath.builder().vertex(new MockCoordinates("A")).vertex(new MockCoordinates("B")).build());
 			builder.artifact(b.build());
 		}

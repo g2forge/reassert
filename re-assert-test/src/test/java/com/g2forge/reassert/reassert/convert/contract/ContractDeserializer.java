@@ -11,31 +11,37 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import com.g2forge.alexandria.java.core.error.HError;
-import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IThrowSupplier;
 import com.g2forge.reassert.core.model.IVertex;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
-import com.g2forge.reassert.standard.model.contract.usage.StandardUsage;
 
-public class StandardContractDeserializer extends StdDeserializer<IVertex> implements ResolvableDeserializer {
+import lombok.AccessLevel;
+import lombok.Getter;
+
+@Getter(AccessLevel.PROTECTED)
+public class ContractDeserializer extends StdDeserializer<IVertex> implements ResolvableDeserializer {
 	private static final long serialVersionUID = -6856117256176037393L;
 
 	protected final JsonDeserializer<?> deserializer;
 
-	protected StandardContractDeserializer(JsonDeserializer<?> deserializer) {
+	protected final ContractParser parser;
+
+	protected ContractDeserializer(JsonDeserializer<?> deserializer, ContractParser parser) {
 		super(IVertex.class);
 		this.deserializer = deserializer;
+		this.parser = parser;
 	}
 
 	@Override
 	public IVertex deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
-		return (IVertex) deserialize(parser, () -> deserializer.deserialize(parser, context));
+		return (IVertex) deserialize(parser, () -> getDeserializer().deserialize(parser, context));
 	}
 
 	protected Object deserialize(JsonParser parser, IThrowSupplier<?, IOException> supplier) throws IOException {
 		final JsonToken token = parser.currentToken();
-		if (token == JsonToken.VALUE_STRING) return fromString(parser);
+		if (token == JsonToken.VALUE_STRING) {
+			final String text = parser.getText().trim();
+			return getParser().parse(text);
+		}
 		return supplier.get();
 	}
 
@@ -44,13 +50,9 @@ public class StandardContractDeserializer extends StdDeserializer<IVertex> imple
 		return deserialize(parser, () -> super.deserializeWithType(parser, context, typeDeserializer));
 	}
 
-	protected IVertex fromString(JsonParser parser) throws IOException {
-		final String text = parser.getText().trim();
-		return HError.apply((IFunction1<String, IVertex> valueOf) -> valueOf.apply(text), String.format("Could not parse \"%1$s\" as a standard contract", text), StandardLicense::valueOf, StandardUsage::valueOf);
-	}
-
 	@Override
 	public void resolve(DeserializationContext context) throws JsonMappingException {
+		final JsonDeserializer<?> deserializer = getDeserializer();
 		if (deserializer instanceof ResolvableDeserializer) ((ResolvableDeserializer) deserializer).resolve(context);
 	}
 }

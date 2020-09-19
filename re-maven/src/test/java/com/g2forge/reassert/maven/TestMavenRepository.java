@@ -19,12 +19,14 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.file.Describes;
 import com.g2forge.reassert.core.test.ATestRepository;
 import com.g2forge.reassert.maven.model.MavenLicense;
 import com.g2forge.reassert.maven.model.MavenPOM;
 import com.g2forge.reassert.maven.model.MavenPackaging;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
+import com.g2forge.reassert.standard.model.contract.license.FamilyVersionLicense;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicenseFamily;
 
 import lombok.Getter;
 
@@ -46,7 +48,7 @@ public class TestMavenRepository extends ATestRepository<MavenCoordinates> {
 		final Graph<IVertex, IEdge> graph = getGraph();
 		final Artifact<MavenCoordinates> artifact = HReassertModel.findArtifact(graph, getCoordinates());
 		final Collection<ILicenseApplied> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
-		HAssert.assertEquals(HCollection.asList(StandardLicense.Apache2), licenses);
+		HAssert.assertEquals(HCollection.asList(new FamilyVersionLicense(StandardLicenseFamily.Apache, new LicenseVersion(2, 0), false)), licenses);
 	}
 
 	@Test

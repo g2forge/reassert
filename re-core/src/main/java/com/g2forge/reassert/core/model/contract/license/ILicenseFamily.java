@@ -15,5 +15,11 @@ public interface ILicenseFamily extends ILicense, IContractIdentified {
 	 */
 	public ILicenseFamily getFamily();
 
-	public boolean isChild(ILicenseFamily license);
+	public default boolean isChild(ILicenseFamily license) {
+		ILicenseFamily parent = getFamily();
+		while (parent != null) {
+			if (parent == license) return true;
+		}
+		return false;
+	}
 }

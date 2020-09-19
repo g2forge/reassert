@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class License implements ILicenseSpecific {
+public class GeneralLicense implements ILicenseSpecific {
 	protected final String name;
 
 	protected final String shortID;

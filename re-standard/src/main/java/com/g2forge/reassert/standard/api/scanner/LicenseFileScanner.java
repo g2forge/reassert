@@ -9,8 +9,8 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
-import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.module.IContext;
+import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
@@ -42,7 +42,7 @@ public class LicenseFileScanner implements IScanner {
 
 	@Override
 	public void load(Collection<IScanner.IItem> items, Artifact<?> container, IReassertGraphBuilder builder) {
-		final ILicenseParser licenseParser = getContext().getLicenseParser();
+		final IParser<ILicenseApplied> licenseParser = getContext().getLicenseParser();
 		for (IScanner.IItem item : items) {
 			try (final InputStream input = item.getData().getStream(ITypeRef.of(InputStream.class))) {
 				final File file = new File(item.getCoordinates());

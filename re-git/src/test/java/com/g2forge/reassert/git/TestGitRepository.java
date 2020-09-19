@@ -21,9 +21,11 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.license.UnknownLicense;
 import com.g2forge.reassert.core.test.ATestRepository;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicense;
+import com.g2forge.reassert.standard.model.contract.license.FamilyVersionLicense;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicenseFamily;
 
 import lombok.Getter;
 
@@ -47,7 +49,7 @@ public class TestGitRepository extends ATestRepository<GitCoordinates> {
 		final Collection<ILicenseApplied> licenses = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
 		final Map<Class<?>, List<ILicenseApplied>> grouped = licenses.stream().collect(Collectors.groupingBy(Object::getClass));
 		HAssert.assertTrue(grouped.get(UnknownLicense.class).size() == 1);
-		HAssert.assertEquals(HCollection.asList(StandardLicense.Apache2), grouped.get(StandardLicense.class));
+		HAssert.assertEquals(HCollection.asList(new FamilyVersionLicense(StandardLicenseFamily.Apache, new LicenseVersion(2, 0), false)), grouped.get(FamilyVersionLicense.class));
 	}
 
 	@Test

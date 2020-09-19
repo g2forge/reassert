@@ -6,10 +6,12 @@ import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.reassert.cache.ICache;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.described.IDescription;
-import com.g2forge.reassert.core.api.licenseparser.ILicenseParser;
 import com.g2forge.reassert.core.api.module.config.IConfig;
+import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
+import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 
 public interface IContext {
@@ -29,15 +31,17 @@ public interface IContext {
 		}
 	}
 	
-	public IConfig getConfig();
-
 	public ICache getCache();
+
+	public IConfig getConfig();
 
 	public Collection<IDescriber<?>> getDescribers();
 
-	public ILicenseParser getLicenseParser();
+	public IParser<ILicenseApplied> getLicenseParser();
 	
 	public IScanner getScanner();
 	
 	public Collection<ISystem<?>> getSystems();
+	
+	public IParser<IUsageApplied> getUsageParser();
 }

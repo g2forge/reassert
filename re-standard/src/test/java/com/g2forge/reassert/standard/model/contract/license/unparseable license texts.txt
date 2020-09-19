@@ -1,0 +1,147 @@
+G2-907
+	Simple
+		X11
+	Families
+		GPL-only
+		GPL-unspecified
+	LGPL needs "Library or Lesser" support
+		"GNU Library or Lesser General Public License"
+	Generalized acronym following name
+		CDDL-1.0,"COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0",
+		CDDL-1.0,"Common Development and Distribution License (CDDL) v1.0",
+		"GNU General Public License (GPL), version 2"
+	License (Parentheticals)*
+		Parentheticals can just be a version (== 2, >= 2, > 2, = 2)
+		Or they can be a full license
+		Merging using TypeSwitch2
+			License + License -> as long as the fields match or are null
+			Family + License -> fine as long as the license has no family, otherwise we do the max family
+		Examples
+			The MIT License (MIT)
+			MIT License (MIT License)
+			MIT License (MIT)
+			Mozilla Public License 2.0 (MPL 2.0) (MPL-2.0)
+			Apache2,"Apache License (== 2.0)"
+			Apache2,"Apache Software License (Apache 2.0)"
+			Apache2,"Apache Software License (Apache)"
+			GPL (>= 2)
+			GPL (>= 3)
+			LGPL (>= 2)
+			LGPL (>= 2.1)
+			BSD License (2-clause BSD)
+			BSD License (BSD-3-Clause)
+			BSD License (BSD License)
+			BSD License (BSD)
+			BSD License (BSD-like)
+			GNU Library or Lesser General Public License (LGPL) (LGPL)
+			Python Software Foundation License (BSD)
+			Python Software Foundation License (PSF license)
+			Python Software Foundation License (PSF)
+	OSI Approved should be parsed, but it's special in the sense that it can be merged with nearly anything and result in that
+		OSI Approved
+		OSI Approved (BSD)
+		OSI Approved (new BSD)
+	
+Exceptions
+	Apache-2.0 with GPL exception
+	APACHE-2-LLVM-EXCEPTIONS
+	GPL 2.0 Classpath
+	GPL-2 with OpenSSL exception
+	GPL-2.0 with AOSDL exception
+	GPL-2.0+ with Texinfo exception
+	GPL-2+ with Autoconf exception
+	GPL-2+ with Bison exception
+	GPL-2+ with distribution exception
+	GPL-2+ with libtool exception
+	GPL-2+ with Libtool exception
+	GPL-2-with-exceptions
+	GPL-3+ with autoconf exception
+	GPL-3+ with Autoconf exception
+	GPL-3+ with Bison exception
+	GPL-3+ with Texinfo exception
+	GPL-3+-WITH-BISON-EXCEPTION
+	LGPL-2.0 with AOSDL exception
+	LGPL-2.1 with static linking exception
+	LGPL-2+ with Libtool exception
+	LGPL-3 with static linking exception
+	GPLv2+CE
+	GNU General Public License (GPL), version 2, with the Classpath exception
+	Expat-with-advertising-restriction
+
+Complex BSD
+	BSD-2-Clause-alike
+	BSD-2-clause-author
+	BSD-2-clause-NetBSD
+	BSD-2-Clause-netbsd
+	BSD-2-Clause-regents
+	BSD-2-clause-verbatim
+	BSD-3-clause-1
+	BSD-3-clause-2
+	BSD-3-clause-generic
+	BSD-3-clause-GENERIC
+	BSD-3-clause-intel
+	BSD-3-clause-John-Birrell
+	BSD-3-clause-Peter-Wemm
+	BSD-3-clause-Regents
+	BSD-3-clause-with-patent-grant
+	BSD-3-clause-with-weird-numbering
+	BSD-3-google
+	BSD-4-clause-Christopher-G-Demetriou
+	BSD-4-clause-Niels-Provos
+	BSD-4-clause-POWERDOG
+	BSD-5-clause-Peter-Wemm
+
+Compound
+	The H2 License, Version 1.0
+		http://www.h2database.com/html/license.html
+		MPL/EPL
+	CDDL + GPLv2 with classpath exception
+	Perl5,Perl 5 License (GPL or Artistic)
+	MIT X11
+	MIT/X11
+	ISC+IBM
+	
+Specific licenses
+	Historical Permission Notice and Disclaimer (HPND)
+	Java HTML Tidy License
+	The W3C License
+	The SAX License
+	Public domain, Sun Microsoystems
+	The GSBase Software License
+	SLF4J License
+	The HtmlUnit Software License
+	HSQLDB License, a BSD open source license
+	HSQLDB License
+		This is like BSD, but different?
+		http://hsqldb.org/web/hsqlLicense.html
+
+Unknown
+	MIT-1
+	MIT-Old-Style-with-legal-disclaimer-2
+	MIT-style
+	MIT-X-Consortium
+	MLAA
+	OpenGroup
+	OpenGroup-BSD-like
+	SWL
+	Tcl
+	Tcl-BSDish
+	Ubuntu-Font-License-1.0
+	Vim
+	XCB
+	X-Consortium
+	XPM
+	NCBI
+	NCSA
+	Node.js
+	OpenDataLicense
+	OpenSSH
+	OPL-1+
+	GZip
+	Similar to Apache License but with the acknowledgment clause removed
+	The Werken Company License
+	Unlicense
+	Jason Hunter License
+	BEA JSR 173 RI
+	GPL-compatible
+	GPL-compatible licenses

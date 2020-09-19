@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class Usage implements IUsageSpecific {
+public class GeneralUsage implements IUsageSpecific {
 	protected final String name;
 
 	protected final String shortID;

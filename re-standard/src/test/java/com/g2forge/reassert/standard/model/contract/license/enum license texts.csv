@@ -1,0 +1,38 @@
+license,text,purpose
+Beerware,Beerware,
+Beerware,Beer-ware,
+FTL,FTL,
+ISC,ISC,
+ISC,ISC-Original,
+MIT,Bouncy Castle Licence,
+MIT,Bouncy Castle License,
+MIT,expat,
+MIT,Expat,
+MIT,Expat/MIT,
+MIT,MIT,
+MIT,MIT license,
+MIT,MIT License,
+MIT,The MIT License,
+Owner,Owner,
+Perl5,Perl 5 License (GPL or Artistic),
+PostgreSQL,Postgres,
+PostgreSQL,PostgreSQL,
+PublicDomain,public domain,
+PublicDomain,Public domain,
+PublicDomain,Public Domain,
+PublicDomain,public-domain,
+PublicDomain,Public-domain,
+WTFPL,WTFPL,
+Zlib,zlib,
+Zlib,Zlib,
+Zlib,ZLIB,
+,BSD-3-clause-s,"Ensure ""clauses"" suffix must be one word"
+,Expat /MIT,The spaces around the slash make it unparseable
+,foobar,Ensure a totally bogus string isn't recognized
+,LPGL-2.1+,Make sure we don't parse mis-spellings since they could be other licenses
+,none,Literally unspecified
+,None,Literally unspecified
+,other,Literally unspecified
+,Unspecified,Literally unspecified
+,Unspecified License,Literally unspecified
+,XGPL,Make sure we don't recognize weird GPL variants
