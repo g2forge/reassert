@@ -28,10 +28,10 @@ import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
-import com.g2forge.reassert.expression.evaluate.bool.ExplainedBooleanEvaluator;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.express.IConstant;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.evaluate.bool.ExplainedBooleanEvaluator;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.express.IConstant;
+import com.g2forge.reassert.express.express.IExpression;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

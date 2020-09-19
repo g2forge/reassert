@@ -9,7 +9,7 @@ import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.convert.TestReportRenderer;
 import com.g2forge.reassert.reassert.summary.ReassertSummarizer;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;

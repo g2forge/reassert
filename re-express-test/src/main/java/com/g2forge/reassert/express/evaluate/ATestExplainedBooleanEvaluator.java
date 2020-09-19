@@ -1,11 +1,11 @@
 package com.g2forge.reassert.express.evaluate;
 
-import com.g2forge.reassert.expression.evaluate.bool.ExplainedBooleanEvaluator;
-import com.g2forge.reassert.expression.evaluate.bool.IBooleanSystem;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
-import com.g2forge.reassert.expression.explain.convert.ExplanationRenderer;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.evaluate.bool.ExplainedBooleanEvaluator;
+import com.g2forge.reassert.express.evaluate.bool.IBooleanSystem;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.explain.convert.ExplanationRenderer;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.express.IExpression;
 
 import lombok.Getter;
 

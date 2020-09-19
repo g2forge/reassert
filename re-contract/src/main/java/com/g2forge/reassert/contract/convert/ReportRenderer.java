@@ -43,12 +43,12 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
 import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
-import com.g2forge.reassert.expression.explain.convert.ExplanationRenderer;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.express.IConstant;
-import com.g2forge.reassert.expression.express.IExpression;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.explain.convert.ExplanationRenderer;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.express.IConstant;
+import com.g2forge.reassert.express.express.IExpression;
+import com.g2forge.reassert.express.express.Operation;
 
 import lombok.AccessLevel;
 import lombok.Getter;

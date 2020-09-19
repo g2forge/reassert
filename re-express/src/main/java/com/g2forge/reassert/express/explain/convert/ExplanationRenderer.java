@@ -1,4 +1,4 @@
-package com.g2forge.reassert.expression.explain.convert;
+package com.g2forge.reassert.express.explain.convert;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,12 +14,12 @@ import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
 import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.explain.model.IExplainedApplication;
-import com.g2forge.reassert.expression.explain.model.IExplainedApplication.Argument;
-import com.g2forge.reassert.expression.explain.model.IdentityExplainedOperation;
-import com.g2forge.reassert.expression.explain.model.ZeroExplainedOperation;
-import com.g2forge.reassert.expression.express.IConstant;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.explain.model.IExplainedApplication;
+import com.g2forge.reassert.express.explain.model.IdentityExplainedOperation;
+import com.g2forge.reassert.express.explain.model.ZeroExplainedOperation;
+import com.g2forge.reassert.express.explain.model.IExplainedApplication.Argument;
+import com.g2forge.reassert.express.express.IConstant;
 
 import lombok.AccessLevel;
 import lombok.Getter;

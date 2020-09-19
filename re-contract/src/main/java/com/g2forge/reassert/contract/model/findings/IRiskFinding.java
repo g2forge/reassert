@@ -5,7 +5,7 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.ITerminalFinding;
-import com.g2forge.reassert.expression.explain.model.IExplained;
+import com.g2forge.reassert.express.explain.model.IExplained;
 
 public interface IRiskFinding extends ITerminalFinding {
 	@Override

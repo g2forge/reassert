@@ -18,9 +18,9 @@ import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
-import com.g2forge.reassert.expression.evaluate.IEvaluator;
-import com.g2forge.reassert.expression.evaluate.bool.BooleanEvaluator;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.evaluate.IEvaluator;
+import com.g2forge.reassert.express.evaluate.bool.BooleanEvaluator;
+import com.g2forge.reassert.express.express.IExpression;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
 import lombok.AccessLevel;

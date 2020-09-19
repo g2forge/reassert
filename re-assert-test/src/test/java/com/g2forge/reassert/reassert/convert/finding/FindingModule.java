@@ -20,8 +20,8 @@ import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.express.IExpression;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

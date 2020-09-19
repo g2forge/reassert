@@ -6,7 +6,7 @@ import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.reassert.contract.convert.IReportRenderContext;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.model.report.TestFinding;
 import com.g2forge.reassert.reassert.model.report.TestRiskFinding;
 

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.expression.evaluate.bool;
+package com.g2forge.reassert.express.evaluate.bool;
 
 import java.util.function.BinaryOperator;
 

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.expression.evaluate.bool;
+package com.g2forge.reassert.express.evaluate.bool;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.explain.model.IdentityExplainedOperation;
-import com.g2forge.reassert.expression.explain.model.ZeroExplainedOperation;
-import com.g2forge.reassert.expression.express.IConstant;
-import com.g2forge.reassert.expression.express.IExpression;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.explain.model.IdentityExplainedOperation;
+import com.g2forge.reassert.express.explain.model.ZeroExplainedOperation;
+import com.g2forge.reassert.express.express.IConstant;
+import com.g2forge.reassert.express.express.IExpression;
+import com.g2forge.reassert.express.express.Operation;
 
 public class ExplainedBooleanEvaluator<T> extends ABooleanEvaluator<T, IExplained<T>> {
 	public ExplainedBooleanEvaluator(IBooleanSystem<T> system) {

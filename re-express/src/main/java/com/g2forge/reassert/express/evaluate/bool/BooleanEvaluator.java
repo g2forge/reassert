@@ -1,13 +1,13 @@
-package com.g2forge.reassert.expression.evaluate.bool;
+package com.g2forge.reassert.express.evaluate.bool;
 
 import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.expression.express.IConstant;
-import com.g2forge.reassert.expression.express.IExpression;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.express.IConstant;
+import com.g2forge.reassert.express.express.IExpression;
+import com.g2forge.reassert.express.express.Operation;
 
 public class BooleanEvaluator<T> extends ABooleanEvaluator<T, T> {
 	public BooleanEvaluator(IBooleanSystem<T> system) {

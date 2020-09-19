@@ -1,10 +1,10 @@
-package com.g2forge.reassert.expression.evaluate.bool;
+package com.g2forge.reassert.express.evaluate.bool;
 
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.function.IFunction2;
-import com.g2forge.reassert.expression.evaluate.IEvaluator;
-import com.g2forge.reassert.expression.express.IExpression;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.evaluate.IEvaluator;
+import com.g2forge.reassert.express.express.IExpression;
+import com.g2forge.reassert.express.express.Operation;
 
 import lombok.AccessLevel;
 import lombok.Getter;

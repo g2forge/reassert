@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.express.Operation;
 
 import lombok.Builder;
 import lombok.Data;

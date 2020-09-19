@@ -1,4 +1,4 @@
-package com.g2forge.reassert.expression.explain.model;
+package com.g2forge.reassert.express.explain.model;
 
 import lombok.Builder;
 import lombok.Data;

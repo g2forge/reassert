@@ -1,4 +1,4 @@
-package com.g2forge.reassert.expression.express;
+package com.g2forge.reassert.express.express;
 
 import java.util.List;
 

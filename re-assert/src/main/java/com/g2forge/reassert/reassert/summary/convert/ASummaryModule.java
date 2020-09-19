@@ -10,7 +10,7 @@ import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.IContractApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
 
 import lombok.AccessLevel;
 import lombok.Getter;
