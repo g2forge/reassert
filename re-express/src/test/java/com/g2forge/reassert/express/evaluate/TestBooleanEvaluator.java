@@ -6,12 +6,12 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.expression.evaluate.IEvaluator;
-import com.g2forge.reassert.expression.evaluate.bool.BooleanBooleanSystem;
-import com.g2forge.reassert.expression.evaluate.bool.BooleanEvaluator;
-import com.g2forge.reassert.expression.express.IConstant;
-import com.g2forge.reassert.expression.express.Literal;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.evaluate.IEvaluator;
+import com.g2forge.reassert.express.evaluate.bool.BooleanBooleanSystem;
+import com.g2forge.reassert.express.evaluate.bool.BooleanEvaluator;
+import com.g2forge.reassert.express.express.IConstant;
+import com.g2forge.reassert.express.express.Literal;
+import com.g2forge.reassert.express.express.Operation;
 
 import lombok.Getter;
 

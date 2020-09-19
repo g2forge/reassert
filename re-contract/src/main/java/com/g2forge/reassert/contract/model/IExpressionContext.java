@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.express.IExpression;
 
 public interface IExpressionContext {
 	public IExpression<TermRelation> getExpression();

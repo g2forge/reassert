@@ -6,9 +6,9 @@ import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.TermRelationBooleanSystem;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.evaluate.ATestExplainedBooleanEvaluator;
-import com.g2forge.reassert.expression.evaluate.bool.IBooleanSystem;
-import com.g2forge.reassert.expression.express.Literal;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.evaluate.bool.IBooleanSystem;
+import com.g2forge.reassert.express.express.Literal;
+import com.g2forge.reassert.express.express.Operation;
 
 public class TestTermRelationBooleanSystem extends ATestExplainedBooleanEvaluator<TermRelation> {
 	@Test

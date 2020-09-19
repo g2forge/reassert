@@ -3,11 +3,11 @@ package com.g2forge.reassert.express.evaluate;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.expression.evaluate.bool.BooleanBooleanSystem;
-import com.g2forge.reassert.expression.evaluate.bool.IBooleanSystem;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
-import com.g2forge.reassert.expression.express.Literal;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.evaluate.bool.BooleanBooleanSystem;
+import com.g2forge.reassert.express.evaluate.bool.IBooleanSystem;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.express.Literal;
+import com.g2forge.reassert.express.express.Operation;
 
 public class TestExplainedBooleanEvaluator extends ATestExplainedBooleanEvaluator<Boolean> {
 	@Test

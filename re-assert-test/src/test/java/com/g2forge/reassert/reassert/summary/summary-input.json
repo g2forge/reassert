@@ -101,7 +101,7 @@
         "finding" : {
           "@c" : "com.g2forge.reassert.contract.model.findings.NoticeFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.expression.express.Literal",
+            "@c" : "com.g2forge.reassert.express.express.Literal",
             "name" : "Dummy",
             "value" : "Included"
           }
@@ -115,7 +115,7 @@
         "finding" : {
           "@c" : "com.g2forge.reassert.contract.model.findings.ConditionFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.expression.express.Literal",
+            "@c" : "com.g2forge.reassert.express.express.Literal",
             "name" : "Dummy",
             "value" : "Excluded"
           }

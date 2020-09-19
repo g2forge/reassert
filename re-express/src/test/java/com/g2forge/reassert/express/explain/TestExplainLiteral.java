@@ -3,8 +3,8 @@ package com.g2forge.reassert.express.explain;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
-import com.g2forge.reassert.expression.express.Literal;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.express.Literal;
 
 public class TestExplainLiteral extends ATestExplanationRenderer {
 	@Test

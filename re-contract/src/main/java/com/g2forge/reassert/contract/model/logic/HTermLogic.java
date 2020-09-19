@@ -11,9 +11,9 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
-import com.g2forge.reassert.expression.express.IExpression;
-import com.g2forge.reassert.expression.express.Literal;
-import com.g2forge.reassert.expression.express.Operation;
+import com.g2forge.reassert.express.express.IExpression;
+import com.g2forge.reassert.express.express.Literal;
+import com.g2forge.reassert.express.express.Operation;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -27,7 +27,7 @@ import com.g2forge.reassert.core.model.contract.usage.GeneralUsage;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
-import com.g2forge.reassert.expression.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.explain.convert.ExplanationMode;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 

@@ -7,7 +7,7 @@ import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextualFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.express.IExpression;
 
 import lombok.Builder;
 import lombok.Data;

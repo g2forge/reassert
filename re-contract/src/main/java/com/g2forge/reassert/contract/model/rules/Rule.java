@@ -9,8 +9,8 @@ import com.g2forge.reassert.contract.model.logic.ITermLogicContext;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.expression.explain.model.IExplained;
-import com.g2forge.reassert.expression.express.IExpression;
+import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.express.express.IExpression;
 
 import lombok.Builder;
 import lombok.Data;
