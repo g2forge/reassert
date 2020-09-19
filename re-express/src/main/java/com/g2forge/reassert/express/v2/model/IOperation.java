@@ -2,6 +2,8 @@ package com.g2forge.reassert.express.v2.model;
 
 import java.util.List;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.function.builder.IBuilder;
 
 public interface IOperation<Name, Value> extends IExpression<Name, Value> {
@@ -26,6 +28,7 @@ public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 	public interface IOperator {
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder();
 
+		@Note(type = NoteType.TODO, value = "Validation should include explanations")
 		public default boolean isValid(List<? extends IExpression<?, ?>> arguments) {
 			return true;
 		}
