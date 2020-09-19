@@ -1,14 +1,17 @@
 digraph reassert {
 	Apache_1_1 [label="Apache 1.1 license"];
 	Apache_2_0 [label="Apache 2.0 license"];
-	CC0_1_0 [label="CC0 1.0 license"];
+	Apache_family [label="Apache family license"];
+	CC0_1_0 [label="Creative Commons Zero 1.0 Universal license"];
+	CDDL_family [label="CDDL family license"];
 	CPL_1_0 [label="CPL 1.0 license"];
 	EPL_1_0 [label="EPL 1.0 license"];
 	GPL_2_0_only [label="GPL 2.0 only license"];
-	IndianaExtreme111 [label="IndianaExtreme111 license"];
+	IndianaExtreme_1_1_1 [label="IndianaExtreme 1.1.1 license"];
 	LGPL_2_1_only [label="LGPL 2.1 only license"];
 	MIT [label="MIT license"];
 	MPL_1_1 [label="MPL 1.1 license"];
+	MPL_family [label="MPL family license"];
 	PublicDomain [label="PublicDomain license"];
 	UnspecifiedLicense [label="Unspecified license"];
 	activation_activation_1_0_2_artifact [label="activation:activation:1.0.2"];
@@ -135,6 +138,7 @@ digraph reassert {
 	com_g2forge_alexandria_ax_project_0_0_15_SNAPSHOT_artifact [label="com.g2forge.alexandria:ax-project:0.0.15-SNAPSHOT"];
 	com_g2forge_alexandria_ax_project_0_0_15_SNAPSHOT_jar_artifact [label="com.g2forge.alexandria:ax-project:0.0.15-SNAPSHOT:jar"];
 	com_g2forge_alexandria_ax_reflection_0_0_15_SNAPSHOT_jar_artifact [label="com.g2forge.alexandria:ax-reflection:0.0.15-SNAPSHOT:jar"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact [label="com.g2forge.alexandria:ax-regex:0.0.15-SNAPSHOT:jar"];
 	com_g2forge_alexandria_ax_root_0_0_15_SNAPSHOT_artifact [label="com.g2forge.alexandria:ax-root:0.0.15-SNAPSHOT"];
 	com_g2forge_alexandria_ax_root_0_0_15_SNAPSHOT_pom_artifact [label="com.g2forge.alexandria:ax-root:0.0.15-SNAPSHOT:pom"];
 	com_g2forge_alexandria_ax_service_0_0_15_SNAPSHOT_artifact [label="com.g2forge.alexandria:ax-service:0.0.15-SNAPSHOT"];
@@ -907,7 +911,6 @@ digraph reassert {
 	tomcat_naming_common_5_0_28_artifact [label="tomcat:naming-common:5.0.28"];
 	tomcat_naming_java_5_0_28_artifact [label="tomcat:naming-java:5.0.28"];
 	tomcat_tomcat_parent_5_5_23_artifact [label="tomcat:tomcat-parent:5.5.23"];
-	unknownlicense_00F665393B60CFF030EEECF3D9A1B043E0AA24B7 [label="Unknown License: Mozilla Public License"];
 	unknownlicense_0BC787FB55C6F563A1C61728981F0F8B4D4560BA [label="Unknown License: Java HTML Tidy License"];
 	unknownlicense_0DC0BB184A010E8B58FA9634E64417AACD74A30C [label="Unknown License: The W3C License"];
 	unknownlicense_1A824985CB8318835C9DC71F41C11BBB3C421AA3 [label="Unknown License: COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0"];
@@ -915,7 +918,6 @@ digraph reassert {
 	unknownlicense_27884B4D0EA6B39E4736D02B5BF4944BEA795E50 [label="Unknown License: The Werken Company License"];
 	unknownlicense_290035C9B51F66A59F98A1611BA0511D7F48030D [label="Unknown License: BSD-style license"];
 	unknownlicense_30CACA616E914961A93EF38991A99A8FDCF65277 [label="Unknown License: New BSD License"];
-	unknownlicense_340BB1D6B574BCC5B12531A0CE15EAD3C36FC927 [label="Unknown License: CDDL"];
 	unknownlicense_365CDC5C835E330B1DDEC0DB2A9DD8AF8353A7EA [label="Unknown License: HSQLDB License"];
 	unknownlicense_38096A0782D24BE3F1AC8A005109A6F9E98A2E3C [label="Unknown License: Unlicense"];
 	unknownlicense_380CC220DDEF5B24102AE9DF5E0A03FC4C2AEC19 [label="Unknown License: LGPL"];
@@ -1380,6 +1382,13 @@ digraph reassert {
 	com_g2forge_alexandria_ax_reflection_0_0_15_SNAPSHOT_jar_artifact -> com_g2forge_alexandria_ax_type_0_0_15_SNAPSHOT_artifact [label="depends"];
 	com_g2forge_alexandria_ax_reflection_0_0_15_SNAPSHOT_jar_artifact -> junit_junit_4_13_artifact [label="depends"];
 	com_g2forge_alexandria_ax_reflection_0_0_15_SNAPSHOT_jar_artifact -> org_projectlombok_lombok_1_18_12_artifact [label="depends"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> UnspecifiedLicense [label="notice"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> com_g2forge_alexandria_ax_analysis_0_0_15_SNAPSHOT_artifact [label="depends"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> com_g2forge_alexandria_ax_java_0_0_15_SNAPSHOT_artifact [label="depends"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> com_g2forge_alexandria_ax_project_0_0_15_SNAPSHOT_artifact [label="inherits"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> com_g2forge_alexandria_ax_test_0_0_15_SNAPSHOT_artifact [label="depends"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> junit_junit_4_13_artifact [label="depends"];
+	com_g2forge_alexandria_ax_regex_0_0_15_SNAPSHOT_jar_artifact -> org_projectlombok_lombok_1_18_12_artifact [label="depends"];
 	com_g2forge_alexandria_ax_root_0_0_15_SNAPSHOT_artifact -> Apache_2_0 [label="notice"];
 	com_g2forge_alexandria_ax_root_0_0_15_SNAPSHOT_artifact -> junit_junit_4_13_artifact [label="depends"];
 	com_g2forge_alexandria_ax_root_0_0_15_SNAPSHOT_artifact -> org_projectlombok_lombok_1_18_12_artifact [label="depends"];
@@ -1533,10 +1542,10 @@ digraph reassert {
 	com_kohlschutter_junixsocket_junixsocket_parent_2_0_4_artifact -> junit_junit_4_11_artifact [label="depends"];
 	com_kohlschutter_junixsocket_junixsocket_parent_2_0_4_artifact -> log4j_log4j_1_2_17_artifact [label="depends"];
 	com_kohlschutter_kohlschutter_parent_1_1_artifact -> Apache_2_0 [label="notice"];
-	com_lowagie_itext_1_4_8_artifact -> unknownlicense_00F665393B60CFF030EEECF3D9A1B043E0AA24B7 [label="notice"];
+	com_lowagie_itext_1_4_8_artifact -> MPL_family [label="notice"];
+	com_lowagie_itext_2_0_7_artifact -> MPL_family [label="notice"];
 	com_lowagie_itext_2_0_7_artifact -> bouncycastle_bcmail_jdk14_138_artifact [label="depends"];
 	com_lowagie_itext_2_0_7_artifact -> bouncycastle_bcprov_jdk14_138_artifact [label="depends"];
-	com_lowagie_itext_2_0_7_artifact -> unknownlicense_00F665393B60CFF030EEECF3D9A1B043E0AA24B7 [label="notice"];
 	com_megginson_sax_xml_writer_0_2_artifact -> PublicDomain [label="notice"];
 	com_megginson_sax_xml_writer_0_2_artifact -> xml_apis_xml_apis_1_0_b2_artifact [label="depends"];
 	com_oracle_toplink_toplink_10_1_3_artifact -> UnspecifiedLicense [label="notice"];
@@ -1545,9 +1554,9 @@ digraph reassert {
 	com_sun_jdmk_jmxtools_1_2_artifact -> UnspecifiedLicense [label="notice"];
 	com_sun_jmx_jmxri_1_2_1_artifact -> UnspecifiedLicense [label="notice"];
 	com_sun_jmx_jmxri_1_2_artifact -> UnspecifiedLicense [label="notice"];
+	com_sun_mail_all_1_4_3_artifact -> CDDL_family [label="notice"];
 	com_sun_mail_all_1_4_3_artifact -> javax_activation_activation_1_1_artifact [label="depends"];
 	com_sun_mail_all_1_4_3_artifact -> junit_junit_4_3_1_artifact [label="depends"];
-	com_sun_mail_all_1_4_3_artifact -> unknownlicense_340BB1D6B574BCC5B12531A0CE15EAD3C36FC927 [label="notice"];
 	com_sun_mail_all_1_4_3_artifact -> unknownlicense_8DF16D8A7D430C8329C44B3C821E8546978D7F66 [label="notice"];
 	com_thoughtworks_qdox_qdox_1_12_1_artifact -> Apache_2_0 [label="notice"];
 	com_thoughtworks_qdox_qdox_1_12_1_artifact -> ant_ant_1_5_1_artifact [label="depends"];
@@ -1715,15 +1724,15 @@ digraph reassert {
 	commons_fileupload_commons_fileupload_1_2_artifact -> portlet_api_portlet_api_1_0_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_2_0_2_artifact -> UnspecifiedLicense [label="notice"];
 	commons_httpclient_commons_httpclient_2_0_2_artifact -> commons_logging_commons_logging_1_0_3_artifact [label="depends"];
-	commons_httpclient_commons_httpclient_3_0_1_artifact -> Apache_2_0 [label="notice"];
+	commons_httpclient_commons_httpclient_3_0_1_artifact -> Apache_family [label="notice"];
 	commons_httpclient_commons_httpclient_3_0_1_artifact -> commons_codec_commons_codec_1_2_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_3_0_1_artifact -> commons_logging_commons_logging_1_0_3_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_3_0_1_artifact -> junit_junit_3_8_1_artifact [label="depends"];
-	commons_httpclient_commons_httpclient_3_0_artifact -> Apache_2_0 [label="notice"];
+	commons_httpclient_commons_httpclient_3_0_artifact -> Apache_family [label="notice"];
 	commons_httpclient_commons_httpclient_3_0_artifact -> commons_codec_commons_codec_1_2_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_3_0_artifact -> commons_logging_commons_logging_1_0_3_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_3_0_artifact -> junit_junit_3_8_1_artifact [label="depends"];
-	commons_httpclient_commons_httpclient_3_1_artifact -> Apache_2_0 [label="notice"];
+	commons_httpclient_commons_httpclient_3_1_artifact -> Apache_family [label="notice"];
 	commons_httpclient_commons_httpclient_3_1_artifact -> commons_codec_commons_codec_1_2_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_3_1_artifact -> commons_logging_commons_logging_1_0_4_artifact [label="depends"];
 	commons_httpclient_commons_httpclient_3_1_artifact -> junit_junit_3_8_1_artifact [label="depends"];
@@ -4623,7 +4632,7 @@ digraph reassert {
 	xpp3_xpp3_1_1_3_3_artifact -> UnspecifiedLicense [label="notice"];
 	xpp3_xpp3_1_1_3_4_O_artifact -> UnspecifiedLicense [label="notice"];
 	xpp3_xpp3_min_1_1_3_4_O_artifact -> UnspecifiedLicense [label="notice"];
-	xpp3_xpp3_min_1_1_4c_artifact -> IndianaExtreme111 [label="notice"];
+	xpp3_xpp3_min_1_1_4c_artifact -> IndianaExtreme_1_1_1 [label="notice"];
 	xpp3_xpp3_min_1_1_4c_artifact -> PublicDomain [label="notice"];
 	xstream_xstream_1_2_artifact -> UnspecifiedLicense [label="notice"];
 }

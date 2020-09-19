@@ -1,8 +1,5 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
-import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
@@ -26,6 +23,9 @@ public class BSDLicense implements ILicenseSpecific {
 	@ToString.Exclude
 	private final String SPDXShortID = getFamily().name() + '-' + getClauses() + "-Clause";
 
+	@Getter(lazy = true)
+	private final ITerms<ILicenseTerm> terms = StandardLicense.getLoader().getTerms(getShortID());
+
 	@Override
 	public StandardLicenseFamily getFamily() {
 		return StandardLicenseFamily.BSD;
@@ -36,26 +36,18 @@ public class BSDLicense implements ILicenseSpecific {
 		return getShortID().replace('-', ' ') + " license";
 	}
 
-	@Note(type = NoteType.TODO, value = "Implement license term loading", issue = "G2-931")
-	@Override
-	public ITerms<ILicenseTerm> getTerms() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public LicenseVersion getVersion() {
 		return null;
 	}
 
-	@Note(type = NoteType.TODO, value = "Implement license families", issue = "G2-928")
 	@Override
-	public boolean isChild(ILicenseFamily license) {
+	public boolean isOrLater() {
 		return false;
 	}
 
 	@Override
-	public boolean isOrLater() {
-		return false;
+	public String toString() {
+		return getShortID();
 	}
 }

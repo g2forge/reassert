@@ -42,50 +42,13 @@ Exceptions
 	Expat-with-advertising-restriction
 
 License Families
-	Artistic
-	Artistic-dist
-	Artistic License
-	AGPL
-	BSD
-	BSD LICENCE
-	BSD license
-	BSD License
 	BSD License (BSD License)
 	BSD License (BSD)
 	BSD License (BSD-like)
-	creative commons
-	Creative Commons
-	CREATIVE COMMONS
-	Creative Commons license
-	LGPL
-	LGPL-ed
-	GPL
-	GPL-any
-	GPL-licensed
 	GNU Library or Lesser General Public License (LGPL) (LGPL)
-	Mozilla Public License
-	MOZILLA PUBLIC LICENSE
-	Python
 	Python Software Foundation License (BSD)
 	Python Software Foundation License (PSF license)
 	Python Software Foundation License (PSF)
-	GFDL
-	BSD-style license
-	Mozilla Public License
-	GNU LESSER GENERAL PUBLIC LICENSE
-	GNU Lesser General Public License
-	BSD License
-	GNU Lesser Public License
-	The BSD License
-	lgpl
-	BSD
-	LGPL
-	BSD style
-	Apache Software Licenses
-	New BSD License
-	Revised BSD
-	New BSD license
-	CDDL
 
 Complex BSD
 	BSD-2-Clause-alike

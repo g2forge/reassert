@@ -1,8 +1,5 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
-import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
@@ -29,9 +26,17 @@ public class FamilyVersionLicense implements ILicenseSpecific {
 	@Getter(lazy = true)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
-	private final String SPDXShortID = computeSPDXShortID();
+	private final String SPDXShortID = computeString('-');
 
-	protected String computeSPDXShortID() {
+	@Getter(lazy = true)
+	private final ITerms<ILicenseTerm> terms = StandardLicense.getLoader().getTerms(getShortID());
+
+	@Getter(lazy = true)
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private final String name = computeString(' ') + " license";
+
+	protected String computeString(final char separator) {
 		final StringBuilder retVal = new StringBuilder();
 
 		final StandardLicenseFamily family = getFamily();
@@ -39,28 +44,23 @@ public class FamilyVersionLicense implements ILicenseSpecific {
 
 		final Versioning versioning = family.getVersioning();
 		if (StandardLicenseFamily.Versioning.Unversioned.compareTo(versioning) < 0) {
-			retVal.append('-').append(getVersion());
-			if (StandardLicenseFamily.Versioning.VariableAllowed.compareTo(versioning) <= 0) retVal.append(isOrLater() ? "-or-later" : "-only");
+			retVal.append(separator);
+			final LicenseVersion version = getVersion();
+			if (version != null) {
+				retVal.append(version);
+				if (StandardLicenseFamily.Versioning.VariableAllowed.compareTo(versioning) <= 0) {
+					retVal.append(separator);
+					if (isOrLater()) retVal.append("or").append(separator).append("later");
+					else retVal.append("only");
+				}
+			} else retVal.append("family");
 		}
 
 		return retVal.toString();
 	}
 
 	@Override
-	public String getName() {
-		return getShortID().replace('-', ' ') + " license";
-	}
-
-	@Note(type = NoteType.TODO, value = "Implement license term loading", issue = "G2-931")
-	@Override
-	public ITerms<ILicenseTerm> getTerms() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Note(type = NoteType.TODO, value = "Implement license families", issue = "G2-928")
-	@Override
-	public boolean isChild(ILicenseFamily license) {
-		return false;
+	public String toString() {
+		return getShortID();
 	}
 }

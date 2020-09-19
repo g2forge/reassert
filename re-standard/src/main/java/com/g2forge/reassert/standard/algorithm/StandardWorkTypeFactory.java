@@ -29,6 +29,7 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
+import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.report.IReport;
@@ -160,6 +161,12 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 					return familyFunction.apply(family);
 			}
 		});
+		licenseBuilder.add(ILicenseSpecific.class, l -> {
+			final ILicenseFamily family = l.getFamily();
+			if (family == null) throw new IllegalArgumentException(l.toString());
+			return familyFunction.apply(family);
+		});
+		licenseBuilder.add(ILicenseFamily.class, familyFunction);
 		return licenseBuilder.build();
 	}
 

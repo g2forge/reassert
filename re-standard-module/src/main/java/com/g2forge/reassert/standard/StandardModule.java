@@ -6,7 +6,7 @@ import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.module.IModule;
 import com.g2forge.reassert.core.api.module.IModule.Loaded.LoadedBuilder;
 import com.g2forge.reassert.standard.api.scanner.LicenseFileScanner;
-import com.g2forge.reassert.standard.model.contract.license.parser.StandardLicenseParser;
+import com.g2forge.reassert.standard.model.contract.license.StandardLicenseParser;
 import com.g2forge.reassert.standard.model.contract.usage.parser.StandardUsageParser;
 
 @Service(IModule.class)
