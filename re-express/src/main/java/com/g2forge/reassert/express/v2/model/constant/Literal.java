@@ -14,6 +14,10 @@ public class Literal<Name, Value> implements ILiteral<Name, Value> {
 
 	protected final Value value;
 
+	public Literal(Value value) {
+		this(null, value);
+	}
+
 	@Override
 	public Value get() {
 		return getValue();

@@ -7,20 +7,20 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-public abstract class AEvaluator<Name, Value> implements IEvaluator<Name, Value, Value> {
+public abstract class AEvaluator<Name, Value, Output> implements IEvaluator<Name, Value, Output> {
 	@Getter
 	@RequiredArgsConstructor
-	protected static class Context<Name, Value> {
-		protected final IEvaluator<Name, Value, Value> evaluator;
+	protected static class Context<Name, Value, Output> {
+		protected final IEvaluator<Name, Value, Output> evaluator;
 	}
 
 	@Getter(value = AccessLevel.PROTECTED, lazy = true)
-	private final IFunction2<IExpression<Name, Value>, Context<Name, Value>, Value> evaluator = createEvaluator();
-	
-	protected abstract IFunction2<IExpression<Name, Value>, Context<Name, Value>, Value> createEvaluator();
+	private final IFunction2<IExpression<Name, Value>, Context<Name, Value, Output>, Output> evaluator = createEvaluator();
+
+	protected abstract IFunction2<IExpression<Name, Value>, Context<Name, Value, Output>, Output> createEvaluator();
 
 	@Override
-	public Value eval(IExpression<Name, Value> expression) {
+	public Output eval(IExpression<Name, Value> expression) {
 		return getEvaluator().apply(expression, new Context<>(this));
 	}
 }

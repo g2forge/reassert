@@ -18,7 +18,7 @@ public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 		}
 
 		public default Builder argument$(Value value) {
-			return argument$(null, value);
+			return argument(new Literal<>(value));
 		}
 
 		public default Built valid() {
