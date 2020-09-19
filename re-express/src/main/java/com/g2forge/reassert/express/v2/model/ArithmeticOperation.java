@@ -12,23 +12,16 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
-	public static class BooleanOperationBuilder<Name, Value> implements IOperationBuilder<Name, Value, BooleanOperationBuilder<Name, Value>, BooleanOperation<Name, Value>> {}
+public class ArithmeticOperation<Name, Value> implements IOperation<Name, Value> {
+	public static class ArithmeticOperationBuilder<Name, Value> implements IOperationBuilder<Name, Value, ArithmeticOperationBuilder<Name, Value>, ArithmeticOperation<Name, Value>> {}
 
 	public enum Operator implements IOperator {
-		Not {
-			@Override
-			public boolean isValid(List<? extends IExpression<?, ?>> arguments) {
-				return arguments.size() == 1;
-			}
-		},
-		And,
-		Or,
-		Xor;
+		Add,
+		Subtract;
 
 		@Override
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder() {
-			return BooleanOperation.<Name, Value>builder().operator(this);
+			return ArithmeticOperation.<Name, Value>builder().operator(this);
 		}
 	}
 
@@ -38,7 +31,7 @@ public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
 	protected final List<IExpression<Name, Value>> arguments;
 
 	@SafeVarargs
-	public BooleanOperation(Operator operator, IExpression<Name, Value>... arguments) {
+	public ArithmeticOperation(Operator operator, IExpression<Name, Value>... arguments) {
 		this(operator, HCollection.asList(arguments));
 	}
 }

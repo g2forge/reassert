@@ -26,10 +26,23 @@ public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 	public interface IOperator {
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder();
 
-		public boolean isValid(List<? extends IExpression<?, ?>> arguments);
+		public default boolean isValid(List<? extends IExpression<?, ?>> arguments) {
+			return true;
+		}
 	}
 
 	public List<? extends IExpression<Name, Value>> getArguments();
 
 	public IOperator getOperator();
+
+	@Override
+	public default boolean isSame(IExpression<?, ?> that) {
+		if (this == that) return true;
+		if ((that == null) || !(that instanceof IOperation)) return false;
+
+		final IOperation<?, ?> cast = (IOperation<?, ?>) that;
+		if (!getOperator().equals(cast.getOperator())) return false;
+		if (!HExpression.isSame(getArguments(), cast.getArguments())) return false;
+		return true;
+	}
 }

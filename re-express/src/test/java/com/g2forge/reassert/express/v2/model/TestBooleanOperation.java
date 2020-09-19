@@ -21,14 +21,14 @@ public class TestBooleanOperation {
 	@Test
 	public void notSameArguments() {
 		final IOperation<String, Boolean> left = BooleanOperation.Operator.And.<String, Boolean>builder().argument$("A", false).argument$("B", false).valid();
-		final BooleanOperation<String, Boolean> right = new BooleanOperation<>(BooleanOperation.Operator.And, new Literal<String, Boolean>("A", false), new Literal<String, Boolean>("B", true));
+		final BooleanOperation<String, Boolean> right = new BooleanOperation<>(BooleanOperation.Operator.And, new Literal<>("A", false), new Literal<>("B", true));
 		HAssert.assertFalse(left.isSame(right));
 	}
 
 	@Test
 	public void notSameArgumentsSize() {
 		final IOperation<String, Boolean> left = BooleanOperation.Operator.Xor.<String, Boolean>builder().argument$("A", false).valid();
-		final BooleanOperation<String, Boolean> right = new BooleanOperation<>(BooleanOperation.Operator.Xor, new Literal<String, Boolean>("A", false), new Literal<String, Boolean>("B", true));
+		final BooleanOperation<String, Boolean> right = new BooleanOperation<>(BooleanOperation.Operator.Xor, new Literal<>("A", false), new Literal<>("B", true));
 		HAssert.assertFalse(left.isSame(right));
 	}
 
@@ -40,7 +40,7 @@ public class TestBooleanOperation {
 	@Test
 	public void same() {
 		final IOperation<String, Boolean> left = BooleanOperation.Operator.Or.<String, Boolean>builder().argument$("A", false).argument$("B", true).valid();
-		final BooleanOperation<String, Boolean> right = new BooleanOperation<>(BooleanOperation.Operator.Or, new Literal<String, Boolean>("A", false), new Literal<String, Boolean>("B", true));
+		final BooleanOperation<String, Boolean> right = new BooleanOperation<>(BooleanOperation.Operator.Or, new Literal<>("A", false), new Literal<>("B", true));
 		HAssert.assertTrue(left.isSame(right));
 	}
 }
