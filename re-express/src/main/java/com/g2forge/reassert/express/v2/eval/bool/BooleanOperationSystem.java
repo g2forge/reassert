@@ -2,6 +2,7 @@ package com.g2forge.reassert.express.v2.eval.bool;
 
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.express.v2.eval.operation.AOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
@@ -11,8 +12,8 @@ import com.g2forge.reassert.express.v2.model.operation.IOperation.IOperator;
 
 public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingleton {
 	protected static class BooleanOperatorDescriptor extends AOperatorDescriptor<Boolean> {
-		public BooleanOperatorDescriptor(Boolean zero, Boolean identity) {
-			super(zero, identity);
+		public BooleanOperatorDescriptor(Boolean zero, Boolean identity, IFunction1<? super Boolean, ? extends Boolean> summarizer) {
+			super(zero, identity, summarizer);
 		}
 
 		@Override
@@ -23,11 +24,6 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 		@Override
 		public boolean isValid(IOperation<?, Boolean> operation) {
 			return operation.getOperator().isValid(operation.getArguments());
-		}
-
-		@Override
-		public Boolean summarize(Boolean combined) {
-			return combined;
 		}
 	}
 
@@ -46,28 +42,23 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
 		switch (cast) {
 			case Not:
-				return new BooleanOperatorDescriptor(null, null) {
-					@Override
-					public Boolean summarize(Boolean combined) {
-						return !combined;
-					}
-				};
+				return new BooleanOperatorDescriptor(null, null, v -> !v);
 			case Or:
-				return new BooleanOperatorDescriptor(true, false) {
+				return new BooleanOperatorDescriptor(true, false, null) {
 					@Override
 					public Boolean combine(Boolean left, Boolean right) {
 						return left || right;
 					}
 				};
 			case And:
-				return new BooleanOperatorDescriptor(false, true) {
+				return new BooleanOperatorDescriptor(false, true, null) {
 					@Override
 					public Boolean combine(Boolean left, Boolean right) {
 						return left || right;
 					}
 				};
 			case Xor:
-				return new BooleanOperatorDescriptor(null, null) {
+				return new BooleanOperatorDescriptor(null, null, null) {
 					@Override
 					public Boolean combine(Boolean left, Boolean right) {
 						return left ^ right;
