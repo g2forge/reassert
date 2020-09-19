@@ -1,5 +1,7 @@
 package com.g2forge.reassert.express.v2.model.constant;
 
+import com.g2forge.alexandria.java.validate.IValidation;
+import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
 
 import lombok.Builder;
@@ -32,5 +34,10 @@ public class Literal<Name, Value> implements ILiteral<Name, Value> {
 		if (!get().equals(cast.get())) return false;
 		if (!getName().equals(cast.getName())) return false;
 		return true;
+	}
+
+	@Override
+	public IValidation validate() {
+		return ValidValidation.create();
 	}
 }

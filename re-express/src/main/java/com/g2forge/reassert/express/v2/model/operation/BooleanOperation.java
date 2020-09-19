@@ -3,6 +3,7 @@ package com.g2forge.reassert.express.v2.model.operation;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
 
 import lombok.Builder;
@@ -19,8 +20,8 @@ public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
 	public enum Operator implements IOperator {
 		Not {
 			@Override
-			public boolean isValid(List<? extends IExpression<?, ?>> arguments) {
-				return arguments.size() == 1;
+			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
+				return new OperatorArgumentsValidation(arguments.size() == 1);
 			}
 		},
 		And,

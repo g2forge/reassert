@@ -30,7 +30,7 @@ public class TestBooleanEvaluator {
 					builder.argument$(value);
 					if (j > 0) expected = accumulator.apply(expected, value);
 				}
-				final IOperation<String, Boolean> actual = builder.build();
+				final IOperation<String, Boolean> actual = builder.valid();
 
 				@SuppressWarnings("unchecked")
 				final String argumentsString = actual.getArguments().stream().map(e -> (ILiteral<?, Boolean>) e).map(ILiteral::get).map(Object::toString).collect(Collectors.joining(", "));
@@ -52,8 +52,8 @@ public class TestBooleanEvaluator {
 
 	@Test
 	public void not() {
-		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.Not.<String, Boolean>builder().argument$(false).build()));
-		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.Not.<String, Boolean>builder().argument$(true).build()));
+		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.Not.<String, Boolean>builder().argument$(false).valid()));
+		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.Not.<String, Boolean>builder().argument$(true).valid()));
 	}
 
 	@Test

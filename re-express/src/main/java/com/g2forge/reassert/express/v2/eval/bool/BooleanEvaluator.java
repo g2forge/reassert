@@ -46,7 +46,7 @@ public class BooleanEvaluator<Name> extends AEvaluator<Name, Boolean, Boolean> {
 			final Context<Name, Boolean, Boolean> context = (Context<Name, Boolean, Boolean>) c;
 
 			final IOperatorDescriptor<Boolean> descriptor = getOperationSystem().getDescriptor(expression.getOperator());
-			if (!descriptor.isValid(expression)) throw new IllegalArgumentException();
+			descriptor.validate(expression).throwIfInvalid();
 
 			final IValueSystem<Boolean> valueSystem = getValueSystem();
 			final IOptional<? extends Boolean> zero = descriptor.getZero();
