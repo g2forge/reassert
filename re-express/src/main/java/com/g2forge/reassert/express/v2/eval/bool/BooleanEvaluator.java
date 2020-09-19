@@ -2,12 +2,10 @@ package com.g2forge.reassert.express.v2.eval.bool;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.g2forge.alexandria.java.adt.tuple.ITuple1G_;
 import com.g2forge.alexandria.java.core.error.HError;
+import com.g2forge.alexandria.java.core.error.OrThrowable;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
@@ -27,31 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter(AccessLevel.PROTECTED)
 public class BooleanEvaluator<Name> extends AEvaluator<Name, Boolean, Boolean> {
-	protected static class OrThrowable<T> implements ITuple1G_<T> {
-		protected final T value;
-
-		@Getter
-		protected final Throwable throwable;
-
-		public OrThrowable(T value) {
-			this.value = value;
-			this.throwable = null;
-		}
-
-		public OrThrowable(Throwable throwable) {
-			if (throwable == null) throw new NullPointerException();
-			this.value = null;
-			this.throwable = throwable;
-		}
-
-		@Override
-		public T get0() {
-			final Throwable throwable = getThrowable();
-			if (throwable != null) HError.throwQuietly(throwable);
-			return value;
-		}
-	}
-
 	protected final IValueSystem<Boolean> valueSystem;
 
 	protected final IOperationSystem<Boolean> operationSystem;
@@ -93,13 +66,11 @@ public class BooleanEvaluator<Name> extends AEvaluator<Name, Boolean, Boolean> {
 				if (identity.isEmpty() || !valueSystem.isSame(result, identity.get())) evaluated.add(new OrThrowable<>(result));
 			}
 
-			final List<Throwable> throwables = evaluated.stream().map(OrThrowable::getThrowable).filter(Objects::nonNull).collect(Collectors.toList());
-			if (!throwables.isEmpty()) throw HError.multithrow(String.format("Failed to evaluate %1$s!", expression.getOperator()), throwables);
+			final List<Boolean> list = evaluated.stream().collect(HError.collector(() -> new RuntimeException(String.format("Failed to evaluate %1$s!", expression.getOperator())), false, Collectors.<Boolean>toList()));
 
-			final Stream<Boolean> stream = evaluated.stream().map(ITuple1G_::get0);
 			final Boolean reduced;
-			if (identity.isEmpty()) reduced = stream.reduce(descriptor::combine).get();
-			else reduced = stream.reduce(identity.get(), descriptor::combine);
+			if (identity.isEmpty()) reduced = list.stream().reduce(descriptor::combine).get();
+			else reduced = list.stream().reduce(identity.get(), descriptor::combine);
 
 			final IFunction1<? super Boolean, ? extends Boolean> summarizer = descriptor.getSummarizer();
 			return summarizer == null ? reduced : summarizer.apply(reduced);
