@@ -1,0 +1,80 @@
+package com.g2forge.reassert.express.v2.eval.bool;
+
+import com.g2forge.alexandria.java.core.enums.EnumException;
+import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.reassert.express.v2.eval.operation.AOperatorDescriptor;
+import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
+import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
+import com.g2forge.reassert.express.v2.model.operation.BooleanOperation;
+import com.g2forge.reassert.express.v2.model.operation.IOperation;
+import com.g2forge.reassert.express.v2.model.operation.IOperation.IOperator;
+
+public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingleton {
+	protected static class BooleanOperatorDescriptor extends AOperatorDescriptor<Boolean> {
+		public BooleanOperatorDescriptor(Boolean zero, Boolean identity) {
+			super(zero, identity);
+		}
+
+		@Override
+		public Boolean combine(Boolean left, Boolean right) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public boolean isValid(IOperation<?, Boolean> operation) {
+			return operation.getOperator().isValid(operation.getArguments());
+		}
+
+		@Override
+		public Boolean summarize(Boolean combined) {
+			return combined;
+		}
+	}
+
+	private static final BooleanOperationSystem INSTANCE = new BooleanOperationSystem();
+
+	public static BooleanOperationSystem create() {
+		return INSTANCE;
+	}
+
+	protected BooleanOperationSystem() {}
+
+	@Override
+	public IOperatorDescriptor<Boolean> getDescriptor(IOperator operator) {
+		if (!(operator instanceof BooleanOperation.Operator)) throw new UnsupportedOperationException("Boolean logic only supports boolean operations!");
+
+		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
+		switch (cast) {
+			case Not:
+				return new BooleanOperatorDescriptor(null, null) {
+					@Override
+					public Boolean summarize(Boolean combined) {
+						return !combined;
+					}
+				};
+			case Or:
+				return new BooleanOperatorDescriptor(true, false) {
+					@Override
+					public Boolean combine(Boolean left, Boolean right) {
+						return left || right;
+					}
+				};
+			case And:
+				return new BooleanOperatorDescriptor(false, true) {
+					@Override
+					public Boolean combine(Boolean left, Boolean right) {
+						return left || right;
+					}
+				};
+			case Xor:
+				return new BooleanOperatorDescriptor(null, null) {
+					@Override
+					public Boolean combine(Boolean left, Boolean right) {
+						return left ^ right;
+					}
+				};
+			default:
+				throw new EnumException(BooleanOperation.Operator.class, cast);
+		}
+	}
+}
