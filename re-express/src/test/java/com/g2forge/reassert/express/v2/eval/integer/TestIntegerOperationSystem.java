@@ -51,7 +51,7 @@ public class TestIntegerOperationSystem {
 
 	@Test
 	public void add() {
-		reduction(ArithmeticOperation.Operator.Add, (a, b) -> a + b);
+		reduction(ArithmeticOperation.Operator.ADD, (a, b) -> a + b);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class TestIntegerOperationSystem {
 
 	@Test
 	public void divide() {
-		HAssert.assertEquals(Integer.valueOf(2), getEvaluator().eval(ArithmeticOperation.Operator.Divide.<String, Integer>builder().argument$(10).argument$(5).valid()));
+		HAssert.assertEquals(Integer.valueOf(2), getEvaluator().eval(ArithmeticOperation.Operator.DIVIDE.<String, Integer>builder().argument$(10).argument$(5).valid()));
 	}
 
 	@Test
@@ -73,11 +73,11 @@ public class TestIntegerOperationSystem {
 
 	@Test
 	public void multiply() {
-		reduction(ArithmeticOperation.Operator.Multiply, (a, b) -> a * b);
+		reduction(ArithmeticOperation.Operator.MULTIPLY, (a, b) -> a * b);
 	}
 
 	@Test
 	public void subtract() {
-		HAssert.assertEquals(Integer.valueOf(-1), getEvaluator().eval(ArithmeticOperation.Operator.Subtract.<String, Integer>builder().argument$(0).argument$(1).valid()));
+		HAssert.assertEquals(Integer.valueOf(-1), getEvaluator().eval(ArithmeticOperation.Operator.SUBTRACT.<String, Integer>builder().argument$(0).argument$(1).valid()));
 	}
 }

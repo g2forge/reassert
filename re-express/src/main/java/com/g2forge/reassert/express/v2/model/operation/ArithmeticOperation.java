@@ -18,15 +18,15 @@ public class ArithmeticOperation<Name, Value> implements IOperation<Name, Value>
 	public static class ArithmeticOperationBuilder<Name, Value> implements IOperationBuilder<Name, Value, ArithmeticOperationBuilder<Name, Value>, ArithmeticOperation<Name, Value>> {}
 
 	public enum Operator implements IOperator {
-		Add,
-		Subtract {
+		ADD,
+		SUBTRACT {
 			@Override
 			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
 				return new OperatorArgumentsValidation(arguments.size() == 2);
 			}
 		},
-		Multiply,
-		Divide {
+		MULTIPLY,
+		DIVIDE {
 			@Override
 			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
 				return new OperatorArgumentsValidation(arguments.size() == 2);

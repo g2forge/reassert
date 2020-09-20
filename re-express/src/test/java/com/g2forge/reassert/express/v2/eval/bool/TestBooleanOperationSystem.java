@@ -47,7 +47,7 @@ public class TestBooleanOperationSystem {
 
 	@Test
 	public void and() {
-		reduction(BooleanOperation.Operator.And, Boolean::logicalAnd);
+		reduction(BooleanOperation.Operator.AND, Boolean::logicalAnd);
 	}
 
 	@Test
@@ -64,27 +64,27 @@ public class TestBooleanOperationSystem {
 
 	@Test
 	public void not() {
-		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.Not.<String, Boolean>builder().argument$(false).valid()));
-		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.Not.<String, Boolean>builder().argument$(true).valid()));
+		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.NOT.<String, Boolean>builder().argument$(false).valid()));
+		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.NOT.<String, Boolean>builder().argument$(true).valid()));
 	}
 
 	@Test
 	public void or() {
-		reduction(BooleanOperation.Operator.Or, Boolean::logicalOr);
+		reduction(BooleanOperation.Operator.OR, Boolean::logicalOr);
 	}
 
 	@Test
 	public void skipAnd() {
-		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.And.<String, Boolean>builder().argument$(false).argument(new NoValueConstant<>()).build()));
+		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.AND.<String, Boolean>builder().argument$(false).argument(new NoValueConstant<>()).build()));
 	}
 
 	@Test
 	public void skipOr() {
-		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.Or.<String, Boolean>builder().argument$(true).argument(new NoValueConstant<>()).build()));
+		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.OR.<String, Boolean>builder().argument$(true).argument(new NoValueConstant<>()).build()));
 	}
 
 	@Test
 	public void xor() {
-		reduction(BooleanOperation.Operator.Xor, Boolean::logicalXor);
+		reduction(BooleanOperation.Operator.XOR, Boolean::logicalXor);
 	}
 }

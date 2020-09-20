@@ -42,28 +42,28 @@ public class IntegerOperationSystem implements IOperationSystem<Integer>, ISingl
 
 		final ArithmeticOperation.Operator cast = (ArithmeticOperation.Operator) operator;
 		switch (cast) {
-			case Add:
+			case ADD:
 				return new ArithmeticOperatorDescriptor(null, 0, null) {
 					@Override
 					public Integer combine(Integer left, Integer right) {
 						return left + right;
 					}
 				};
-			case Subtract:
+			case SUBTRACT:
 				return new ArithmeticOperatorDescriptor(null, null, null) {
 					@Override
 					public Integer combine(Integer left, Integer right) {
 						return left - right;
 					}
 				};
-			case Multiply:
+			case MULTIPLY:
 				return new ArithmeticOperatorDescriptor(0, 1, null) {
 					@Override
 					public Integer combine(Integer left, Integer right) {
 						return left * right;
 					}
 				};
-			case Divide:
+			case DIVIDE:
 				return new ArithmeticOperatorDescriptor(null, null, null) {
 					@Override
 					public Integer combine(Integer left, Integer right) {

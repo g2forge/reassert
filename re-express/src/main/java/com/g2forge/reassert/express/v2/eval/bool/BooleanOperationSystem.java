@@ -42,23 +42,23 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 
 		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
 		switch (cast) {
-			case Not:
+			case NOT:
 				return new BooleanOperatorDescriptor(null, null, v -> !v);
-			case Or:
+			case OR:
 				return new BooleanOperatorDescriptor(true, false, null) {
 					@Override
 					public Boolean combine(Boolean left, Boolean right) {
 						return left || right;
 					}
 				};
-			case And:
+			case AND:
 				return new BooleanOperatorDescriptor(false, true, null) {
 					@Override
 					public Boolean combine(Boolean left, Boolean right) {
 						return left || right;
 					}
 				};
-			case Xor:
+			case XOR:
 				return new BooleanOperatorDescriptor(null, null, null) {
 					@Override
 					public Boolean combine(Boolean left, Boolean right) {
