@@ -30,9 +30,9 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			super(evaluator);
 		}
 
-		public IExpression<Name, Value> eval(IExpression<Name, Value> original, IExpression<Name, Value> expression) {
-			if (original == expression) return expression;
-			return eval(expression);
+		public IExpression<Name, Value> eval(IExpression<Name, Value> original, IExpression<Name, Value> reduced) {
+			if (original == reduced) return original;
+			return eval(reduced);
 		}
 
 		@Override
@@ -105,7 +105,7 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			if (getReductions().contains(Reduction.ApplyClosures)) {
 				try (ICloseable env = context.environment(expression.getEnvironment())) {
 					final IExpression<Name, Value> reduced = context.eval(expression.getExpression());
-					if (reduced != expression.getExpression()) return context.eval(expression, reduced);
+					return context.eval(expression.getExpression(), reduced);
 				}
 			}
 

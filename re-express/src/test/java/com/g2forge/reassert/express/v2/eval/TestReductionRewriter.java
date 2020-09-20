@@ -34,6 +34,13 @@ public class TestReductionRewriter {
 	}
 
 	@Test
+	public void applyUseless() {
+		final Variable<String, Boolean> x = new Variable<>("x");
+		final Closure<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().build(), x);
+		HAssert.assertEquals(x, new ReductionRewriter<String, Boolean>(BooleanOperationSystem.create(), Reduction.ApplyClosures).eval(closure));
+	}
+
+	@Test
 	public void reduce() {
 		final Variable<String, Boolean> x = new Variable<>("x"), y = new Variable<>("y");
 		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(x).argument(y).build();
