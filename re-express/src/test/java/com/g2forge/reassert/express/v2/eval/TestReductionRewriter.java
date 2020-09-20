@@ -1,14 +1,10 @@
 package com.g2forge.reassert.express.v2.eval;
 
-import java.util.EnumSet;
-
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.eval.ReductionRewriter.Reduction;
 import com.g2forge.reassert.express.v2.eval.bool.BooleanOperationSystem;
-import com.g2forge.reassert.express.v2.eval.bool.TestBooleanOperationSystem;
-import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 import com.g2forge.reassert.express.v2.model.environment.Environment;
 import com.g2forge.reassert.express.v2.model.operation.BooleanOperation;
@@ -38,15 +34,6 @@ public class TestReductionRewriter {
 		final Variable<String, Boolean> x = new Variable<>("x");
 		final Closure<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().build(), x);
 		HAssert.assertEquals(x, new ReductionRewriter<String, Boolean>(BooleanOperationSystem.create(), Reduction.ApplyClosures).eval(closure));
-	}
-
-	@Test
-	public void reduce() {
-		final Variable<String, Boolean> x = new Variable<>("x"), y = new Variable<>("y");
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(x).argument(y).build();
-		final Closure<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), expression);
-		final IExpression<String, Boolean> reduced = new ReductionRewriter<String, Boolean>(BooleanOperationSystem.create(), EnumSet.allOf(Reduction.class)).eval(closure);
-		HAssert.assertEquals(false, TestBooleanOperationSystem.getEvaluator().eval(reduced));
 	}
 
 	@Test
