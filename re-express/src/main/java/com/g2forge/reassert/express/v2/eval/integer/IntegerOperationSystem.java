@@ -7,6 +7,7 @@ import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.eval.operation.AOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
+import com.g2forge.reassert.express.v2.eval.operation.IOperatorRendering;
 import com.g2forge.reassert.express.v2.model.operation.ArithmeticOperation;
 import com.g2forge.reassert.express.v2.model.operation.IOperation;
 import com.g2forge.reassert.express.v2.model.operation.IOperation.IOperator;
@@ -70,6 +71,25 @@ public class IntegerOperationSystem implements IOperationSystem<Integer>, ISingl
 						return left / right;
 					}
 				};
+			default:
+				throw new EnumException(ArithmeticOperation.Operator.class, cast);
+		}
+	}
+
+	@Override
+	public IOperatorRendering getRendering(IOperator operator) {
+		if (!(operator instanceof ArithmeticOperation.Operator)) throw new UnsupportedOperationException("Arithmetic system only supports arithmetic operations!");
+
+		final ArithmeticOperation.Operator cast = (ArithmeticOperation.Operator) operator;
+		switch (cast) {
+			case ADD:
+				return () -> "added to";
+			case SUBTRACT:
+				return () -> "subtracted from";
+			case MULTIPLY:
+				return () -> "multiplied by";
+			case DIVIDE:
+				return () -> "divided by";
 			default:
 				throw new EnumException(ArithmeticOperation.Operator.class, cast);
 		}

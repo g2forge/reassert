@@ -2,8 +2,11 @@ package com.g2forge.reassert.express.v2.eval.value;
 
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
+import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
 
 public interface IValueSystem<Value> {
+	public ITextualRenderer<? super Value> getRenderer();
+
 	/**
 	 * Test if the two values are strictly equal. See {@link #isSame(Object, Object)} for mere sameness.
 	 * 
