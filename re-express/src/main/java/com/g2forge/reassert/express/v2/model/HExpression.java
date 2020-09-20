@@ -11,7 +11,7 @@ import lombok.experimental.UtilityClass;
 @Helpers
 @UtilityClass
 public class HExpression {
-	@Note(type = NoteType.TODO, value = "Implement isSame using expressions")
+	@Note(type = NoteType.TODO, value = "Implement isSame using expressions & value system")
 	public static boolean isSame(List<? extends IExpression<?, ?>> left, List<? extends IExpression<?, ?>> right) {
 		if (left.size() != right.size()) return false;
 		for (int i = 0; i < left.size(); i++) {

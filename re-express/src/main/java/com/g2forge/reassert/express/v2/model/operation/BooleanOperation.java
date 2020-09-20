@@ -18,15 +18,15 @@ public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
 	public static class BooleanOperationBuilder<Name, Value> implements IOperationBuilder<Name, Value, BooleanOperationBuilder<Name, Value>, BooleanOperation<Name, Value>> {}
 
 	public enum Operator implements IOperator {
-		Not {
+		NOT {
 			@Override
 			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
 				return new OperatorArgumentsValidation(arguments.size() == 1);
 			}
 		},
-		And,
-		Or,
-		Xor;
+		AND,
+		OR,
+		XOR;
 
 		@Override
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder() {

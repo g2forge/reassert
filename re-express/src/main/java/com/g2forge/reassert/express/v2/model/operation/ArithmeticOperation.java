@@ -3,6 +3,7 @@ package com.g2forge.reassert.express.v2.model.operation;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
 
 import lombok.Builder;
@@ -17,8 +18,20 @@ public class ArithmeticOperation<Name, Value> implements IOperation<Name, Value>
 	public static class ArithmeticOperationBuilder<Name, Value> implements IOperationBuilder<Name, Value, ArithmeticOperationBuilder<Name, Value>, ArithmeticOperation<Name, Value>> {}
 
 	public enum Operator implements IOperator {
-		Add,
-		Subtract;
+		ADD,
+		SUBTRACT {
+			@Override
+			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
+				return new OperatorArgumentsValidation(arguments.size() == 2);
+			}
+		},
+		MULTIPLY,
+		DIVIDE {
+			@Override
+			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
+				return new OperatorArgumentsValidation(arguments.size() == 2);
+			}
+		};
 
 		@Override
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder() {

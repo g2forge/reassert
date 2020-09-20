@@ -2,15 +2,22 @@ package com.g2forge.reassert.express.v2.model.environment;
 
 import java.util.Map;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.builder.IValidatingBuilder;
 import com.g2forge.alexandria.java.validate.IValidatable;
 import com.g2forge.reassert.express.v2.model.IExpression;
+import com.g2forge.reassert.express.v2.model.constant.Literal;
 import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
 public interface IEnvironment<Name, Value> extends IValidatable {
 	public interface IEnvironmentBuilder<Name, Value> extends IValidatingBuilder<IEnvironment<Name, Value>> {
 		public IEnvironmentBuilder<Name, Value> bind(IVariable<Name, Value> variable, IExpression<Name, Value> expression);
+
+		public default IEnvironmentBuilder<Name, Value> bind$(IVariable<Name, Value> variable, Value value) {
+			return bind(variable, new Literal<>(value));
+		}
 	}
 
 	public Map<IVariable<Name, Value>, IExpression<Name, Value>> getBindings();
@@ -21,6 +28,7 @@ public interface IEnvironment<Name, Value> extends IValidatable {
 		return new OverrideEnvironment<>(override, this);
 	}
 
+	@Note(type = NoteType.TODO, value = "Implement isSame using expressions & value system")
 	public default boolean isSame(IEnvironment<?, ?> that) {
 		if (this == that) return true;
 		if ((that == null) || !(that instanceof IEnvironment)) return false;
