@@ -5,6 +5,7 @@ import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.eval.operation.AOperatorDescriptor;
+import com.g2forge.reassert.express.v2.eval.operation.EnumOperatorRendering;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorRendering;
@@ -76,6 +77,6 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 		if (!(operator instanceof BooleanOperation.Operator)) throw new UnsupportedOperationException("Boolean system only supports boolean operations!");
 
 		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
-		return () -> cast.name().toLowerCase();
+		return new EnumOperatorRendering<>(cast, cast.name().toLowerCase() + "-ed with");
 	}
 }

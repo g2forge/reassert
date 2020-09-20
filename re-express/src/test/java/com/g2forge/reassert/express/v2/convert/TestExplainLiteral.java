@@ -3,29 +3,20 @@ package com.g2forge.reassert.express.v2.convert;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.reassert.express.v2.eval.bool.BooleanValueSystem;
 import com.g2forge.reassert.express.v2.eval.integer.IntegerValueSystem;
-import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
-import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 
-public class TestExplainLiteral extends ATestExplanationRenderer<String, Integer> {
-	@Override
-	protected IOperationSystem<Integer> getOperationSystem() {
-		return null;
-	}
-
-	@Override
-	protected IValueSystem<? super Integer> getValueSystem() {
-		return IntegerValueSystem.create();
-	}
-
+public class TestExplainLiteral {
 	@Test
 	public void named() {
-		HAssert.assertEquals("3 - myname", render(ExplanationMode.Explain, new Literal<>("myname", 3)));
+		final String actual = new ExplanationRenderer<String, Integer>(ExplanationMode.Explain, IntegerValueSystem.create(), null).render(new Literal<>("myname", 3));
+		HAssert.assertEquals("3 - myname", actual);
 	}
 
 	@Test
 	public void unnamed() {
-		HAssert.assertEquals("0", render(ExplanationMode.Explain, new Literal<>(0)));
+		final String actual = new ExplanationRenderer<String, Boolean>(ExplanationMode.Explain, BooleanValueSystem.create(), null).render(new Literal<>(false));
+		HAssert.assertEquals("false", actual);
 	}
 }
