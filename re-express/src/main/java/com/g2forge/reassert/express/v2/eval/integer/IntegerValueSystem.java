@@ -3,6 +3,8 @@ package com.g2forge.reassert.express.v2.eval.integer;
 import java.util.Objects;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
+import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
 
 public class IntegerValueSystem implements IValueSystem<Integer>, ISingleton {
@@ -13,6 +15,11 @@ public class IntegerValueSystem implements IValueSystem<Integer>, ISingleton {
 	}
 
 	protected IntegerValueSystem() {}
+
+	@Override
+	public ITextualRenderer<? super Integer> getRenderer() {
+		return ToStringTextualRenderer.create();
+	}
 
 	@Override
 	public boolean isEqual(Integer left, Integer right) {
