@@ -24,26 +24,31 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter(AccessLevel.PROTECTED)
-public class BooleanEvaluator<Name> extends AEvaluator<Name, Boolean, Boolean> {
+public class BooleanEvaluator<Name> extends AEvaluator<Name, Boolean, Boolean, AEvaluator.BasicContext<Name, Boolean, Boolean>> {
 	protected final IValueSystem<Boolean> valueSystem;
 
 	protected final IOperationSystem<Boolean> operationSystem;
 
 	@Override
-	protected IFunction2<IExpression<Name, Boolean>, Context<Name, Boolean, Boolean>, Boolean> createEvaluator() {
-		final TypeSwitch2.FunctionBuilder<IExpression<Name, Boolean>, Context<Name, Boolean, Boolean>, Boolean> builder = new TypeSwitch2.FunctionBuilder<>();
-		builder.add(ILiteral.class, Context.class, (e, c) -> {
+	protected BasicContext<Name, Boolean, Boolean> createContext() {
+		return new AEvaluator.BasicContext<>(getEvaluator());
+	}
+
+	@Override
+	protected IFunction2<IExpression<Name, Boolean>, AEvaluator.BasicContext<Name, Boolean, Boolean>, Boolean> createEvaluator() {
+		final TypeSwitch2.FunctionBuilder<IExpression<Name, Boolean>, AEvaluator.BasicContext<Name, Boolean, Boolean>, Boolean> builder = new TypeSwitch2.FunctionBuilder<>();
+		builder.add(ILiteral.class, AEvaluator.BasicContext.class, (e, c) -> {
 			@SuppressWarnings("unchecked")
 			final ILiteral<Name, Boolean> expression = (ILiteral<Name, Boolean>) e;
 			final Boolean value = expression.get();
 			if (!getValueSystem().isValid(value)) throw new NullPointerException();
 			return value;
 		});
-		builder.add(IOperation.class, Context.class, (e, c) -> {
+		builder.add(IOperation.class, AEvaluator.BasicContext.class, (e, c) -> {
 			@SuppressWarnings("unchecked")
 			final IOperation<Name, Boolean> expression = (IOperation<Name, Boolean>) e;
 			@SuppressWarnings("unchecked")
-			final Context<Name, Boolean, Boolean> context = (Context<Name, Boolean, Boolean>) c;
+			final AEvaluator.BasicContext<Name, Boolean, Boolean> context = (AEvaluator.BasicContext<Name, Boolean, Boolean>) c;
 
 			final IOperatorDescriptor<Boolean> descriptor = getOperationSystem().getDescriptor(expression.getOperator());
 			descriptor.validate(expression).throwIfInvalid();
@@ -56,7 +61,7 @@ public class BooleanEvaluator<Name> extends AEvaluator<Name, Boolean, Boolean> {
 			for (IExpression<Name, Boolean> argument : expression.getArguments()) {
 				final Boolean result;
 				try {
-					result = context.getEvaluator().eval(argument);
+					result = context.eval(argument);
 				} catch (Throwable throwable) {
 					evaluated.add(new OrThrowable<>(throwable));
 					continue;
