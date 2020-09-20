@@ -2,21 +2,29 @@ package com.g2forge.reassert.express.v2.eval;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
+import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
 import com.g2forge.reassert.express.v2.model.IExplained;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.ILiteral;
 import com.g2forge.reassert.express.v2.model.environment.IEnvironment;
+import com.g2forge.reassert.express.v2.model.operation.ExplainedOperation;
+import com.g2forge.reassert.express.v2.model.operation.IExplainedOperation;
+import com.g2forge.reassert.express.v2.model.operation.IOperation;
+import com.g2forge.reassert.express.v2.model.operation.ZeroExplainedOperation;
 import com.g2forge.reassert.express.v2.model.variable.ExplainedClosure;
 import com.g2forge.reassert.express.v2.model.variable.ExplainedVariable;
 import com.g2forge.reassert.express.v2.model.variable.IClosure;
@@ -47,7 +55,7 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 			}
 
 			public void record(IOptional<IExplained<Value>> explained) {
-				getRecord().put(variable, new IExplainedClosure.Binding<>(IExplained.Relevance.Evaluated, variable, explained));
+				getRecord().put(variable, new IExplainedClosure.Binding<>(IExplained.Relevance.Dominant, variable, explained));
 			}
 		}
 
@@ -89,43 +97,51 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 			final ILiteral<Name, Value> expression = (ILiteral<Name, Value>) e;
 			return expression;
 		});
-		/*builder.add(IOperation.class, AEvaluator.BasicContext.class, (e, c) -> {
+		builder.add(IOperation.class, AEvaluator.BasicContext.class, (e, c) -> {
 			@SuppressWarnings("unchecked")
 			final IOperation<Name, Value> expression = (IOperation<Name, Value>) e;
 			@SuppressWarnings("unchecked")
 			final AEvaluator.BasicContext<Name, Value, IExplained<Value>> context = (AEvaluator.BasicContext<Name, Value, IExplained<Value>>) c;
-		
+
 			final IOperatorDescriptor<Value> descriptor = getOperationSystem().getDescriptor(expression.getOperator());
 			descriptor.validate(expression).throwIfInvalid();
-		
+
 			final IValueSystem<Value> valueSystem = getValueSystem();
 			final IOptional<? extends Value> zero = descriptor.getZero();
 			final IOptional<? extends Value> identity = descriptor.getIdentity();
-		
-			final List<OrThrowable<IExplained<Value>>> evaluated = new ArrayList<>();
+
+			boolean hasZero = false;
+			final List<IExplainedOperation.Argument<Value>> evaluated = new ArrayList<>();
 			for (IExpression<Name, Value> argument : expression.getArguments()) {
 				final IExplained<Value> result;
 				try {
 					result = context.eval(argument);
 				} catch (Throwable throwable) {
-					evaluated.add(new OrThrowable<>(throwable));
-					continue;
+					throw new RuntimeException(String.format("Failed to evaluate %1$s!", expression.getOperator()), throwable);
 				}
-		
-				if (!zero.isEmpty() && valueSystem.isSame(result.get(), zero.get())) return zero.get();
-				if (identity.isEmpty() || !valueSystem.isSame(result.get(), identity.get())) evaluated.add(new OrThrowable<>(result));
+
+				final IExplained.Relevance relevance;
+				if (!zero.isEmpty() && valueSystem.isSame(result.get(), zero.get())) {
+					hasZero = true;
+					relevance = IExplained.Relevance.Dominant;
+				} else if (hasZero) relevance = IExplained.Relevance.Unevaluated;
+				else if (!identity.isEmpty() && valueSystem.isSame(result.get(), identity.get())) relevance = IExplained.Relevance.Identity;
+				else relevance = IExplained.Relevance.Combined;
+
+				evaluated.add(new IExplainedOperation.Argument<>(relevance, result));
 			}
-		
-			/final List<IExplained<Value>> list = evaluated.stream().collect(HError.collector(() -> new RuntimeException(String.format("Failed to evaluate %1$s!", expression.getOperator())), false, Collectors.<Value>toList()));
-			
+
+			if (hasZero) return new ZeroExplainedOperation<Value>(expression.getOperator(), zero.get(), evaluated);
+
+			final Stream<Value> stream = evaluated.stream().map(IExplainedOperation.Argument::getExplained).map(IExplained::get);
 			final Value reduced;
-			if (identity.isEmpty()) reduced = list.stream().reduce(descriptor::combine).get();
-			else reduced = list.stream().reduce(identity.get(), descriptor::combine);
-			
+			if (identity.isEmpty()) reduced = stream.reduce(descriptor::combine).get();
+			else reduced = stream.reduce(identity.get(), descriptor::combine);
+
 			final IFunction1<? super Value, ? extends Value> summarizer = descriptor.getSummarizer();
-			final Object foo = summarizer == null ? reduced : summarizer.apply(reduced);/
-			return null;
-		});*/
+			final Value result = summarizer == null ? reduced : summarizer.apply(reduced);
+			return new ExplainedOperation<>(expression.getOperator(), result, identity, evaluated);
+		});
 		builder.add(IClosure.class, AEvaluator.BasicContext.class, (e, c) -> {
 			@SuppressWarnings("unchecked")
 			final IClosure<Name, Value> expression = e;
