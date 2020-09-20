@@ -2,6 +2,8 @@ package com.g2forge.reassert.express.v2.model.constant;
 
 import java.util.Objects;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
@@ -27,6 +29,7 @@ public class Literal<Name, Value> implements ILiteral<Name, Value> {
 		return getValue();
 	}
 
+	@Note(type = NoteType.TODO, value = "Implement isSame using expressions & value system")
 	@Override
 	public boolean isSame(IExpression<?, ?> that) {
 		if (this == that) return true;
