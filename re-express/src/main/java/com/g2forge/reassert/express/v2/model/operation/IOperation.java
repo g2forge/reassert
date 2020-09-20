@@ -1,5 +1,6 @@
 package com.g2forge.reassert.express.v2.model.operation;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,8 @@ public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 		public default Builder argument$(Value value) {
 			return argument(new Literal<>(value));
 		}
+
+		public Builder arguments(Collection<? extends IExpression<Name, Value>> arguments);
 	}
 
 	public interface IOperator {

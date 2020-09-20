@@ -1,4 +1,4 @@
-package com.g2forge.reassert.express.v2.model.variable;
+package com.g2forge.reassert.express.v2.model.environment;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -13,6 +13,7 @@ import com.g2forge.alexandria.java.validate.CompositeValidation;
 import com.g2forge.alexandria.java.validate.IValidatable;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
+import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
 import lombok.Builder;
 import lombok.Data;

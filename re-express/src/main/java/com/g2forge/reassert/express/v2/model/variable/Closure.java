@@ -3,6 +3,7 @@ package com.g2forge.reassert.express.v2.model.variable;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
+import com.g2forge.reassert.express.v2.model.environment.IEnvironment;
 
 import lombok.Builder;
 import lombok.Data;

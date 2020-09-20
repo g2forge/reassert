@@ -1,4 +1,4 @@
-package com.g2forge.reassert.express.v2.model.variable;
+package com.g2forge.reassert.express.v2.model.environment;
 
 import java.util.Map;
 
@@ -6,6 +6,7 @@ import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.builder.IValidatingBuilder;
 import com.g2forge.alexandria.java.validate.IValidatable;
 import com.g2forge.reassert.express.v2.model.IExpression;
+import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
 public interface IEnvironment<Name, Value> extends IValidatable {
 	public interface IEnvironmentBuilder<Name, Value> extends IValidatingBuilder<IEnvironment<Name, Value>> {

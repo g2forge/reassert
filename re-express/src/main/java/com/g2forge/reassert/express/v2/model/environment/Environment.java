@@ -1,4 +1,4 @@
-package com.g2forge.reassert.express.v2.model.variable;
+package com.g2forge.reassert.express.v2.model.environment;
 
 import java.util.Map;
 
@@ -7,6 +7,7 @@ import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
+import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
 import lombok.Builder;
 import lombok.Data;
