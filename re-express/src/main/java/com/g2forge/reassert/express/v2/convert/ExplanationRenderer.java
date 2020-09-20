@@ -103,10 +103,10 @@ public class ExplanationRenderer<Name, Value> extends ATextualRenderer<IExplaine
 
 				context.append(expression.getPrefix()).append(' ').render(expression.getArgument().getExplained(), IExplained.class);
 			});
-			builder.add(ZeroExplainedOperation.class, e -> c1 -> {
+			builder.add(ZeroExplainedOperation.class, e -> c -> {
 				@SuppressWarnings("unchecked")
 				final ZeroExplainedOperation<Value> expression = (ZeroExplainedOperation<Value>) e;
-				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c1;
+				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
 
 				context.value(expression.get()).append(" - because anything ").append(getOperationSystem().getRendering(expression.getOperator()).getPastVerb()).append(" ").value(expression.getZero()).append(" is ").value(expression.getZero());
 				if (context.getMode().compareTo(ExplanationMode.Describe) <= 0) {

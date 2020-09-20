@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.eval.IEvaluator;
 import com.g2forge.reassert.express.v2.eval.ValueEvaluator;
+import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.ILiteral;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 import com.g2forge.reassert.express.v2.model.constant.NoValueConstant;
@@ -51,9 +52,17 @@ public class TestBooleanOperationSystem {
 	}
 
 	@Test
-	public void apply() {
+	public void applySimple() {
 		final Variable<String, Boolean> x = new Variable<>("x");
 		HAssert.assertEquals(false, getEvaluator().eval(new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), x)));
+	}
+
+	@Test
+	public void applyZero() {
+		final Variable<String, Boolean> x = new Variable<>("x"), y = new Variable<>("y");
+		final IExpression<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(x).argument(y).build();
+		final IExpression<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), expression);
+		HAssert.assertEquals(false, TestBooleanOperationSystem.getEvaluator().eval(closure));
 	}
 
 	@Test

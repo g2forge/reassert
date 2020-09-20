@@ -11,6 +11,8 @@ import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
+import com.g2forge.reassert.express.v2.eval.error.EvalFailedException;
+import com.g2forge.reassert.express.v2.eval.error.VariableUnboundException;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
@@ -20,12 +22,11 @@ import com.g2forge.reassert.express.v2.model.operation.IOperation;
 import com.g2forge.reassert.express.v2.model.variable.IClosure;
 import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Getter(AccessLevel.PROTECTED)
+@Getter
 public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, AEvaluator.BasicContext<Name, Value, Value>> {
 	protected final IValueSystem<Value> valueSystem;
 
@@ -73,7 +74,7 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 				if (identity.isEmpty() || !valueSystem.isSame(result, identity.get())) evaluated.add(new OrThrowable<>(result));
 			}
 
-			final List<Value> list = evaluated.stream().collect(HError.collector(() -> new RuntimeException(String.format("Failed to evaluate %1$s!", expression.getOperator())), false, Collectors.<Value>toList()));
+			final List<Value> list = evaluated.stream().collect(HError.collector(() -> new EvalFailedException(expression), false, Collectors.<Value>toList()));
 
 			final Value reduced;
 			if (identity.isEmpty()) reduced = list.stream().reduce(descriptor::combine).get();
@@ -99,7 +100,11 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 			final AEvaluator.BasicContext<Name, Value, Value> context = (AEvaluator.BasicContext<Name, Value, Value>) c;
 
 			final IOptional<? extends IExpression<Name, Value>> result = context.getEnvironment().lookup(expression);
+			if (result.isEmpty()) throw new VariableUnboundException(expression);
 			return context.eval(result.get());
+		});
+		builder.fallback((e, c) -> {
+			throw new EvalFailedException(e);
 		});
 		return builder.build();
 	}

@@ -14,6 +14,7 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
 import com.g2forge.alexandria.java.validate.IValidation;
+import com.g2forge.reassert.express.v2.eval.error.EvalFailedException;
 import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
@@ -172,6 +173,9 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 			} else if (!lookup.isEmpty()) throw new UnreachableCodeError(String.format("Somehow a variable was bound in a non-reording environment, this is a bug in %1$s", getClass()));
 
 			return new ExplainedVariable<>(expression, explained);
+		});
+		builder.fallback((e, c) -> {
+			throw new EvalFailedException(e);
 		});
 		return builder.build();
 	}

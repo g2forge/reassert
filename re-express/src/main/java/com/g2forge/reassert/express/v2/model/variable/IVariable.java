@@ -1,5 +1,6 @@
 package com.g2forge.reassert.express.v2.model.variable;
 
+import com.g2forge.alexandria.java.adt.name.INamed;
 import com.g2forge.reassert.express.v2.model.IExpression;
 
-public interface IVariable<Name, Value> extends IExpression<Name, Value> {}
+public interface IVariable<Name, Value> extends IExpression<Name, Value>, INamed<Name> {}

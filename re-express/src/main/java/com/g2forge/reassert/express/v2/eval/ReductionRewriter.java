@@ -10,7 +10,9 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.express.v2.eval.operation.IOperationSystem;
+import com.g2forge.reassert.express.v2.eval.error.EvalFailedException;
+import com.g2forge.reassert.express.v2.eval.error.ExpressionException;
+import com.g2forge.reassert.express.v2.eval.error.VariableUnboundException;
 import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.IConstant;
@@ -30,9 +32,9 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			super(evaluator);
 		}
 
-		public IExpression<Name, Value> eval(IExpression<Name, Value> original, IExpression<Name, Value> expression) {
-			if (original == expression) return expression;
-			return eval(expression);
+		public IExpression<Name, Value> eval(IExpression<Name, Value> original, IExpression<Name, Value> reduced) {
+			if (original == reduced) return original;
+			return eval(reduced);
 		}
 
 		@Override
@@ -43,19 +45,20 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 
 	public enum Reduction {
 		TrivialOperations,
-		ApplyClosures;
+		ApplyClosures,
+		ConstantFolding;
 	}
 
-	protected final IOperationSystem<Value> operationSystem;
+	protected final ValueEvaluator<Name, Value> valueEvaluator;
 
 	protected final Set<Reduction> reductions;
 
-	public ReductionRewriter(IOperationSystem<Value> operationSystem) {
-		this(operationSystem, EnumSet.allOf(Reduction.class));
+	public ReductionRewriter(ValueEvaluator<Name, Value> valueEvaluator) {
+		this(valueEvaluator, EnumSet.allOf(Reduction.class));
 	}
 
-	public ReductionRewriter(IOperationSystem<Value> operationSystem, Reduction... reductions) {
-		this(operationSystem, HCollection.asSet(Reduction.class, reductions));
+	public ReductionRewriter(ValueEvaluator<Name, Value> valueEvaluator, Reduction... reductions) {
+		this(valueEvaluator, HCollection.asSet(Reduction.class, reductions));
 	}
 
 	@Override
@@ -86,15 +89,23 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 				}
 			}
 
+			final ValueEvaluator<Name, Value> valueEvaluator = getValueEvaluator();
 			if (getReductions().contains(Reduction.TrivialOperations)) {
 				if (arguments.size() <= 1) {
-					final IOperatorDescriptor<Value> descriptor = getOperationSystem().getDescriptor(expression.getOperator());
+					final IOperatorDescriptor<Value> descriptor = valueEvaluator.getOperationSystem().getDescriptor(expression.getOperator());
 					if (arguments.isEmpty() && !descriptor.getIdentity().isEmpty()) return context.eval(expression, new Literal<>(descriptor.getIdentity().get()));
 					if (descriptor.getSummarizer() == null) return context.eval(expression, HCollection.getOne(arguments));
 				}
 			}
 
-			return context.eval(expression, same ? expression : expression.getOperator().<Name, Value>builder().arguments(arguments).valid());
+			final IExpression<Name, Value> retVal = context.eval(expression, same ? expression : expression.getOperator().<Name, Value>builder().arguments(arguments).valid());
+			if (getReductions().contains(Reduction.ConstantFolding)) {
+				try {
+					final Value literal = valueEvaluator.eval(retVal);
+					return new Literal<>(literal);
+				} catch (VariableUnboundException | ExpressionException exception) {}
+			}
+			return retVal;
 		});
 		builder.add(IClosure.class, Context.class, (e, c) -> {
 			@SuppressWarnings("unchecked")
@@ -105,7 +116,7 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			if (getReductions().contains(Reduction.ApplyClosures)) {
 				try (ICloseable env = context.environment(expression.getEnvironment())) {
 					final IExpression<Name, Value> reduced = context.eval(expression.getExpression());
-					if (reduced != expression.getExpression()) return context.eval(expression, reduced);
+					return context.eval(expression.getExpression(), reduced);
 				}
 			}
 
@@ -123,6 +134,9 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			}
 
 			return expression;
+		});
+		builder.fallback((e, c) -> {
+			throw new EvalFailedException(e);
 		});
 		return builder.build();
 	}
