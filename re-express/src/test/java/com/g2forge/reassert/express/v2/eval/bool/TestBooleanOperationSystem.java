@@ -7,28 +7,34 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.eval.IEvaluator;
+import com.g2forge.reassert.express.v2.eval.ValueEvaluator;
 import com.g2forge.reassert.express.v2.model.constant.ILiteral;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 import com.g2forge.reassert.express.v2.model.constant.NoValueConstant;
+import com.g2forge.reassert.express.v2.model.environment.Environment;
 import com.g2forge.reassert.express.v2.model.operation.BooleanOperation;
 import com.g2forge.reassert.express.v2.model.operation.IOperation;
 import com.g2forge.reassert.express.v2.model.operation.IOperation.IOperationBuilder;
+import com.g2forge.reassert.express.v2.model.variable.Closure;
+import com.g2forge.reassert.express.v2.model.variable.Variable;
 
 import lombok.Getter;
 
-public class TestBooleanEvaluator {
+public class TestBooleanOperationSystem {
 	@Getter(lazy = true)
-	private static final IEvaluator<String, Boolean, Boolean> evaluator = new BooleanEvaluator(BooleanValueSystem.create(), BooleanOperationSystem.create());
+	private static final IEvaluator<String, Boolean, Boolean> evaluator = new ValueEvaluator<>(BooleanValueSystem.create(), BooleanOperationSystem.create());
 
 	protected static void reduction(BooleanOperation.Operator operator, BinaryOperator<Boolean> accumulator) {
-		for (int n = 1; n < 4; n++) {
+		for (int n = 1; n < 6; n++) {
 			for (int i = 0; i < (1 << n); i++) {
 				final IOperationBuilder<String, Boolean, ?, ?> builder = operator.<String, Boolean>builder();
-				boolean expected = (i & 0x1) != 0;
+				boolean expected = false;
 				for (int j = 0; j < n; j++) {
 					final boolean value = ((i >>> j) & 0x1) != 0;
 					builder.argument$(value);
-					if (j > 0) expected = accumulator.apply(expected, value);
+
+					if (j == 0) expected = (i & 0x1) != 0;
+					else expected = accumulator.apply(expected, value);
 				}
 				final IOperation<String, Boolean> actual = builder.valid();
 
@@ -42,6 +48,12 @@ public class TestBooleanEvaluator {
 	@Test
 	public void and() {
 		reduction(BooleanOperation.Operator.And, Boolean::logicalAnd);
+	}
+
+	@Test
+	public void apply() {
+		final Variable<String, Boolean> x = new Variable<>("x");
+		HAssert.assertEquals(false, getEvaluator().eval(new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), x)));
 	}
 
 	@Test

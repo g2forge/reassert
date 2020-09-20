@@ -38,7 +38,7 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 
 	@Override
 	public IOperatorDescriptor<Boolean> getDescriptor(IOperator operator) {
-		if (!(operator instanceof BooleanOperation.Operator)) throw new UnsupportedOperationException("Boolean logic only supports boolean operations!");
+		if (!(operator instanceof BooleanOperation.Operator)) throw new UnsupportedOperationException("Boolean system only supports boolean operations!");
 
 		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
 		switch (cast) {

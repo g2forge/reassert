@@ -3,7 +3,6 @@ package com.g2forge.reassert.express.v2.eval;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.close.ICloseable;
@@ -16,42 +15,19 @@ import com.g2forge.reassert.express.v2.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.IConstant;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
-import com.g2forge.reassert.express.v2.model.environment.EmptyEnvironment;
-import com.g2forge.reassert.express.v2.model.environment.IEnvironment;
 import com.g2forge.reassert.express.v2.model.operation.IOperation;
 import com.g2forge.reassert.express.v2.model.variable.IClosure;
 import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExpression<Name, Value>, ReductionRewriter.Context<Name, Value>> implements IRewriter<Name, Value> {
-	@Getter(AccessLevel.PROTECTED)
-	public static class Context<Name, Value> implements AEvaluator.IContext<Name, Value, IExpression<Name, Value>> {
-		protected final IFunction2<IExpression<Name, Value>, Context<Name, Value>, IExpression<Name, Value>> evaluator;
-
-		protected final Stack<IEnvironment<Name, Value>> stack = new Stack<>();
-
+	protected static class Context<Name, Value> extends AEvaluator.AContext<Name, Value, IExpression<Name, Value>, Context<Name, Value>> {
 		public Context(IFunction2<IExpression<Name, Value>, Context<Name, Value>, IExpression<Name, Value>> evaluator) {
-			this.evaluator = evaluator;
-			this.stack.push(new EmptyEnvironment<>());
-		}
-
-		public ICloseable environment(IEnvironment<Name, Value> environment) {
-			final IEnvironment<Name, Value> top = this.stack.peek().override(environment);
-			this.stack.push(top);
-			return () -> {
-				if (this.stack.peek() != top) throw new IllegalStateException();
-				this.stack.pop();
-			};
-		}
-
-		@Override
-		public IExpression<Name, Value> eval(IExpression<Name, Value> expression) {
-			return getEvaluator().apply(expression, this);
+			super(evaluator);
 		}
 
 		public IExpression<Name, Value> eval(IExpression<Name, Value> original, IExpression<Name, Value> expression) {
@@ -59,8 +35,9 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			return eval(expression);
 		}
 
-		public IEnvironment<Name, Value> getEnvironment() {
-			return stack.peek();
+		@Override
+		public Context<Name, Value> getThis() {
+			return this;
 		}
 	}
 
