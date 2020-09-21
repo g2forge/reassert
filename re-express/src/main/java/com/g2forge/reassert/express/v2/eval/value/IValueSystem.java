@@ -1,7 +1,6 @@
 package com.g2forge.reassert.express.v2.eval.value;
 
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
 
 public interface IValueSystem<Value> {
@@ -25,6 +24,5 @@ public interface IValueSystem<Value> {
 	 */
 	public boolean isSame(Value left, Value right);
 
-	@Note(type = NoteType.TODO, value = "Validation should include explanations")
-	public boolean isValid(Value value);
+	public IValidation isValid(Value value);
 }

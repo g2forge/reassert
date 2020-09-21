@@ -44,7 +44,7 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 			@SuppressWarnings("unchecked")
 			final ILiteral<Name, Value> expression = (ILiteral<Name, Value>) e;
 			final Value value = expression.get();
-			if (!getValueSystem().isValid(value)) throw new NullPointerException();
+			getValueSystem().isValid(value).throwIfInvalid();
 			return value;
 		});
 		builder.add(IOperation.class, AEvaluator.BasicContext.class, (e, c) -> {
