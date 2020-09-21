@@ -39,6 +39,24 @@ public class ArithmeticOperation<Name, Value> implements IOperation<Name, Value>
 		}
 	}
 
+	@SafeVarargs
+	public static <Name, Value> ArithmeticOperation<Name, Value> add(IExpression<Name, Value>... arguments) {
+		return new ArithmeticOperation<>(Operator.ADD, arguments);
+	}
+
+	public static <Name, Value> ArithmeticOperation<Name, Value> divide(IExpression<Name, Value> numberator, IExpression<Name, Value> denominator) {
+		return new ArithmeticOperation<>(Operator.DIVIDE, numberator, denominator);
+	}
+
+	@SafeVarargs
+	public static <Name, Value> ArithmeticOperation<Name, Value> multiply(IExpression<Name, Value>... arguments) {
+		return new ArithmeticOperation<>(Operator.MULTIPLY, arguments);
+	}
+
+	public static <Name, Value> ArithmeticOperation<Name, Value> subtract(IExpression<Name, Value> minuend, IExpression<Name, Value> subtrahend) {
+		return new ArithmeticOperation<>(Operator.SUBTRACT, minuend, subtrahend);
+	}
+
 	protected final Operator operator;
 
 	@Singular
