@@ -13,5 +13,5 @@ import lombok.RequiredArgsConstructor;
 public class ExplainedVariable<Name, Value> implements IExplainedVariable<Name, Value> {
 	protected final IVariable<Name, Value> variable;
 
-	protected final IOptional<IExplained<Value>> explained;
+	protected final IOptional<? extends IExplained<Value>> explained;
 }

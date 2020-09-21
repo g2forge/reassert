@@ -1,5 +1,6 @@
 package com.g2forge.reassert.express.v2.convert;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.stream.Collectors;
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.java.fluent.optional.IOptional;
+import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.nestedstate.StackGlobalState;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.ARenderer;
@@ -26,6 +29,10 @@ import com.g2forge.reassert.express.v2.model.constant.ILiteral;
 import com.g2forge.reassert.express.v2.model.operation.ExplainedOperation;
 import com.g2forge.reassert.express.v2.model.operation.IExplainedOperation;
 import com.g2forge.reassert.express.v2.model.operation.ZeroExplainedOperation;
+import com.g2forge.reassert.express.v2.model.variable.IExplainedClosure;
+import com.g2forge.reassert.express.v2.model.variable.IExplainedClosure.Binding;
+import com.g2forge.reassert.express.v2.model.variable.IExplainedVariable;
+import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -38,6 +45,67 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 public class ExplanationRenderer<Name, Value> extends ATextualRenderer<IExplained<Value>, IExplanationRenderContext<Name, Value>> {
+	@Data
+	@Builder(toBuilder = true)
+	@RequiredArgsConstructor
+	protected static class Child<Name, Value> implements IExplained<Value> {
+		protected final ExplanationMode mode;
+
+		protected final IExplained.Relevance relevance;
+
+		protected final IVariable<Name, Value> variable;
+
+		protected final IOptional<? extends IExplained<Value>> value;
+
+		@Getter(lazy = true)
+		@EqualsAndHashCode.Exclude
+		@ToString.Exclude
+		private final String prefix = computePrefix();
+
+		public Child(ExplanationMode mode, IExplainedClosure.Binding<Name, Value> binding) {
+			this(mode, binding.getRelevance(), binding.getVariable(), binding.getExplained());
+		}
+
+		public Child(ExplanationMode mode, IExplainedOperation.Argument<Value> argument) {
+			this(mode, argument.getRelevance(), null, NullableOptional.of(argument.getExplained()));
+		}
+
+		protected String computePrefix() {
+			final Relevance relevance = getRelevance();
+			switch (relevance) {
+				case Unevaluated:
+					return " ";
+				case Identity:
+					return "-";
+				case Combined:
+					return "*";
+				case Dominant:
+					return ">";
+				default:
+					throw new EnumException(IExplained.Relevance.class, relevance);
+			}
+		}
+
+		@Override
+		public Value get() {
+			return getValue().get().get();
+		}
+
+		public boolean isPrintable() {
+			final Relevance relevance = getRelevance();
+			switch (relevance) {
+				case Unevaluated:
+				case Identity:
+					return getMode().compareTo(ExplanationMode.Trace) >= 0;
+				case Combined:
+				case Dominant:
+					return true;
+				default:
+					throw new EnumException(IExplained.Relevance.class, relevance);
+			}
+		}
+	}
+
 	@Getter(AccessLevel.PROTECTED)
 	protected class ExplanationRenderContext extends ARenderContext implements IExplanationRenderContext<Name, Value> {
 		protected final StackGlobalState<ExplanationMode> state;
@@ -90,124 +158,111 @@ public class ExplanationRenderer<Name, Value> extends ATextualRenderer<IExplaine
 			});
 			builder.add(ILiteral.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final ILiteral<Name, Value> expression = (ILiteral<Name, Value>) e;
+				final ILiteral<Name, Value> explained = (ILiteral<Name, Value>) e;
 
-				c.value(expression.get());
-				final Name name = expression.getName();
+				c.value(explained.get());
+				final Name name = explained.getName();
 				if (name != null) c.append(" - ").name(name);
 			});
-			builder.add(PrintableArgument.class, e -> c -> {
+
+			builder.add(IExplainedVariable.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final PrintableArgument<Value> expression = (PrintableArgument<Value>) e;
+				final IExplainedVariable<Name, Value> explained = (IExplainedVariable<Name, Value>) e;
 				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
 
-				context.append(expression.getPrefix()).append(' ').render(expression.getArgument().getExplained(), IExplained.class);
+				context.name(explained.getVariable().getName());
+				final IOptional<? extends IExplained<Value>> nested = explained.getExplained();
+				if (nested.isNotEmpty()) context.append(" = ").render(nested.get(), IExplained.class);
+			});
+			builder.add(IExplainedClosure.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final IExplainedClosure<Name, Value> explained = (IExplainedClosure<Name, Value>) e;
+				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
+
+				if (context.getMode().compareTo(ExplanationMode.Describe) <= 0) context.render(explained.getExpression(), IExplained.class);
+				else {
+					context.value(explained.get()).append(" - result closure application");
+					if (explained.getBindings().isEmpty()) context.append(", ").render(explained.getExpression(), IExplained.class);
+					else {
+						context.newline();
+						try (final ICloseable indent = context.indent()) {
+							for (Binding<Name, Value> binding : explained.getBindings()) {
+								context.render(new Child<>(context.getMode(), binding), Child.class).newline();
+							}
+							context.render(explained.getExpression(), IExplained.class);
+						}
+					}
+				}
+			});
+
+			builder.add(Child.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final Child<Name, Value> explained = (Child<Name, Value>) e;
+				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
+
+				context.append(explained.getPrefix()).append(' ');
+
+				final boolean hasVariable = explained.getVariable() != null;
+				final boolean hasValue = explained.getValue().isNotEmpty();
+				if (hasVariable) {
+					context.name(explained.getVariable().getName());
+					if (hasValue) context.append(" = ");
+				}
+				if (hasValue) context.render(explained.getValue().get(), IExplained.class);
 			});
 			builder.add(ZeroExplainedOperation.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final ZeroExplainedOperation<Value> expression = (ZeroExplainedOperation<Value>) e;
+				final ZeroExplainedOperation<Value> explained = (ZeroExplainedOperation<Value>) e;
 				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
 
-				context.value(expression.get()).append(" - because anything ").append(getOperationSystem().getRendering(expression.getOperator()).getPastVerb()).append(" ").value(expression.getZero()).append(" is ").value(expression.getZero());
+				context.value(explained.get()).append(" - because anything ").append(getOperationSystem().getRendering(explained.getOperator()).getPastVerb()).append(" ").value(explained.getZero()).append(" is ").value(explained.getZero());
 				if (context.getMode().compareTo(ExplanationMode.Describe) <= 0) {
 					context.append(", and one argument was ");
-					context.render(expression.getArguments().stream().filter(a -> Relevance.Dominant.equals(a.getRelevance())).findFirst().get().getExplained(), IExplained.class);
+					context.render(explained.getArguments().stream().filter(a -> Relevance.Dominant.equals(a.getRelevance())).findFirst().get().getExplained(), IExplained.class);
 				} else {
-					final List<IExplainedOperation.Argument<Value>> arguments = expression.getArguments();
-					if ((arguments != null) && !arguments.isEmpty()) printArguments(context, arguments.stream().map(a -> new PrintableArgument<>(context.getMode(), a)).filter(PrintableArgument::isPrintable).collect(Collectors.toList()));
+					final List<IExplainedOperation.Argument<Value>> arguments = explained.getArguments();
+					if ((arguments != null) && !arguments.isEmpty()) print(context, arguments.stream().map(a -> new Child<Name, Value>(context.getMode(), a)).filter(Child::isPrintable).collect(Collectors.toList()));
 				}
 			});
 			builder.add(ExplainedOperation.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final ExplainedOperation<Value> expression = (ExplainedOperation<Value>) e;
+				final ExplainedOperation<Value> explained = (ExplainedOperation<Value>) e;
 				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
 
-				context.value(expression.get()).append(" - ");
+				context.value(explained.get()).append(" - ");
 
-				final IOperatorRendering operatorRendering = getOperationSystem().getRendering(expression.getOperator());
-				final List<IExplainedOperation.Argument<Value>> arguments = expression.getArguments() == null ? Collections.emptyList() : expression.getArguments();
+				final IOperatorRendering operatorRendering = getOperationSystem().getRendering(explained.getOperator());
+				final List<IExplainedOperation.Argument<Value>> arguments = explained.getArguments() == null ? Collections.emptyList() : explained.getArguments();
 
 				final Map<Relevance, List<IExplainedOperation.Argument<Value>>> argumentsByRelevance = arguments.stream().collect(Collectors.groupingBy(IExplainedOperation.Argument::getRelevance));
 				if (argumentsByRelevance.get(IExplained.Relevance.Unevaluated) != null) throw new IllegalArgumentException("Without a zero, there shouldn't be any unevaluated arguments!");
 
-				if (expression.getIdentity().isNotEmpty() && (argumentsByRelevance.containsKey(Relevance.Identity) || arguments.isEmpty())) {
-					context.append("because anything ").append(operatorRendering.getPastVerb()).append(" ").value(expression.getIdentity().get()).append(" is itself");
+				if (explained.getIdentity().isNotEmpty() && (argumentsByRelevance.containsKey(Relevance.Identity) || arguments.isEmpty())) {
+					context.append("because anything ").append(operatorRendering.getPastVerb()).append(" ").value(explained.getIdentity().get()).append(" is itself");
 					if (arguments.isEmpty()) context.append(", and there were no arguments");
 				} else context.append(operatorRendering.getName());
 
-				final List<PrintableArgument<Value>> printableArgumentsAll = arguments.stream().map(a -> new PrintableArgument<>(context.getMode(), a)).collect(Collectors.toList());
-				final List<PrintableArgument<Value>> printableArgumentsPrintable = printableArgumentsAll.stream().filter(PrintableArgument::isPrintable).collect(Collectors.toList());
-				if ((context.getMode().compareTo(ExplanationMode.Describe) <= 0) && ((printableArgumentsAll.size() == 1) || (printableArgumentsPrintable.size() == 1))) {
-					final List<PrintableArgument<Value>> toPrint = (printableArgumentsAll.size() == 1) ? printableArgumentsAll : printableArgumentsPrintable;
+				final List<Child<Name, Value>> childrenAll = arguments.stream().map(a -> new Child<Name, Value>(context.getMode(), a)).collect(Collectors.toList());
+				final List<Child<Name, Value>> childrenPrintable = childrenAll.stream().filter(Child::isPrintable).collect(Collectors.toList());
+				if ((context.getMode().compareTo(ExplanationMode.Describe) <= 0) && ((childrenAll.size() == 1) || (childrenPrintable.size() == 1))) {
+					final List<Child<Name, Value>> toPrint = (childrenAll.size() == 1) ? childrenAll : childrenPrintable;
 					context.append(", and the").append(toPrint.size() != arguments.size() ? " relevant" : " only").append(" argument is ");
-					context.render(HCollection.getOne(toPrint).getArgument().getExplained(), IExplained.class);
-				} else {
-					final List<PrintableArgument<Value>> toPrint = printableArgumentsPrintable.isEmpty() ? printableArgumentsAll : printableArgumentsPrintable;
-					printArguments(context, toPrint);
-				}
+					context.render(HCollection.getOne(toPrint).getValue().get(), IExplained.class);
+				} else print(context, childrenPrintable.isEmpty() ? childrenAll : childrenPrintable);
 			});
 		}
 
-		protected void printArguments(final IExplanationRenderContext<Name, Value> context, final List<PrintableArgument<Value>> printableArguments) {
-			if (!printableArguments.isEmpty()) {
+		protected void print(final IExplanationRenderContext<Name, Value> context, final List<Child<Name, Value>> children) {
+			if (!children.isEmpty()) {
 				context.newline();
 				try (final ICloseable indent = context.indent()) {
 					boolean first = true;
-					for (PrintableArgument<Value> argument : printableArguments) {
+					for (Child<Name, Value> argument : children) {
 						if (first) first = false;
 						else context.newline();
-						context.render(argument, PrintableArgument.class);
+						context.render(argument, Child.class);
 					}
 				}
-			}
-		}
-	}
-
-	@Data
-	@Builder(toBuilder = true)
-	@RequiredArgsConstructor
-	protected static class PrintableArgument<Value> implements IExplained<Value> {
-		protected final ExplanationMode mode;
-
-		protected final IExplainedOperation.Argument<Value> argument;
-
-		@Getter(lazy = true)
-		@EqualsAndHashCode.Exclude
-		@ToString.Exclude
-		private final String prefix = computePrefix();
-
-		protected String computePrefix() {
-			final Relevance relevance = getArgument().getRelevance();
-			switch (relevance) {
-				case Unevaluated:
-					return " ";
-				case Identity:
-					return "-";
-				case Combined:
-					return "*";
-				case Dominant:
-					return ">";
-				default:
-					throw new EnumException(IExplained.Relevance.class, relevance);
-			}
-		}
-
-		@Override
-		public Value get() {
-			return getArgument().getExplained().get();
-		}
-
-		public boolean isPrintable() {
-			final Relevance relevance = getArgument().getRelevance();
-			switch (relevance) {
-				case Unevaluated:
-				case Identity:
-					return getMode().compareTo(ExplanationMode.Trace) >= 0;
-				case Combined:
-				case Dominant:
-					return true;
-				default:
-					throw new EnumException(IExplained.Relevance.class, relevance);
 			}
 		}
 	}
