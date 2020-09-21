@@ -35,6 +35,7 @@ public enum StandardLicense implements ILicenseFamilyEnum, ILicenseSpecific {
 	FTL("FTL", null, null, false),
 	Perl5(null, null, null, false);
 
+	@ReassertLegalOpinion
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final TermsLoader<String, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, String.class, StandardLicenseTerm.class);
 
