@@ -3,8 +3,6 @@ package com.g2forge.reassert.express.v2.model.constant;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.express.v2.model.constant.ILiteral;
-import com.g2forge.reassert.express.v2.model.constant.Literal;
 
 public class TestLiteral {
 	@Test
@@ -15,17 +13,17 @@ public class TestLiteral {
 	}
 
 	@Test
-	public void notSameName() {
-		HAssert.assertFalse(Literal.builder().name("B").value(0).build().isSame(new Literal<>("A", 0)));
+	public void equals() {
+		HAssert.assertTrue(Literal.builder().name("A").value(0).build().equals(new Literal<>("A", 0)));
 	}
 
 	@Test
-	public void notSameValue() {
-		HAssert.assertFalse(Literal.builder().name("A").value(1).build().isSame(new Literal<>("A", 0)));
+	public void notEqualsName() {
+		HAssert.assertFalse(Literal.builder().name("B").value(0).build().equals(new Literal<>("A", 0)));
 	}
 
 	@Test
-	public void same() {
-		HAssert.assertTrue(Literal.builder().name("A").value(0).build().isSame(new Literal<>("A", 0)));
+	public void notEqualsValue() {
+		HAssert.assertFalse(Literal.builder().name("A").value(1).build().equals(new Literal<>("A", 0)));
 	}
 }

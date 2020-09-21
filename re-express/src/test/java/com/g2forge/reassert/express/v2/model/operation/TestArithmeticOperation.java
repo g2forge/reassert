@@ -17,28 +17,28 @@ public class TestArithmeticOperation {
 	}
 
 	@Test
-	public void notSameArguments() {
-		final IOperation<String, Integer> left = ArithmeticOperation.Operator.ADD.<String, Integer>builder().argument$("A", 0).argument$("B", 0).valid();
-		final ArithmeticOperation<String, Integer> right = new ArithmeticOperation<>(ArithmeticOperation.Operator.ADD, new Literal<>("A", 0), new Literal<>("B", 1));
-		HAssert.assertFalse(left.isSame(right));
-	}
-
-	@Test
-	public void notSameArgumentsSize() {
-		final IOperation<String, Integer> left = ArithmeticOperation.Operator.ADD.<String, Integer>builder().argument$("A", 0).valid();
-		final ArithmeticOperation<String, Integer> right = new ArithmeticOperation<>(ArithmeticOperation.Operator.ADD, new Literal<>("A", 0), new Literal<>("B", 1));
-		HAssert.assertFalse(left.isSame(right));
-	}
-
-	@Test
-	public void notSameOperator() {
-		HAssert.assertFalse(new ArithmeticOperation<>(ArithmeticOperation.Operator.ADD).isSame(ArithmeticOperation.Operator.SUBTRACT.builder().build()));
-	}
-
-	@Test
-	public void same() {
+	public void equals() {
 		final IOperation<String, Integer> left = ArithmeticOperation.Operator.SUBTRACT.<String, Integer>builder().argument$("A", 0).argument$("B", 1).valid();
 		final ArithmeticOperation<String, Integer> right = new ArithmeticOperation<>(ArithmeticOperation.Operator.SUBTRACT, new Literal<>("A", 0), new Literal<>("B", 1));
-		HAssert.assertTrue(left.isSame(right));
+		HAssert.assertTrue(left.equals(right));
+	}
+
+	@Test
+	public void notEqualsArguments() {
+		final IOperation<String, Integer> left = ArithmeticOperation.Operator.ADD.<String, Integer>builder().argument$("A", 0).argument$("B", 0).valid();
+		final ArithmeticOperation<String, Integer> right = new ArithmeticOperation<>(ArithmeticOperation.Operator.ADD, new Literal<>("A", 0), new Literal<>("B", 1));
+		HAssert.assertFalse(left.equals(right));
+	}
+
+	@Test
+	public void notEqualsArgumentsSize() {
+		final IOperation<String, Integer> left = ArithmeticOperation.Operator.ADD.<String, Integer>builder().argument$("A", 0).valid();
+		final ArithmeticOperation<String, Integer> right = new ArithmeticOperation<>(ArithmeticOperation.Operator.ADD, new Literal<>("A", 0), new Literal<>("B", 1));
+		HAssert.assertFalse(left.equals(right));
+	}
+
+	@Test
+	public void notEqualsOperator() {
+		HAssert.assertFalse(new ArithmeticOperation<>(ArithmeticOperation.Operator.ADD).equals(ArithmeticOperation.Operator.SUBTRACT.builder().build()));
 	}
 }

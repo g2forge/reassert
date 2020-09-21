@@ -9,7 +9,6 @@ import com.g2forge.alexandria.java.function.builder.IValidatingBuilder;
 import com.g2forge.alexandria.java.validate.CompositeValidation;
 import com.g2forge.alexandria.java.validate.IValidatable;
 import com.g2forge.alexandria.java.validate.IValidation;
-import com.g2forge.reassert.express.v2.model.HExpression;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 
@@ -39,17 +38,6 @@ public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 	public List<? extends IExpression<Name, Value>> getArguments();
 
 	public IOperator getOperator();
-
-	@Override
-	public default boolean isSame(IExpression<?, ?> that) {
-		if (this == that) return true;
-		if ((that == null) || !(that instanceof IOperation)) return false;
-
-		final IOperation<?, ?> cast = (IOperation<?, ?>) that;
-		if (!getOperator().equals(cast.getOperator())) return false;
-		if (!HExpression.isSame(getArguments(), cast.getArguments())) return false;
-		return true;
-	}
 
 	@Override
 	public default IValidation validate() {

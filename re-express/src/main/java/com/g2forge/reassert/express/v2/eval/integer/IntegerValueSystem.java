@@ -3,9 +3,11 @@ package com.g2forge.reassert.express.v2.eval.integer;
 import java.util.Objects;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
 import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
+import com.g2forge.reassert.express.v2.eval.value.ValueValidation;
 
 public class IntegerValueSystem implements IValueSystem<Integer>, ISingleton {
 	private static final IntegerValueSystem INSTANCE = new IntegerValueSystem();
@@ -32,7 +34,7 @@ public class IntegerValueSystem implements IValueSystem<Integer>, ISingleton {
 	}
 
 	@Override
-	public boolean isValid(Integer value) {
-		return value != null;
+	public IValidation isValid(Integer value) {
+		return new ValueValidation<>(value, value != null);
 	}
 }

@@ -18,17 +18,6 @@ public class Closure<Name, Value> implements IClosure<Name, Value> {
 	protected final IExpression<Name, Value> expression;
 
 	@Override
-	public boolean isSame(IExpression<?, ?> that) {
-		if (this == that) return true;
-		if ((that == null) || !(that instanceof IClosure)) return false;
-
-		final IClosure<?, ?> cast = (IClosure<?, ?>) that;
-		if (!getExpression().isSame(cast.getExpression())) return false;
-		if (!getEnvironment().isSame(cast.getEnvironment())) return false;
-		return true;
-	}
-
-	@Override
 	public IValidation validate() {
 		return ValidValidation.create();
 	}

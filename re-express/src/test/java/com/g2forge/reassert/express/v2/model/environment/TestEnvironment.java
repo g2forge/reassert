@@ -6,10 +6,16 @@ import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
-import com.g2forge.reassert.express.v2.model.environment.Environment;
 import com.g2forge.reassert.express.v2.model.variable.Variable;
 
 public class TestEnvironment {
+	@Test
+	public void equals() {
+		final Environment<String, Integer> env0 = Environment.<String, Integer>builder().bind(new Variable<>("x"), new Literal<>(0)).build();
+		final Environment<String, Integer> env1 = Environment.<String, Integer>builder().bind(new Variable<>("x"), new Literal<>(0)).build();
+		HAssert.assertTrue(env0.equals(env1));
+	}
+
 	@Test
 	public void lookupEmpty() {
 		final Environment<String, Integer> env = Environment.<String, Integer>builder().build();
@@ -28,16 +34,9 @@ public class TestEnvironment {
 	}
 
 	@Test
-	public void same() {
-		final Environment<String, Integer> env0 = Environment.<String, Integer>builder().bind(new Variable<>("x"), new Literal<>(0)).build();
-		final Environment<String, Integer> env1 = Environment.<String, Integer>builder().bind(new Variable<>("x"), new Literal<>(0)).build();
-		HAssert.assertTrue(env0.isSame(env1));
-	}
-
-	@Test
-	public void notSsame() {
+	public void notEquals() {
 		final Environment<String, Integer> env0 = Environment.<String, Integer>builder().bind(new Variable<>("x"), new Literal<>(0)).build();
 		final Environment<String, Integer> env1 = Environment.<String, Integer>builder().bind(new Variable<>("y"), new Literal<>(1)).build();
-		HAssert.assertFalse(env0.isSame(env1));
+		HAssert.assertFalse(env0.equals(env1));
 	}
 }

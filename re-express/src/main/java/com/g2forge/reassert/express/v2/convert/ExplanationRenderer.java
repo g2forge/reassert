@@ -1,6 +1,5 @@
 package com.g2forge.reassert.express.v2.convert;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
+import com.g2forge.alexandria.java.validate.ValidationFailureException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.eval.IEvaluator;
 import com.g2forge.reassert.express.v2.eval.ValueEvaluator;
@@ -63,6 +64,11 @@ public class TestIntegerOperationSystem {
 	@Test
 	public void divide() {
 		HAssert.assertEquals(Integer.valueOf(2), getEvaluator().eval(ArithmeticOperation.Operator.DIVIDE.<String, Integer>builder().argument$(10).argument$(5).valid()));
+	}
+
+	@Test(expected = ValidationFailureException.class)
+	public void invalid() {
+		getEvaluator().eval(new Literal<>(null));
 	}
 
 	@Test

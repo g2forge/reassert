@@ -2,8 +2,6 @@ package com.g2forge.reassert.express.v2.model.environment;
 
 import java.util.Map;
 
-import com.g2forge.alexandria.annotations.note.Note;
-import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.builder.IValidatingBuilder;
 import com.g2forge.alexandria.java.validate.IValidatable;
@@ -26,20 +24,5 @@ public interface IEnvironment<Name, Value> extends IValidatable {
 
 	public default IEnvironment<Name, Value> override(IEnvironment<Name, Value> override) {
 		return new OverrideEnvironment<>(override, this);
-	}
-
-	@Note(type = NoteType.TODO, value = "Implement isSame using expressions & value system")
-	public default boolean isSame(IEnvironment<?, ?> that) {
-		if (this == that) return true;
-		if ((that == null) || !(that instanceof IEnvironment)) return false;
-
-		@SuppressWarnings("unchecked")
-		final IEnvironment<Name, Value> cast = (IEnvironment<Name, Value>) that;
-
-		if (!getBindings().keySet().equals(cast.getBindings().keySet())) return false;
-		for (IVariable<Name, Value> variable : getBindings().keySet()) {
-			if (!lookup(variable).get().isSame(cast.lookup(variable).get())) return false;
-		}
-		return true;
 	}
 }

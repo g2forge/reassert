@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
+import com.g2forge.alexandria.java.validate.ValidationFailureException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.v2.eval.IEvaluator;
 import com.g2forge.reassert.express.v2.eval.ValueEvaluator;
@@ -63,6 +64,11 @@ public class TestBooleanOperationSystem {
 		final IExpression<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(x).argument(y).build();
 		final IExpression<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), expression);
 		HAssert.assertEquals(false, TestBooleanOperationSystem.getEvaluator().eval(closure));
+	}
+
+	@Test(expected = ValidationFailureException.class)
+	public void invalid() {
+		getEvaluator().eval(new Literal<>(null));
 	}
 
 	@Test
