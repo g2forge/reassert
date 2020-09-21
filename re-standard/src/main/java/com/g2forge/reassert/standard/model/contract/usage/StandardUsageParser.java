@@ -1,12 +1,13 @@
-package com.g2forge.reassert.standard.model.contract.usage.parser;
+package com.g2forge.reassert.standard.model.contract.usage;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.UnknownUsage;
 import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
-import com.g2forge.reassert.standard.model.contract.usage.StandardUsage;
 
+@ReassertLegalOpinion
 public class StandardUsageParser implements IParser<IUsageApplied>, ISingleton {
 	protected static final StandardUsageParser INSTANCE = new StandardUsageParser();
 

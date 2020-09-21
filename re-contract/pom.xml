@@ -15,6 +15,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.g2forge.alexandria</groupId>
+			<artifactId>ax-parse</artifactId>
+			<version>${alexandria.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>re-core</artifactId>
 			<version>${project.version}</version>

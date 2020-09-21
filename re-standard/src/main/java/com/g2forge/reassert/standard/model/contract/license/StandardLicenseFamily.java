@@ -1,6 +1,7 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
 import com.g2forge.alexandria.parse.IMatch;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamilyEnum;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -10,6 +11,7 @@ import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@ReassertLegalOpinion
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicenseFamily implements ILicenseFamilyEnum {

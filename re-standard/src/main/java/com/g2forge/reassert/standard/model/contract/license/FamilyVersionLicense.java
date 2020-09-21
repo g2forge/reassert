@@ -4,7 +4,6 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicenseFamily.Versioning;
 
 import lombok.Builder;
 import lombok.Data;
@@ -42,7 +41,7 @@ public class FamilyVersionLicense implements ILicenseSpecific {
 		final StandardLicenseFamily family = getFamily();
 		retVal.append(family.name());
 
-		final Versioning versioning = family.getVersioning();
+		final StandardLicenseFamily.Versioning versioning = family.getVersioning();
 		if (StandardLicenseFamily.Versioning.Unversioned.compareTo(versioning) < 0) {
 			retVal.append(separator);
 			final LicenseVersion version = getVersion();
