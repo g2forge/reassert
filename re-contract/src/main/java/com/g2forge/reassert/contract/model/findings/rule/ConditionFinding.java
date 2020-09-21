@@ -1,9 +1,8 @@
-package com.g2forge.reassert.contract.model.findings;
+package com.g2forge.reassert.contract.model.findings.rule;
 
 import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.core.enums.EnumException;
-import com.g2forge.reassert.contract.model.findings.IRiskFinding;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.explain.model.IExplained;
 
@@ -14,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ConditionFinding implements IRiskFinding {
+public class ConditionFinding implements IRuleFinding {
 	protected final IExplained<TermRelation> result;
 
 	@Override

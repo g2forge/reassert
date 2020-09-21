@@ -17,7 +17,7 @@ import com.g2forge.reassert.mock.MockCoordinates;
 import com.g2forge.reassert.reassert.ATestReassertSummarizer;
 import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.model.report.TestFinding;
-import com.g2forge.reassert.reassert.model.report.TestRiskFinding;
+import com.g2forge.reassert.reassert.model.report.TestRuleFinding;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
 import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.summary.model.FindingSummary;
@@ -84,7 +84,7 @@ public class TestReassertSummarizer extends ATestReassertSummarizer {
 		}
 		{
 			final FindingSummary.FindingSummaryBuilder finding = FindingSummary.builder();
-			finding.finding(new TestRiskFinding(Level.INFO, "Some risk"));
+			finding.finding(new TestRuleFinding(Level.INFO, "Some risk"));
 			finding.path(TestGraphPath.builder().vertex(new MockCoordinates("C")).build());
 			builder.finding(finding.build());
 		}

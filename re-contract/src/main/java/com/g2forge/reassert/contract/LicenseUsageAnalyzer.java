@@ -11,7 +11,7 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.model.TermConstant;
-import com.g2forge.reassert.contract.model.findings.ExpressionContextualFinding;
+import com.g2forge.reassert.contract.model.findings.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
 import com.g2forge.reassert.contract.model.logic.ITermLogicContext;
 import com.g2forge.reassert.contract.model.rules.IRules;
@@ -105,7 +105,7 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 				final IFinding finding = rule.getFinding().apply(explained);
 
 				// Contextualize the finding
-				retVal.finding(new ExpressionContextualFinding(inputs, applied, outputs, finding));
+				retVal.finding(new ExpressionContextFinding(inputs, applied, outputs, finding));
 			}
 
 			if (outputs != null) {

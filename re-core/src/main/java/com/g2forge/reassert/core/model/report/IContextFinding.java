@@ -2,7 +2,7 @@ package com.g2forge.reassert.core.model.report;
 
 import org.slf4j.event.Level;
 
-public interface IContextualFinding extends IFinding {
+public interface IContextFinding extends IFinding {
 	public IFinding getFinding();
 
 	public default IFinding getInnermostFinding() {

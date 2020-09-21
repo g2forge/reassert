@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class GraphContextualFinding implements IVertex, IContextualFinding, IStringNamed {
+public class GraphContextFinding implements IVertex, IContextFinding, IStringNamed {
 	protected final String name;
 
 	protected final IFinding finding;

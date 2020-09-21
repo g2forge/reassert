@@ -10,7 +10,7 @@ import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.LicenseUsageAnalyzer;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
-import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.model.findings.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.model.rules.Rule;
 import com.g2forge.reassert.contract.model.rules.Rules;
 import com.g2forge.reassert.core.api.module.Context;

@@ -23,14 +23,14 @@ import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNes
 import com.g2forge.reassert.contract.model.IExpressionContext;
 import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.contract.model.TermType;
-import com.g2forge.reassert.contract.model.findings.ConditionFinding;
-import com.g2forge.reassert.contract.model.findings.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.findings.ExpressionContextualFinding;
-import com.g2forge.reassert.contract.model.findings.IRiskFinding;
-import com.g2forge.reassert.contract.model.findings.NoticeFinding;
-import com.g2forge.reassert.contract.model.findings.StateChangesFinding;
-import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.model.findings.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
+import com.g2forge.reassert.contract.model.findings.rule.ConditionFinding;
+import com.g2forge.reassert.contract.model.findings.rule.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.model.findings.rule.IRuleFinding;
+import com.g2forge.reassert.contract.model.findings.rule.NoticeFinding;
+import com.g2forge.reassert.contract.model.findings.rule.StateChangesFinding;
+import com.g2forge.reassert.contract.model.findings.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -38,7 +38,7 @@ import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
-import com.g2forge.reassert.core.model.report.IContextualFinding;
+import com.g2forge.reassert.core.model.report.IContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
@@ -116,7 +116,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			return context;
 		}
 
-		protected IReportRenderContext explain(IRiskFinding finding, IReportRenderContext context) {
+		protected IReportRenderContext explain(IRuleFinding finding, IReportRenderContext context) {
 			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
 				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
 					final IExpressionContext findingContext = context.getFindingContext();
@@ -176,8 +176,8 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				c.append(')');
 			});
 
-			builder.add(IContextualFinding.class, e -> c -> c.render(e.getFinding(), IFinding.class));
-			builder.add(ExpressionContextualFinding.class, e -> c -> {
+			builder.add(IContextFinding.class, e -> c -> c.render(e.getFinding(), IFinding.class));
+			builder.add(ExpressionContextFinding.class, e -> c -> {
 				try (final ICloseable findingContext = c.findingContext(e)) {
 					c.render(e.getFinding(), IFinding.class);
 				}

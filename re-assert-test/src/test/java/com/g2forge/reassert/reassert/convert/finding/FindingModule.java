@@ -15,10 +15,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.model.TermConstant;
-import com.g2forge.reassert.contract.model.findings.ExpressionContextualFinding;
+import com.g2forge.reassert.contract.model.findings.ExpressionContextFinding;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
-import com.g2forge.reassert.core.model.report.IContextualFinding;
+import com.g2forge.reassert.core.model.report.IContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.express.explain.model.IExplained;
 import com.g2forge.reassert.express.express.IExpression;
@@ -58,8 +58,8 @@ public class FindingModule extends SimpleModule {
 	@Override
 	public void setupModule(SetupContext context) {
 		this.setMixInAnnotation(IFinding.class, FindingMixin.class);
-		this.setMixInAnnotation(IContextualFinding.class, ContextualFindingMixin.class);
-		this.setMixInAnnotation(ExpressionContextualFinding.class, ExpressionContextualFindingMixin.class);
+		this.setMixInAnnotation(IContextFinding.class, ContextualFindingMixin.class);
+		this.setMixInAnnotation(ExpressionContextFinding.class, ExpressionContextualFindingMixin.class);
 		this.setMixInAnnotation(IExplained.class, ExplainedMixin.class);
 		super.setupModule(context);
 

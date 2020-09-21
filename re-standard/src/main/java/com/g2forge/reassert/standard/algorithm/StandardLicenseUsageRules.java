@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.contract.model.findings.ConditionFinding;
-import com.g2forge.reassert.contract.model.findings.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.findings.NoticeFinding;
-import com.g2forge.reassert.contract.model.findings.StateChangesFinding;
-import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.model.findings.rule.ConditionFinding;
+import com.g2forge.reassert.contract.model.findings.rule.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.model.findings.rule.NoticeFinding;
+import com.g2forge.reassert.contract.model.findings.rule.StateChangesFinding;
+import com.g2forge.reassert.contract.model.findings.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.model.rules.IRules;
 import com.g2forge.reassert.contract.model.rules.Rule;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;

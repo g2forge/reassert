@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.g2forge.reassert.contract.model.IExpressionContext;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
-import com.g2forge.reassert.core.model.report.IContextualFinding;
+import com.g2forge.reassert.core.model.report.IContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.express.express.IExpression;
 
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ExpressionContextualFinding implements IContextualFinding, IExpressionContext {
+public class ExpressionContextFinding implements IContextFinding, IExpressionContext {
 	protected final Collection<ITerm> inputs;
 
 	protected final IExpression<TermRelation> expression;
