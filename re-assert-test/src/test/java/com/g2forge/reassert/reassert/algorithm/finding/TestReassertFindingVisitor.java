@@ -15,7 +15,7 @@ import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
-import com.g2forge.reassert.core.model.report.GraphContextualFinding;
+import com.g2forge.reassert.core.model.report.GraphContextFinding;
 import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.reassert.ATestReassert;
 import com.g2forge.reassert.reassert.TestGraph;
@@ -40,7 +40,7 @@ public class TestReassertFindingVisitor extends ATestReassert {
 
 	protected Graph<IVertex, IEdge> interesting(Graph<IVertex, IEdge> graph) {
 		final Graph<IVertex, IEdge> retVal = HReassertModel.clone(graph);
-		final Set<GraphContextualFinding> uninterested = retVal.vertexSet().stream().flatMap(ITypeRef.of(GraphContextualFinding.class)::castIfInstance).filter(f -> f.getLevel().compareTo(Level.WARN) > 0).collect(Collectors.toSet());
+		final Set<GraphContextFinding> uninterested = retVal.vertexSet().stream().flatMap(ITypeRef.of(GraphContextFinding.class)::castIfInstance).filter(f -> f.getLevel().compareTo(Level.WARN) > 0).collect(Collectors.toSet());
 		for (IVertex vertex : uninterested) {
 			retVal.removeVertex(vertex);
 		}

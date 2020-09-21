@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.contract.model.findings.ConditionFinding;
-import com.g2forge.reassert.contract.model.findings.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.findings.NoticeFinding;
-import com.g2forge.reassert.contract.model.findings.StateChangesFinding;
-import com.g2forge.reassert.contract.model.findings.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.model.findings.rule.ConditionFinding;
+import com.g2forge.reassert.contract.model.findings.rule.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.model.findings.rule.NoticeFinding;
+import com.g2forge.reassert.contract.model.findings.rule.StateChangesFinding;
 import com.g2forge.reassert.contract.model.rules.IRules;
 import com.g2forge.reassert.contract.model.rules.Rule;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
+import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttribute;
 
 import lombok.Getter;
 
@@ -57,9 +57,9 @@ public class StandardLicenseUsageRules implements IRules, ISingleton {
 		rules.add(Rule.builder().satisfied(StandardLicenseTerm.StateChanges).expression$(and(or(StandardUsageTerm.DistributionPublic, and(StandardUsageTerm.DistributionService, StandardLicenseTerm.SaaSIsDistribution)), StandardUsageTerm.UseModified, StandardLicenseTerm.StateChanges)).finding(StateChangesFinding::new).build());
 
 		// Consistency rules
-		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributionPublic, StandardUsageTerm.DistributionPrivate, StandardUsageTerm.DistributionService))).finding(t -> new SuspiciousUsageFinding(t, "method of distribtion")).build());
-		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.UseLink, StandardUsageTerm.UseCopy, StandardUsageTerm.UseModified))).finding(t -> new SuspiciousUsageFinding(t, "method of consumption")).build());
-		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributingBinary, StandardUsageTerm.DistributingSource))).finding(t -> new SuspiciousUsageFinding(t, "format")).build());
+		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributionPublic, StandardUsageTerm.DistributionPrivate, StandardUsageTerm.DistributionService))).finding(StandardUsageTermAttribute.Distribution).build());
+		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.UseLink, StandardUsageTerm.UseCopy, StandardUsageTerm.UseModified))).finding(StandardUsageTermAttribute.Consumption).build());
+		rules.add(Rule.builder().expression$(not(or(StandardUsageTerm.DistributingBinary, StandardUsageTerm.DistributingSource))).finding(StandardUsageTermAttribute.Format).build());
 
 		// Ignored terms
 		rules.add(Rule.builder().satisfied(StandardLicenseTerm.SameLicense).build());

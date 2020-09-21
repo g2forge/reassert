@@ -1,6 +1,5 @@
-package com.g2forge.reassert.contract.model.findings;
+package com.g2forge.reassert.contract.model.findings.rule;
 
-import com.g2forge.reassert.contract.model.findings.IRiskFinding;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.explain.model.IExplained;
 
@@ -11,6 +10,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class NoticeFinding implements IRiskFinding {
+public class NoticeFinding implements INoticeFinding {
 	protected final IExplained<TermRelation> result;
 }

@@ -53,7 +53,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",A,
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded - Modified in OSSLibrary usage
 		* Excluded - Requires statement of changes in Owner license"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",A,A,"INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Public distribution in OSSLibrary usage
@@ -120,7 +120,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded - Modified in OSSLibrary usage
 		* Excluded - Requires statement of changes in BSD 3 Clause license"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Public distribution in OSSLibrary usage
@@ -186,7 +186,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",C,
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded - Modified in OSSLibrary usage"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",C,"A -> C","INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",C,"A -> C","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Public distribution in OSSLibrary usage

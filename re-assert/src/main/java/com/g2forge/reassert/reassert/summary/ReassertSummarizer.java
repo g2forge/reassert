@@ -36,7 +36,7 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
-import com.g2forge.reassert.core.model.report.GraphContextualFinding;
+import com.g2forge.reassert.core.model.report.GraphContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.express.explain.convert.ExplanationMode;
@@ -117,11 +117,11 @@ public class ReassertSummarizer {
 			artifactSummary.usages(usages);
 
 			// Find all the findings, and use that to compute the level
-			final Collection<GraphContextualFinding> findings = HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(GraphContextualFinding.class));
+			final Collection<GraphContextFinding> findings = HReassertModel.get(report.getGraph(), artifact, true, Notice.class::isInstance, ITypeRef.of(GraphContextFinding.class));
 			if (findings.isEmpty()) artifactSummary.level(Level.INFO);
 			else {
 				artifactSummary.level(findings.stream().map(IFinding::getLevel).min(ComparableComparator.create()).get());
-				for (GraphContextualFinding finding : findings) {
+				for (GraphContextFinding finding : findings) {
 					if (finding.getLevel().compareTo(Level.INFO) < 0) artifactSummary.finding(finding.getFinding());
 				}
 			}
@@ -133,7 +133,7 @@ public class ReassertSummarizer {
 		}
 
 		final List<FindingSummary> findings = new ArrayList<>();
-		for (GraphContextualFinding finding : report.getGraph().vertexSet().stream().flatMap(ITypeRef.of(GraphContextualFinding.class)::castIfInstance).collect(Collectors.toList())) {
+		for (GraphContextFinding finding : report.getGraph().vertexSet().stream().flatMap(ITypeRef.of(GraphContextFinding.class)::castIfInstance).collect(Collectors.toList())) {
 			final FindingSummary.FindingSummaryBuilder findingSummary = FindingSummary.builder();
 			findingSummary.finding(finding.getFinding());
 

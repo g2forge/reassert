@@ -8,7 +8,7 @@ import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.express.explain.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.model.report.TestFinding;
-import com.g2forge.reassert.reassert.model.report.TestRiskFinding;
+import com.g2forge.reassert.reassert.model.report.TestRuleFinding;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class TestReportRenderer extends ReportRenderer {
 		protected void extend(TypeSwitch1.FunctionBuilder<Object, IExplicitRenderable<? super IReportRenderContext>> builder) {
 			super.extend(builder);
 			builder.add(TestFinding.class, e -> c -> appendLevel(e, c).append(e.getMessage()));
-			builder.add(TestRiskFinding.class, e -> c -> appendLevel(e, c).append(e.getDescription()));
+			builder.add(TestRuleFinding.class, e -> c -> appendLevel(e, c).append(e.getDescription()));
 		}
 	}
 
