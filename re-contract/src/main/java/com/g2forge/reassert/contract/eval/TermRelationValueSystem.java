@@ -3,10 +3,12 @@ package com.g2forge.reassert.contract.eval;
 import java.util.Objects;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
 import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.v2.eval.value.IValueSystem;
+import com.g2forge.reassert.express.v2.eval.value.ValueValidation;
 
 public class TermRelationValueSystem implements IValueSystem<TermRelation>, ISingleton {
 	private static final TermRelationValueSystem INSTANCE = new TermRelationValueSystem();
@@ -33,7 +35,7 @@ public class TermRelationValueSystem implements IValueSystem<TermRelation>, ISin
 	}
 
 	@Override
-	public boolean isValid(TermRelation value) {
-		return value != null;
+	public IValidation isValid(TermRelation value) {
+		return new ValueValidation<>(value, value != null);
 	}
 }
