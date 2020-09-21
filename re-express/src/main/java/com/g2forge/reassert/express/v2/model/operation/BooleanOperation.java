@@ -34,6 +34,25 @@ public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
 		}
 	}
 
+	@SafeVarargs
+	public static <Name, Value> BooleanOperation<Name, Value> and(IExpression<Name, Value>... arguments) {
+		return new BooleanOperation<>(Operator.AND, arguments);
+	}
+
+	public static <Name, Value> BooleanOperation<Name, Value> not(IExpression<Name, Value> argument) {
+		return new BooleanOperation<>(Operator.NOT, argument);
+	}
+
+	@SafeVarargs
+	public static <Name, Value> BooleanOperation<Name, Value> or(IExpression<Name, Value>... arguments) {
+		return new BooleanOperation<>(Operator.OR, arguments);
+	}
+
+	@SafeVarargs
+	public static <Name, Value> BooleanOperation<Name, Value> xor(IExpression<Name, Value>... arguments) {
+		return new BooleanOperation<>(Operator.XOR, arguments);
+	}
+
 	protected final Operator operator;
 
 	@Singular
