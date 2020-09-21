@@ -13,12 +13,12 @@ public interface IExplainedClosure<Name, Value> extends IExplained<Value> {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
-	public static class Binding<Name, Value> {
+	public static class Binding<Name, Value> implements IExplainedVariable<Name, Value> {
 		protected final Relevance relevance;
 
 		protected final IVariable<Name, Value> variable;
 
-		protected final IOptional<? extends IExplained<Value>> result;
+		protected final IOptional<? extends IExplained<Value>> explained;
 	}
 
 	public Collection<IExplainedClosure.Binding<Name, Value>> getBindings();

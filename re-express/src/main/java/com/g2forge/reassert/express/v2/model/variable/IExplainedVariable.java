@@ -9,7 +9,7 @@ public interface IExplainedVariable<Name, Value> extends IExplained<Value> {
 		return getExplained().get().get();
 	}
 
-	public IOptional<IExplained<Value>> getExplained();
+	public IOptional<? extends IExplained<Value>> getExplained();
 
 	public IVariable<Name, Value> getVariable();
 
