@@ -30,7 +30,7 @@ public class Rule {
 
 	protected final IFunction1<ITermLogicContext, IExpression<TermRelation>> expression;
 
-	protected final IFunction1<IExplained<TermRelation>, IFinding> finding;
+	protected final IFunction1<? super IExplained<TermRelation>, ? extends IFinding> finding;
 
 	@Singular("satisfied")
 	protected final Set<ITerm> satisfied;
