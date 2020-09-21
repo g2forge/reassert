@@ -75,7 +75,7 @@ ERROR,"You must state the changes you have made to your copy of this artifact",A
 				* Unspecified - Requires distribution for SaaS in Unspecified license
 		* Unspecified - Modified in Unspecified usage
 		* Unspecified - Requires statement of changes in Unspecified license"
-ERROR,"The usage for this artifact improperly specifies the method of distribtion",A,A,"ERROR: The usage for this artifact improperly specifies the method of distribtion
+ERROR,"The usage for this artifact improperly specifies the method of distribution",A,A,"ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
 		* Unspecified - Public distribution in Unspecified usage
@@ -142,7 +142,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded - Requires statement of changes in BSD 3 Clause license"
-ERROR,"The usage for this artifact improperly specifies the method of distribtion",B,"A -> B","ERROR: The usage for this artifact improperly specifies the method of distribtion
+ERROR,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
 		* Unspecified - Public distribution in Unspecified usage
@@ -211,7 +211,7 @@ ERROR,"You must state the changes you have made to your copy of this artifact",C
 		* Unspecified (||) - because the || operator (with identity Excluded) was applied
 			* Unspecified - Public distribution in Unspecified usage
 		* Unspecified - Modified in Unspecified usage"
-ERROR,"The usage for this artifact improperly specifies the method of distribtion",C,"A -> C","ERROR: The usage for this artifact improperly specifies the method of distribtion
+ERROR,"The usage for this artifact improperly specifies the method of distribution",C,"A -> C","ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified (!) - because there's a single argument: Unspecified (||) - because the || operator (with identity Excluded) was applied
 		* Unspecified - Public distribution in Unspecified usage

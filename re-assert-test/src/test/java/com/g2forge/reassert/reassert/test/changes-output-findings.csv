@@ -53,7 +53,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",A,
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded - Modified in OSSLibrary usage
 		* Excluded - Requires statement of changes in Owner license"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",A,A,"INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Public distribution in OSSLibrary usage
@@ -117,7 +117,7 @@ WARN,"You must publish a copyright and license notice stating that you use this 
 WARN,"You must state the changes you have made to your copy of this artifact",B,"A -> B","WARN: You must state the changes you have made to your copy of this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Included (&&) - because the && operator (with identity Included) was applied"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Public distribution in Merged Usage (1037B3EB)

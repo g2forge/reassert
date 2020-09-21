@@ -58,7 +58,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",A,
 		* Excluded (||) - because the || operator (with identity Excluded) was applied
 		* Excluded - Modified in PrivateDistribution usage
 		* Excluded - Requires statement of changes in Owner license"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",A,A,"INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Private distribution in PrivateDistribution usage
@@ -126,7 +126,7 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Explanation: Excluded (&&) - because Excluded is the zero of the && operator
 		* Excluded (||) - because the || operator (with identity Excluded) was applied
 		* Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
-INFO,"The usage for this artifact improperly specifies the method of distribtion",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribtion
+INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded (!) - because there's a single argument: Included (||) - because Included is the zero of the || operator
 		* Included - Private distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)

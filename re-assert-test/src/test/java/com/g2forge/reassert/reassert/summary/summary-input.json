@@ -85,7 +85,7 @@
     },
     "Finding 0" : {
       "vertex" : {
-        "@c" : ".report.GraphContextualFinding",
+        "@c" : ".report.GraphContextFinding",
         "name" : "Finding 0",
         "finding" : {
           "@c" : "com.g2forge.reassert.reassert.model.report.TestFinding",
@@ -96,10 +96,10 @@
     },
     "Finding 1" : {
       "vertex" : {
-        "@c" : ".report.GraphContextualFinding",
+        "@c" : ".report.GraphContextFinding",
         "name" : "Finding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.findings.NoticeFinding",
+          "@c" : "com.g2forge.reassert.contract.model.findings.rule.NoticeFinding",
           "result" : {
             "@c" : "com.g2forge.reassert.express.express.Literal",
             "name" : "Dummy",
@@ -110,10 +110,10 @@
     },
     "Finding 2" : {
       "vertex" : {
-        "@c" : ".report.GraphContextualFinding",
+        "@c" : ".report.GraphContextFinding",
         "name" : "Finding 2",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.findings.ConditionFinding",
+          "@c" : "com.g2forge.reassert.contract.model.findings.rule.ConditionFinding",
           "result" : {
             "@c" : "com.g2forge.reassert.express.express.Literal",
             "name" : "Dummy",

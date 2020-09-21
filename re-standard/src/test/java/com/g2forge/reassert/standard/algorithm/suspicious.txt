@@ -1,5 +1,5 @@
 Minimum finding level: WARN
-WARN: The usage for this artifact improperly specifies the method of distribtion
+WARN: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!("Public distribution" || "Private distribution" || "SaaS distribution"))
 	Explanation: Included (!) - because there's a single argument: Excluded (||) - because the || operator (with identity Excluded) was applied
 WARN: The usage for this artifact improperly specifies the method of consumption
