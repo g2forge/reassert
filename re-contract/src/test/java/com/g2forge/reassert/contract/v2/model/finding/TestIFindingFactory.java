@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.model.findings.rule.IRuleFinding;
+import com.g2forge.reassert.contract.v2.model.finding.rule.ConditionFinding;
 
 public class TestIFindingFactory {
 	@Test

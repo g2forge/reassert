@@ -5,7 +5,7 @@ import static com.g2forge.reassert.standard.v2.algorithm.TermOperation.or;
 
 import com.g2forge.reassert.contract.v2.model.CTName;
 import com.g2forge.reassert.contract.v2.model.ICTName;
-import com.g2forge.reassert.contract.v2.model.finding.ConditionFinding;
+import com.g2forge.reassert.contract.v2.model.finding.rule.ConditionFinding;
 import com.g2forge.reassert.contract.v2.model.rule.IRules;
 import com.g2forge.reassert.contract.v2.model.rule.Rule;
 import com.g2forge.reassert.contract.v2.model.rule.Rules;

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.v2.model.finding;
+package com.g2forge.reassert.contract.v2.model.finding.rule;
 
 import org.slf4j.event.Level;
 
