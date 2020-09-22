@@ -1,7 +1,7 @@
 package com.g2forge.reassert.standard.v2.algorithm;
 
-import static com.g2forge.reassert.standard.v2.algorithm.TermOperation.not;
-import static com.g2forge.reassert.standard.v2.algorithm.TermOperation.or;
+import static com.g2forge.reassert.contract.v2.model.TermOperation.not;
+import static com.g2forge.reassert.contract.v2.model.TermOperation.or;
 
 import com.g2forge.reassert.contract.v2.model.CTName;
 import com.g2forge.reassert.contract.v2.model.ICTName;

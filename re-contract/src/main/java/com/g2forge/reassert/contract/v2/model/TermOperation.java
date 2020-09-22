@@ -1,10 +1,8 @@
-package com.g2forge.reassert.standard.v2.algorithm;
+package com.g2forge.reassert.contract.v2.model;
 
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.contract.v2.model.CTName;
-import com.g2forge.reassert.contract.v2.model.ICTName;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.v2.model.IExpression;
