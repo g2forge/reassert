@@ -18,8 +18,10 @@ import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.contract.v2.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.v2.eval.TermRelationValueSystem;
+import com.g2forge.reassert.contract.v2.model.CTNameContract;
 import com.g2forge.reassert.contract.v2.model.ICTName;
 import com.g2forge.reassert.contract.v2.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.v2.model.finding.IFindingFactory;
 import com.g2forge.reassert.contract.v2.model.finding.UnrecognizedTermFinding;
 import com.g2forge.reassert.contract.v2.model.rule.IRule;
 import com.g2forge.reassert.contract.v2.model.rule.IRules;
@@ -36,6 +38,9 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
 import com.g2forge.reassert.express.v2.eval.ExplainingEvaluator;
+import com.g2forge.reassert.express.v2.eval.IEvaluator;
+import com.g2forge.reassert.express.v2.eval.ReductionRewriter;
+import com.g2forge.reassert.express.v2.eval.ValueEvaluator;
 import com.g2forge.reassert.express.v2.model.IExplained;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
@@ -71,12 +76,14 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 				case License: {
 					final ILicenseTerm term = (ILicenseTerm) name.getTerm();
 					final TermRelation relation = getLicense().getTerms().getRelation(term);
-					return NullableOptional.of(new Literal<>(name, relation));
+					final CTNameContract literalName = new CTNameContract(term, getLicense());
+					return NullableOptional.of(new Literal<>(literalName, relation));
 				}
 				case Usage: {
 					final IUsageTerm term = (IUsageTerm) name.getTerm();
 					final TermRelation relation = getUsage().getTerms().getRelation(term);
-					return NullableOptional.of(new Literal<>(name, relation));
+					final CTNameContract literalName = new CTNameContract(term, getUsage());
+					return NullableOptional.of(new Literal<>(literalName, relation));
 				}
 				default:
 					throw new EnumException(ICTName.ContractType.class, name.getContractType());
@@ -102,20 +109,28 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getTerms(true));
 		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getTerms(true).stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));
 
-		final ExplainingEvaluator<ICTName, TermRelation> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		final IEvaluator<ICTName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		final IEvaluator<ICTName, TermRelation, IExpression<ICTName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
 		final Report.ReportBuilder retVal = Report.builder();
 		for (IRule rule : getRules().getRules()) {
 			final IExpression<ICTName, TermRelation> expression = rule.getExpression();
+			final IFindingFactory<?> findingFactory = rule.getFinding();
+
 			final ExpressionContextFinding analyzed;
 			final IExplained<TermRelation> explained;
+
 			if (expression != null) {
 				// Compute the input and output terms
-				final AnalyzeTermExpressionEvaluator analyzer = new AnalyzeTermExpressionEvaluator(termRelation -> rule.getFinding().apply(new Literal<>(termRelation)).getLevel().equals(Level.INFO));
+				final AnalyzeTermExpressionEvaluator analyzer = new AnalyzeTermExpressionEvaluator(termRelation -> {
+					if (findingFactory == null) return TermRelation.Excluded.equals(termRelation);
+					return findingFactory.apply(new Literal<>(termRelation)).getLevel().equals(Level.INFO);
+				});
 				analyzed = analyzer.eval(expression);
 				if (!analyzed.getInputs().containsAll(analyzed.getOutputs())) throw new IllegalArgumentException(String.format("Rule to satisfy \"%1$s\" did not use \"%2$s\"", analyzed.getOutputs().stream().map(ITerm::getDescription).collect(HCollector.joining(", ", " & ")), HCollection.difference(analyzed.getOutputs(), analyzed.getInputs()).stream().map(ITerm::getDescription).collect(HCollector.joining(", ", " & "))));
 
 				// Evaluate the expression
-				explained = evaluator.eval(new Closure<>(environment, expression));
+				final IExpression<ICTName, TermRelation> reduced = reduce.eval(new Closure<>(environment, expression));
+				explained = evaluator.eval(reduced);
 
 				// Record that we handled the output terms
 				remainingUsageTerms.removeAll(analyzed.getOutputs());
@@ -126,8 +141,10 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 			}
 
 			// Create & contextualize the finding
-			final IFinding finding = rule.getFinding().apply(explained);
-			retVal.finding(analyzed.toBuilder().finding(finding).build());
+			if (findingFactory != null) {
+				final IFinding finding = findingFactory.apply(explained);
+				retVal.finding(analyzed.toBuilder().inputs(HCollection.difference(analyzed.getInputs(), analyzed.getOutputs())).finding(finding).build());
+			}
 		}
 
 		// Report an error if any of the terms in our input weren't recognized

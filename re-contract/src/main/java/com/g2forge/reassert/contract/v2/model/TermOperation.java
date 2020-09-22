@@ -22,7 +22,7 @@ import lombok.Singular;
 public class TermOperation implements IOperation<ICTName, TermRelation> {
 	public static class TermOperationBuilder implements IOperationBuilder<ICTName, TermRelation, TermOperationBuilder, TermOperation> {
 		public TermOperationBuilder argument$V(ITerm term) {
-			return argument$V(new CTName(term));
+			return argument$V(new CTNameType(term));
 		}
 	}
 
@@ -45,7 +45,7 @@ public class TermOperation implements IOperation<ICTName, TermRelation> {
 	}
 
 	public static IExpression<ICTName, TermRelation> of(ITerm term) {
-		return new Variable<>(new CTName(term));
+		return new Variable<>(new CTNameType(term));
 	}
 
 	protected final BooleanOperation.Operator operator;

@@ -28,8 +28,7 @@ public class TestLicenseUsageAnalyzer {
 
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", usageTerms);
 		final GeneralLicense license = new GeneralLicense("license", "license", "license", licenseTerms, null, false);
-		final IReport report = analyzer.report(usage, license);
-		return report;
+		return analyzer.report(usage, license);
 	}
 
 	@Test
@@ -40,6 +39,19 @@ public class TestLicenseUsageAnalyzer {
 		HAssert.assertEquals(message, 1, report.getFindings().size());
 		HAssert.assertInstanceOf(ConditionFinding.class, HCollection.getOne(report.getFindings()).getInnermostFinding());
 
+	}
+
+	@Test
+	public void ignore() {
+		final Rules rules = new Rules(Rule.builder().expression(of(TestLicenseTerm.Condition)).build());
+		final LicenseUsageAnalyzer analyzer = new LicenseUsageAnalyzer(rules);
+
+		final GeneralUsage usage = new GeneralUsage("usage", "usage", Terms.<IUsageTerm>builder().build());
+		final GeneralLicense license = new GeneralLicense("license", "license", "license", Terms.<ILicenseTerm>builder().build(), null, false);
+
+		final IReport report = analyzer.report(usage, license);
+		final String message = report.getFindings().toString();
+		HAssert.assertNull(message, report.getMinLevel());
 	}
 
 	@Test
