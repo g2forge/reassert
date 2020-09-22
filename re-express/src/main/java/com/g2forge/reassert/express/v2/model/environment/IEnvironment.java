@@ -8,6 +8,7 @@ import com.g2forge.alexandria.java.validate.IValidatable;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
 import com.g2forge.reassert.express.v2.model.variable.IVariable;
+import com.g2forge.reassert.express.v2.model.variable.Variable;
 
 public interface IEnvironment<Name, Value> extends IValidatable {
 	public interface IEnvironmentBuilder<Name, Value> extends IValidatingBuilder<IEnvironment<Name, Value>> {
@@ -15,6 +16,10 @@ public interface IEnvironment<Name, Value> extends IValidatable {
 
 		public default IEnvironmentBuilder<Name, Value> bind$(IVariable<Name, Value> variable, Value value) {
 			return bind(variable, new Literal<>(value));
+		}
+		
+		public default IEnvironmentBuilder<Name, Value> bind$(Name name, Value value) {
+			return bind$(new Variable<>(name), value);
 		}
 	}
 
