@@ -33,7 +33,7 @@ public class TestBooleanOperationSystem {
 				boolean expected = false;
 				for (int j = 0; j < n; j++) {
 					final boolean value = ((i >>> j) & 0x1) != 0;
-					builder.argument$(value);
+					builder.argument$L(value);
 
 					if (j == 0) expected = (i & 0x1) != 0;
 					else expected = accumulator.apply(expected, value);
@@ -79,8 +79,8 @@ public class TestBooleanOperationSystem {
 
 	@Test
 	public void not() {
-		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.NOT.<String, Boolean>builder().argument$(false).valid()));
-		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.NOT.<String, Boolean>builder().argument$(true).valid()));
+		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.NOT.<String, Boolean>builder().argument$L(false).valid()));
+		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.NOT.<String, Boolean>builder().argument$L(true).valid()));
 	}
 
 	@Test
@@ -90,12 +90,12 @@ public class TestBooleanOperationSystem {
 
 	@Test
 	public void skipAnd() {
-		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.AND.<String, Boolean>builder().argument$(false).argument(new NoValueConstant<>()).build()));
+		HAssert.assertEquals(false, getEvaluator().eval(BooleanOperation.Operator.AND.<String, Boolean>builder().argument$L(false).argument(new NoValueConstant<>()).build()));
 	}
 
 	@Test
 	public void skipOr() {
-		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.OR.<String, Boolean>builder().argument$(true).argument(new NoValueConstant<>()).build()));
+		HAssert.assertEquals(true, getEvaluator().eval(BooleanOperation.Operator.OR.<String, Boolean>builder().argument$L(true).argument(new NoValueConstant<>()).build()));
 	}
 
 	@Test

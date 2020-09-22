@@ -45,25 +45,25 @@ public class TestReductionRewriter {
 
 	@Test
 	public void constantNoChange() {
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new NoValueConstant<>()).argument$(true).build();
+		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new NoValueConstant<>()).argument$L(true).build();
 		HAssert.assertEquals(expression, new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.ConstantFolding).eval(expression));
 	}
 
 	@Test
 	public void constantNoValue() {
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new NoValueConstant<>()).argument$(false).build();
+		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new NoValueConstant<>()).argument$L(false).build();
 		HAssert.assertEquals(new Literal<>(false), new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.ConstantFolding).eval(expression));
 	}
 	
 	@Test
 	public void constantSimple() {
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$(true).argument$(false).build();
+		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$L(true).argument$L(false).build();
 		HAssert.assertEquals(new Literal<>(false), new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.ConstantFolding).eval(expression));
 	}
 	
 	@Test
 	public void constantUnbound() {
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new Variable<>("x")).argument$(false).build();
+		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new Variable<>("x")).argument$L(false).build();
 		HAssert.assertEquals(new Literal<>(false), new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.ConstantFolding).eval(expression));
 	}
 
@@ -75,13 +75,13 @@ public class TestReductionRewriter {
 
 	@Test
 	public void trivial1() {
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$(false).build();
+		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$L(false).build();
 		HAssert.assertEquals(new Literal<>(false), new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.TrivialOperations).eval(expression));
 	}
 
 	@Test
 	public void trivialDisabled() {
-		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$(false).build();
+		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$L(false).build();
 		HAssert.assertEquals(expression, new ReductionRewriter<String, Boolean>(getValueEvaluator(), new Reduction[0]).eval(expression));
 	}
 }

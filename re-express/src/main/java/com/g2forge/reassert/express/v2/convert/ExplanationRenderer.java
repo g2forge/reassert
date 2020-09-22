@@ -236,18 +236,28 @@ public class ExplanationRenderer<Name, Value> extends ATextualRenderer<IExplaine
 				final Map<Relevance, List<IExplainedOperation.Argument<Value>>> argumentsByRelevance = arguments.stream().collect(Collectors.groupingBy(IExplainedOperation.Argument::getRelevance));
 				if (argumentsByRelevance.get(IExplained.Relevance.Unevaluated) != null) throw new IllegalArgumentException("Without a zero, there shouldn't be any unevaluated arguments!");
 
-				if (explained.getIdentity().isNotEmpty() && (argumentsByRelevance.containsKey(Relevance.Identity) || arguments.isEmpty())) {
-					context.append("because anything ").append(operatorRendering.getPastVerb()).append(" ").value(explained.getIdentity().get()).append(" is itself");
-					if (arguments.isEmpty()) context.append(", and there were no arguments");
-				} else context.append(operatorRendering.getName());
+				if (explained.getIdentity().isNotEmpty() && (argumentsByRelevance.containsKey(Relevance.Identity) || arguments.isEmpty())) context.append("because anything ").append(operatorRendering.getPastVerb()).append(" ").value(explained.getIdentity().get()).append(" is itself");
+				else context.append(operatorRendering.getName());
 
 				final List<Child<Name, Value>> childrenAll = arguments.stream().map(a -> new Child<Name, Value>(context.getMode(), a)).collect(Collectors.toList());
 				final List<Child<Name, Value>> childrenPrintable = childrenAll.stream().filter(Child::isPrintable).collect(Collectors.toList());
-				if ((context.getMode().compareTo(ExplanationMode.Describe) <= 0) && ((childrenAll.size() == 1) || (childrenPrintable.size() == 1))) {
-					final List<Child<Name, Value>> toPrint = (childrenAll.size() == 1) ? childrenAll : childrenPrintable;
-					context.append(", and the").append(toPrint.size() != arguments.size() ? " relevant" : " only").append(" argument is ");
-					context.render(HCollection.getOne(toPrint).getValue().get(), IExplained.class);
-				} else print(context, childrenPrintable.isEmpty() ? childrenAll : childrenPrintable);
+				if (context.getMode().compareTo(ExplanationMode.Explain) <= 0) {
+					if ((childrenAll.size() == 1) || ((context.getMode().compareTo(ExplanationMode.Describe) <= 0) && (childrenPrintable.size() == 1))) {
+						final List<Child<Name, Value>> toPrint = (childrenAll.size() == 1) ? childrenAll : childrenPrintable;
+						context.append(", and the").append((toPrint.size() != childrenAll.size()) ? " relevant" : " only").append(" argument is ");
+						context.render(HCollection.getOne(toPrint).getValue().get(), IExplained.class);
+						return;
+					} else if (childrenPrintable.isEmpty()) {
+						context.append(", and there are no");
+						if (!childrenAll.isEmpty()) context.append(" non-").value(explained.getIdentity().get());
+						context.append(" arguments");
+						return;
+					}
+				}
+
+				final List<Child<Name, Value>> toPrint = childrenPrintable.isEmpty() ? childrenAll : childrenPrintable;
+				if (toPrint.isEmpty()) context.append(", and there are no arguments");
+				else print(context, toPrint);
 			});
 		}
 
