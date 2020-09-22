@@ -1,19 +1,26 @@
 package com.g2forge.reassert.contract.v2.algorithm;
 
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.event.Level;
+
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
+import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HCollector;
-import com.g2forge.reassert.contract.model.findings.ExpressionContextFinding;
-import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
-import com.g2forge.reassert.contract.model.logic.ITermLogicContext;
+import com.g2forge.alexandria.java.fluent.optional.IOptional;
+import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
+import com.g2forge.alexandria.java.validate.IValidation;
+import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.contract.v2.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.v2.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.v2.model.ICTName;
+import com.g2forge.reassert.contract.v2.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.v2.model.finding.UnrecognizedTermFinding;
 import com.g2forge.reassert.contract.v2.model.rule.IRule;
 import com.g2forge.reassert.contract.v2.model.rule.IRules;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
@@ -32,15 +39,54 @@ import com.g2forge.reassert.express.v2.eval.ExplainingEvaluator;
 import com.g2forge.reassert.express.v2.model.IExplained;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
+import com.g2forge.reassert.express.v2.model.environment.IEnvironment;
+import com.g2forge.reassert.express.v2.model.variable.Closure;
+import com.g2forge.reassert.express.v2.model.variable.IVariable;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
-	protected static interface IRecordingRuleContext extends ITermLogicContext {
-		public Set<ITerm> getUsedTerms();
+	@Data
+	@Builder(toBuilder = true)
+	@RequiredArgsConstructor
+	public static class ContractEnvironment implements IEnvironment<ICTName, TermRelation> {
+		protected final IUsage usage;
+
+		protected final ILicense license;
+
+		@Override
+		public Map<IVariable<ICTName, TermRelation>, IExpression<ICTName, TermRelation>> getBindings() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public IOptional<? extends IExpression<ICTName, TermRelation>> lookup(IVariable<ICTName, TermRelation> variable) {
+			final ICTName name = variable.getName();
+			switch (name.getContractType()) {
+				case License: {
+					final ILicenseTerm term = (ILicenseTerm) name.getTerm();
+					final TermRelation relation = getLicense().getTerms().getRelation(term);
+					return NullableOptional.of(new Literal<>(name, relation));
+				}
+				case Usage: {
+					final IUsageTerm term = (IUsageTerm) name.getTerm();
+					final TermRelation relation = getUsage().getTerms().getRelation(term);
+					return NullableOptional.of(new Literal<>(name, relation));
+				}
+				default:
+					throw new EnumException(ICTName.ContractType.class, name.getContractType());
+			}
+		}
+
+		@Override
+		public IValidation validate() {
+			return ValidValidation.create();
+		}
 	}
 
 	protected final IRules rules;
@@ -50,38 +96,38 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 	public IReport report(IUsageApplied usageApplied, ILicenseApplied licenseApplied) {
 		final IUsage usage = (IUsage) usageApplied;
 		final ILicense license = (ILicense) licenseApplied;
+		final ContractEnvironment environment = new ContractEnvironment(usage, license);
 
 		// Sets of usage terms we need to approve and license conditions we need to meet
 		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getTerms(true));
 		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getTerms(true).stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));
 
-		final Report.ReportBuilder retVal = Report.builder();
-		final AnalyzeTermExpressionEvaluator analyzer = new AnalyzeTermExpressionEvaluator(TermRelation.Included);
 		final ExplainingEvaluator<ICTName, TermRelation> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		final Report.ReportBuilder retVal = Report.builder();
 		for (IRule rule : getRules().getRules()) {
 			final IExpression<ICTName, TermRelation> expression = rule.getExpression();
-			final AnalyzeTermExpressionEvaluator.Analyzed analyzed;
+			final ExpressionContextFinding analyzed;
 			final IExplained<TermRelation> explained;
 			if (expression != null) {
 				// Compute the input and output terms
+				final AnalyzeTermExpressionEvaluator analyzer = new AnalyzeTermExpressionEvaluator(termRelation -> rule.getFinding().apply(new Literal<>(termRelation)).getLevel().equals(Level.INFO));
 				analyzed = analyzer.eval(expression);
 				if (!analyzed.getInputs().containsAll(analyzed.getOutputs())) throw new IllegalArgumentException(String.format("Rule to satisfy \"%1$s\" did not use \"%2$s\"", analyzed.getOutputs().stream().map(ITerm::getDescription).collect(HCollector.joining(", ", " & ")), HCollection.difference(analyzed.getOutputs(), analyzed.getInputs()).stream().map(ITerm::getDescription).collect(HCollector.joining(", ", " & "))));
 
 				// Evaluate the expression
-				explained = evaluator.eval(expression);
+				explained = evaluator.eval(new Closure<>(environment, expression));
 
 				// Record that we handled the output terms
 				remainingUsageTerms.removeAll(analyzed.getOutputs());
 				remainingLicenseConditions.removeAll(analyzed.getOutputs());
 			} else {
-				analyzed = new AnalyzeTermExpressionEvaluator.Analyzed(null, HCollection.emptySet(), HCollection.emptySet());
+				analyzed = new ExpressionContextFinding(null, HCollection.emptySet(), HCollection.emptySet(), null);
 				explained = new Literal<>(TermRelation.Included);
 			}
 
+			// Create & contextualize the finding
 			final IFinding finding = rule.getFinding().apply(explained);
-
-			// Contextualize the finding
-			retVal.finding(new ExpressionContextFinding(inputs, expression, outputs, finding));
+			retVal.finding(analyzed.toBuilder().finding(finding).build());
 		}
 
 		// Report an error if any of the terms in our input weren't recognized
