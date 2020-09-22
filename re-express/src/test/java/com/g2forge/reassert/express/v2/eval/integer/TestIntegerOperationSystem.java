@@ -35,7 +35,7 @@ public class TestIntegerOperationSystem {
 				if (((i >>> j) & 0x1) == 0) continue;
 
 				final int value = numbers[j];
-				builder.argument$(value);
+				builder.argument$L(value);
 
 				if (first) {
 					expected = value;
@@ -63,7 +63,7 @@ public class TestIntegerOperationSystem {
 
 	@Test
 	public void divide() {
-		HAssert.assertEquals(Integer.valueOf(2), getEvaluator().eval(ArithmeticOperation.Operator.DIVIDE.<String, Integer>builder().argument$(10).argument$(5).valid()));
+		HAssert.assertEquals(Integer.valueOf(2), getEvaluator().eval(ArithmeticOperation.Operator.DIVIDE.<String, Integer>builder().argument$L(10).argument$L(5).valid()));
 	}
 
 	@Test(expected = ValidationFailureException.class)
@@ -84,6 +84,6 @@ public class TestIntegerOperationSystem {
 
 	@Test
 	public void subtract() {
-		HAssert.assertEquals(Integer.valueOf(-1), getEvaluator().eval(ArithmeticOperation.Operator.SUBTRACT.<String, Integer>builder().argument$(0).argument$(1).valid()));
+		HAssert.assertEquals(Integer.valueOf(-1), getEvaluator().eval(ArithmeticOperation.Operator.SUBTRACT.<String, Integer>builder().argument$L(0).argument$L(1).valid()));
 	}
 }

@@ -11,17 +11,22 @@ import com.g2forge.alexandria.java.validate.IValidatable;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.v2.model.IExpression;
 import com.g2forge.reassert.express.v2.model.constant.Literal;
+import com.g2forge.reassert.express.v2.model.variable.Variable;
 
 public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 	public interface IOperationBuilder<Name, Value, Builder extends IOperationBuilder<Name, Value, Builder, Built>, Built extends IOperation<Name, Value>> extends IValidatingBuilder<Built> {
 		public Builder argument(IExpression<Name, Value> argument);
 
-		public default Builder argument$(Name name, Value value) {
+		public default Builder argument$L(Name name, Value value) {
 			return argument(new Literal<>(name, value));
 		}
 
-		public default Builder argument$(Value value) {
+		public default Builder argument$L(Value value) {
 			return argument(new Literal<>(value));
+		}
+
+		public default Builder argument$V(Name name) {
+			return argument(new Variable<>(name));
 		}
 
 		public Builder arguments(Collection<? extends IExpression<Name, Value>> arguments);

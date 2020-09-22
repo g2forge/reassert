@@ -52,21 +52,21 @@ public abstract class ATestExplainingEvaluator<Value> {
 	@Test
 	public void operationIdentity() {
 		final IExplained<Value> expected = ExplainedOperation.<Value>builder().operator(getMultiply()).value(getOne()).identity$(getOne()).argument$(Relevance.Identity, getOne()).argument$(Relevance.Identity, getOne()).build();
-		final IExplained<Value> actual = getEvaluator().eval(getMultiply().<String, Value>builder().argument$(getOne()).argument$(getOne()).build());
+		final IExplained<Value> actual = getEvaluator().eval(getMultiply().<String, Value>builder().argument$L(getOne()).argument$L(getOne()).build());
 		HAssert.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void operationZero1() {
 		final IExplained<Value> expected = ZeroExplainedOperation.<Value>builder().operator(getMultiply()).zero(getZero()).argument$(Relevance.Dominant, getZero()).build();
-		final IExplained<Value> actual = getEvaluator().eval(getMultiply().<String, Value>builder().argument$(getZero()).build());
+		final IExplained<Value> actual = getEvaluator().eval(getMultiply().<String, Value>builder().argument$L(getZero()).build());
 		HAssert.assertEquals(expected, actual);
 	}
 
 	@Test
 	public void operationZero2() {
 		final IExplained<Value> expected = ZeroExplainedOperation.<Value>builder().operator(getMultiply()).zero(getZero()).argument$(Relevance.Dominant, getZero()).argument$(Relevance.Unevaluated, getOne()).build();
-		final IExplained<Value> actual = getEvaluator().eval(getMultiply().<String, Value>builder().argument$(getZero()).argument$(getOne()).build());
+		final IExplained<Value> actual = getEvaluator().eval(getMultiply().<String, Value>builder().argument$L(getZero()).argument$L(getOne()).build());
 		HAssert.assertEquals(expected, actual);
 	}
 

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.eval;
+package com.g2forge.reassert.contract.v2.eval;
 
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
