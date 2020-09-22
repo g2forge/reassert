@@ -31,11 +31,6 @@ public class TermOperation implements IOperation<ICTName, TermRelation> {
 		return new TermOperation(Operator.AND, arguments);
 	}
 
-	@SafeVarargs
-	public static TermOperation or(IExpression<ICTName, TermRelation>... arguments) {
-		return new TermOperation(Operator.OR, arguments);
-	}
-
 	public static TermOperation not(IExpression<ICTName, TermRelation> argument) {
 		return new TermOperation(Operator.NOT, argument);
 	}
@@ -44,8 +39,13 @@ public class TermOperation implements IOperation<ICTName, TermRelation> {
 		return not(of(term));
 	}
 
-	public static IExpression<ICTName, TermRelation> of(ITerm term) {
+	public static Variable<ICTName, TermRelation> of(final ITerm term) {
 		return new Variable<>(new CTNameType(term));
+	}
+
+	@SafeVarargs
+	public static TermOperation or(IExpression<ICTName, TermRelation>... arguments) {
+		return new TermOperation(Operator.OR, arguments);
 	}
 
 	protected final BooleanOperation.Operator operator;
