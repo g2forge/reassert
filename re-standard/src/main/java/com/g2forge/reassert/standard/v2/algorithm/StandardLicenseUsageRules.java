@@ -20,7 +20,7 @@ import com.g2forge.reassert.contract.v2.model.licenseusage.rule.Rule;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
-import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttribute2;
+import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttribute;
 
 import lombok.Getter;
 
@@ -62,9 +62,9 @@ public class StandardLicenseUsageRules extends ALicenseUsageRules implements ISi
 		rules.add(Rule.builder().expression(and(or(of(StandardUsageTerm.DistributionPublic), and(of(StandardUsageTerm.DistributionService), of(StandardLicenseTerm.SaaSIsDistribution))), of(StandardUsageTerm.UseModified), of(StandardLicenseTerm.StateChanges))).finding(StateChangesFinding::new).build());
 
 		// Consistency rules
-		rules.add(Rule.builder().expression(not(or(of(StandardUsageTerm.DistributionPublic), of(StandardUsageTerm.DistributionPrivate), of(StandardUsageTerm.DistributionService)))).finding(StandardUsageTermAttribute2.Distribution).build());
-		rules.add(Rule.builder().expression(not(or(of(StandardUsageTerm.UseLink), of(StandardUsageTerm.UseCopy), of(StandardUsageTerm.UseModified)))).finding(StandardUsageTermAttribute2.Consumption).build());
-		rules.add(Rule.builder().expression(not(or(of(StandardUsageTerm.DistributingBinary), of(StandardUsageTerm.DistributingSource)))).finding(StandardUsageTermAttribute2.Format).build());
+		rules.add(Rule.builder().expression(not(or(of(StandardUsageTerm.DistributionPublic), of(StandardUsageTerm.DistributionPrivate), of(StandardUsageTerm.DistributionService)))).finding(StandardUsageTermAttribute.Distribution).build());
+		rules.add(Rule.builder().expression(not(or(of(StandardUsageTerm.UseLink), of(StandardUsageTerm.UseCopy), of(StandardUsageTerm.UseModified)))).finding(StandardUsageTermAttribute.Consumption).build());
+		rules.add(Rule.builder().expression(not(or(of(StandardUsageTerm.DistributingBinary), of(StandardUsageTerm.DistributingSource)))).finding(StandardUsageTermAttribute.Format).build());
 
 		// Ignored terms
 		rules.add(Rule.builder().expression(of(StandardLicenseTerm.SameLicense)).build());

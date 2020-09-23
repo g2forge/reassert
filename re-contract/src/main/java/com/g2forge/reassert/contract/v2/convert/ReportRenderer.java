@@ -18,7 +18,6 @@ import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.convert.textual.ISimpleTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNestedModifiedBuilder;
-import com.g2forge.reassert.contract.model.TermType;
 import com.g2forge.reassert.contract.v2.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.v2.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.v2.model.finding.ExpressionContextFinding;
@@ -31,6 +30,7 @@ import com.g2forge.reassert.contract.v2.model.finding.rule.StateChangesFinding;
 import com.g2forge.reassert.contract.v2.model.finding.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.v2.model.licenseusage.CTNameContract;
 import com.g2forge.reassert.contract.v2.model.licenseusage.ICTName;
+import com.g2forge.reassert.contract.v2.model.licenseusage.ICTName.ContractType;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -244,9 +244,9 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 			});
 			builder.add(UnrecognizedTermFinding.class, e -> c -> {
-				final TermType termType = TermType.valueOf(e.getTerm());
+				final ContractType type = ContractType.valueOf(e.getTerm());
 				appendLevel(e, c).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
-				switch (termType) {
+				switch (type) {
 					case License:
 						c.append("whether the condition has been met.");
 						break;
@@ -254,7 +254,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						c.append("whether the licenses allow this usage.");
 						break;
 					default:
-						throw new EnumException(TermType.class, termType);
+						throw new EnumException(ContractType.class, type);
 				}
 			});
 			builder.add(ConditionFinding.class, e -> c -> {

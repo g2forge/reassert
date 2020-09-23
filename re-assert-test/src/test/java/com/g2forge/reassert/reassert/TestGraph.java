@@ -6,7 +6,7 @@ import java.util.List;
 import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.contract.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.v2.algorithm.LicenseUsageAnalyzer;
 import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertFindingVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertWorkVisitor;
@@ -18,9 +18,9 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor;
 import com.g2forge.reassert.standard.algorithm.StandardUsageAssignmentVisitor;
-import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory;
-import com.g2forge.reassert.standard.algorithm.propagate.StandardUsagePropagation;
+import com.g2forge.reassert.standard.v2.algorithm.StandardLicenseUsageRules;
+import com.g2forge.reassert.standard.v2.algorithm.StandardUsagePropagation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
