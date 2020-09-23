@@ -100,12 +100,17 @@ public abstract class ALicenseParser implements IParser<ILicenseApplied> {
 		if (text == null) return UnspecifiedLicense.create();
 
 		final String trimmed = text.trim();
-		final Set<ILicenseFamily> retVal = new LinkedHashSet<>();
+		final Set<ILicenseFamily> results = new LinkedHashSet<>();
 		for (IMatcher<? extends ILicenseFamily, ?> matcher : getMatchers()) {
 			final IOptional<? extends ILicenseFamily> match = matcher.match(trimmed);
-			if (!match.isEmpty()) retVal.add(match.get());
+			if (!match.isEmpty()) results.add(match.get());
 		}
-		if (retVal.size() == 1) return HCollection.getOne(retVal);
-		return retVal.isEmpty() ? new UnknownLicense(text) : new UnknownLicenseWithCandidates(text, retVal);
+		if (results.size() == 1) {
+			final ILicenseFamily retVal = HCollection.getOne(results);
+			final ILicenseFamily family = retVal.getFamily();
+			if (family != null) family.validate(retVal).throwIfInvalid();
+			return retVal;
+		}
+		return results.isEmpty() ? new UnknownLicense(text) : new UnknownLicenseWithCandidates(text, results);
 	}
 }

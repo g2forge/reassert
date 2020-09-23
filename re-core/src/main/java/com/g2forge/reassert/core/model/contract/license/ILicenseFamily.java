@@ -1,5 +1,6 @@
 package com.g2forge.reassert.core.model.contract.license;
 
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.core.model.contract.IContractIdentified;
 
 /**
@@ -16,10 +17,15 @@ public interface ILicenseFamily extends ILicense, IContractIdentified {
 	public ILicenseFamily getFamily();
 
 	public default boolean isChild(ILicenseFamily license) {
-		ILicenseFamily parent = getFamily();
+		ILicenseFamily parent = this;
 		while (parent != null) {
 			if (parent == license) return true;
+			parent = parent.getFamily();
 		}
 		return false;
+	}
+
+	public default IValidation validate(ILicenseFamily child) {
+		return new ChildLicenseFamilyValidation(false);
 	}
 }

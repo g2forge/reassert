@@ -1,11 +1,16 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
+import com.g2forge.alexandria.java.validate.CompositeValidation;
+import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.alexandria.parse.IMatch;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
+import com.g2forge.reassert.core.model.contract.license.ChildLicenseFamilyValidation;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamilyEnum;
+import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
+import com.g2forge.reassert.core.model.contract.license.LicenseVersioning;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 
 import lombok.Getter;
@@ -15,37 +20,37 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StandardLicenseFamily implements ILicenseFamilyEnum {
-	GNU("GNU Licenses", Versioning.VariableAllowed, null),
-	GPL("GNU General Public License", Versioning.VariableAllowed, GNU),
-	LGPL("GNU Lesser General Public License", Versioning.VariableAllowed, GNU),
-	GFDL("GNU Free Documentation License", Versioning.VariableAllowed, GNU),
-	AGPL("GNU Affero General Public License", Versioning.VariableAllowed, GNU),
-	Permissive("Permissive Licenses", Versioning.Unversioned, null),
-	BSD("Berkeley Software Distribution License", Versioning.Unversioned, Permissive),
-	CC("Creative Commons Licenses", Versioning.FixedOnly, null),
-	AFL("Academic Free License", Versioning.FixedOnly, null),
-	Apache("Apache Software License", Versioning.FixedOnly, Permissive),
-	Artistic("The Artistic License", Versioning.FixedOnly, null),
-	BSL("Boost Software License", Versioning.FixedOnly, null),
-	CDDL("Common Development and Distribution License", Versioning.FixedOnly, null),
-	CPL("Common Public License", Versioning.FixedOnly, null),
-	EDL("Eclipse Distribution License", Versioning.FixedOnly, null),
-	EPL("Eclipse Public License", Versioning.FixedOnly, null),
-	IndianaExtreme("Indiana University Extreme! Lab Software License", Versioning.FixedOnly, null),
-	MPL("Mozilla Public License", Versioning.FixedOnly, null),
-	OFL("SIL Open Font License", Versioning.FixedOnly, null),
-	PSF("Python Software Foundation License", Versioning.FixedOnly, null),
-	Python("Python License", Versioning.FixedOnly, null);
+	GNU("GNU Licenses", LicenseVersioning.VariableAllowed, LicenseVersion.Field.MINOR, null),
+	GPL("GNU General Public License", LicenseVersioning.VariableAllowed, LicenseVersion.Field.MINOR, GNU),
+	LGPL("GNU Lesser General Public License", LicenseVersioning.VariableAllowed, LicenseVersion.Field.MINOR, GNU),
+	GFDL("GNU Free Documentation License", LicenseVersioning.VariableAllowed, LicenseVersion.Field.MINOR, GNU),
+	AGPL("GNU Affero General Public License", LicenseVersioning.VariableAllowed, LicenseVersion.Field.MINOR, GNU),
+	Permissive("Permissive Licenses", LicenseVersioning.Unversioned, null, null),
+	BSD("Berkeley Software Distribution License", LicenseVersioning.Unversioned, null, Permissive),
+	CC("Creative Commons Licenses", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	AFL("Academic Free License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	Apache("Apache Software License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, Permissive),
+	Artistic("The Artistic License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	BSL("Boost Software License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	CDDL("Common Development and Distribution License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	CPL("Common Public License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	EDL("Eclipse Distribution License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	EPL("Eclipse Public License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	IndianaExtreme("Indiana University Extreme! Lab Software License", LicenseVersioning.FixedOnly, LicenseVersion.Field.PATCH, null),
+	MPL("Mozilla Public License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	OFL("SIL Open Font License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	PSF("Python Software Foundation License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null),
+	Python("Python License", LicenseVersioning.FixedOnly, LicenseVersion.Field.MINOR, null);
 
-	public enum Versioning {
-		Unversioned,
-		FixedOnly,
-		VariableAllowed;
+	static {
+		ILicenseFamilyEnum.validate(StandardLicenseFamily.class);
 	}
 
 	protected final String name;
 
-	protected final Versioning versioning;
+	protected final LicenseVersioning versioning;
+
+	protected final LicenseVersion.Field maxVersionField;
 
 	protected final ILicenseFamily family;
 
@@ -53,11 +58,11 @@ public enum StandardLicenseFamily implements ILicenseFamilyEnum {
 	private final ITerms<ILicenseTerm> terms = StandardLicense.getLoader().getTerms(getShortID());
 
 	public ILicenseFamily create(IMatch<FamilyVersionLicense> match) {
-		if (Versioning.Unversioned.equals(getVersioning())) throw new UnsupportedOperationException(String.format("Cannot version licenses in the %1$s family", getName()));
+		if (LicenseVersioning.Unversioned.equals(getVersioning())) throw new UnsupportedOperationException(String.format("Cannot version licenses in the %1$s family", getName()));
 		final LicenseVersion version = match.getAsObject(FamilyVersionLicense::getVersion);
 
 		final boolean orLater;
-		if (Versioning.VariableAllowed.equals(getVersioning())) {
+		if (LicenseVersioning.VariableAllowed.equals(getVersioning())) {
 			final Boolean parsed = match.getAsObject(FamilyVersionLicense::isOrLater);
 			orLater = (parsed != null) ? parsed : false;
 		} else orLater = false;
@@ -66,7 +71,7 @@ public enum StandardLicenseFamily implements ILicenseFamilyEnum {
 	}
 
 	public ILicenseFamily create(final LicenseVersion version, final boolean orLater) {
-		final boolean unversioned = Versioning.Unversioned.equals(getVersioning());
+		final boolean unversioned = LicenseVersioning.Unversioned.equals(getVersioning());
 		if (unversioned && (version != null)) throw new UnsupportedOperationException(String.format("Cannot version licenses in the %1$s family", getName()));
 		if ((version == null) && !orLater) return this;
 		return new FamilyVersionLicense(this, version, orLater);
@@ -75,5 +80,16 @@ public enum StandardLicenseFamily implements ILicenseFamilyEnum {
 	@Override
 	public String getSPDXShortID() {
 		return null;
+	}
+
+	@Override
+	public IValidation validate(ILicenseFamily child) {
+		final IValidation childValidation = new ChildLicenseFamilyValidation(child.isChild(this));
+		final IValidation versioningValidation;
+		if (child instanceof ILicenseSpecific) {
+			final ILicenseSpecific cast = (ILicenseSpecific) child;
+			versioningValidation = getVersioning().validate(cast, getMaxVersionField());
+		} else versioningValidation = null;
+		return CompositeValidation.create(childValidation, versioningValidation);
 	}
 }

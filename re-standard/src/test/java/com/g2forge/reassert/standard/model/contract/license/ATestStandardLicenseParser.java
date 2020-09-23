@@ -2,8 +2,11 @@ package com.g2forge.reassert.standard.model.contract.license;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +26,6 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicenseParser;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -79,8 +81,22 @@ public abstract class ATestStandardLicenseParser {
 		assumeParseable();
 
 		final ILicenseFamily license = (ILicenseFamily) getLicense();
+		{
+			final List<StandardLicenseFamily> families = Stream.of(StandardLicenseFamily.values()).filter(license::isChild).collect(Collectors.toList());
+			if (families.size() > 1) {
+				for (int i = 0; i < families.size(); i++) {
+					for (int j = i + 1; j < families.size(); j++) {
+						final StandardLicenseFamily o1 = families.get(i), o2 = families.get(j);
+						if (o1.equals(o2) || o1.isChild(o2) || o2.isChild(o1)) continue;
+						HAssert.fail(String.format("%1$s and %2$s cannot be compared", o1, o2));
+					}
+				}
+			}
+		}
+
 		final ILicenseFamily family = license.getFamily();
 		HAssume.assumeNotNull("Licenses without a family are always family consistent, of course", family);
+		HAssert.assertTrue(license.isChild(family));
 		HAssert.assertNull(family.getSPDXShortID());
 
 		HAssume.assumeTrue("License families have their own naming scheme", license instanceof ILicenseSpecific);

@@ -36,6 +36,10 @@ public enum ReferenceTerms implements ILicenseFamilyEnum, ILicenseSpecific {
 	ZLIB("Zlib", Terms.<ILicenseTerm>builder().include(StandardLicenseTerm.CommercialUse, StandardLicenseTerm.Distribution, StandardLicenseTerm.Modification, StandardLicenseTerm.PrivateUse, StandardLicenseTerm.Notice, StandardLicenseTerm.StateChanges, StandardLicenseTerm.Liability, StandardLicenseTerm.Warranty).exclude(StandardLicenseTerm.PatentGrant, StandardLicenseTerm.DisclosureSource, StandardLicenseTerm.SaaSIsDistribution, StandardLicenseTerm.SameLicense, StandardLicenseTerm.PatentNonGrant, StandardLicenseTerm.Trademark).build());
 	// @formatter:on
 
+	static {
+		ILicenseFamilyEnum.validate(ReferenceTerms.class);
+	}
+
 	public static ReferenceTerms valueOfShortID(String text) {
 		return HEnum.valueOf(ReferenceTerms.class, ILicenseSpecific::getShortID, true, IFunction1.identity(), text);
 	}
@@ -46,7 +50,7 @@ public enum ReferenceTerms implements ILicenseFamilyEnum, ILicenseSpecific {
 
 	@Override
 	public ILicenseFamily getFamily() {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	@Override
