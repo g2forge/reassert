@@ -5,15 +5,8 @@ import com.g2forge.reassert.contract.model.finding.IFindingFactory;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.model.IExpression;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+public interface ILicenseUsageRule {
+	public IExpression<ILicenseUsageName, TermRelation> getExpression();
 
-@Data
-@Builder(toBuilder = true)
-@RequiredArgsConstructor
-public class Rule implements IRule {
-	protected final IExpression<ILicenseUsageName, TermRelation> expression;
-
-	protected final IFindingFactory<?> finding;
+	public IFindingFactory<?> getFinding();
 }

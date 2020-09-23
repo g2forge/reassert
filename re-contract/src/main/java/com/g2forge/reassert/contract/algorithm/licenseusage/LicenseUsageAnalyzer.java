@@ -17,8 +17,8 @@ import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ContractL
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.LicenseTermLicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.UsageTermLicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRule;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRules;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRule;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRules;
 import com.g2forge.reassert.contract.eval.AnalyzeTermExpressionEvaluator;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
@@ -90,7 +90,7 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 		}
 	}
 
-	protected final IRules rules;
+	protected final ILicenseUsageRules rules;
 
 	@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 	@Override
@@ -106,7 +106,7 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 		final IEvaluator<ILicenseUsageName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 		final IEvaluator<ILicenseUsageName, TermRelation, IExpression<ILicenseUsageName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
 		final Report.ReportBuilder retVal = Report.builder();
-		for (IRule rule : getRules().getRules()) {
+		for (ILicenseUsageRule rule : getRules().getRules()) {
 			final IExpression<ILicenseUsageName, TermRelation> expression = rule.getExpression();
 			final IFindingFactory<?> findingFactory = rule.getFinding();
 

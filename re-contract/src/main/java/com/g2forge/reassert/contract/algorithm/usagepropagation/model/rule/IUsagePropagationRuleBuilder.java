@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm.usagepropagation.model;
+package com.g2forge.reassert.contract.algorithm.usagepropagation.model.rule;
 
 import com.g2forge.alexandria.analysis.ISerializableFunction1;
 import com.g2forge.alexandria.java.function.IFunction1;
@@ -16,18 +16,18 @@ import com.g2forge.reassert.express.model.constant.Literal;
 import com.g2forge.reassert.express.model.variable.IVariable;
 import com.g2forge.reassert.express.model.variable.Variable;
 
-public interface IUsagePropagationBuilder<Term extends IUsageTerm, Edge extends IEdge> extends IBuilder<IFunction2<Edge, IUsage, IUsage>> {
-	public IUsagePropagationBuilder<Term, Edge> compute(Term term, IExpression<IUsagePropagationName<Term, Edge>, TermRelation> expression);
+public interface IUsagePropagationRuleBuilder<Term extends IUsageTerm, Edge extends IEdge> extends IBuilder<IFunction2<Edge, IUsage, IUsage>> {
+	public IUsagePropagationRuleBuilder<Term, Edge> compute(Term term, IExpression<IUsagePropagationName<Term, Edge>, TermRelation> expression);
 
-	public default IUsagePropagationBuilder<Term, Edge> copy(Term term) {
+	public default IUsagePropagationRuleBuilder<Term, Edge> copy(Term term) {
 		return compute(term, of(term));
 	}
 
-	public default IUsagePropagationBuilder<Term, Edge> exclude(Term term) {
+	public default IUsagePropagationRuleBuilder<Term, Edge> exclude(Term term) {
 		return set(term, TermRelation.Excluded);
 	}
 
-	public default IUsagePropagationBuilder<Term, Edge> include(Term term) {
+	public default IUsagePropagationRuleBuilder<Term, Edge> include(Term term) {
 		return set(term, TermRelation.Included);
 	}
 
@@ -39,7 +39,7 @@ public interface IUsagePropagationBuilder<Term extends IUsageTerm, Edge extends 
 		return new Variable<>(new TermUsagePropagationName<>(term));
 	}
 
-	public default IUsagePropagationBuilder<Term, Edge> set(Term term, TermRelation relation) {
+	public default IUsagePropagationRuleBuilder<Term, Edge> set(Term term, TermRelation relation) {
 		return compute(term, new Literal<>(relation));
 	}
 }

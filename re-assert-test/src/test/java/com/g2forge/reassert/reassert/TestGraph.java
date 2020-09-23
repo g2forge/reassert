@@ -19,7 +19,7 @@ import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor;
 import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.algorithm.StandardUsageAssignmentVisitor;
-import com.g2forge.reassert.standard.algorithm.StandardUsagePropagation;
+import com.g2forge.reassert.standard.algorithm.StandardUsagePropagationRules;
 import com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory;
 
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class TestGraph {
 	public static List<IGraphVisitor> getStandardVisitors() {
 		final List<IGraphVisitor> visitors = new ArrayList<>();
 		visitors.add(new StandardLicenseInheritanceVisitor());
-		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropagation.create()));
+		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropagationRules.create()));
 		visitors.add(new ReassertWorkVisitor(StandardWorkTypeFactory.create()));
 		visitors.add(new ReassertFindingVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
 		return visitors;

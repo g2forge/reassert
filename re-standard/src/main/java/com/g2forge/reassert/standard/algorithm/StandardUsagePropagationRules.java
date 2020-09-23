@@ -5,8 +5,8 @@ import static com.g2forge.reassert.express.model.operation.BooleanOperation.or;
 
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.contract.algorithm.usagepropagation.AUsagePropagation;
 import com.g2forge.reassert.contract.algorithm.usagepropagation.model.name.IUsagePropagationName;
+import com.g2forge.reassert.contract.algorithm.usagepropagation.model.rule.AUsagePropagationRules;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;
@@ -18,10 +18,10 @@ import com.g2forge.reassert.express.model.variable.IVariable;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
 @ReassertLegalOpinion
-public class StandardUsagePropagation extends AUsagePropagation<StandardUsageTerm> {
-	private static final StandardUsagePropagation INSTANCE = new StandardUsagePropagation();
+public class StandardUsagePropagationRules extends AUsagePropagationRules<StandardUsageTerm> {
+	private static final StandardUsagePropagationRules INSTANCE = new StandardUsagePropagationRules();
 
-	public static StandardUsagePropagation create() {
+	public static StandardUsagePropagationRules create() {
 		return INSTANCE;
 	}
 

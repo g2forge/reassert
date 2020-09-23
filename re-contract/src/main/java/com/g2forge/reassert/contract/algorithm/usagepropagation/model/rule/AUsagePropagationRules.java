@@ -1,8 +1,7 @@
-package com.g2forge.reassert.contract.algorithm.usagepropagation;
+package com.g2forge.reassert.contract.algorithm.usagepropagation.model.rule;
 
 import com.g2forge.alexandria.java.function.IConsumer1;
 import com.g2forge.alexandria.java.function.IFunction2;
-import com.g2forge.reassert.contract.algorithm.usagepropagation.model.IUsagePropagationBuilder;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
@@ -10,7 +9,7 @@ import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public abstract class AUsagePropagation<Term extends IUsageTerm> implements IUsagePropagation {
+public abstract class AUsagePropagationRules<Term extends IUsageTerm> implements IUsagePropagationRules {
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final IFunction2<IEdge, IUsage, IUsage> function = computeFunction();
 
@@ -24,7 +23,7 @@ public abstract class AUsagePropagation<Term extends IUsageTerm> implements IUsa
 
 	protected abstract IFunction2<IEdge, IUsage, IUsage> computeFunction();
 
-	protected <Edge extends IEdge> IFunction2<Edge, IUsage, IUsage> with(final IConsumer1<? super IUsagePropagationBuilder<Term, Edge>> consumer) {
-		return IUsagePropagation.with(consumer);
+	protected <Edge extends IEdge> IFunction2<Edge, IUsage, IUsage> with(final IConsumer1<? super IUsagePropagationRuleBuilder<Term, Edge>> consumer) {
+		return IUsagePropagationRules.with(consumer);
 	}
 }

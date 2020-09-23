@@ -10,8 +10,8 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.Rule;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.Rules;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.LicenseUsageRule;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.LicenseUsageRules;
 import com.g2forge.reassert.contract.model.contract.TestLicenseTerm;
 import com.g2forge.reassert.contract.model.contract.TestUsageTerm;
 import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
@@ -24,7 +24,7 @@ import com.g2forge.reassert.core.model.report.IReport;
 
 public class TestLicenseUsageAnalyzer {
 	protected IReport analyze(final Terms<IUsageTerm> usageTerms, final Terms<ILicenseTerm> licenseTerms) {
-		final Rules rules = new Rules(Rule.builder().expression(or(not(TestUsageTerm.Term), of(TestLicenseTerm.Permission))).finding(ConditionFinding::new).build());
+		final LicenseUsageRules rules = new LicenseUsageRules(LicenseUsageRule.builder().expression(or(not(TestUsageTerm.Term), of(TestLicenseTerm.Permission))).finding(ConditionFinding::new).build());
 		final LicenseUsageAnalyzer analyzer = new LicenseUsageAnalyzer(rules);
 
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", usageTerms);
@@ -44,7 +44,7 @@ public class TestLicenseUsageAnalyzer {
 
 	@Test
 	public void ignore() {
-		final Rules rules = new Rules(Rule.builder().expression(of(TestLicenseTerm.Condition)).build());
+		final LicenseUsageRules rules = new LicenseUsageRules(LicenseUsageRule.builder().expression(of(TestLicenseTerm.Condition)).build());
 		final LicenseUsageAnalyzer analyzer = new LicenseUsageAnalyzer(rules);
 
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", Terms.<IUsageTerm>builder().build());

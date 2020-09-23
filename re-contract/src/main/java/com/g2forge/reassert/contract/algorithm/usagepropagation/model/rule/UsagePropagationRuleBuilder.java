@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm.usagepropagation.model;
+package com.g2forge.reassert.contract.algorithm.usagepropagation.model.rule;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,7 +32,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-public class UsagePropagationBuilder<Term extends IUsageTerm, Edge extends IEdge> implements IUsagePropagationBuilder<Term, Edge> {
+public class UsagePropagationRuleBuilder<Term extends IUsageTerm, Edge extends IEdge> implements IUsagePropagationRuleBuilder<Term, Edge> {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
@@ -95,7 +95,7 @@ public class UsagePropagationBuilder<Term extends IUsageTerm, Edge extends IEdge
 		return new Function<>(new LinkedHashMap<>(map));
 	}
 
-	public UsagePropagationBuilder<Term, Edge> compute(Term term, IExpression<IUsagePropagationName<Term, Edge>, TermRelation> expression) {
+	public UsagePropagationRuleBuilder<Term, Edge> compute(Term term, IExpression<IUsagePropagationName<Term, Edge>, TermRelation> expression) {
 		map.put(term, expression);
 		return this;
 	}

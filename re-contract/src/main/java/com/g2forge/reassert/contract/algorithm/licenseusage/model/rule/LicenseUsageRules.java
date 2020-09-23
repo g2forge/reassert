@@ -12,11 +12,11 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class Rules implements IRules {
+public class LicenseUsageRules implements ILicenseUsageRules {
 	@Singular
-	protected final Collection<IRule> rules;
+	protected final Collection<ILicenseUsageRule> rules;
 
-	public Rules(IRule... rules) {
+	public LicenseUsageRules(ILicenseUsageRule... rules) {
 		this(HCollection.asList(rules));
 	}
 }
