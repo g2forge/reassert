@@ -1,6 +1,6 @@
 level,message,artifact,paths,details
 ERROR,"some finding",A,A,"ERROR: some finding"
 ERROR,"Condition is not satisfied",A,A,"ERROR: Condition is not satisfied
-	Explanation: Excluded - Dummy"
+	Explanation: Excluded"
 WARN,"You must publish a copyright and license notice stating that you use this artifact",B,"A -> B","WARN: You must publish a copyright and license notice stating that you use this artifact
-	Explanation: Included - Dummy"
+	Explanation: Included"

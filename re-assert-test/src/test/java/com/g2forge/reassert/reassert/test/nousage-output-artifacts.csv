@@ -2,7 +2,7 @@ level,artifact,findings,usages,licenses,paths
 ERROR,A,"Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""
 Condition ""Public distribution"" is not satisfied based on ""Permission to distribute""
 Condition ""Private distribution"" is not satisfied based on ""Permission for private usage""
-Condition ""SaaS distribution"" is not satisfied based on ""Requires distribution for SaaS"" & ""Permission to distribute""
+Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are not satisfied based on ""Permission to distribute""
 Condition ""Linked"" is not satisfied based on ""Permission for private usage""
 Condition ""Copied"" is not satisfied based on ""Permission for private usage""
 Condition ""Modified"" is not satisfied based on ""Permission for private usage"" & ""Permission to modify""

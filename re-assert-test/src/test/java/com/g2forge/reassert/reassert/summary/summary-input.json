@@ -99,10 +99,10 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "Finding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.v2.model.finding.rule.NoticeFinding",
+          "@c" : "com.g2forge.reassert.contract.model.finding.rule.NoticeFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.express.v2.model.constant.Literal",
-            "name" : "Dummy",
+            "@c" : "com.g2forge.reassert.express.model.constant.Literal",
+            "name" : null,
             "value" : "Included"
           }
         }
@@ -113,10 +113,10 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "Finding 2",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.v2.model.finding.rule.ConditionFinding",
+          "@c" : "com.g2forge.reassert.contract.model.finding.rule.ConditionFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.express.v2.model.constant.Literal",
-            "name" : "Dummy",
+            "@c" : "com.g2forge.reassert.express.model.constant.Literal",
+            "name" : null,
             "value" : "Excluded"
           }
         }

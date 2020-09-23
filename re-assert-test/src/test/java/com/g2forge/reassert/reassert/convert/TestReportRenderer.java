@@ -3,10 +3,10 @@ package com.g2forge.reassert.reassert.convert;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
-import com.g2forge.reassert.contract.v2.convert.IReportRenderContext;
-import com.g2forge.reassert.contract.v2.convert.ReportRenderer;
+import com.g2forge.reassert.contract.convert.IReportRenderContext;
+import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
-import com.g2forge.reassert.express.v2.convert.ExplanationMode;
+import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.model.report.TestFinding;
 import com.g2forge.reassert.reassert.model.report.TestRuleFinding;
 

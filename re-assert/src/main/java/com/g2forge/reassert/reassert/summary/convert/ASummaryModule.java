@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.contract.v2.convert.ReportRenderer;
+import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.IContractApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
-import com.g2forge.reassert.express.v2.convert.ExplanationMode;
+import com.g2forge.reassert.express.convert.ExplanationMode;
 
 import lombok.AccessLevel;
 import lombok.Getter;
