@@ -21,8 +21,6 @@ import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNes
 import com.g2forge.reassert.contract.model.TermType;
 import com.g2forge.reassert.contract.v2.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.v2.eval.TermRelationValueSystem;
-import com.g2forge.reassert.contract.v2.model.CTNameContract;
-import com.g2forge.reassert.contract.v2.model.ICTName;
 import com.g2forge.reassert.contract.v2.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.v2.model.finding.UnrecognizedTermFinding;
 import com.g2forge.reassert.contract.v2.model.finding.rule.ConditionFinding;
@@ -31,6 +29,8 @@ import com.g2forge.reassert.contract.v2.model.finding.rule.IRuleFinding;
 import com.g2forge.reassert.contract.v2.model.finding.rule.NoticeFinding;
 import com.g2forge.reassert.contract.v2.model.finding.rule.StateChangesFinding;
 import com.g2forge.reassert.contract.v2.model.finding.rule.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.v2.model.licenseusage.CTNameContract;
+import com.g2forge.reassert.contract.v2.model.licenseusage.ICTName;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;

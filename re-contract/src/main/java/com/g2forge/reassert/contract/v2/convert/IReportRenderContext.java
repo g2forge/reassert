@@ -2,8 +2,8 @@ package com.g2forge.reassert.contract.v2.convert;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.enigma.backend.convert.textual.ITextualRenderContext;
-import com.g2forge.reassert.contract.v2.model.ICTName;
 import com.g2forge.reassert.contract.v2.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.v2.model.licenseusage.ICTName;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.v2.convert.ExplanationMode;
 import com.g2forge.reassert.express.v2.model.IExplained;

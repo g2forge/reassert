@@ -2,7 +2,7 @@ package com.g2forge.reassert.contract.v2.model.finding;
 
 import java.util.Set;
 
-import com.g2forge.reassert.contract.v2.model.ICTName;
+import com.g2forge.reassert.contract.v2.model.licenseusage.ICTName;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextFinding;

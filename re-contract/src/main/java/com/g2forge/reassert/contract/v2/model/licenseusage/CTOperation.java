@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.v2.model;
+package com.g2forge.reassert.contract.v2.model.licenseusage;
 
 import java.util.List;
 
@@ -19,23 +19,23 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class TermOperation implements IOperation<ICTName, TermRelation> {
-	public static class TermOperationBuilder implements IOperationBuilder<ICTName, TermRelation, TermOperationBuilder, TermOperation> {
-		public TermOperationBuilder argument$V(ITerm term) {
+public class CTOperation implements IOperation<ICTName, TermRelation> {
+	public static class CTOperationBuilder implements IOperationBuilder<ICTName, TermRelation, CTOperationBuilder, CTOperation> {
+		public CTOperationBuilder argument$V(ITerm term) {
 			return argument$V(new CTNameType(term));
 		}
 	}
 
 	@SafeVarargs
-	public static TermOperation and(IExpression<ICTName, TermRelation>... arguments) {
-		return new TermOperation(Operator.AND, arguments);
+	public static CTOperation and(IExpression<ICTName, TermRelation>... arguments) {
+		return new CTOperation(Operator.AND, arguments);
 	}
 
-	public static TermOperation not(IExpression<ICTName, TermRelation> argument) {
-		return new TermOperation(Operator.NOT, argument);
+	public static CTOperation not(IExpression<ICTName, TermRelation> argument) {
+		return new CTOperation(Operator.NOT, argument);
 	}
 
-	public static TermOperation not(ITerm term) {
+	public static CTOperation not(ITerm term) {
 		return not(of(term));
 	}
 
@@ -44,8 +44,8 @@ public class TermOperation implements IOperation<ICTName, TermRelation> {
 	}
 
 	@SafeVarargs
-	public static TermOperation or(IExpression<ICTName, TermRelation>... arguments) {
-		return new TermOperation(Operator.OR, arguments);
+	public static CTOperation or(IExpression<ICTName, TermRelation>... arguments) {
+		return new CTOperation(Operator.OR, arguments);
 	}
 
 	protected final BooleanOperation.Operator operator;
@@ -54,7 +54,7 @@ public class TermOperation implements IOperation<ICTName, TermRelation> {
 	protected final List<IExpression<ICTName, TermRelation>> arguments;
 
 	@SafeVarargs
-	public TermOperation(BooleanOperation.Operator operator, IExpression<ICTName, TermRelation>... arguments) {
+	public CTOperation(BooleanOperation.Operator operator, IExpression<ICTName, TermRelation>... arguments) {
 		this(operator, HCollection.asList(arguments));
 	}
 }
