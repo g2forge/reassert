@@ -8,19 +8,19 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
-import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
-import com.g2forge.alexandria.java.validate.IValidation;
-import com.g2forge.alexandria.java.validate.ValidValidation;
+import com.g2forge.alexandria.java.type.function.TypeSwitch1.FunctionBuilder;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
 import com.g2forge.reassert.contract.model.licenseusage.CTNameContract;
+import com.g2forge.reassert.contract.model.licenseusage.CTNameLicenseTerm;
+import com.g2forge.reassert.contract.model.licenseusage.CTNameUsageTerm;
 import com.g2forge.reassert.contract.model.licenseusage.ICTName;
 import com.g2forge.reassert.contract.model.licenseusage.rule.IRule;
 import com.g2forge.reassert.contract.model.licenseusage.rule.IRules;
@@ -29,6 +29,7 @@ import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
@@ -43,14 +44,15 @@ import com.g2forge.reassert.express.eval.ValueEvaluator;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.Literal;
-import com.g2forge.reassert.express.model.environment.IEnvironment;
+import com.g2forge.reassert.express.model.environment.ATypeSwitchEnvironment;
 import com.g2forge.reassert.express.model.variable.Closure;
-import com.g2forge.reassert.express.model.variable.IVariable;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @RequiredArgsConstructor
@@ -58,35 +60,32 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 	@Data
 	@Builder(toBuilder = true)
 	@RequiredArgsConstructor
-	public static class ContractEnvironment implements IEnvironment<ICTName, TermRelation> {
+	@EqualsAndHashCode(callSuper = false)
+	@ToString(callSuper = false)
+	public static class ContractEnvironment extends ATypeSwitchEnvironment<ICTName, TermRelation> {
 		protected final IUsage usage;
 
 		protected final ILicense license;
 
 		@Override
-		public IOptional<? extends IExpression<ICTName, TermRelation>> lookup(IVariable<ICTName, TermRelation> variable) {
-			final ICTName name = variable.getName();
-			switch (name.getContractType()) {
-				case License: {
-					final ILicenseTerm term = (ILicenseTerm) name.getTerm();
-					final TermRelation relation = getLicense().getTerms().getRelation(term);
-					final CTNameContract literalName = new CTNameContract(term, getLicense());
-					return NullableOptional.of(new Literal<>(literalName, relation));
-				}
-				case Usage: {
-					final IUsageTerm term = (IUsageTerm) name.getTerm();
-					final TermRelation relation = getUsage().getTerms().getRelation(term);
-					final CTNameContract literalName = new CTNameContract(term, getUsage());
-					return NullableOptional.of(new Literal<>(literalName, relation));
-				}
-				default:
-					throw new EnumException(ICTName.ContractType.class, name.getContractType());
-			}
-		}
-
-		@Override
-		public IValidation validate() {
-			return ValidValidation.create();
+		protected void with(FunctionBuilder<ICTName, IOptional<? extends IExpression<ICTName, TermRelation>>> builder) {
+			builder.add(CTNameContract.class, name -> {
+				@SuppressWarnings("unchecked")
+				final ITerms<ITerm> cast = (ITerms<ITerm>) name.getContract().getTerms();
+				return of(cast.getRelation(name.getTerm()));
+			});
+			builder.add(CTNameLicenseTerm.class, name -> {
+				final ILicenseTerm term = name.getTerm();
+				final TermRelation relation = getLicense().getTerms().getRelation(term);
+				final CTNameContract literalName = new CTNameContract(term, getLicense());
+				return NullableOptional.of(new Literal<>(literalName, relation));
+			});
+			builder.add(CTNameUsageTerm.class, name -> {
+				final IUsageTerm term = name.getTerm();
+				final TermRelation relation = getUsage().getTerms().getRelation(term);
+				final CTNameContract literalName = new CTNameContract(term, getUsage());
+				return NullableOptional.of(new Literal<>(literalName, relation));
+			});
 		}
 	}
 

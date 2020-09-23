@@ -3,6 +3,8 @@ package com.g2forge.reassert.express.model.environment;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.builder.IValidatingBuilder;
 import com.g2forge.alexandria.java.validate.IValidatable;
+import com.g2forge.alexandria.java.validate.IValidation;
+import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.Literal;
 import com.g2forge.reassert.express.model.variable.IVariable;
@@ -25,5 +27,10 @@ public interface IEnvironment<Name, Value> extends IValidatable {
 
 	public default IEnvironment<Name, Value> override(IEnvironment<Name, Value> override) {
 		return new OverrideEnvironment<>(override, this);
+	}
+	
+	@Override
+	public default IValidation validate() {
+		return ValidValidation.create();
 	}
 }

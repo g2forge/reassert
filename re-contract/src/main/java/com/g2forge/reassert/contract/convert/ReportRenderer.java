@@ -15,9 +15,8 @@ import com.g2forge.enigma.backend.convert.ARenderer;
 import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
-import com.g2forge.enigma.backend.convert.textual.ISimpleTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
-import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNestedModifiedBuilder;
+import com.g2forge.reassert.contract.convert.licenseusage.CTNameRenderer;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
@@ -28,11 +27,9 @@ import com.g2forge.reassert.contract.model.finding.rule.IRuleFinding;
 import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
 import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
 import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
-import com.g2forge.reassert.contract.model.licenseusage.CTNameContract;
 import com.g2forge.reassert.contract.model.licenseusage.ICTName;
-import com.g2forge.reassert.contract.model.licenseusage.ICTName.ContractType;
-import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
+import com.g2forge.reassert.core.model.contract.ContractType;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
@@ -55,27 +52,9 @@ import com.g2forge.reassert.express.model.variable.IVariable;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContext> {
-	@Getter(AccessLevel.PROTECTED)
-	@RequiredArgsConstructor
-	public static class CTNameRenderer implements ISimpleTextualRenderer<ICTName> {
-		protected final IContext context;
-
-		@Override
-		public void render(TextNestedModifiedBuilder builder, ICTName renderable) {
-			final ITerm term = renderable.getTerm();
-			builder.expression(term.getDescription()).expression(" in ");
-			if (renderable instanceof CTNameContract) {
-				final CTNameContract cast = (CTNameContract) renderable;
-				final IDescription contract = getContext().describe(cast.getContract());
-				builder.expression(contract.getName());
-			} else builder.expression(renderable.getContractType().name().toLowerCase());
-		}
-	}
-
 	@Getter(AccessLevel.PROTECTED)
 	protected class ReportRenderContext extends ARenderContext implements IReportRenderContext {
 		protected final ExplanationRenderer<ICTName, TermRelation> explanationRenderer;
@@ -303,7 +282,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	protected final ExplanationRenderer<ICTName, TermRelation> explanationRenderer;
 
 	public ReportRenderer(ExplanationMode mode, IContext context) {
-		this.explanationRenderer = new ExplanationRenderer<>(mode, new ReportRenderer.CTNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		this.explanationRenderer = new ExplanationRenderer<>(mode, new CTNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 	}
 
 	@Override
