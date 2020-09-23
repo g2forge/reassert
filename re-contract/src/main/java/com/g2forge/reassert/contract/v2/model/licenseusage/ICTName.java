@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.v2.model;
+package com.g2forge.reassert.contract.v2.model.licenseusage;
 
 import java.util.stream.Stream;
 

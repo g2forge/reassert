@@ -1,8 +1,8 @@
 package com.g2forge.reassert.contract.v2.algorithm;
 
-import static com.g2forge.reassert.contract.v2.model.TermOperation.not;
-import static com.g2forge.reassert.contract.v2.model.TermOperation.of;
-import static com.g2forge.reassert.contract.v2.model.TermOperation.or;
+import static com.g2forge.reassert.contract.v2.model.licenseusage.CTOperation.not;
+import static com.g2forge.reassert.contract.v2.model.licenseusage.CTOperation.of;
+import static com.g2forge.reassert.contract.v2.model.licenseusage.CTOperation.or;
 
 import org.junit.Test;
 import org.slf4j.event.Level;
@@ -12,8 +12,8 @@ import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.v2.model.contract.TestLicenseTerm;
 import com.g2forge.reassert.contract.v2.model.contract.TestUsageTerm;
 import com.g2forge.reassert.contract.v2.model.finding.rule.ConditionFinding;
-import com.g2forge.reassert.contract.v2.model.rule.Rule;
-import com.g2forge.reassert.contract.v2.model.rule.Rules;
+import com.g2forge.reassert.contract.v2.model.licenseusage.rule.Rule;
+import com.g2forge.reassert.contract.v2.model.licenseusage.rule.Rules;
 import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
