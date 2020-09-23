@@ -50,11 +50,6 @@ public class UsagePropagationBuilder<Term extends IUsageTerm, Edge extends IEdge
 		}
 
 		@Override
-		public Map<IVariable<IETName<Term, Edge>, TermRelation>, IExpression<IETName<Term, Edge>, TermRelation>> getBindings() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
 		public IOptional<? extends IExpression<IETName<Term, Edge>, TermRelation>> lookup(IVariable<IETName<Term, Edge>, TermRelation> variable) {
 			final IETName<Term, Edge> name = variable.getName();
 			final TermRelation retVal;

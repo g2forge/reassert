@@ -1,7 +1,6 @@
 package com.g2forge.reassert.contract.algorithm;
 
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,11 +62,6 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 		protected final IUsage usage;
 
 		protected final ILicense license;
-
-		@Override
-		public Map<IVariable<ICTName, TermRelation>, IExpression<ICTName, TermRelation>> getBindings() {
-			throw new UnsupportedOperationException();
-		}
 
 		@Override
 		public IOptional<? extends IExpression<ICTName, TermRelation>> lookup(IVariable<ICTName, TermRelation> variable) {

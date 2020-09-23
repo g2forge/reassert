@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
@@ -39,13 +40,17 @@ public class AnalyzeInputsEvaluator<Name, Value> extends AEvaluator<Name, Value,
 			@SuppressWarnings("unchecked")
 			final AEvaluator.BasicContext<Name, Value, Set<IVariable<Name, Value>>> context = (AEvaluator.BasicContext<Name, Value, Set<IVariable<Name, Value>>>) c;
 
-			final Set<IVariable<Name, Value>> whatever = context.eval(expression.getExpression());
-			return HCollection.difference(whatever, expression.getEnvironment().getBindings().keySet());
+			try (final ICloseable environment = context.environment(expression.getEnvironment())) {
+				return context.eval(expression.getExpression());
+			}
 		});
 		builder.add(IVariable.class, AEvaluator.BasicContext.class, (e, c) -> {
 			@SuppressWarnings("unchecked")
 			final IVariable<Name, Value> expression = e;
-			return HCollection.asSet(expression);
+			@SuppressWarnings("unchecked")
+			final AEvaluator.BasicContext<Name, Value, Set<IVariable<Name, Value>>> context = (AEvaluator.BasicContext<Name, Value, Set<IVariable<Name, Value>>>) c;
+
+			return context.getEnvironment().lookup(expression).isEmpty() ? HCollection.asSet(expression) : Collections.emptySet();
 		});
 		builder.fallback((e, c) -> {
 			throw new EvalFailedException(e);

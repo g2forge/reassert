@@ -1,7 +1,5 @@
 package com.g2forge.reassert.express.model.environment;
 
-import java.util.Map;
-
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.builder.IValidatingBuilder;
 import com.g2forge.alexandria.java.validate.IValidatable;
@@ -17,13 +15,11 @@ public interface IEnvironment<Name, Value> extends IValidatable {
 		public default IEnvironmentBuilder<Name, Value> bind$(IVariable<Name, Value> variable, Value value) {
 			return bind(variable, new Literal<>(value));
 		}
-		
+
 		public default IEnvironmentBuilder<Name, Value> bind$(Name name, Value value) {
 			return bind$(new Variable<>(name), value);
 		}
 	}
-
-	public Map<IVariable<Name, Value>, IExpression<Name, Value>> getBindings();
 
 	public IOptional<? extends IExpression<Name, Value>> lookup(IVariable<Name, Value> variable);
 
