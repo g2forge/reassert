@@ -33,6 +33,14 @@ public interface IOperation<Name, Value> extends IExpression<Name, Value> {
 	}
 
 	public interface IOperator {
+		/**
+		 * Create a builder for an operation with this operator. Generally use of this method is discouraged in favor of static builders such as
+		 * {@link BooleanOperation#and(IExpression...)}.
+		 * 
+		 * @param <Name>
+		 * @param <Value>
+		 * @return An operation builder primed with this operator.
+		 */
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder();
 
 		public default IValidation validate(List<? extends IExpression<?, ?>> arguments) {

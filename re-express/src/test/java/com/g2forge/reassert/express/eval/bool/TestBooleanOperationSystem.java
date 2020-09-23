@@ -63,7 +63,7 @@ public class TestBooleanOperationSystem {
 	@Test
 	public void applyZero() {
 		final Variable<String, Boolean> x = new Variable<>("x"), y = new Variable<>("y");
-		final IExpression<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(x).argument(y).build();
+		final IExpression<String, Boolean> expression = BooleanOperation.and(x, y);
 		final IExpression<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), expression);
 		HAssert.assertEquals(false, TestBooleanOperationSystem.getEvaluator().eval(closure));
 	}
