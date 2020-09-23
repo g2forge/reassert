@@ -29,6 +29,7 @@ import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
+import com.g2forge.reassert.list.convert.ExpressionModule;
 import com.g2forge.reassert.list.convert.GraphModule;
 import com.g2forge.reassert.list.convert.TermsModule;
 import com.g2forge.reassert.list.convert.simpleedge.SimpleEdgeModule;
@@ -56,6 +57,7 @@ public class ListRepository extends ARepository<ListCoordinates, ListSystem> {
 		mapper.registerModule(new SimpleEdgeModule());
 		mapper.registerModule(new TermsModule());
 		mapper.registerModule(new GraphModule(getContext()));
+		mapper.registerModule(new ExpressionModule());
 		return mapper;
 	}
 

@@ -5,17 +5,10 @@ import org.slf4j.event.Level;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.contract.model.TermConstant;
 import com.g2forge.reassert.contract.v2.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.v2.model.licenseusage.ICTName;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextFinding;
@@ -41,7 +34,7 @@ public class FindingModule extends SimpleModule {
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected static abstract class ExpressionContextualFindingMixin extends ContextualFindingMixin {
 		@JsonIgnore
-		protected IExpression<TermRelation> expression;
+		protected IExpression<ICTName, TermRelation> expression;
 	}
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
@@ -63,7 +56,7 @@ public class FindingModule extends SimpleModule {
 		this.setMixInAnnotation(IExplained.class, ExplainedMixin.class);
 		super.setupModule(context);
 
-		context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
+		/*context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
 			public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription description, JsonDeserializer<?> deserializer) {
 				if (TermConstant.class.isAssignableFrom(description.getBeanClass())) return new TermConstantDeserializer();
 				return deserializer;
@@ -75,6 +68,6 @@ public class FindingModule extends SimpleModule {
 				if (TermConstant.class.isAssignableFrom(description.getBeanClass())) return new TermConstantSerializer(getDescriber());
 				return serializer;
 			}
-		});
+		});*/
 	}
 }

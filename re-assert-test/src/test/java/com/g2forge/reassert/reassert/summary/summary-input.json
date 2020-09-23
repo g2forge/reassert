@@ -99,9 +99,9 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "Finding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.findings.rule.NoticeFinding",
+          "@c" : "com.g2forge.reassert.contract.v2.model.finding.rule.NoticeFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.express.express.Literal",
+            "@c" : "com.g2forge.reassert.express.v2.model.constant.Literal",
             "name" : "Dummy",
             "value" : "Included"
           }
@@ -113,9 +113,9 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "Finding 2",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.findings.rule.ConditionFinding",
+          "@c" : "com.g2forge.reassert.contract.v2.model.finding.rule.ConditionFinding",
           "result" : {
-            "@c" : "com.g2forge.reassert.express.express.Literal",
+            "@c" : "com.g2forge.reassert.express.v2.model.constant.Literal",
             "name" : "Dummy",
             "value" : "Excluded"
           }
