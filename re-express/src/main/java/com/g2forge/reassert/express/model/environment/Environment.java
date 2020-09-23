@@ -4,8 +4,6 @@ import java.util.Map;
 
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
-import com.g2forge.alexandria.java.validate.IValidation;
-import com.g2forge.alexandria.java.validate.ValidValidation;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.variable.IVariable;
 
@@ -28,10 +26,5 @@ public class Environment<Name, Value> implements IEnvironment<Name, Value> {
 		final Map<IVariable<Name, Value>, IExpression<Name, Value>> bindings = getBindings();
 		if (!bindings.containsKey(variable)) return NullableOptional.empty();
 		return NullableOptional.of(bindings.get(variable));
-	}
-
-	@Override
-	public IValidation validate() {
-		return ValidValidation.create();
 	}
 }

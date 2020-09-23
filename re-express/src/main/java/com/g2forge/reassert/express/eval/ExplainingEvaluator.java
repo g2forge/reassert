@@ -65,11 +65,6 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 		protected final Map<IVariable<Name, Value>, IExplainedClosure.Binding<Name, Value>> record = new LinkedHashMap<>();
 
 		@Override
-		public Map<IVariable<Name, Value>, IExpression<Name, Value>> getBindings() {
-			return getEnvironment().getBindings();
-		}
-
-		@Override
 		public IOptional<? extends IExpression<Name, Value>> lookup(IVariable<Name, Value> variable) {
 			final IOptional<? extends IExpression<Name, Value>> retVal = getEnvironment().lookup(variable);
 			return retVal.isEmpty() ? new LookupResult(variable) : new LookupResult(variable, retVal.get());

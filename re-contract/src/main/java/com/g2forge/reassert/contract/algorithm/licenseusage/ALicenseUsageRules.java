@@ -1,10 +1,10 @@
-package com.g2forge.reassert.contract.algorithm;
+package com.g2forge.reassert.contract.algorithm.licenseusage;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.g2forge.reassert.contract.model.licenseusage.rule.IRule;
-import com.g2forge.reassert.contract.model.licenseusage.rule.IRules;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRule;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRules;
 
 import lombok.Getter;
 

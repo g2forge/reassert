@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.validate.IValidatable;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
-import com.g2forge.reassert.contract.model.licenseusage.ICTName;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextFinding;
@@ -36,7 +36,7 @@ public class ExpressionModule extends SimpleModule {
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected static abstract class ExpressionContextualFindingMixin extends ContextualFindingMixin {
 		@JsonIgnore
-		protected IExpression<ICTName, TermRelation> expression;
+		protected IExpression<ILicenseUsageName, TermRelation> expression;
 	}
 
 	@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)

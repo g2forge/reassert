@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.model.usagepropagation;
+package com.g2forge.reassert.contract.algorithm.usagepropagation.model.name;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ETEdgeAccessor<Term extends IUsageTerm, Edge extends IEdge, T> implements IETName<Term, Edge> {
+public class EdgeAccessorUsagePropagationName<Term extends IUsageTerm, Edge extends IEdge, T> implements IUsagePropagationName<Term, Edge> {
 	protected final ISerializableFunction1<? super Edge, ? extends T> accessor;
 
 	protected final IFunction1<? super T, ? extends TermRelation> adapter;
@@ -26,7 +26,7 @@ public class ETEdgeAccessor<Term extends IUsageTerm, Edge extends IEdge, T> impl
 		if (obj == null) return false;
 		if (getClass() != obj.getClass()) return false;
 
-		final ETEdgeAccessor<?, ?, ?> that = (ETEdgeAccessor<?, ?, ?>) obj;
+		final EdgeAccessorUsagePropagationName<?, ?, ?> that = (EdgeAccessorUsagePropagationName<?, ?, ?>) obj;
 		if (!getAccessor().asMethodAnalyzer().getPath().equals(that.getAccessor().asMethodAnalyzer().getPath())) return false;
 		if (!getAdapter().equals(that.getAdapter())) return false;
 		return true;

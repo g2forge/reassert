@@ -1,20 +1,20 @@
-package com.g2forge.reassert.contract.algorithm;
+package com.g2forge.reassert.contract.algorithm.licenseusage;
 
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.not;
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.of;
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.or;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.not;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.of;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.or;
 
 import org.junit.Test;
 import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.contract.algorithm.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.Rule;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.Rules;
 import com.g2forge.reassert.contract.model.contract.TestLicenseTerm;
 import com.g2forge.reassert.contract.model.contract.TestUsageTerm;
 import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
-import com.g2forge.reassert.contract.model.licenseusage.rule.Rule;
-import com.g2forge.reassert.contract.model.licenseusage.rule.Rules;
 import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
