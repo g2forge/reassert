@@ -23,7 +23,7 @@ public abstract class AUsagePropagationRules<Term extends IUsageTerm> implements
 
 	protected abstract IFunction2<IEdge, IUsage, IUsage> computeFunction();
 
-	protected <Edge extends IEdge> IFunction2<Edge, IUsage, IUsage> with(final IConsumer1<? super IUsagePropagationRuleBuilder<Term, Edge>> consumer) {
-		return IUsagePropagationRules.with(consumer);
+	protected <Edge extends IEdge> IFunction2<Edge, IUsage, IUsage> rule(final IConsumer1<? super IUsagePropagationRuleBuilder<Term, Edge>> consumer) {
+		return IUsagePropagationRules.rule(consumer);
 	}
 }

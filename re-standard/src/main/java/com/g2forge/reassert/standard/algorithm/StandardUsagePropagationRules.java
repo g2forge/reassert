@@ -27,13 +27,13 @@ public class StandardUsagePropagationRules extends AUsagePropagationRules<Standa
 
 	protected IFunction2<IEdge, IUsage, IUsage> computeFunction() {
 		final TypeSwitch2.FunctionBuilder<IEdge, IUsage, IUsage> builder = new TypeSwitch2.FunctionBuilder<>();
-		builder.add(Inherits.class, IUsage.class, with(b -> {
+		builder.add(Inherits.class, IUsage.class, rule(b -> {
 			b.copy(StandardUsageTerm.Commercial).copy(StandardUsageTerm.DistributionPublic).copy(StandardUsageTerm.DistributionPrivate).copy(StandardUsageTerm.DistributionService);
 			b.include(StandardUsageTerm.UseLink).exclude(StandardUsageTerm.UseCopy).exclude(StandardUsageTerm.UseModified);
 			b.copy(StandardUsageTerm.DistributingBinary).copy(StandardUsageTerm.DistributingSource);
 		}));
 		builder.add(Contains.class, IUsage.class, (e, u) -> u);
-		builder.add(Depends.class, IUsage.class, with(b -> {
+		builder.add(Depends.class, IUsage.class, rule(b -> {
 			b.copy(StandardUsageTerm.Commercial);
 
 			final IVariable<IUsagePropagationName<StandardUsageTerm, Depends>, TermRelation> transitive = b.of(Depends::isTransitive, TermRelation::valueOf);

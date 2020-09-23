@@ -7,7 +7,7 @@ import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 
 public interface IUsagePropagationRules extends IFunction2<IEdge, IUsage, IUsage> {
-	public static <Term extends IUsageTerm, Edge extends IEdge> IFunction2<Edge, IUsage, IUsage> with(final IConsumer1<? super UsagePropagationRuleBuilder<Term, Edge>> consumer) {
+	public static <Term extends IUsageTerm, Edge extends IEdge> IFunction2<Edge, IUsage, IUsage> rule(final IConsumer1<? super UsagePropagationRuleBuilder<Term, Edge>> consumer) {
 		final UsagePropagationRuleBuilder<Term, Edge> builder = new UsagePropagationRuleBuilder<Term, Edge>();
 		consumer.accept(builder);
 		return builder.build();
