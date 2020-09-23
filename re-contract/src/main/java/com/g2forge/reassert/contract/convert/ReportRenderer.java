@@ -16,26 +16,27 @@ import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.convert.textual.ISimpleTextualRenderer;
-import com.g2forge.enigma.backend.convert.textual.ITextualRenderer;
-import com.g2forge.enigma.backend.convert.textual.ToStringTextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNestedModifiedBuilder;
-import com.g2forge.reassert.contract.model.IExpressionContext;
-import com.g2forge.reassert.contract.model.TermConstant;
-import com.g2forge.reassert.contract.model.TermType;
-import com.g2forge.reassert.contract.model.findings.ExpressionContextFinding;
-import com.g2forge.reassert.contract.model.findings.UnrecognizedTermFinding;
-import com.g2forge.reassert.contract.model.findings.rule.ConditionFinding;
-import com.g2forge.reassert.contract.model.findings.rule.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.findings.rule.IRuleFinding;
-import com.g2forge.reassert.contract.model.findings.rule.NoticeFinding;
-import com.g2forge.reassert.contract.model.findings.rule.StateChangesFinding;
-import com.g2forge.reassert.contract.model.findings.rule.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
+import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
+import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
+import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
+import com.g2forge.reassert.contract.model.finding.rule.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.model.finding.rule.IRuleFinding;
+import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
+import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
+import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.model.licenseusage.CTNameContract;
+import com.g2forge.reassert.contract.model.licenseusage.ICTName;
+import com.g2forge.reassert.contract.model.licenseusage.ICTName.ContractType;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
 import com.g2forge.reassert.core.model.report.IContextFinding;
@@ -43,59 +44,63 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
 import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
-import com.g2forge.reassert.express.explain.convert.ExplanationMode;
-import com.g2forge.reassert.express.explain.convert.ExplanationRenderer;
-import com.g2forge.reassert.express.explain.model.IExplained;
-import com.g2forge.reassert.express.express.IConstant;
-import com.g2forge.reassert.express.express.IExpression;
-import com.g2forge.reassert.express.express.Operation;
+import com.g2forge.reassert.express.convert.ExplanationMode;
+import com.g2forge.reassert.express.convert.ExplanationRenderer;
+import com.g2forge.reassert.express.model.IExplained;
+import com.g2forge.reassert.express.model.IExpression;
+import com.g2forge.reassert.express.model.constant.ILiteral;
+import com.g2forge.reassert.express.model.operation.BooleanOperation;
+import com.g2forge.reassert.express.model.operation.IOperation;
+import com.g2forge.reassert.express.model.variable.IVariable;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContext> {
 	@Getter(AccessLevel.PROTECTED)
 	@RequiredArgsConstructor
-	protected static class NameRenderer implements ISimpleTextualRenderer<Object> {
+	public static class CTNameRenderer implements ISimpleTextualRenderer<ICTName> {
 		protected final IContext context;
 
 		@Override
-		public void render(TextNestedModifiedBuilder builder, Object renderable) {
-			if (renderable instanceof TermConstant) {
-				final TermConstant constant = (TermConstant) renderable;
-
-				builder.expression(constant.getTerm().getDescription()).expression(" in ");
-
-				final IDescription description = getContext().describe(constant.getContract());
-				builder.expression(description.getName());
-			} else builder.expression(renderable);
+		public void render(TextNestedModifiedBuilder builder, ICTName renderable) {
+			final ITerm term = renderable.getTerm();
+			builder.expression(term.getDescription()).expression(" in ");
+			if (renderable instanceof CTNameContract) {
+				final CTNameContract cast = (CTNameContract) renderable;
+				final IDescription contract = getContext().describe(cast.getContract());
+				builder.expression(contract.getName());
+			} else builder.expression(renderable.getContractType().name().toLowerCase());
 		}
 	}
 
 	@Getter(AccessLevel.PROTECTED)
 	protected class ReportRenderContext extends ARenderContext implements IReportRenderContext {
-		@Getter(AccessLevel.PUBLIC)
-		protected final ExplanationMode mode;
-
-		protected final ExplanationRenderer explanationRenderer;
+		protected final ExplanationRenderer<ICTName, TermRelation> explanationRenderer;
 
 		@Getter(AccessLevel.PUBLIC)
-		protected IExpressionContext findingContext;
+		protected ExpressionContextFinding findingContext;
 
-		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationMode mode, ITextualRenderer<Object> valueRenderer, ITextualRenderer<Object> nameRenderer) {
+		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationRenderer<ICTName, TermRelation> explanationRenderer) {
 			super(builder);
-			this.mode = mode;
-			this.explanationRenderer = new ExplanationRenderer(getMode(), valueRenderer, nameRenderer);
+			this.explanationRenderer = explanationRenderer;
 		}
 
 		@Override
-		public ICloseable findingContext(IExpressionContext findingContext) {
-			final IExpressionContext previous = this.findingContext;
+		public ICloseable findingContext(ExpressionContextFinding findingContext) {
+			final ExpressionContextFinding previous = this.findingContext;
 			this.findingContext = findingContext;
-			return () -> this.findingContext = previous;
+			return () -> {
+				if (this.findingContext != findingContext) throw new IllegalStateException();
+				this.findingContext = previous;
+			};
+		}
+
+		@Override
+		public ExplanationMode getMode() {
+			return getExplanationRenderer().getMode();
 		}
 
 		@Override
@@ -104,9 +109,15 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 		}
 
 		@Override
-		public IReportRenderContext render(IExplained<?> explained) {
-			explanationRenderer.render(getBuilder(), explained);
-			return this;
+		public IReportRenderContext name(ICTName name) {
+			getExplanationRenderer().getNameRenderer().render(getBuilder(), name);
+			return getThis();
+		}
+
+		@Override
+		public IReportRenderContext render(IExplained<TermRelation> explained) {
+			getExplanationRenderer().render(getBuilder(), explained);
+			return getThis();
 		}
 	}
 
@@ -119,7 +130,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 		protected IReportRenderContext explain(IRuleFinding finding, IReportRenderContext context) {
 			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
 				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
-					final IExpressionContext findingContext = context.getFindingContext();
+					final ExpressionContextFinding findingContext = context.getFindingContext();
 					if (findingContext != null) context.append("Rule: ").render(findingContext.getExpression(), IExpression.class).newline();
 					context.append("Explanation: ").render(finding.getResult());
 				}
@@ -130,7 +141,11 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 		@Override
 		protected void extend(TypeSwitch1.FunctionBuilder<Object, IExplicitRenderable<? super IReportRenderContext>> builder) {
 			builder.add(IExplicitReportRenderable.class, e -> c -> ((IExplicitReportRenderable<?>) e).render(c));
-			builder.add(IExplained.class, e -> c -> c.render(e));
+			builder.add(IExplained.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final IExplained<TermRelation> expression = e;
+				c.render(expression);
+			});
 
 			builder.add(IReport.class, e -> c -> {
 				c.append("Minimum finding level: ");
@@ -147,13 +162,24 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			builder.add(ILicenseTerm.class, e -> c -> c.append('\"').append(e.getDescription()).append('\"'));
 			builder.add(IUsageTerm.class, e -> c -> c.append('\"').append(e.getDescription()).append('\"'));
 
-			builder.add(IConstant.class, e -> c -> c.append('(').append(e.getName()).append(')'));
-			builder.add(TermConstant.class, e -> c -> c.render(e.getTerm(), ITerm.class));
-			builder.add(Operation.class, e -> c -> {
-				final Operation<?> castE = (Operation<?>) e;
+			builder.add(ILiteral.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final ILiteral<ICTName, TermRelation> expression = e;
+				c.append('(').name(expression.getName()).append(')');
+			});
+			builder.add(IVariable.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final IVariable<ICTName, TermRelation> expression = e;
+				c.render(expression.getName().getTerm(), ITerm.class);
+			});
+			builder.add(IOperation.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final IOperation<ICTName, TermRelation> castE = (IOperation<ICTName, TermRelation>) e;
+
 				c.append('(');
 				final String separator;
-				switch (castE.getOperator()) {
+				final BooleanOperation.Operator operator = (BooleanOperation.Operator) castE.getOperator();
+				switch (operator) {
 					case NOT:
 						c.append('!').render(HCollection.getOne(castE.getArguments()), IExpression.class).append(')');
 						return;
@@ -163,12 +189,15 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 					case OR:
 						separator = "||";
 						break;
+					case XOR:
+						separator = "^";
+						break;
 					default:
-						throw new EnumException(Operation.Operator.class, castE.getOperator());
+						throw new EnumException(BooleanOperation.Operator.class, operator);
 				}
 
 				boolean first = true;
-				for (IExpression<?> argument : castE.getArguments()) {
+				for (IExpression<ICTName, TermRelation> argument : castE.getArguments()) {
 					if (first) first = false;
 					else c.append(' ').append(separator).append(' ');
 					c.render(argument, IExpression.class);
@@ -215,9 +244,9 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 			});
 			builder.add(UnrecognizedTermFinding.class, e -> c -> {
-				final TermType termType = TermType.valueOf(e.getTerm());
+				final ContractType type = ContractType.valueOf(e.getTerm());
 				appendLevel(e, c).render(e.getTerm(), ITerm.class).append(" is not recognized so we cannot analyze ");
-				switch (termType) {
+				switch (type) {
 					case License:
 						c.append("whether the condition has been met.");
 						break;
@@ -225,11 +254,11 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						c.append("whether the licenses allow this usage.");
 						break;
 					default:
-						throw new EnumException(TermType.class, termType);
+						throw new EnumException(ContractType.class, type);
 				}
 			});
 			builder.add(ConditionFinding.class, e -> c -> {
-				final IExpressionContext findingContext = c.getFindingContext();
+				final ExpressionContextFinding findingContext = c.getFindingContext();
 				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
 
 				appendLevel(e, c).append("Condition");
@@ -271,23 +300,15 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IRendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> renderingStatic = new ReportRendering();
 
-	protected final ExplanationMode mode;
-
-	protected final ITextualRenderer<Object> valueRenderer;
-
-	protected final ITextualRenderer<Object> nameRenderer;
+	protected final ExplanationRenderer<ICTName, TermRelation> explanationRenderer;
 
 	public ReportRenderer(ExplanationMode mode, IContext context) {
-		this(mode, ToStringTextualRenderer.create(), new NameRenderer(context));
-	}
-
-	public ReportRenderer(IContext context) {
-		this(ExplanationMode.Explain, context);
+		this.explanationRenderer = new ExplanationRenderer<>(mode, new ReportRenderer.CTNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 	}
 
 	@Override
 	protected ReportRenderContext createContext(TextNestedModified.TextNestedModifiedBuilder builder) {
-		return new ReportRenderContext(builder, getMode(), getValueRenderer(), getNameRenderer());
+		return new ReportRenderContext(builder, getExplanationRenderer());
 	}
 
 	@Override

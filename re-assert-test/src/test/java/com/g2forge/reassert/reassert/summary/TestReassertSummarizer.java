@@ -19,8 +19,8 @@ import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.reassert.model.report.TestFinding;
 import com.g2forge.reassert.reassert.model.report.TestRuleFinding;
 import com.g2forge.reassert.reassert.summary.model.ArtifactSummary;
-import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 import com.g2forge.reassert.reassert.summary.model.FindingSummary;
+import com.g2forge.reassert.reassert.summary.model.ReportSummary;
 
 import lombok.Builder;
 import lombok.Data;

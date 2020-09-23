@@ -62,41 +62,55 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "SuspiciousUsageFinding 13",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.findings.ExpressionContextFinding",
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
           "inputs" : [ "UseLink", "UseCopy", "UseModified" ],
           "finding" : {
-            "@c" : "com.g2forge.reassert.contract.model.findings.rule.SuspiciousUsageFinding",
+            "@c" : "com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding",
             "result" : {
-              "@c" : ".IdentityExplainedOperation",
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "NOT",
               "value" : "Unspecified",
-              "operator" : "!",
+              "identity" : {
+                "empty" : true
+              },
               "arguments" : [ {
-                "relevant" : true,
-                "argument" : {
-                  "@c" : ".IdentityExplainedOperation",
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "OR",
                   "value" : "Unspecified",
-                  "operator" : "||",
-                  "identity" : "Excluded",
+                  "identity" : {
+                    "empty" : false
+                  },
                   "arguments" : [ {
-                    "relevant" : true,
-                    "argument" : {
-                      "@c" : "com.g2forge.reassert.contract.model.TermConstant",
-                      "term" : "UseLink",
-                      "contract" : "SaaS Usage"
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "UseLink",
+                        "contract" : "saas-usage"
+                      },
+                      "value" : "Unspecified"
                     }
                   }, {
-                    "relevant" : true,
-                    "argument" : {
-                      "@c" : "com.g2forge.reassert.contract.model.TermConstant",
-                      "term" : "UseCopy",
-                      "contract" : "SaaS Usage"
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "UseCopy",
+                        "contract" : "saas-usage"
+                      },
+                      "value" : "Unspecified"
                     }
                   }, {
-                    "relevant" : true,
-                    "argument" : {
-                      "@c" : "com.g2forge.reassert.contract.model.TermConstant",
-                      "term" : "UseModified",
-                      "contract" : "SaaS Usage"
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "UseModified",
+                        "contract" : "saas-usage"
+                      },
+                      "value" : "Unspecified"
                     }
                   } ]
                 }

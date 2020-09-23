@@ -2,17 +2,20 @@ package com.g2forge.reassert.contract.convert;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.enigma.backend.convert.textual.ITextualRenderContext;
-import com.g2forge.reassert.contract.convert.IReportRenderContext;
-import com.g2forge.reassert.contract.model.IExpressionContext;
-import com.g2forge.reassert.express.explain.convert.ExplanationMode;
-import com.g2forge.reassert.express.explain.model.IExplained;
+import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.model.licenseusage.ICTName;
+import com.g2forge.reassert.core.model.contract.terms.TermRelation;
+import com.g2forge.reassert.express.convert.ExplanationMode;
+import com.g2forge.reassert.express.model.IExplained;
 
 public interface IReportRenderContext extends ITextualRenderContext<Object, IReportRenderContext> {
-	public ICloseable findingContext(IExpressionContext findingContext);
+	public ICloseable findingContext(ExpressionContextFinding context);
 
-	public IExpressionContext getFindingContext();
+	public ExpressionContextFinding getFindingContext();
 
-	public IReportRenderContext render(IExplained<?> explained);
-	
 	public ExplanationMode getMode();
+
+	public IReportRenderContext name(ICTName name);
+
+	public IReportRenderContext render(IExplained<TermRelation> explained);
 }

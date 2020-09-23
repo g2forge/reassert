@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
 
+import com.g2forge.alexandria.annotations.note.Note;
+import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.function.IFunction2;
@@ -31,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class StandardUsageAssignmentVisitor extends AGraphVisitor {
-	protected final IFunction2<? super IEdge, ? super IUsageApplied, ? extends IUsageApplied> propagate;
+	protected final IFunction2<? super IEdge, ? super IUsage, ? extends IUsage> propagate;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
@@ -102,7 +104,8 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 		return merged;
 	}
 
+	@Note(type = NoteType.TODO, value = "Implement support for license operations", issue = "G2-919")
 	protected IUsageApplied propagate(IEdge edge, IUsageApplied usage) {
-		return getPropagate().apply(edge, usage);
+		return getPropagate().apply(edge, (IUsage)usage);
 	}
 }

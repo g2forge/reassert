@@ -8,26 +8,23 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.contract.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.algorithm.LicenseUsageAnalyzer;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
-import com.g2forge.reassert.contract.model.findings.rule.SuspiciousUsageFinding;
-import com.g2forge.reassert.contract.model.rules.Rule;
-import com.g2forge.reassert.contract.model.rules.Rules;
+import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.core.api.module.Context;
-import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
+import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
-import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
+import com.g2forge.reassert.core.model.contract.usage.GeneralUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
-import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
-import com.g2forge.reassert.core.model.contract.usage.GeneralUsage;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
-import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.convert.ExplanationMode;
+import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
@@ -48,13 +45,6 @@ public class TestStandardLicenseUsageRules {
 		final IUsageApplied usage = GeneralUsage.builder().name("Usage").terms(Terms.<IUsageTerm>builder().exclude(StandardUsageTerm.values()).include(StandardUsageTerm.DistributionPublic).build()).build();
 		final ILicenseApplied license = GeneralLicense.builder().name("License").terms(Terms.<ILicenseTerm>builder().exclude(StandardLicenseTerm.Notice).include(StandardLicenseTerm.DisclosureSource).include(StandardLicenseTerm.Distribution).build()).build();
 		test(usage, license, Level.WARN, "distributionNotice.txt", IPredicate1.create(TestStandardLicenseUsageRules::isSuspicious).negate());
-	}
-
-	@Test
-	public void invalidRule() {
-		final Rule rule = Rule.builder().satisfied(StandardUsageTerm.Commercial).expression(context -> null).build();
-		final ILicenseUsageAnalyzer analyzer = new LicenseUsageAnalyzer(Rules.builder().rule(rule).build());;
-		HAssert.assertException(IllegalArgumentException.class, "Rule to satisfy \"Commercial usage\" did not use \"Commercial usage\"", () -> analyzer.report(UnspecifiedUsage.create(), UnspecifiedLicense.create()));
 	}
 
 	@Test

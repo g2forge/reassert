@@ -8,7 +8,7 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.summary.model.FindingSummary;
 
 public class FindingsSummaryModule extends ASummaryModule {

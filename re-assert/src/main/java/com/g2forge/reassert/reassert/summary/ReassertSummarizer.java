@@ -39,7 +39,7 @@ import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.report.GraphContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.express.explain.convert.ExplanationMode;
+import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.summary.convert.ASummaryModule;
 import com.g2forge.reassert.reassert.summary.convert.ArtifactsSummaryModule;
 import com.g2forge.reassert.reassert.summary.convert.FindingSummarySerializer;

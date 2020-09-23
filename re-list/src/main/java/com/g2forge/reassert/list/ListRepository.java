@@ -125,9 +125,7 @@ public class ListRepository extends ARepository<ListCoordinates, ListSystem> {
 			}
 
 			final String identifier = context.describe(vertex).getIdentifier();
-			if (identifier == null) {
-				throw new NullPointerException(String.format("Null identifier for vertex: %1$s", vertex));
-			}
+			if (identifier == null) { throw new NullPointerException(String.format("Null identifier for vertex: %1$s", vertex)); }
 			storedGraphBuilder.vertex(identifier, storedVertexBuilder.build());
 		}
 		final StoredGraph storedGraph = storedGraphBuilder.build();
