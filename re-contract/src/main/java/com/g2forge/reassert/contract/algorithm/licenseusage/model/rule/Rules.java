@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.model.licenseusage.rule;
+package com.g2forge.reassert.contract.algorithm.licenseusage.model.rule;
 
 import java.util.Collection;
 

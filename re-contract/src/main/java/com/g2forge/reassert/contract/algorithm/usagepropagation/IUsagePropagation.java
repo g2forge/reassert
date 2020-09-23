@@ -1,8 +1,8 @@
-package com.g2forge.reassert.contract.algorithm;
+package com.g2forge.reassert.contract.algorithm.usagepropagation;
 
 import com.g2forge.alexandria.java.function.IConsumer1;
 import com.g2forge.alexandria.java.function.IFunction2;
-import com.g2forge.reassert.contract.model.usagepropagation.UsagePropagationBuilder;
+import com.g2forge.reassert.contract.algorithm.usagepropagation.model.UsagePropagationBuilder;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;

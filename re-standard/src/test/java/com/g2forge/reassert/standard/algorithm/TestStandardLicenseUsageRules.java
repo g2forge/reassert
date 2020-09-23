@@ -8,7 +8,7 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.contract.algorithm.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.core.api.module.Context;

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm;
+package com.g2forge.reassert.contract.algorithm.licenseusage;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -13,17 +13,18 @@ import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1.FunctionBuilder;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ContractLicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.LicenseTermLicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.UsageTermLicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRule;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRules;
+import com.g2forge.reassert.contract.eval.AnalyzeTermExpressionEvaluator;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
-import com.g2forge.reassert.contract.model.licenseusage.CTNameContract;
-import com.g2forge.reassert.contract.model.licenseusage.CTNameLicenseTerm;
-import com.g2forge.reassert.contract.model.licenseusage.CTNameUsageTerm;
-import com.g2forge.reassert.contract.model.licenseusage.ICTName;
-import com.g2forge.reassert.contract.model.licenseusage.rule.IRule;
-import com.g2forge.reassert.contract.model.licenseusage.rule.IRules;
 import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
@@ -62,28 +63,28 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 	@RequiredArgsConstructor
 	@EqualsAndHashCode(callSuper = false)
 	@ToString(callSuper = false)
-	public static class ContractEnvironment extends ATypeSwitchEnvironment<ICTName, TermRelation> {
+	public static class ContractEnvironment extends ATypeSwitchEnvironment<ILicenseUsageName, TermRelation> {
 		protected final IUsage usage;
 
 		protected final ILicense license;
 
 		@Override
-		protected void with(FunctionBuilder<ICTName, IOptional<? extends IExpression<ICTName, TermRelation>>> builder) {
-			builder.add(CTNameContract.class, name -> {
+		protected void with(FunctionBuilder<ILicenseUsageName, IOptional<? extends IExpression<ILicenseUsageName, TermRelation>>> builder) {
+			builder.add(ContractLicenseUsageName.class, name -> {
 				@SuppressWarnings("unchecked")
 				final ITerms<ITerm> cast = (ITerms<ITerm>) name.getContract().getTerms();
 				return of(cast.getRelation(name.getTerm()));
 			});
-			builder.add(CTNameLicenseTerm.class, name -> {
+			builder.add(LicenseTermLicenseUsageName.class, name -> {
 				final ILicenseTerm term = name.getTerm();
 				final TermRelation relation = getLicense().getTerms().getRelation(term);
-				final CTNameContract literalName = new CTNameContract(term, getLicense());
+				final ContractLicenseUsageName literalName = new ContractLicenseUsageName(term, getLicense());
 				return NullableOptional.of(new Literal<>(literalName, relation));
 			});
-			builder.add(CTNameUsageTerm.class, name -> {
+			builder.add(UsageTermLicenseUsageName.class, name -> {
 				final IUsageTerm term = name.getTerm();
 				final TermRelation relation = getUsage().getTerms().getRelation(term);
-				final CTNameContract literalName = new CTNameContract(term, getUsage());
+				final ContractLicenseUsageName literalName = new ContractLicenseUsageName(term, getUsage());
 				return NullableOptional.of(new Literal<>(literalName, relation));
 			});
 		}
@@ -102,11 +103,11 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getTerms(true));
 		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getTerms(true).stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));
 
-		final IEvaluator<ICTName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
-		final IEvaluator<ICTName, TermRelation, IExpression<ICTName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
+		final IEvaluator<ILicenseUsageName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		final IEvaluator<ILicenseUsageName, TermRelation, IExpression<ILicenseUsageName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
 		final Report.ReportBuilder retVal = Report.builder();
 		for (IRule rule : getRules().getRules()) {
-			final IExpression<ICTName, TermRelation> expression = rule.getExpression();
+			final IExpression<ILicenseUsageName, TermRelation> expression = rule.getExpression();
 			final IFindingFactory<?> findingFactory = rule.getFinding();
 
 			final ExpressionContextFinding analyzed;
@@ -122,7 +123,7 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 				if (!analyzed.getInputs().containsAll(analyzed.getOutputs())) throw new IllegalArgumentException(String.format("Rule to satisfy \"%1$s\" did not use \"%2$s\"", analyzed.getOutputs().stream().map(ITerm::getDescription).collect(HCollector.joining(", ", " & ")), HCollection.difference(analyzed.getOutputs(), analyzed.getInputs()).stream().map(ITerm::getDescription).collect(HCollector.joining(", ", " & "))));
 
 				// Evaluate the expression
-				final IExpression<ICTName, TermRelation> reduced = reduce.eval(new Closure<>(environment, expression));
+				final IExpression<ILicenseUsageName, TermRelation> reduced = reduce.eval(new Closure<>(environment, expression));
 				explained = evaluator.eval(reduced);
 
 				// Record that we handled the output terms

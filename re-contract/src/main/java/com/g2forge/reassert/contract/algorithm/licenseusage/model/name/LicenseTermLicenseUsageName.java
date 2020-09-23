@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.model.licenseusage;
+package com.g2forge.reassert.contract.algorithm.licenseusage.model.name;
 
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 
@@ -9,6 +9,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class CTNameLicenseTerm implements ICTName {
+public class LicenseTermLicenseUsageName implements ILicenseUsageName {
 	protected final ILicenseTerm term;
 }

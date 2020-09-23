@@ -6,7 +6,7 @@ import java.util.List;
 import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.contract.algorithm.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
 import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertFindingVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertWorkVisitor;

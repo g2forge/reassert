@@ -1,7 +1,7 @@
-package com.g2forge.reassert.contract.model.licenseusage.rule;
+package com.g2forge.reassert.contract.algorithm.licenseusage.model.rule;
 
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
-import com.g2forge.reassert.contract.model.licenseusage.ICTName;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.model.IExpression;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class Rule implements IRule {
-	protected final IExpression<ICTName, TermRelation> expression;
+	protected final IExpression<ILicenseUsageName, TermRelation> expression;
 
 	protected final IFindingFactory<?> finding;
 }

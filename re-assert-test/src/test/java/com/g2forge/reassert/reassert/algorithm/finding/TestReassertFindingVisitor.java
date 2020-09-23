@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.contract.algorithm.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertFindingVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.ReassertWorkVisitor;
 import com.g2forge.reassert.core.model.HReassertModel;

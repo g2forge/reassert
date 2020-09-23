@@ -1,22 +1,22 @@
 package com.g2forge.reassert.standard.algorithm;
 
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.and;
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.not;
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.of;
-import static com.g2forge.reassert.contract.model.licenseusage.CTOperation.or;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.and;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.not;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.of;
+import static com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageOperation.or;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.contract.algorithm.ALicenseUsageRules;
+import com.g2forge.reassert.contract.algorithm.licenseusage.ALicenseUsageRules;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.IRule;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.Rule;
 import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
 import com.g2forge.reassert.contract.model.finding.rule.DiscloseSourceFinding;
 import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
 import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
-import com.g2forge.reassert.contract.model.licenseusage.rule.IRule;
-import com.g2forge.reassert.contract.model.licenseusage.rule.Rule;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
