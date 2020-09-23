@@ -5,8 +5,8 @@ import static com.g2forge.reassert.express.model.operation.BooleanOperation.or;
 
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
-import com.g2forge.reassert.contract.algorithm.usagepropagation.AUsagePropagation;
 import com.g2forge.reassert.contract.algorithm.usagepropagation.model.name.IUsagePropagationName;
+import com.g2forge.reassert.contract.algorithm.usagepropagation.model.rule.AUsagePropagationRules;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;
@@ -18,22 +18,22 @@ import com.g2forge.reassert.express.model.variable.IVariable;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
 @ReassertLegalOpinion
-public class StandardUsagePropagation extends AUsagePropagation<StandardUsageTerm> {
-	private static final StandardUsagePropagation INSTANCE = new StandardUsagePropagation();
+public class StandardUsagePropagationRules extends AUsagePropagationRules<StandardUsageTerm> {
+	private static final StandardUsagePropagationRules INSTANCE = new StandardUsagePropagationRules();
 
-	public static StandardUsagePropagation create() {
+	public static StandardUsagePropagationRules create() {
 		return INSTANCE;
 	}
 
 	protected IFunction2<IEdge, IUsage, IUsage> computeFunction() {
 		final TypeSwitch2.FunctionBuilder<IEdge, IUsage, IUsage> builder = new TypeSwitch2.FunctionBuilder<>();
-		builder.add(Inherits.class, IUsage.class, with(b -> {
+		builder.add(Inherits.class, IUsage.class, rule(b -> {
 			b.copy(StandardUsageTerm.Commercial).copy(StandardUsageTerm.DistributionPublic).copy(StandardUsageTerm.DistributionPrivate).copy(StandardUsageTerm.DistributionService);
 			b.include(StandardUsageTerm.UseLink).exclude(StandardUsageTerm.UseCopy).exclude(StandardUsageTerm.UseModified);
 			b.copy(StandardUsageTerm.DistributingBinary).copy(StandardUsageTerm.DistributingSource);
 		}));
 		builder.add(Contains.class, IUsage.class, (e, u) -> u);
-		builder.add(Depends.class, IUsage.class, with(b -> {
+		builder.add(Depends.class, IUsage.class, rule(b -> {
 			b.copy(StandardUsageTerm.Commercial);
 
 			final IVariable<IUsagePropagationName<StandardUsageTerm, Depends>, TermRelation> transitive = b.of(Depends::isTransitive, TermRelation::valueOf);

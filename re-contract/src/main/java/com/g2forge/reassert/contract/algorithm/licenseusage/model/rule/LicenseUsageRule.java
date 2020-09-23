@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class Rule implements IRule {
+public class LicenseUsageRule implements ILicenseUsageRule {
+	public static class LicenseUsageRuleBuilder implements ILicenseUsageRule.ILicenseUsageRuleBuilder<LicenseUsageRuleBuilder, LicenseUsageRule> {}
+
 	protected final IExpression<ILicenseUsageName, TermRelation> expression;
 
 	protected final IFindingFactory<?> finding;

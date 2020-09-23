@@ -7,7 +7,7 @@ import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.reassert.ATestReassert;
 import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.standard.algorithm.StandardUsageAssignmentVisitor;
-import com.g2forge.reassert.standard.algorithm.StandardUsagePropagation;
+import com.g2forge.reassert.standard.algorithm.StandardUsagePropagationRules;
 
 public class TestStandardUsageAssignmentVisitor extends ATestReassert {
 	@Test
@@ -17,7 +17,7 @@ public class TestStandardUsageAssignmentVisitor extends ATestReassert {
 
 	@Override
 	protected TestGraph load(final Artifact<ListCoordinates> artifact) {
-		return new TestGraph(artifact, new StandardUsageAssignmentVisitor(StandardUsagePropagation.create()));
+		return new TestGraph(artifact, new StandardUsageAssignmentVisitor(StandardUsagePropagationRules.create()));
 	}
 
 	@Test

@@ -106,6 +106,6 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 
 	@Note(type = NoteType.TODO, value = "Implement support for license operations", issue = "G2-919")
 	protected IUsageApplied propagate(IEdge edge, IUsageApplied usage) {
-		return getPropagate().apply(edge, (IUsage)usage);
+		return getPropagate().apply(edge, (IUsage) usage);
 	}
 }
