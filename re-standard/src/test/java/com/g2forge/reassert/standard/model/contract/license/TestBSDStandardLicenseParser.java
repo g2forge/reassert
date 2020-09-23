@@ -5,7 +5,6 @@ import java.util.List;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
-import com.g2forge.reassert.standard.model.contract.license.BSDLicense;
 
 import lombok.Builder;
 import lombok.Data;

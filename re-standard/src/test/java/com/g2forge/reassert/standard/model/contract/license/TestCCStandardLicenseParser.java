@@ -6,7 +6,6 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
-import com.g2forge.reassert.standard.model.contract.license.CCLicense;
 import com.g2forge.reassert.standard.model.contract.license.CCLicense.Variant;
 
 import lombok.Builder;
