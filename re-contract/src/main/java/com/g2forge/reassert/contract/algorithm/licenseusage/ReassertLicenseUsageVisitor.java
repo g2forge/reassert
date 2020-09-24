@@ -27,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ReassertLicenseUsageVisitor extends AGraphVisitor {
-
 	protected final ILicenseUsageAnalyzer licenseUsageAnalyzer;
 
 	@Override

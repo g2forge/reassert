@@ -17,18 +17,18 @@ import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.reassert.contract.algorithm.licenseusage.convert.LicenseUsageNameRenderer;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ILicenseUsageFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
-import com.g2forge.reassert.contract.algorithm.work.model.finding.IncompatibleWorkLicenseFinding;
-import com.g2forge.reassert.contract.algorithm.work.model.finding.UnknownWorkFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkFinding;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.model.finding.IConditionFinding;
+import com.g2forge.reassert.contract.model.finding.IContractTermFinding;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.ContractType;
@@ -106,7 +106,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			return context;
 		}
 
-		protected IReportRenderContext explain(ILicenseUsageFinding finding, IReportRenderContext context) {
+		protected IReportRenderContext explain(IContractTermFinding finding, IReportRenderContext context) {
 			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
 				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
 					final ExpressionContextFinding findingContext = context.getFindingContext();
@@ -236,7 +236,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						throw new EnumException(ContractType.class, type);
 				}
 			});
-			builder.add(ConditionFinding.class, e -> c -> {
+			builder.add(IConditionFinding.class, e -> c -> {
 				final ExpressionContextFinding findingContext = c.getFindingContext();
 				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
 

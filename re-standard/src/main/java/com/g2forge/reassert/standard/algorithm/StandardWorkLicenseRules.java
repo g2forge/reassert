@@ -17,11 +17,11 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.contract.algorithm.work.model.finding.IncompatibleWorkLicenseFinding;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.AWorkRule;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRule;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRules;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.RuleWorkType;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.AWorkLicenseRule;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.IWorkLicenseRule;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.IWorkLicenseRules;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.RuleWorkType;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.HReassertModel;
@@ -48,8 +48,8 @@ import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public class StandardWorkRules implements IWorkRules, ISingleton {
-	protected static class GPLWorkType extends AWorkRule {
+public class StandardWorkLicenseRules implements IWorkLicenseRules, ISingleton {
+	protected static class GPLWorkType extends AWorkLicenseRule {
 		protected void expand(final TypeSwitch1.FunctionBuilder<IEdge, Boolean> builder) {
 			builder.add(Depends.class, e -> true);
 			builder.add(Copy.class, e -> true);
@@ -115,20 +115,20 @@ public class StandardWorkRules implements IWorkRules, ISingleton {
 		}
 	}
 
-	protected static final StandardWorkRules INSTANCE = new StandardWorkRules();
+	protected static final StandardWorkLicenseRules INSTANCE = new StandardWorkLicenseRules();
 
-	public static StandardWorkRules create() {
+	public static StandardWorkLicenseRules create() {
 		return INSTANCE;
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final IFunction1<ILicenseApplied, IWorkRule> function = computeFunction();
+	private final IFunction1<ILicenseApplied, IWorkLicenseRule> function = computeFunction();
 
-	protected StandardWorkRules() {}
+	protected StandardWorkLicenseRules() {}
 
 	@ReassertLegalOpinion
-	protected IFunction1<ILicenseApplied, IWorkRule> computeFunction() {
-		final TypeSwitch1.FunctionBuilder<ILicenseFamily, IWorkRule> familyBuilder = new TypeSwitch1.FunctionBuilder<>();
+	protected IFunction1<ILicenseApplied, IWorkLicenseRule> computeFunction() {
+		final TypeSwitch1.FunctionBuilder<ILicenseFamily, IWorkLicenseRule> familyBuilder = new TypeSwitch1.FunctionBuilder<>();
 		familyBuilder.add(StandardLicenseFamily.class, l -> {
 			switch (l) {
 				case BSD:
@@ -140,9 +140,9 @@ public class StandardWorkRules implements IWorkRules, ISingleton {
 					throw new EnumException(StandardLicenseFamily.class, l);
 			}
 		});
-		final IFunction1<ILicenseFamily, IWorkRule> familyFunction = familyBuilder.build();
+		final IFunction1<ILicenseFamily, IWorkLicenseRule> familyFunction = familyBuilder.build();
 
-		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkRule> licenseBuilder = new TypeSwitch1.FunctionBuilder<>();
+		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkLicenseRule> licenseBuilder = new TypeSwitch1.FunctionBuilder<>();
 		licenseBuilder.add(StandardLicense.class, l -> {
 			switch (l) {
 				case Owner:
@@ -164,7 +164,7 @@ public class StandardWorkRules implements IWorkRules, ISingleton {
 
 	@Override
 	public RuleWorkType apply(ILicenseApplied license) {
-		final IWorkRule rule = getFunction().apply(license);
+		final IWorkLicenseRule rule = getFunction().apply(license);
 		return rule == null ? null : new RuleWorkType(rule);
 	}
 }

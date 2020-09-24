@@ -12,8 +12,8 @@ import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import com.g2forge.alexandria.java.function.IThrowSupplier;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRule;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.RuleWorkType;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.IWorkLicenseRule;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.RuleWorkType;
 import com.g2forge.reassert.core.model.work.IWorkType;
 
 import lombok.AccessLevel;
@@ -37,7 +37,7 @@ public class WorkTypeDeserializer extends StdDeserializer<IWorkType> implements 
 
 	protected IWorkType deserialize(JsonParser parser, IThrowSupplier<?, IOException> supplier) throws IOException {
 		final ObjectCodec codec = parser.getCodec();
-		final IWorkRule rule = codec.readValue(parser, IWorkRule.class);
+		final IWorkLicenseRule rule = codec.readValue(parser, IWorkLicenseRule.class);
 		return new RuleWorkType(rule);
 	}
 

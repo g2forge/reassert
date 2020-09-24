@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.g2forge.alexandria.java.function.IThrowConsumer1;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.RuleWorkType;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.RuleWorkType;
 import com.g2forge.reassert.core.model.work.IWorkType;
 
 import lombok.AccessLevel;

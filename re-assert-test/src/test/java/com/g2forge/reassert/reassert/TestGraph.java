@@ -8,7 +8,7 @@ import org.jgrapht.Graph;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
 import com.g2forge.reassert.contract.algorithm.licenseusage.ReassertLicenseUsageVisitor;
-import com.g2forge.reassert.contract.algorithm.work.ReassertWorkVisitor;
+import com.g2forge.reassert.contract.algorithm.worklicense.ReassertWorkLicenseVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.api.module.IContext;
@@ -20,7 +20,7 @@ import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor
 import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.algorithm.StandardUsageAssignmentVisitor;
 import com.g2forge.reassert.standard.algorithm.StandardUsagePropagationRules;
-import com.g2forge.reassert.standard.algorithm.StandardWorkRules;
+import com.g2forge.reassert.standard.algorithm.StandardWorkLicenseRules;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class TestGraph {
 		final List<IGraphVisitor> visitors = new ArrayList<>();
 		visitors.add(new StandardLicenseInheritanceVisitor());
 		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropagationRules.create()));
-		visitors.add(new ReassertWorkVisitor(StandardWorkRules.create()));
+		visitors.add(new ReassertWorkLicenseVisitor(StandardWorkLicenseRules.create()));
 		visitors.add(new ReassertLicenseUsageVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
 		return visitors;
 	}

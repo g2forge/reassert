@@ -11,8 +11,8 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.g2forge.reassert.contract.algorithm.work.model.finding.UnknownWorkFinding;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRule;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.IWorkLicenseRule;
 import com.g2forge.reassert.core.model.work.IWorkType;
 
 public class WorkModule extends SimpleModule {
@@ -30,7 +30,7 @@ public class WorkModule extends SimpleModule {
 	@Override
 	public void setupModule(SetupContext context) {
 		setMixInAnnotation(UnknownWorkFinding.class, UnknownWorkTypeFindingMixin.class);
-		setMixInAnnotation(IWorkRule.class, PolymorphicWorkRuleMixin.class);
+		setMixInAnnotation(IWorkLicenseRule.class, PolymorphicWorkRuleMixin.class);
 
 		super.setupModule(context);
 

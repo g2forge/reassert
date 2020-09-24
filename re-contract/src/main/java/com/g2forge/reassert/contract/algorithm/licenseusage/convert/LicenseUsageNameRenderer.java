@@ -7,9 +7,9 @@ import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified.TextNestedModifiedBuilder;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ContractLicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.LicenseTermLicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.UsageTermLicenseUsageName;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.core.api.described.IDescription;
 import com.g2forge.reassert.core.api.module.IContext;
 
@@ -21,10 +21,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LicenseUsageNameRenderer extends ATextualRenderer<ILicenseUsageName, ILicenseUsageNameRenderContext> {
 	@Getter
-	protected class CTNameRenderContext extends ARenderContext implements ILicenseUsageNameRenderContext {
+	protected class LicenseUsageNameRenderContext extends ARenderContext implements ILicenseUsageNameRenderContext {
 		protected final IContext context;
 
-		public CTNameRenderContext(TextNestedModifiedBuilder builder, IContext context) {
+		public LicenseUsageNameRenderContext(TextNestedModifiedBuilder builder, IContext context) {
 			super(builder);
 			this.context = context;
 		}
@@ -35,7 +35,7 @@ public class LicenseUsageNameRenderer extends ATextualRenderer<ILicenseUsageName
 		}
 	}
 
-	protected static class CTNameRendering extends ARenderer.ARendering<ILicenseUsageName, ILicenseUsageNameRenderContext, IExplicitRenderable<? super ILicenseUsageNameRenderContext>> {
+	protected static class LicenseUsageNameRendering extends ARenderer.ARendering<ILicenseUsageName, ILicenseUsageNameRenderContext, IExplicitRenderable<? super ILicenseUsageNameRenderContext>> {
 		@Override
 		protected void extend(TypeSwitch1.FunctionBuilder<ILicenseUsageName, IExplicitRenderable<? super ILicenseUsageNameRenderContext>> builder) {
 			builder.add(ContractLicenseUsageName.class, e -> c -> {
@@ -49,13 +49,13 @@ public class LicenseUsageNameRenderer extends ATextualRenderer<ILicenseUsageName
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final IRendering<ILicenseUsageName, ILicenseUsageNameRenderContext, IExplicitRenderable<? super ILicenseUsageNameRenderContext>> renderingStatic = new CTNameRendering();
+	private static final IRendering<ILicenseUsageName, ILicenseUsageNameRenderContext, IExplicitRenderable<? super ILicenseUsageNameRenderContext>> renderingStatic = new LicenseUsageNameRendering();
 
 	protected final IContext context;
 
 	@Override
 	protected ILicenseUsageNameRenderContext createContext(TextNestedModifiedBuilder builder) {
-		return new CTNameRenderContext(builder, getContext());
+		return new LicenseUsageNameRenderContext(builder, getContext());
 	}
 
 	@Override

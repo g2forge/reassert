@@ -2,6 +2,7 @@ package com.g2forge.reassert.contract.algorithm.licenseusage.model.finding;
 
 import com.g2forge.alexandria.java.adt.name.IStringDescribed;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
+import com.g2forge.reassert.contract.model.finding.INoticeFinding;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.model.IExplained;
 

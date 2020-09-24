@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm.work;
+package com.g2forge.reassert.contract.algorithm.worklicense;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -14,10 +14,10 @@ import org.jgrapht.Graph;
 import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.contract.algorithm.work.model.finding.UnknownWorkFinding;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRule;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRules;
-import com.g2forge.reassert.contract.algorithm.work.model.rule.RuleWorkType;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.IWorkLicenseRule;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.IWorkLicenseRules;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.RuleWorkType;
 import com.g2forge.reassert.core.algorithm.visitor.AGraphVisitor;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
@@ -34,10 +34,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ReassertWorkVisitor extends AGraphVisitor {
+public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 	protected final AtomicInteger workSequence = new AtomicInteger(0);
 
-	protected final IWorkRules workTypeFactory;
+	protected final IWorkLicenseRules workTypeFactory;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
@@ -55,7 +55,7 @@ public class ReassertWorkVisitor extends AGraphVisitor {
 		final FindingConsumer findingConsumer = new FindingConsumer(graph);
 
 		final Map<ILicenseApplied, RuleWorkType> licenses = new LinkedHashMap<>();
-		final IWorkRules workTypeFactory = getWorkTypeFactory();
+		final IWorkLicenseRules workTypeFactory = getWorkTypeFactory();
 		for (ILicenseApplied license : graph.vertexSet().stream().flatMap(ITypeRef.of(ILicenseApplied.class)::castIfInstance).collect(Collectors.toCollection(LinkedHashSet::new))) {
 			final RuleWorkType workType;
 			try {
@@ -109,7 +109,7 @@ public class ReassertWorkVisitor extends AGraphVisitor {
 		}
 	}
 
-	protected IWorkRule getRule(final Work work) {
+	protected IWorkLicenseRule getRule(final Work work) {
 		return ((RuleWorkType) work.getType()).getRule();
 	}
 }

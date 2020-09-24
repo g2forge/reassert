@@ -1,6 +1,8 @@
-package com.g2forge.reassert.contract.algorithm.work.model.finding;
+package com.g2forge.reassert.contract.algorithm.worklicense.model.finding;
 
 import org.slf4j.event.Level;
+
+import com.g2forge.reassert.core.model.report.ITerminalFinding;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class UnknownWorkFinding implements IWorkFinding {
+public class UnknownWorkFinding implements ITerminalFinding {
 	protected final Throwable throwable;
 
 	@Override
