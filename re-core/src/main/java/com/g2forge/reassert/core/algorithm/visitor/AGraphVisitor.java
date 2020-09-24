@@ -9,6 +9,7 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.report.GraphContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
+import com.g2forge.reassert.core.model.report.IReport;
 
 public abstract class AGraphVisitor implements IGraphVisitor {
 	protected final AtomicInteger findingSequence = new AtomicInteger(0);
@@ -19,5 +20,11 @@ public abstract class AGraphVisitor implements IGraphVisitor {
 		graph.addVertex(contextualFinding);
 		graph.addEdge(vertex, contextualFinding, new Notice());
 		return contextualFinding;
+	}
+
+	protected void found(Graph<IVertex, IEdge> graph, IVertex vertex, final IReport report) {
+		for (IFinding finding : report.getFindings()) {
+			found(graph, vertex, finding);
+		}
 	}
 }

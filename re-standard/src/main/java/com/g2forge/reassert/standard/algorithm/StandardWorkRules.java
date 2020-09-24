@@ -17,6 +17,11 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.contract.algorithm.work.model.finding.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.contract.algorithm.work.model.rule.AWorkRule;
+import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRule;
+import com.g2forge.reassert.contract.algorithm.work.model.rule.IWorkRules;
+import com.g2forge.reassert.contract.algorithm.work.model.rule.RuleWorkType;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.HReassertModel;
@@ -34,9 +39,6 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
-import com.g2forge.reassert.core.model.work.IWorkType;
-import com.g2forge.reassert.core.model.work.IWorkTypeFactory;
-import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
 import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.core.model.work.WorkContains;
 import com.g2forge.reassert.core.model.work.WorkLicense;
@@ -47,18 +49,12 @@ import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
-	protected static class GPLWorkType implements IWorkType {
-		@Getter(lazy = true, value = AccessLevel.PROTECTED)
-		private final IFunction1<IEdge, Boolean> function = computeFunction();
-
-		@ReassertLegalOpinion
-		protected IFunction1<IEdge, Boolean> computeFunction() {
-			final TypeSwitch1.FunctionBuilder<IEdge, Boolean> builder = new TypeSwitch1.FunctionBuilder<>();
+public class StandardWorkRules implements IWorkRules, ISingleton {
+	protected static class GPLWorkType extends AWorkRule {
+		protected void expand(final TypeSwitch1.FunctionBuilder<IEdge, Boolean> builder) {
 			builder.add(Depends.class, e -> true);
 			builder.add(Copy.class, e -> true);
 			builder.add(Inherits.class, e -> true);
-			return builder.build();
 		}
 
 		@ReassertLegalOpinion
@@ -100,12 +96,11 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 						throw new EnumException(ILicenseTerm.Type.class, term.getType());
 				}
 			}
-			return builder.build();
-		}
 
-		@Override
-		public boolean isIncluded(IEdge edge, boolean outgoing) {
-			return getFunction().apply(edge);
+			// Permission -> !licenseTerm || termTerm
+			// Condition||Limitation -> licenseTerm || !termTerm
+
+			return builder.build();
 		}
 
 		@Override
@@ -123,20 +118,20 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 		}
 	}
 
-	protected static final StandardWorkTypeFactory INSTANCE = new StandardWorkTypeFactory();
+	protected static final StandardWorkRules INSTANCE = new StandardWorkRules();
 
-	public static StandardWorkTypeFactory create() {
+	public static StandardWorkRules create() {
 		return INSTANCE;
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final IFunction1<ILicenseApplied, IWorkType> function = computeFunction();
+	private final IFunction1<ILicenseApplied, IWorkRule> function = computeFunction();
 
-	protected StandardWorkTypeFactory() {}
+	protected StandardWorkRules() {}
 
 	@ReassertLegalOpinion
-	protected IFunction1<ILicenseApplied, IWorkType> computeFunction() {
-		final TypeSwitch1.FunctionBuilder<ILicenseFamily, IWorkType> familyBuilder = new TypeSwitch1.FunctionBuilder<>();
+	protected IFunction1<ILicenseApplied, IWorkRule> computeFunction() {
+		final TypeSwitch1.FunctionBuilder<ILicenseFamily, IWorkRule> familyBuilder = new TypeSwitch1.FunctionBuilder<>();
 		familyBuilder.add(StandardLicenseFamily.class, l -> {
 			switch (l) {
 				case BSD:
@@ -148,9 +143,9 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 					throw new EnumException(StandardLicenseFamily.class, l);
 			}
 		});
-		final IFunction1<ILicenseFamily, IWorkType> familyFunction = familyBuilder.build();
+		final IFunction1<ILicenseFamily, IWorkRule> familyFunction = familyBuilder.build();
 
-		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkType> licenseBuilder = new TypeSwitch1.FunctionBuilder<>();
+		final TypeSwitch1.FunctionBuilder<ILicenseApplied, IWorkRule> licenseBuilder = new TypeSwitch1.FunctionBuilder<>();
 		licenseBuilder.add(StandardLicense.class, l -> {
 			switch (l) {
 				case Owner:
@@ -171,7 +166,8 @@ public class StandardWorkTypeFactory implements IWorkTypeFactory, ISingleton {
 	}
 
 	@Override
-	public IWorkType computeWorkType(ILicenseApplied license) {
-		return getFunction().apply(license);
+	public RuleWorkType apply(ILicenseApplied license) {
+		final IWorkRule rule = getFunction().apply(license);
+		return rule == null ? null : new RuleWorkType(rule);
 	}
 }

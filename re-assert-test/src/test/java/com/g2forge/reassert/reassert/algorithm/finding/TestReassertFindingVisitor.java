@@ -9,8 +9,8 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
-import com.g2forge.reassert.core.algorithm.visitor.ReassertFindingVisitor;
-import com.g2forge.reassert.core.algorithm.visitor.ReassertWorkVisitor;
+import com.g2forge.reassert.contract.algorithm.licenseusage.ReassertLicenseUsageVisitor;
+import com.g2forge.reassert.contract.algorithm.work.ReassertWorkVisitor;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -20,7 +20,7 @@ import com.g2forge.reassert.list.ListCoordinates;
 import com.g2forge.reassert.reassert.ATestReassert;
 import com.g2forge.reassert.reassert.TestGraph;
 import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
-import com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory;
+import com.g2forge.reassert.standard.algorithm.StandardWorkRules;
 
 public class TestReassertFindingVisitor extends ATestReassert {
 	@Test
@@ -49,6 +49,6 @@ public class TestReassertFindingVisitor extends ATestReassert {
 
 	@Override
 	protected TestGraph load(final Artifact<ListCoordinates> artifact) {
-		return new TestGraph(artifact, new ReassertWorkVisitor(StandardWorkTypeFactory.create()), new ReassertFindingVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
+		return new TestGraph(artifact, new ReassertWorkVisitor(StandardWorkRules.create()), new ReassertLicenseUsageVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
 	}
 }

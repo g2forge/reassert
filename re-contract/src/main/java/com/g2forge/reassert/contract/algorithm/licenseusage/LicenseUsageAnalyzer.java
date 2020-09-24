@@ -25,7 +25,6 @@ import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
-import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.license.ILicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;

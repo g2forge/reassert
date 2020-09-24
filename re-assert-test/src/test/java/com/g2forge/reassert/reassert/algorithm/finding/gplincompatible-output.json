@@ -55,7 +55,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "UnknownWorkTypeFinding 0" ]
+        "targets" : [ "UnknownWorkFinding 0" ]
       } ]
     },
     "private-usage" : {
@@ -92,12 +92,12 @@
         } ]
       }
     },
-    "UnknownWorkTypeFinding 0" : {
+    "UnknownWorkFinding 0" : {
       "vertex" : {
         "@c" : ".report.GraphContextFinding",
-        "name" : "UnknownWorkTypeFinding 0",
+        "name" : "UnknownWorkFinding 0",
         "finding" : {
-          "@c" : "com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding",
+          "@c" : "com.g2forge.reassert.contract.algorithm.work.model.finding.UnknownWorkFinding",
           "level" : "ERROR"
         }
       }
@@ -107,12 +107,12 @@
         "@c" : ".work.Work",
         "name" : "Work 0",
         "type" : {
-          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
+          "@c" : ".StandardWorkRules$GPLWorkType"
         }
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "IncompatibleWorkLicenseFinding 30" ]
+        "targets" : [ "IncompatibleWorkLicenseFinding 1" ]
       }, {
         "edge" : "workcontains",
         "targets" : [ "A artifact", "B artifact" ]
@@ -121,12 +121,12 @@
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
     },
-    "IncompatibleWorkLicenseFinding 30" : {
+    "IncompatibleWorkLicenseFinding 1" : {
       "vertex" : {
         "@c" : ".report.GraphContextFinding",
-        "name" : "IncompatibleWorkLicenseFinding 30",
+        "name" : "IncompatibleWorkLicenseFinding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding",
+          "@c" : "com.g2forge.reassert.contract.algorithm.work.model.finding.IncompatibleWorkLicenseFinding",
           "unknown" : [ "Distribution", "Modification", "PatentGrant", "DisclosureSource", "Notice", "SaaSIsDistribution", "SameLicense", "StateChanges", "PatentNonGrant", "Liability", "Trademark" ],
           "mismatched" : [ "CommercialUse" ],
           "level" : "ERROR"

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.model.finding.rule;
+package com.g2forge.reassert.contract.algorithm.licenseusage.model.finding;
 
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.model.IExplained;

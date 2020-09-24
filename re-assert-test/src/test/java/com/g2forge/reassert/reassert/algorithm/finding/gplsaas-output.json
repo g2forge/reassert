@@ -46,7 +46,7 @@
         "@c" : ".work.Work",
         "name" : "Work 0",
         "type" : {
-          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
+          "@c" : ".StandardWorkRules$GPLWorkType"
         }
       },
       "outgoings" : [ {
@@ -65,7 +65,7 @@
           "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
           "inputs" : [ "UseLink", "UseCopy", "UseModified" ],
           "finding" : {
-            "@c" : "com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding",
+            "@c" : "com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding",
             "result" : {
               "@c" : ".operation.ExplainedOperation",
               "operator" : "NOT",

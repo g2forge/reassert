@@ -1,4 +1,4 @@
-package com.g2forge.reassert.core.model.contract;
+package com.g2forge.reassert.contract.algorithm.licenseusage;
 
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;

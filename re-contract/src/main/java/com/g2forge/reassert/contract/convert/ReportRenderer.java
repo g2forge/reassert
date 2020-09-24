@@ -17,17 +17,19 @@ import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
 import com.g2forge.reassert.contract.algorithm.licenseusage.convert.LicenseUsageNameRenderer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ILicenseUsageFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.work.model.finding.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.contract.algorithm.work.model.finding.UnknownWorkFinding;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
-import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
-import com.g2forge.reassert.contract.model.finding.rule.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.finding.rule.IRuleFinding;
-import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
-import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
-import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.ContractType;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -39,8 +41,6 @@ import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
 import com.g2forge.reassert.core.model.report.IContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
-import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
 import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.express.convert.ExplanationRenderer;
 import com.g2forge.reassert.express.model.IExplained;
@@ -106,7 +106,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			return context;
 		}
 
-		protected IReportRenderContext explain(IRuleFinding finding, IReportRenderContext context) {
+		protected IReportRenderContext explain(ILicenseUsageFinding finding, IReportRenderContext context) {
 			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
 				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
 					final ExpressionContextFinding findingContext = context.getFindingContext();
@@ -216,7 +216,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			});
 			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
 			builder.add(MultiUsageFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting usages detected for artifact"));
-			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
+			builder.add(UnknownWorkFinding.class, e -> c -> {
 				appendLevel(e, c).append("Unknown work type");
 				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
 					c.newline().append((c.getMode().compareTo(ExplanationMode.Trace) >= 0) ? HError.toString(e.getThrowable()) : e.getThrowable().getMessage());
@@ -270,7 +270,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				explain(e, c);
 			});
 			builder.add(DiscloseSourceFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must disclose the source for this artifact")));
-			builder.add(NoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
+			builder.add(CopyrightNoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
 			builder.add(StateChangesFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must state the changes you have made to your copy of this artifact")));
 			builder.add(SuspiciousUsageFinding.class, e -> c -> explain(e, appendLevel(e, c).append("The usage for this artifact improperly specifies the ").append(e.getAttribute().getDescription())));
 		}

@@ -9,12 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ALicenseUsageRules;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRule;
-import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
-import com.g2forge.reassert.contract.model.finding.rule.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
-import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
@@ -54,7 +54,7 @@ public class StandardLicenseUsageRules extends ALicenseUsageRules implements ISi
 
 		// License conditions
 		rules.add(rule(b -> b.expression(and(or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))), b.of(StandardLicenseTerm.DisclosureSource))).finding(DiscloseSourceFinding::new)));
-		rules.add(rule(b -> b.expression(and(b.of(StandardLicenseTerm.Notice), or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))))).finding(NoticeFinding::new)));
+		rules.add(rule(b -> b.expression(and(b.of(StandardLicenseTerm.Notice), or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))))).finding(CopyrightNoticeFinding::new)));
 		// SaaSIsDistribution has no satisfying condition, since it's part of the distribution usage terms
 		// SameLicense is handled elsewhere, since it speaks to the licenses across artifacts and the analyzer isn't graph-aware
 		rules.add(rule(b -> b.expression(and(or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))), b.of(StandardUsageTerm.UseModified), b.of(StandardLicenseTerm.StateChanges))).finding(StateChangesFinding::new)));

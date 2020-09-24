@@ -1,4 +1,4 @@
-package com.g2forge.reassert.core.algorithm.visitor;
+package com.g2forge.reassert.contract.algorithm.licenseusage;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -8,11 +8,11 @@ import org.jgrapht.Graph;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.core.algorithm.visitor.AGraphVisitor;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
-import com.g2forge.reassert.core.model.contract.ILicenseUsageAnalyzer;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.MultiLicenseFinding;
@@ -20,40 +20,24 @@ import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
 import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
-import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.core.model.work.IWorkType;
-import com.g2forge.reassert.core.model.work.Work;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ReassertFindingVisitor extends AGraphVisitor {
+public class ReassertLicenseUsageVisitor extends AGraphVisitor {
 	protected final ILicenseUsageAnalyzer licenseUsageAnalyzer;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
-		analyzeLicenseUsage(graph);
-		analyzeWorks(graph);
-	}
-
-	protected void analyzeLicenseUsage(Graph<IVertex, IEdge> graph) {
 		final ILicenseUsageAnalyzer licenseUsageAnalyzer = getLicenseUsageAnalyzer();
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
 			final IUsageApplied usage = computeUsage(graph, artifact);
 			final ILicenseApplied license = computeLicense(graph, artifact);
 			final IReport report = licenseUsageAnalyzer.report(usage, license);
 			found(graph, artifact, report);
-		}
-	}
-
-	protected void analyzeWorks(Graph<IVertex, IEdge> graph) {
-		for (Work work : graph.vertexSet().stream().flatMap(ITypeRef.of(Work.class)::castIfInstance).collect(Collectors.toList())) {
-			final IWorkType workType = work.getType();
-			final IReport report = workType.report(graph, work);
-			found(graph, work, report);
 		}
 	}
 
@@ -84,11 +68,5 @@ public class ReassertFindingVisitor extends AGraphVisitor {
 		}
 
 		return UnspecifiedUsage.create();
-	}
-
-	protected void found(Graph<IVertex, IEdge> graph, IVertex vertex, final IReport report) {
-		for (IFinding finding : report.getFindings()) {
-			found(graph, vertex, finding);
-		}
 	}
 }

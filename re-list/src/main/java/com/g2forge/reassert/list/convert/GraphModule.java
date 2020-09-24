@@ -46,10 +46,6 @@ public class GraphModule extends SimpleModule {
 		public abstract boolean isMaterial();
 	}
 
-	@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
-	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
-	protected static class PolymorphicWorkTypeMixin {}
-
 	private static final long serialVersionUID = 3849430547992646737L;
 
 	protected final IContext context;
@@ -59,7 +55,6 @@ public class GraphModule extends SimpleModule {
 		setMixInAnnotation(ICoordinates.class, PolymorphicCoordinatesMixin.class);
 		setMixInAnnotation(IVertex.class, PolymorphicVertexMixin.class);
 		setMixInAnnotation(IEdge.class, PolymorphicEdgeMixin.class);
-		setMixInAnnotation(IWorkType.class, PolymorphicWorkTypeMixin.class);
 
 		context.insertAnnotationIntrospector(new AnnotationIntrospector() {
 			private static final long serialVersionUID = -2826606387145329925L;

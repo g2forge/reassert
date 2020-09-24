@@ -7,11 +7,11 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRules;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.LicenseUsageRules;
 import com.g2forge.reassert.contract.model.contract.TestLicenseTerm;
 import com.g2forge.reassert.contract.model.contract.TestUsageTerm;
-import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
 import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.Terms;

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.model.finding.rule;
+package com.g2forge.reassert.contract.algorithm.licenseusage.model.finding;
 
 import org.slf4j.event.Level;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class ConditionFinding implements IRuleFinding {
+public class ConditionFinding implements ILicenseUsageFinding {
 	protected final IExplained<TermRelation> result;
 
 	@Override
