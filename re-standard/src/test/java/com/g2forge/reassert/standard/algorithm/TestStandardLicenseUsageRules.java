@@ -24,7 +24,6 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
 import com.g2forge.reassert.express.convert.ExplanationMode;
-import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
@@ -55,7 +54,9 @@ public class TestStandardLicenseUsageRules {
 	}
 
 	protected void test(final IUsageApplied usage, final ILicenseApplied license, final Level exepctedMinLevel, final String expectedResource, IPredicate1<IFinding> filter) {
-		final IReport reportRaw = new LicenseUsageAnalyzer(StandardLicenseUsageRules.create()).report(usage, license);
+		final Report.ReportBuilder builder = Report.builder();
+		new LicenseUsageAnalyzer(StandardLicenseUsageRules.create()).analyze(usage, license, builder);
+		final IReport reportRaw = builder.build();
 		final IReport reportClean = filter != null ? Report.builder().findings(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList())).build() : reportRaw;
 
 		final ReportRenderer reportRenderer = new ReportRenderer(ExplanationMode.Explain, Context.getContext());

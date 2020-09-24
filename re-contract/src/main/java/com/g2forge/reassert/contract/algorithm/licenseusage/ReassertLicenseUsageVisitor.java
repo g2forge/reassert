@@ -20,7 +20,6 @@ import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
 import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
-import com.g2forge.reassert.core.model.report.IReport;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ReassertLicenseUsageVisitor extends AGraphVisitor {
+
 	protected final ILicenseUsageAnalyzer licenseUsageAnalyzer;
 
 	@Override
@@ -36,8 +36,7 @@ public class ReassertLicenseUsageVisitor extends AGraphVisitor {
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
 			final IUsageApplied usage = computeUsage(graph, artifact);
 			final ILicenseApplied license = computeLicense(graph, artifact);
-			final IReport report = licenseUsageAnalyzer.report(usage, license);
-			found(graph, artifact, report);
+			licenseUsageAnalyzer.analyze(usage, license, new FindingConsumer(graph, artifact));
 		}
 	}
 
@@ -47,10 +46,7 @@ public class ReassertLicenseUsageVisitor extends AGraphVisitor {
 
 		if (licenses.size() > 1) {
 			// Notice: we don't need a finding if no license is specified, because an unspecified license will result in a usage failure
-			final IVertex finding = found(graph, artifact, new MultiLicenseFinding());
-			for (ILicenseApplied license : licenses) {
-				graph.addEdge(finding, license, new Notice());
-			}
+			new FindingConsumer(graph, artifact).found(new MultiLicenseFinding(), licenses);
 		}
 
 		return UnspecifiedLicense.create();
@@ -61,10 +57,7 @@ public class ReassertLicenseUsageVisitor extends AGraphVisitor {
 		if (usages.size() == 1) return HCollection.getOne(usages);
 
 		if (usages.size() > 1) {
-			final IVertex finding = found(graph, artifact, new MultiUsageFinding());
-			for (IUsageApplied usage : usages) {
-				graph.addEdge(finding, usage, new Notice());
-			}
+			new FindingConsumer(graph, artifact).found(new MultiUsageFinding(), usages);
 		}
 
 		return UnspecifiedUsage.create();

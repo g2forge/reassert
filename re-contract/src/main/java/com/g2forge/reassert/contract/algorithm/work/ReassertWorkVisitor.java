@@ -25,7 +25,6 @@ import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
-import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.core.model.work.WorkContains;
 import com.g2forge.reassert.core.model.work.WorkLicense;
@@ -48,12 +47,13 @@ public class ReassertWorkVisitor extends AGraphVisitor {
 
 	protected void analyzeWorks(Graph<IVertex, IEdge> graph) {
 		for (Work work : graph.vertexSet().stream().flatMap(ITypeRef.of(Work.class)::castIfInstance).collect(Collectors.toList())) {
-			final IReport report = getRule(work).report(graph, work);
-			found(graph, work, report);
+			getRule(work).analyze(graph, work, new FindingConsumer(graph, work));
 		}
 	}
 
 	protected void createWorks(Graph<IVertex, IEdge> graph) {
+		final FindingConsumer findingConsumer = new FindingConsumer(graph);
+
 		final Map<ILicenseApplied, RuleWorkType> licenses = new LinkedHashMap<>();
 		final IWorkRules workTypeFactory = getWorkTypeFactory();
 		for (ILicenseApplied license : graph.vertexSet().stream().flatMap(ITypeRef.of(ILicenseApplied.class)::castIfInstance).collect(Collectors.toCollection(LinkedHashSet::new))) {
@@ -61,8 +61,7 @@ public class ReassertWorkVisitor extends AGraphVisitor {
 			try {
 				workType = workTypeFactory.apply(license);
 			} catch (Throwable throwable) {
-				final UnknownWorkFinding finding = new UnknownWorkFinding(throwable);
-				found(graph, license, finding);
+				findingConsumer.found(new UnknownWorkFinding(throwable), license);
 				continue;
 			}
 			if (workType != null) licenses.put(license, workType);

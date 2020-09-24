@@ -37,8 +37,7 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
-import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.core.model.report.Report;
+import com.g2forge.reassert.core.model.report.IFindingConsumer;
 import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.core.model.work.WorkContains;
 import com.g2forge.reassert.core.model.work.WorkLicense;
@@ -104,17 +103,15 @@ public class StandardWorkRules implements IWorkRules, ISingleton {
 		}
 
 		@Override
-		public IReport report(Graph<IVertex, IEdge> graph, Work work) {
+		public void analyze(Graph<IVertex, IEdge> graph, Work work, IFindingConsumer consumer) {
 			final Collection<Artifact<?>> artifacts = HReassertModel.get(graph, work, true, WorkContains.class::isInstance, new ATypeRef<Artifact<?>>() {});
 			final Map<ILicenseApplied, List<Artifact<?>>> licenses = artifacts.stream().collect(HCollector.multiGroupingBy(artifact -> HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class))));
 
 			final ILicenseApplied license = HCollection.getOne(HReassertModel.get(graph, work, true, WorkLicense.class::isInstance, ITypeRef.of(ILicenseApplied.class)));
-			final Report.ReportBuilder report = Report.builder();
 			for (Map.Entry<ILicenseApplied, List<Artifact<?>>> entry : licenses.entrySet()) {
 				final IncompatibleWorkLicenseFinding finding = isCompatible(license, entry.getKey());
-				if (finding != null) report.finding(finding);
+				if (finding != null) consumer.found(finding);
 			}
-			return report.build();
 		}
 	}
 

@@ -18,15 +18,17 @@ import com.g2forge.reassert.core.model.contract.terms.Terms;
 import com.g2forge.reassert.core.model.contract.usage.GeneralUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IReport;
+import com.g2forge.reassert.core.model.report.Report;
 
 public class TestLicenseUsageAnalyzer {
 	protected IReport analyze(final Terms<IUsageTerm> usageTerms, final Terms<ILicenseTerm> licenseTerms) {
 		final LicenseUsageRules rules = new LicenseUsageRules(ILicenseUsageRules.rule(b -> b.expression(or(b.not(TestUsageTerm.Term), b.of(TestLicenseTerm.Permission))).finding(ConditionFinding::new)));
-		final LicenseUsageAnalyzer analyzer = new LicenseUsageAnalyzer(rules);
-
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", usageTerms);
 		final GeneralLicense license = new GeneralLicense("license", "license", "license", licenseTerms, null, false);
-		return analyzer.report(usage, license);
+
+		final Report.ReportBuilder builder = Report.builder();
+		new LicenseUsageAnalyzer(rules).analyze(usage, license, builder);
+		return builder.build();
 	}
 
 	@Test
@@ -42,12 +44,14 @@ public class TestLicenseUsageAnalyzer {
 	@Test
 	public void ignore() {
 		final LicenseUsageRules rules = new LicenseUsageRules(ILicenseUsageRules.rule(b -> b.expression(b.of(TestLicenseTerm.Condition))));
-		final LicenseUsageAnalyzer analyzer = new LicenseUsageAnalyzer(rules);
 
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", Terms.<IUsageTerm>builder().build());
 		final GeneralLicense license = new GeneralLicense("license", "license", "license", Terms.<ILicenseTerm>builder().build(), null, false);
 
-		final IReport report = analyzer.report(usage, license);
+		final Report.ReportBuilder builder = Report.builder();
+		new LicenseUsageAnalyzer(rules).analyze(usage, license, builder);
+		final Report report = builder.build();
+
 		final String message = report.getFindings().toString();
 		HAssert.assertNull(message, report.getMinLevel());
 	}

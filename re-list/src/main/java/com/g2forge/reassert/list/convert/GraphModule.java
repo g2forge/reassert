@@ -17,7 +17,6 @@ import com.g2forge.reassert.core.api.system.ISystem;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
-import com.g2forge.reassert.core.model.work.IWorkType;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

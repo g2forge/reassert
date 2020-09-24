@@ -14,9 +14,9 @@ import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1.FunctionBuilder;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ContractLicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.LicenseTermLicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.UsageTermLicenseUsageName;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRule;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRules;
 import com.g2forge.reassert.contract.eval.AnalyzeTermExpressionEvaluator;
@@ -35,8 +35,7 @@ import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IFinding;
-import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.core.model.report.Report;
+import com.g2forge.reassert.core.model.report.IFindingConsumer;
 import com.g2forge.reassert.express.eval.ExplainingEvaluator;
 import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.eval.ReductionRewriter;
@@ -93,7 +92,7 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 
 	@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 	@Override
-	public IReport report(IUsageApplied usageApplied, ILicenseApplied licenseApplied) {
+	public void analyze(IUsageApplied usageApplied, ILicenseApplied licenseApplied, IFindingConsumer consumer) {
 		final IUsage usage = (IUsage) usageApplied;
 		final ILicense license = (ILicense) licenseApplied;
 		final ContractEnvironment environment = new ContractEnvironment(usage, license);
@@ -104,7 +103,6 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 
 		final IEvaluator<ILicenseUsageName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 		final IEvaluator<ILicenseUsageName, TermRelation, IExpression<ILicenseUsageName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
-		final Report.ReportBuilder retVal = Report.builder();
 		for (ILicenseUsageRule rule : getRules().getRules()) {
 			final IExpression<ILicenseUsageName, TermRelation> expression = rule.getExpression();
 			final IFindingFactory<?> findingFactory = rule.getFinding();
@@ -136,14 +134,12 @@ public class LicenseUsageAnalyzer implements ILicenseUsageAnalyzer {
 			// Create & contextualize the finding
 			if (findingFactory != null) {
 				final IFinding finding = findingFactory.apply(explained);
-				retVal.finding(analyzed.toBuilder().inputs(HCollection.difference(analyzed.getInputs(), analyzed.getOutputs())).finding(finding).build());
+				consumer.found(analyzed.toBuilder().inputs(HCollection.difference(analyzed.getInputs(), analyzed.getOutputs())).finding(finding).build());
 			}
 		}
 
 		// Report an error if any of the terms in our input weren't recognized
-		remainingUsageTerms.stream().map(UnrecognizedTermFinding::new).forEach(retVal::finding);
-		remainingLicenseConditions.stream().map(UnrecognizedTermFinding::new).forEach(retVal::finding);
-
-		return retVal.build();
+		remainingUsageTerms.stream().map(UnrecognizedTermFinding::new).forEach(consumer::found);
+		remainingLicenseConditions.stream().map(UnrecognizedTermFinding::new).forEach(consumer::found);
 	}
 }
