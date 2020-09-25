@@ -29,11 +29,6 @@ public class BooleanValueSystem implements IValueSystem<Boolean>, ISingleton {
 	}
 
 	@Override
-	public boolean isSame(Boolean left, Boolean right) {
-		return Objects.equals(left, right);
-	}
-
-	@Override
 	public IValidation isValid(Boolean value) {
 		return new ValueValidation<>(value, value != null);
 	}

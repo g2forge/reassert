@@ -70,8 +70,8 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 					continue;
 				}
 
-				if (!zero.isEmpty() && valueSystem.isSame(result, zero.get())) return zero.get();
-				if (identity.isEmpty() || !valueSystem.isSame(result, identity.get())) evaluated.add(new OrThrowable<>(result));
+				if (!zero.isEmpty() && valueSystem.isEqual(result, zero.get())) return zero.get();
+				if (identity.isEmpty() || !valueSystem.isEqual(result, identity.get())) evaluated.add(new OrThrowable<>(result));
 			}
 
 			final List<Value> list = evaluated.stream().collect(HError.collector(() -> new EvalFailedException(expression), false, Collectors.<Value>toList()));

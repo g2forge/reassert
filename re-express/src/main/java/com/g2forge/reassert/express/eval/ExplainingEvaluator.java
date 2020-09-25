@@ -117,11 +117,11 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 				}
 
 				final IExplained.Relevance relevance;
-				if (!zero.isEmpty() && valueSystem.isSame(result.get(), zero.get())) {
+				if (!zero.isEmpty() && valueSystem.isEqual(result.get(), zero.get())) {
 					hasZero = true;
 					relevance = IExplained.Relevance.Dominant;
 				} else if (hasZero) relevance = IExplained.Relevance.Unevaluated;
-				else if (!identity.isEmpty() && valueSystem.isSame(result.get(), identity.get())) relevance = IExplained.Relevance.Identity;
+				else if (!identity.isEmpty() && valueSystem.isEqual(result.get(), identity.get())) relevance = IExplained.Relevance.Identity;
 				else relevance = IExplained.Relevance.Combined;
 
 				evaluated.add(new IExplainedOperation.Argument<>(relevance, result));

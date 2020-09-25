@@ -29,11 +29,6 @@ public class IntegerValueSystem implements IValueSystem<Integer>, ISingleton {
 	}
 
 	@Override
-	public boolean isSame(Integer left, Integer right) {
-		return Objects.equals(left, right);
-	}
-
-	@Override
 	public IValidation isValid(Integer value) {
 		return new ValueValidation<>(value, value != null);
 	}

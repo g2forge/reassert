@@ -30,11 +30,6 @@ public class TermRelationValueSystem implements IValueSystem<TermRelation>, ISin
 	}
 
 	@Override
-	public boolean isSame(TermRelation left, TermRelation right) {
-		return Objects.equals(left, right);
-	}
-
-	@Override
 	public IValidation isValid(TermRelation value) {
 		return new ValueValidation<>(value, value != null);
 	}

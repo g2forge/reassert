@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,8 +16,8 @@ import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
 import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.core.helpers.HStream;
+import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.contract.ContractComparisonAnalyzer;
@@ -35,6 +34,7 @@ import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
+import com.g2forge.reassert.core.model.report.IFindingConsumer;
 import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.core.model.work.WorkLicense;
 import com.g2forge.reassert.core.model.work.WorkMember;
@@ -45,6 +45,17 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ReassertWorkLicenseVisitor extends AGraphVisitor {
+	protected static void analyze(final ILicenseApplied workLicense, final IWorkLicenseRulesFactory rulesFactory, final IFunction1<? super ILicenseFamily, ? extends IFindingConsumer> consumerFactory, final Collection<ILicenseApplied> combinedLinceses) {
+		for (ILicenseApplied combinedLicenseApplied : combinedLinceses) {
+			final ILicenseFamily combinedLicense = (ILicenseFamily) combinedLicenseApplied;
+
+			final IWorkLicenseRules rules = rulesFactory.apply(combinedLicense);
+			if (rules == null) continue;
+			final ContractComparisonAnalyzer analyzer = new ContractComparisonAnalyzer(rules);
+			analyzer.analyze(workLicense, combinedLicense, consumerFactory.apply(combinedLicense));
+		}
+	}
+
 	protected final AtomicInteger workSequence = new AtomicInteger(0);
 
 	protected final IWorkLicenseRulesFactoryFactory rulesFactoryFactory;
@@ -111,21 +122,14 @@ public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 		for (Work work : graph.vertexSet().stream().flatMap(ITypeRef.of(Work.class)::castIfInstance).collect(Collectors.toList())) {
 			final ILicenseApplied workLicense = getLicense(graph, work);
 			final IWorkLicenseRulesFactory rulesFactory = licenses.get(workLicense);
+			final IFunction1<? super ILicenseFamily, ? extends IFindingConsumer> consumerFactory = combinedLicense -> new FindingConsumer(graph, work, workLicense, combinedLicense);
 
-			final Collection<Artifact<?>> artifacts = HReassertModel.get(graph, work, false, WorkMember.class::isInstance, new ATypeRef<Artifact<?>>() {});
-			final Map<ILicenseApplied, List<Artifact<?>>> combinedLinceses = artifacts.stream().collect(HCollector.multiGroupingBy(artifact -> {
+			final Collection<ILicenseApplied> combinedLinceses = HReassertModel.get(graph, work, false, WorkMember.class::isInstance, new ATypeRef<Artifact<?>>() {}).stream().flatMap(artifact -> {
 				final Collection<ILicenseApplied> retVal = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
 				if (isLicenseRequired() && retVal.isEmpty()) throw new UnreachableCodeError("All artifacts require a license (at least " + UnspecifiedLicense.create().getShortID() + ") before work license analysis, but " + artifact.getCoordinates() + " did not have a license!");
-				return retVal;
-			}));
-			for (Map.Entry<ILicenseApplied, List<Artifact<?>>> entry : combinedLinceses.entrySet()) {
-				final ILicenseFamily combinedLicense = (ILicenseFamily) entry.getKey();
-
-				final IWorkLicenseRules rules = rulesFactory.apply(combinedLicense);
-				if (rules == null) continue;
-				final ContractComparisonAnalyzer analyzer = new ContractComparisonAnalyzer(rules);
-				analyzer.analyze(workLicense, combinedLicense, new FindingConsumer(graph, work, workLicense, combinedLicense));
-			}
+				return retVal.stream();
+			}).collect(Collectors.toCollection(LinkedHashSet::new));
+			analyze(workLicense, rulesFactory, consumerFactory, combinedLinceses);
 		}
 	}
 
