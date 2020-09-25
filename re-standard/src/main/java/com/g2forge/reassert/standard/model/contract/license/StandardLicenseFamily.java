@@ -55,7 +55,7 @@ public enum StandardLicenseFamily implements ILicenseFamilyEnum {
 	protected final ILicenseFamily family;
 
 	@Getter(lazy = true)
-	private final ITerms<ILicenseTerm> terms = StandardLicense.getLoader().getTerms(getShortID());
+	private final ITerms<ILicenseTerm> terms = ILicenseFamily.getTerms(this);
 
 	public ILicenseFamily create(IMatch<FamilyVersionLicense> match) {
 		if (LicenseVersioning.Unversioned.equals(getVersioning())) throw new UnsupportedOperationException(String.format("Cannot version licenses in the %1$s family", getName()));

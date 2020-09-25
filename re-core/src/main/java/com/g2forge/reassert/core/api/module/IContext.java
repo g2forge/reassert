@@ -11,6 +11,7 @@ import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.terms.ITermsLoader;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 
@@ -38,6 +39,8 @@ public interface IContext {
 	public Collection<IDescriber<?>> getDescribers();
 
 	public IParser<ILicenseApplied> getLicenseParser();
+	
+	public ITermsLoader getTermsLoader();
 	
 	public IScanner getScanner();
 	

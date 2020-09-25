@@ -1,5 +1,6 @@
 package com.g2forge.reassert.standard.model.contract.license;
 
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
@@ -24,7 +25,9 @@ public class BSDLicense implements ILicenseSpecific {
 	private final String SPDXShortID = getFamily().name() + '-' + getClauses() + "-Clause";
 
 	@Getter(lazy = true)
-	private final ITerms<ILicenseTerm> terms = StandardLicense.getLoader().getTerms(getShortID());
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private final ITerms<ILicenseTerm> terms = ILicenseFamily.getTerms(this);
 
 	@Override
 	public StandardLicenseFamily getFamily() {

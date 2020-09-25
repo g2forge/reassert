@@ -2,6 +2,7 @@ package com.g2forge.reassert.standard.model.contract.license;
 
 import com.g2forge.alexandria.analysis.ISerializableFunction1;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
@@ -93,7 +94,9 @@ public class CCLicense implements ILicenseSpecific {
 	private final String name = computeString("Creative Commons", ' ', IDescriptorElement::getText) + " license";
 
 	@Getter(lazy = true)
-	private final ITerms<ILicenseTerm> terms = StandardLicense.getLoader().getTerms(getShortID());
+	@EqualsAndHashCode.Exclude
+	@ToString.Exclude
+	private final ITerms<ILicenseTerm> terms = ILicenseFamily.getTerms(this);
 
 	public CCLicense(boolean zero, boolean attribution, boolean nonCommercial, boolean noDerivatives, boolean shareAlike, LicenseVersion version, Variant variant) {
 		this.zero = zero;

@@ -2,7 +2,6 @@ package com.g2forge.reassert.standard.model.contract.license;
 
 import com.g2forge.alexandria.java.core.enums.HEnum;
 import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamilyEnum;
@@ -11,7 +10,6 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.license.LicenseVersion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -39,10 +37,6 @@ public enum StandardLicense implements ILicenseFamilyEnum, ILicenseSpecific {
 		ILicenseFamilyEnum.validate(StandardLicense.class);
 	}
 
-	@ReassertLegalOpinion
-	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final TermsLoader<String, ILicenseTerm> loader = new TermsLoader<>(StandardLicense.class, String.class, StandardLicenseTerm.class);
-
 	public static StandardLicense valueOfSPDX(String text) {
 		return HEnum.valueOf(StandardLicense.class, ILicenseSpecific::getSPDXShortID, true, IFunction1.identity(), text);
 	}
@@ -56,5 +50,5 @@ public enum StandardLicense implements ILicenseFamilyEnum, ILicenseSpecific {
 	protected final boolean orLater;
 
 	@Getter(lazy = true)
-	private final ITerms<ILicenseTerm> terms = getLoader().getTerms(getShortID());
+	private final ITerms<ILicenseTerm> terms = ILicenseFamily.getTerms(this);
 }

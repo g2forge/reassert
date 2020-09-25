@@ -6,34 +6,25 @@ import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.module.IModule;
 import com.g2forge.reassert.core.api.module.IModule.Loaded.LoadedBuilder;
-import com.g2forge.reassert.standard.api.scanner.LicenseFileScanner;
-import com.g2forge.reassert.standard.model.contract.license.StandardLicenseParser;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTermsLoader;
-import com.g2forge.reassert.standard.model.contract.usage.StandardUsageParser;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermsLoader;
 
 @Service(IModule.class)
-public class StandardModule implements IModule, ISingleton {
-	protected static final StandardModule INSTANCE = new StandardModule();
+public class StandardTestModule implements IModule, ISingleton {
+	protected static final StandardTestModule INSTANCE = new StandardTestModule();
 
-	public static StandardModule create() {
+	public static StandardTestModule create() {
 		return INSTANCE;
 	}
 
-	private StandardModule() {}
+	private StandardTestModule() {}
 
 	@ReassertLegalOpinion
 	@Override
 	public Loaded load(IContext context) {
 		final LoadedBuilder builder = IModule.Loaded.builder();
-		builder.scanner(new LicenseFileScanner(context));
-		
-		builder.licenseParser(StandardLicenseParser.create());
 		builder.termsLoader(StandardLicenseTermsLoader.create());
-		
-		builder.usageParser(StandardUsageParser.create());
 		builder.termsLoader(StandardUsageTermsLoader.create());
-		
 		return builder.build();
 	}
 }

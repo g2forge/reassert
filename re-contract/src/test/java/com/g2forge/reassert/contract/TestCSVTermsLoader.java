@@ -10,11 +10,11 @@ import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.io.dataaccess.ByteArrayDataSink;
 import com.g2forge.alexandria.java.io.dataaccess.ResourceDataSource;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.contract.TermsMapper;
+import com.g2forge.reassert.contract.CSVTermsLoader.TermsMapper;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
 
-public class TestTermsMapper {
+public class TestCSVTermsLoader {
 	@Test
 	public void read() {
 		final Map<String, ITerms<String>> terms = new TermsMapper().read(String.class, String.class, new ResourceDataSource(new Resource(getClass(), "test.csv")));
