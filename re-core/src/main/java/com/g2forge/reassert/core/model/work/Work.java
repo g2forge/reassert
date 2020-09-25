@@ -17,8 +17,6 @@ import lombok.ToString;
 public class Work implements IVertex, IStringNamed {
 	protected final String name;
 
-	protected final IWorkType type;
-
 	@Override
 	public boolean isMaterial() {
 		return false;

@@ -9,13 +9,17 @@ import java.util.Collections;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageNameScheme;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
+import com.g2forge.reassert.contract.model.IContractComparisonScheme;
 import com.g2forge.reassert.contract.model.rule.AContractComparisonRules;
 import com.g2forge.reassert.contract.model.rule.IContractComparisonRule;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
+import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttribute;
@@ -23,7 +27,7 @@ import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttri
 import lombok.Getter;
 
 @ReassertLegalOpinion
-public class StandardLicenseUsageRules extends AContractComparisonRules implements ISingleton {
+public class StandardLicenseUsageRules extends AContractComparisonRules<ILicenseTerm, IUsageTerm> implements ISingleton {
 	protected static final StandardLicenseUsageRules INSTANCE = new StandardLicenseUsageRules();
 
 	public static StandardLicenseUsageRules create() {
@@ -69,5 +73,10 @@ public class StandardLicenseUsageRules extends AContractComparisonRules implemen
 		rules.add(rule(b -> b.expression(b.a(StandardLicenseTerm.SaaSIsDistribution))));
 
 		return rules;
+	}
+
+	@Override
+	protected IContractComparisonScheme<ILicenseTerm, IUsageTerm> getScheme() {
+		return LicenseUsageNameScheme.create();
 	}
 }

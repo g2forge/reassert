@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class ContractComparisonRule implements IContractComparisonRule {
-	public static class ContractComparisonRuleBuilder implements IContractComparisonRule.IContractComparisonRuleBuilder<ContractComparisonRuleBuilder, ContractComparisonRule> {}
-
 	protected final IExpression<IContractComparisonName, TermRelation> expression;
 
 	protected final IFindingFactory<?> finding;

@@ -55,7 +55,7 @@ public class TestStandardLicenseUsageRules {
 
 	protected void test(final IUsageApplied usage, final ILicenseApplied license, final Level exepctedMinLevel, final String expectedResource, IPredicate1<IFinding> filter) {
 		final Report.ReportBuilder builder = Report.builder();
-		new ContractComparisonAnalyzer(StandardLicenseUsageRules.create()).analyze(usage, license, builder);
+		new ContractComparisonAnalyzer(StandardLicenseUsageRules.create()).analyze(license, usage, builder);
 		final IReport reportRaw = builder.build();
 		final IReport reportClean = filter != null ? Report.builder().findings(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList())).build() : reportRaw;
 

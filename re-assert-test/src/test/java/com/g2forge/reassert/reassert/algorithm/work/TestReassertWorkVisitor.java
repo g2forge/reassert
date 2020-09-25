@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.algorithm.worklicense.ReassertWorkLicenseVisitor;
-import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding;
 import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.list.ListCoordinates;
@@ -35,6 +35,6 @@ public class TestReassertWorkVisitor extends ATestReassert {
 	public void unknown() {
 		final Collection<IFinding> findings = load("unknown").getReport().getFindings();
 		HAssert.assertEquals(1, findings.size());
-		HAssert.assertInstanceOf(UnknownWorkFinding.class, HCollection.getOne(findings).getInnermostFinding());
+		HAssert.assertInstanceOf(UnknownWorkLicenseRulesFinding.class, HCollection.getOne(findings).getInnermostFinding());
 	}
 }

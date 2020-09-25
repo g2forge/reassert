@@ -1,9 +1,10 @@
 package com.g2forge.reassert.contract.algorithm.worklicense.model.rule;
 
-import com.g2forge.alexandria.java.function.IFunction1;
-import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import java.util.Collection;
 
-public interface IWorkLicenseRules extends IFunction1<ILicenseApplied, RuleWorkType> {
-	@Override
-	public RuleWorkType apply(ILicenseApplied license);
+import com.g2forge.reassert.contract.model.rule.IContractComparisonRules;
+import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+
+public interface IWorkLicenseRules extends IContractComparisonRules {
+	public Collection<ILicenseTerm> getUnknown();
 }

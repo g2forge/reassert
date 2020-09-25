@@ -19,21 +19,18 @@ import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
-import com.g2forge.reassert.contract.model.name.ContractComparisonName;
-import com.g2forge.reassert.contract.model.name.IContractComparisonName;
 import com.g2forge.reassert.contract.model.name.AContractComparisonName;
 import com.g2forge.reassert.contract.model.name.BContractComparisonName;
+import com.g2forge.reassert.contract.model.name.ContractComparisonName;
+import com.g2forge.reassert.contract.model.name.IContractComparisonName;
 import com.g2forge.reassert.contract.model.rule.IContractComparisonRule;
 import com.g2forge.reassert.contract.model.rule.IContractComparisonRules;
-import com.g2forge.reassert.core.model.contract.license.ILicense;
-import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.IContractApplied;
+import com.g2forge.reassert.core.model.contract.IContractTerms;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
-import com.g2forge.reassert.core.model.contract.usage.IUsage;
-import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
-import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IFindingConsumer;
 import com.g2forge.reassert.express.eval.ExplainingEvaluator;
@@ -62,9 +59,9 @@ public class ContractComparisonAnalyzer implements IContractComparisonAnalyzer {
 	@EqualsAndHashCode(callSuper = false)
 	@ToString(callSuper = false)
 	public static class ContractEnvironment extends ATypeSwitchEnvironment<IContractComparisonName, TermRelation> {
-		protected final IUsage usage;
+		protected final IContractTerms a;
 
-		protected final ILicense license;
+		protected final IContractTerms b;
 
 		@Override
 		protected void with(FunctionBuilder<IContractComparisonName, IOptional<? extends IExpression<IContractComparisonName, TermRelation>>> builder) {
@@ -74,15 +71,19 @@ public class ContractComparisonAnalyzer implements IContractComparisonAnalyzer {
 				return of(cast.getRelation(name.getTerm()));
 			});
 			builder.add(AContractComparisonName.class, name -> {
-				final ILicenseTerm term = name.getTerm();
-				final TermRelation relation = getLicense().getTerms().getRelation(term);
-				final ContractComparisonName literalName = new ContractComparisonName(term, getLicense());
+				final ITerm term = name.getTerm();
+				@SuppressWarnings("unchecked")
+				final ITerms<ITerm> terms = (ITerms<ITerm>) getA().getTerms();
+				final TermRelation relation = terms.getRelation(term);
+				final ContractComparisonName literalName = new ContractComparisonName(name.getScheme(), term, getA());
 				return NullableOptional.of(new Literal<>(literalName, relation));
 			});
 			builder.add(BContractComparisonName.class, name -> {
-				final IUsageTerm term = name.getTerm();
-				final TermRelation relation = getUsage().getTerms().getRelation(term);
-				final ContractComparisonName literalName = new ContractComparisonName(term, getUsage());
+				final ITerm term = name.getTerm();
+				@SuppressWarnings("unchecked")
+				final ITerms<ITerm> terms = (ITerms<ITerm>) getB().getTerms();
+				final TermRelation relation = terms.getRelation(term);
+				final ContractComparisonName literalName = new ContractComparisonName(name.getScheme(), term, getB());
 				return NullableOptional.of(new Literal<>(literalName, relation));
 			});
 		}
@@ -92,14 +93,13 @@ public class ContractComparisonAnalyzer implements IContractComparisonAnalyzer {
 
 	@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 	@Override
-	public void analyze(IUsageApplied usageApplied, ILicenseApplied licenseApplied, IFindingConsumer consumer) {
-		final IUsage usage = (IUsage) usageApplied;
-		final ILicense license = (ILicense) licenseApplied;
-		final ContractEnvironment environment = new ContractEnvironment(usage, license);
+	public void analyze(IContractApplied aApplied, IContractApplied bApplied, IFindingConsumer consumer) {
+		final IContractTerms a = (IContractTerms) aApplied;
+		final IContractTerms b = (IContractTerms) bApplied;
+		final ContractEnvironment environment = new ContractEnvironment(a, b);
 
 		// Sets of usage terms we need to approve and license conditions we need to meet
-		final Set<IUsageTerm> remainingUsageTerms = new LinkedHashSet<>(usage.getTerms().getTerms(true));
-		final Set<ILicenseTerm> remainingLicenseConditions = license.getTerms().getTerms(true).stream().filter(term -> ILicenseTerm.Type.Condition.equals(term.getType())).collect(Collectors.toCollection(LinkedHashSet::new));
+		final Set<ITerm> remainingTermsA = toRemainingTerms(a), remainingTermsB = toRemainingTerms(b);
 
 		final IEvaluator<IContractComparisonName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 		final IEvaluator<IContractComparisonName, TermRelation, IExpression<IContractComparisonName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
@@ -124,8 +124,8 @@ public class ContractComparisonAnalyzer implements IContractComparisonAnalyzer {
 				explained = evaluator.eval(reduced);
 
 				// Record that we handled the output terms
-				remainingUsageTerms.removeAll(analyzed.getOutputs());
-				remainingLicenseConditions.removeAll(analyzed.getOutputs());
+				remainingTermsA.removeAll(analyzed.getOutputs());
+				remainingTermsB.removeAll(analyzed.getOutputs());
 			} else {
 				analyzed = new ExpressionContextFinding(null, HCollection.emptySet(), HCollection.emptySet(), null);
 				explained = new Literal<>(TermRelation.Included);
@@ -139,7 +139,11 @@ public class ContractComparisonAnalyzer implements IContractComparisonAnalyzer {
 		}
 
 		// Report an error if any of the terms in our input weren't recognized
-		remainingUsageTerms.stream().map(UnrecognizedTermFinding::new).forEach(consumer::found);
-		remainingLicenseConditions.stream().map(UnrecognizedTermFinding::new).forEach(consumer::found);
+		remainingTermsA.stream().map(UnrecognizedTermFinding::new).forEach(consumer::found);
+		remainingTermsB.stream().map(UnrecognizedTermFinding::new).forEach(consumer::found);
+	}
+
+	protected LinkedHashSet<ITerm> toRemainingTerms(final IContractTerms contract) {
+		return contract.getTerms().getTerms(true).stream().filter(term -> (!(term instanceof ILicenseTerm)) || ILicenseTerm.Type.Condition.equals(((ILicenseTerm) term).getType())).collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 }

@@ -28,15 +28,15 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ReassertLicenseUsageVisitor extends AGraphVisitor {
-	protected final IContractComparisonAnalyzer licenseUsageAnalyzer;
+	protected final IContractComparisonAnalyzer analyzer;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
-		final IContractComparisonAnalyzer licenseUsageAnalyzer = getLicenseUsageAnalyzer();
+		final IContractComparisonAnalyzer analyzer = getAnalyzer();
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
 			final IUsageApplied usage = computeUsage(graph, artifact);
 			final ILicenseApplied license = computeLicense(graph, artifact);
-			licenseUsageAnalyzer.analyze(usage, license, new FindingConsumer(graph, artifact));
+			analyzer.analyze(license, usage, new FindingConsumer(graph, artifact));
 		}
 	}
 

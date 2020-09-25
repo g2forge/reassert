@@ -1,9 +1,10 @@
-package com.g2forge.reassert.contract.algorithm.worklicense.model.name;
+package com.g2forge.reassert.contract.algorithm.worklicense.model;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.contract.model.name.IContractComparisonNameScheme;
+import com.g2forge.reassert.contract.model.IContractComparisonScheme;
+import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 
-public class WorkLicenseNameScheme implements IContractComparisonNameScheme, ISingleton {
+public class WorkLicenseNameScheme implements IContractComparisonScheme<ILicenseTerm, ILicenseTerm>, ISingleton {
 	protected static final WorkLicenseNameScheme INSTANCE = new WorkLicenseNameScheme();
 
 	public static WorkLicenseNameScheme create() {

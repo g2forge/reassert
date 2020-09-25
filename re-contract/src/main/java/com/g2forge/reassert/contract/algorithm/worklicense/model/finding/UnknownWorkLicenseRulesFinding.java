@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class UnknownWorkFinding implements ITerminalFinding {
+public class UnknownWorkLicenseRulesFinding implements ITerminalFinding {
 	protected final Throwable throwable;
 
 	@Override

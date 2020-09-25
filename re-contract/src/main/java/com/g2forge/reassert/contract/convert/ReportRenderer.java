@@ -21,7 +21,7 @@ import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.Disclo
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
-import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
@@ -215,7 +215,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			});
 			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
 			builder.add(MultiUsageFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting usages detected for artifact"));
-			builder.add(UnknownWorkFinding.class, e -> c -> {
+			builder.add(UnknownWorkLicenseRulesFinding.class, e -> c -> {
 				appendLevel(e, c).append("Unknown work type");
 				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
 					c.newline().append((c.getMode().compareTo(ExplanationMode.Trace) >= 0) ? HError.toString(e.getThrowable()) : e.getThrowable().getMessage());
