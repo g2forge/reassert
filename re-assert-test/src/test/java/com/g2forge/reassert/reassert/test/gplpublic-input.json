@@ -19,7 +19,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "Owner license", "OSSLibrary" ]
+        "targets" : [ "BSD-3-Clause", "OSSLibrary" ]
       } ]
     },
     "B artifact" : {
@@ -35,11 +35,11 @@
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
     },
+    "BSD-3-Clause" : {
+      "vertex" : "BSD3"
+    },
     "GPL-3.0-or-later" : {
       "vertex" : "GPL3OrLater"
-    },
-    "Owner license" : {
-      "vertex" : "Owner"
     },
     "OSSLibrary" : {
       "vertex" : "OSSLibrary"

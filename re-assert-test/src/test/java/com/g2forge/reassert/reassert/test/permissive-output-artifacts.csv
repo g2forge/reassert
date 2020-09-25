@@ -1,4 +1,4 @@
 level,artifact,findings,usages,licenses,paths
-INFO,A,,"OSSLibrary usage","Owner license",
-WARN,B,"You must publish a copyright and license notice stating that you use this artifact","OSSLibrary usage","BSD 3 Clause license","A -> B"
-WARN,C,"You must publish a copyright and license notice stating that you use this artifact","OSSLibrary usage","Apache 2.0 license","A -> C"
+INFO,A,,"CommercialDistribution usage","Owner license",
+WARN,B,"You must publish a copyright and license notice stating that you use this artifact","Propagated Usage (Inherits() CommercialDistribution usage)","BSD 3 Clause license","A -> B"
+WARN,C,"You must publish a copyright and license notice stating that you use this artifact","Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) CommercialDistribution usage)","Apache 2.0 license","A -> C"

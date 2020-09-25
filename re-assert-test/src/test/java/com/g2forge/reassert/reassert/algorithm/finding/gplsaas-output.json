@@ -10,7 +10,10 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "saas-usage", "GPL-3.0-or-later", "SuspiciousUsageFinding 13" ]
+        "targets" : [ "saas-usage", "GPL-3.0-or-later", "SuspiciousUsageFinding 14" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "saas-usage" : {
@@ -44,28 +47,22 @@
     "Work 0" : {
       "vertex" : {
         "@c" : ".work.Work",
-        "name" : "Work 0",
-        "type" : {
-          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
-        }
+        "name" : "Work 0"
       },
       "outgoings" : [ {
-        "edge" : "workcontains",
-        "targets" : [ "A artifact" ]
-      }, {
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
     },
-    "SuspiciousUsageFinding 13" : {
+    "SuspiciousUsageFinding 14" : {
       "vertex" : {
         "@c" : ".report.GraphContextFinding",
-        "name" : "SuspiciousUsageFinding 13",
+        "name" : "SuspiciousUsageFinding 14",
         "finding" : {
           "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
           "inputs" : [ "UseLink", "UseCopy", "UseModified" ],
           "finding" : {
-            "@c" : "com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding",
+            "@c" : "com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding",
             "result" : {
               "@c" : ".operation.ExplainedOperation",
               "operator" : "NOT",

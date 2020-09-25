@@ -23,13 +23,13 @@ import com.g2forge.reassert.core.model.coordinates.Coordinates;
 import com.g2forge.reassert.core.model.file.Contains;
 import com.g2forge.reassert.core.model.file.Describes;
 import com.g2forge.reassert.core.model.file.Parsed;
-import com.g2forge.reassert.core.model.work.WorkContains;
+import com.g2forge.reassert.core.model.work.WorkMember;
 import com.g2forge.reassert.core.model.work.WorkLicense;
 
 public class SimpleEdgeDeserializer extends StdDeserializer<IEdge> implements ResolvableDeserializer {
 	private static final long serialVersionUID = 3742304528846339144L;
 
-	protected static final Map<String, ISupplier<? extends IEdge>> suppliers = HCollection.<Class<? extends IEdge>>asList(Contains.class, Coordinates.class, Copy.class, Describes.class, Inherits.class, Notice.class, Parsed.class, WorkContains.class, WorkLicense.class).stream().collect(Collectors.toMap(c -> c.getSimpleName().toLowerCase(), c -> {
+	protected static final Map<String, ISupplier<? extends IEdge>> suppliers = HCollection.<Class<? extends IEdge>>asList(Contains.class, Coordinates.class, Copy.class, Describes.class, Inherits.class, Notice.class, Parsed.class, WorkMember.class, WorkLicense.class).stream().collect(Collectors.toMap(c -> c.getSimpleName().toLowerCase(), c -> {
 		return ISupplier.create(() -> {
 			try {
 				return c.newInstance();

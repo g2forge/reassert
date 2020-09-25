@@ -2,7 +2,7 @@ package com.g2forge.reassert.contract.model.finding;
 
 import java.util.Set;
 
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
+import com.g2forge.reassert.contract.model.name.IContractComparisonName;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.IContextFinding;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class ExpressionContextFinding implements IContextFinding {
-	protected final IExpression<ILicenseUsageName, TermRelation> expression;
+	protected final IExpression<IContractComparisonName, TermRelation> expression;
 
 	protected final Set<ITerm> inputs;
 

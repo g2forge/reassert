@@ -1,33 +1,32 @@
 level,message,artifact,paths,details
-INFO,"A license is incompatible with a combined work that includes artifacts under this license",,,"INFO: A license is incompatible with a combined work that includes artifacts under this license"
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",A,A,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
 	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
 	Explanation: Included - because anything or-ed with Included is Included
 		> Included - not, and the only argument is Excluded - Commercial usage in OSSLibrary usage
-		> Included - Permission for commercial usage in Owner license"
+		> Included - Permission for commercial usage in BSD 3 Clause license"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",A,A,"INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
 	Rule: ((!""Public distribution"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - Permission to distribute in Owner license"
+		> Included - Permission to distribute in BSD 3 Clause license"
 INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Private distribution"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - Permission for private usage in Owner license"
+		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",A,A,"INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
 		> Included - not, and the only argument is Excluded - SaaS distribution in OSSLibrary usage
-		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in Owner license
-		> Included - Permission to distribute in Owner license"
+		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in BSD 3 Clause license
+		> Included - Permission to distribute in BSD 3 Clause license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Linked"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - Permission for private usage in Owner license"
+		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Copied"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
 		> Included - not, and the only argument is Excluded - Copied in OSSLibrary usage
-		> Included - Permission for private usage in Owner license"
+		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",A,A,"INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
 	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
 	Explanation: Included - because anything or-ed with Included is Included
@@ -36,24 +35,27 @@ INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usag
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - Permission for private usage in Owner license"
+		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Source distribution"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - Permission for private usage in Owner license"
+		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"You must disclose the source for this artifact",A,A,"INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
-		> Excluded - Requires source disclosure in Owner license"
-INFO,"You must publish a copyright and license notice stating that you use this artifact",A,A,"INFO: You must publish a copyright and license notice stating that you use this artifact
+		> Excluded - Requires source disclosure in BSD 3 Clause license"
+WARN,"You must publish a copyright and license notice stating that you use this artifact",A,A,"WARN: You must publish a copyright and license notice stating that you use this artifact
 	Rule: (""Requires copyright notice"" && (""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")))
-	Explanation: Excluded - because anything and-ed with Excluded is Excluded
-		> Excluded - Requires copyright notice in Owner license"
+	Explanation: Included - because anything and-ed with Included is itself, and there are no non-Included arguments"
 INFO,"You must state the changes you have made to your copy of this artifact",A,A,"INFO: You must state the changes you have made to your copy of this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
 		> Excluded - Modified in OSSLibrary usage
-		> Excluded - Requires statement of changes in Owner license"
+		> Excluded - Requires statement of changes in BSD 3 Clause license"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",A,A,"INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in BSD 3 Clause license"
 INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
@@ -119,6 +121,10 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
 		> Excluded - Modified in OSSLibrary usage"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",B,"A -> B","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in GPL 3.0 or later license"
 INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
@@ -133,3 +139,71 @@ INFO,"The usage for this artifact improperly specifies the format",B,"A -> B","I
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
 		> Included - Binary distribution in OSSLibrary usage
 		> Included - Source distribution in OSSLibrary usage"
+INFO,"Term ""Permission for commercial usage"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Permission for commercial usage"" is compatible
+	Rule: ((!""Permission for commercial usage"") || ""Permission for commercial usage"")
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Permission for commercial usage in BSD 3 Clause license"
+INFO,"Term ""Permission to distribute"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Permission to distribute"" is compatible
+	Rule: ((!""Permission to distribute"") || ""Permission to distribute"")
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Permission to distribute in BSD 3 Clause license"
+INFO,"Term ""Permission to modify"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Permission to modify"" is compatible
+	Rule: ((!""Permission to modify"") || ""Permission to modify"")
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Permission to modify in BSD 3 Clause license"
+INFO,"Term ""Permission for private usage"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Permission for private usage"" is compatible
+	Rule: ((!""Permission for private usage"") || ""Permission for private usage"")
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Permission for private usage in BSD 3 Clause license"
+INFO,"Term ""Requires source disclosure"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Requires source disclosure"" is compatible
+	Rule: (""Requires source disclosure"" || (!""Requires source disclosure""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires source disclosure in GPL 3.0 or later license
+		> Included - not, and the only argument is Excluded - Requires source disclosure in BSD 3 Clause license"
+INFO,"Term ""Requires copyright notice"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Requires copyright notice"" is compatible
+	Rule: (""Requires copyright notice"" || (!""Requires copyright notice""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires copyright notice in GPL 3.0 or later license"
+INFO,"Term ""Requires distribution for SaaS"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Requires distribution for SaaS"" is compatible
+	Rule: (""Requires distribution for SaaS"" || (!""Requires distribution for SaaS""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in BSD 3 Clause license"
+INFO,"Term ""Requires compatible licenses"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Requires compatible licenses"" is compatible
+	Rule: (""Requires compatible licenses"" || (!""Requires compatible licenses""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires compatible licenses in GPL 3.0 or later license
+		> Included - not, and the only argument is Excluded - Requires compatible licenses in BSD 3 Clause license"
+INFO,"Term ""Requires statement of changes"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Requires statement of changes"" is compatible
+	Rule: (""Requires statement of changes"" || (!""Requires statement of changes""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires statement of changes in GPL 3.0 or later license
+		> Included - not, and the only argument is Excluded - Requires statement of changes in BSD 3 Clause license"
+INFO,"Term ""Does not grant patent usage"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Does not grant patent usage"" is compatible
+	Rule: (""Does not grant patent usage"" || (!""Does not grant patent usage""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not grant patent usage in BSD 3 Clause license"
+INFO,"Term ""Does not idemnify against liability"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Does not idemnify against liability"" is compatible
+	Rule: (""Does not idemnify against liability"" || (!""Does not idemnify against liability""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Does not idemnify against liability in GPL 3.0 or later license"
+INFO,"Term ""Does not grant trademark usage"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Does not grant trademark usage"" is compatible
+	Rule: (""Does not grant trademark usage"" || (!""Does not grant trademark usage""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not grant trademark usage in BSD 3 Clause license"
+INFO,"Term ""Does not grant warranty"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> BSD 3 Clause license","INFO: Term ""Does not grant warranty"" is compatible
+	Rule: (""Does not grant warranty"" || (!""Does not grant warranty""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Does not grant warranty in GPL 3.0 or later license"

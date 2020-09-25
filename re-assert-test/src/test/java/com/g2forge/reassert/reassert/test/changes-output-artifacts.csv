@@ -1,4 +1,4 @@
 level,artifact,findings,usages,licenses,paths
-INFO,A,,"OSSLibrary usage","Owner license",
+INFO,A,,"CommercialDistribution usage","Owner license",
 WARN,B,"You must publish a copyright and license notice stating that you use this artifact
-You must state the changes you have made to your copy of this artifact","Merged Usage (1037B3EB)","Apache 2.0 license","A -> B"
+You must state the changes you have made to your copy of this artifact","Merged Usage (21BECEAC)","Apache 2.0 license","A -> B"

@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.slf4j.event.Level;
 
@@ -39,6 +40,7 @@ import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 import com.g2forge.reassert.core.model.report.GraphContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
+import com.g2forge.reassert.core.model.work.Work;
 import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.reassert.summary.convert.ASummaryModule;
 import com.g2forge.reassert.reassert.summary.convert.ArtifactsSummaryModule;
@@ -92,7 +94,7 @@ public class ReassertSummarizer {
 	public ReportSummary summarize(IReport report) {
 		final ReportSummary.ReportSummaryBuilder retVal = ReportSummary.builder();
 
-		final AllDirectedPaths<IVertex, IEdge> paths = new AllDirectedPaths<>(report.getGraph());
+		final AllDirectedPaths<IVertex, IEdge> allPaths = new AllDirectedPaths<>(report.getGraph());
 		final Set<IVertex> origins = computeOrigins(report, report.getGraph());
 
 		final Comparator<IVertex> vertexComparator = new Comparator<IVertex>() {
@@ -127,7 +129,7 @@ public class ReassertSummarizer {
 			}
 
 			// Compute paths to this artifact
-			if (!origins.contains(artifact)) artifactSummary.paths(paths.getAllPaths(origins, HCollection.<IVertex>asSet(artifact), true, Integer.MAX_VALUE));
+			if (!origins.contains(artifact)) artifactSummary.paths(allPaths.getAllPaths(origins, HCollection.<IVertex>asSet(artifact), true, Integer.MAX_VALUE));
 
 			retVal.artifact(artifactSummary.build());
 		}
@@ -141,7 +143,15 @@ public class ReassertSummarizer {
 			final Collection<Artifact<?>> related = HReassertModel.get(report.getGraph(), finding, false, Notice.class::isInstance, artifactType);
 			if (related.size() == 1) findingSummary.artifact(HCollection.getOne(related).getCoordinates());
 
-			findingSummary.paths(paths.getAllPaths(origins, HCollection.<IVertex>asSet(finding), true, Integer.MAX_VALUE));
+			final List<GraphPath<IVertex, IEdge>> paths = allPaths.getAllPaths(origins, HCollection.<IVertex>asSet(finding), true, Integer.MAX_VALUE);
+			final List<GraphPath<IVertex, IEdge>> pathsReadable = readable(paths);
+			if (!paths.equals(pathsReadable)) {
+				final List<List<IVertex>> pathVertices = paths.stream().map(GraphPath::getVertexList).collect(Collectors.toList());
+				final List<List<IVertex>> readableVertices = pathsReadable.stream().map(GraphPath::getVertexList).collect(Collectors.toList());
+				pathVertices.equals(readableVertices);
+			}
+			if (pathsReadable.isEmpty()) throw new Error("There was a finding with no apparent relationship to the artifacts you requested we analyze, this is a bug!");
+			findingSummary.paths(pathsReadable);
 			findings.add(findingSummary.build());
 		}
 		// Sort the findings by their path from the origins
@@ -152,5 +162,13 @@ public class ReassertSummarizer {
 		retVal.findings(findings);
 
 		return retVal.build();
+	}
+
+	protected List<GraphPath<IVertex, IEdge>> readable(List<GraphPath<IVertex, IEdge>> paths) {
+		return paths.stream().filter(path -> {
+			final List<IVertex> vertexList = path.getVertexList();
+			if (vertexList.size() <= 2) return true;
+			return vertexList.subList(1, vertexList.size() - 1).stream().allMatch(v -> !(v instanceof Work));
+		}).collect(Collectors.toList());
 	}
 }

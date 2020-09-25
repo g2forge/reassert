@@ -16,18 +16,20 @@ import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
-import com.g2forge.reassert.contract.algorithm.licenseusage.convert.LicenseUsageNameRenderer;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
 import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.model.finding.IConditionFinding;
+import com.g2forge.reassert.contract.model.finding.IContractTermFinding;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
-import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
-import com.g2forge.reassert.contract.model.finding.rule.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.finding.rule.IRuleFinding;
-import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
-import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
-import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
+import com.g2forge.reassert.contract.model.name.IContractComparisonName;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.ContractType;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -39,8 +41,6 @@ import com.g2forge.reassert.core.model.contract.usage.MultiUsageFinding;
 import com.g2forge.reassert.core.model.report.IContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
-import com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding;
-import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
 import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.express.convert.ExplanationRenderer;
 import com.g2forge.reassert.express.model.IExplained;
@@ -57,12 +57,12 @@ import lombok.Getter;
 public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContext> {
 	@Getter(AccessLevel.PROTECTED)
 	protected class ReportRenderContext extends ARenderContext implements IReportRenderContext {
-		protected final ExplanationRenderer<ILicenseUsageName, TermRelation> explanationRenderer;
+		protected final ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer;
 
 		@Getter(AccessLevel.PUBLIC)
 		protected ExpressionContextFinding findingContext;
 
-		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationRenderer<ILicenseUsageName, TermRelation> explanationRenderer) {
+		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer) {
 			super(builder);
 			this.explanationRenderer = explanationRenderer;
 		}
@@ -88,7 +88,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 		}
 
 		@Override
-		public IReportRenderContext name(ILicenseUsageName name) {
+		public IReportRenderContext name(IContractComparisonName name) {
 			getExplanationRenderer().getNameRenderer().render(getBuilder(), name);
 			return getThis();
 		}
@@ -106,7 +106,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 			return context;
 		}
 
-		protected IReportRenderContext explain(IRuleFinding finding, IReportRenderContext context) {
+		protected IReportRenderContext explain(IContractTermFinding finding, IReportRenderContext context) {
 			if (context.getMode().compareTo(ExplanationMode.Describe) >= 0) {
 				if ((finding.getLevel().compareTo(Level.WARN) <= 0) || (context.getMode().compareTo(ExplanationMode.Explain) >= 0)) try (final ICloseable indent = context.newline().indent()) {
 					final ExpressionContextFinding findingContext = context.getFindingContext();
@@ -143,17 +143,17 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 			builder.add(ILiteral.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final ILiteral<ILicenseUsageName, TermRelation> expression = e;
+				final ILiteral<IContractComparisonName, TermRelation> expression = e;
 				c.append('(').name(expression.getName()).append(')');
 			});
 			builder.add(IVariable.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final IVariable<ILicenseUsageName, TermRelation> expression = e;
+				final IVariable<IContractComparisonName, TermRelation> expression = e;
 				c.render(expression.getName().getTerm(), ITerm.class);
 			});
 			builder.add(IOperation.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final IOperation<ILicenseUsageName, TermRelation> castE = (IOperation<ILicenseUsageName, TermRelation>) e;
+				final IOperation<IContractComparisonName, TermRelation> castE = (IOperation<IContractComparisonName, TermRelation>) e;
 
 				c.append('(');
 				final String separator;
@@ -176,7 +176,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 
 				boolean first = true;
-				for (IExpression<ILicenseUsageName, TermRelation> argument : castE.getArguments()) {
+				for (IExpression<IContractComparisonName, TermRelation> argument : castE.getArguments()) {
 					if (first) first = false;
 					else c.append(' ').append(separator).append(' ');
 					c.render(argument, IExpression.class);
@@ -191,32 +191,12 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 			});
 
-			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> {
-				appendLevel(e, c).append("A license is incompatible with a combined work that includes artifacts under this license");
-				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
-					if ((e.getUnknown() != null) && !e.getUnknown().isEmpty()) {
-						c.newline().append("License terms with unknown compatability: ");
-						final List<ILicenseTerm> unknown = new ArrayList<>(e.getUnknown());
-						final int size = unknown.size();
-						for (int i = 0; i < size; i++) {
-							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-							c.render(unknown.get(i), ILicenseTerm.class);
-						}
-					}
-					if ((e.getMismatched() != null) && !e.getMismatched().isEmpty()) {
-						c.newline().append("Mistmatched license terms: ");
-						final List<ILicenseTerm> mistmatched = new ArrayList<>(e.getMismatched());
-						final int size = mistmatched.size();
-						for (int i = 0; i < size; i++) {
-							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-							c.render(mistmatched.get(i), ILicenseTerm.class);
-						}
-					}
-				}
-			});
+			builder.add(ConditionFinding.class, e -> c -> render(e, c, "Condition", "satisfied"));
+			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> render(e, c, "Term", "compatible"));
+
 			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
 			builder.add(MultiUsageFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting usages detected for artifact"));
-			builder.add(UnknownWorkTypeFinding.class, e -> c -> {
+			builder.add(UnknownWorkLicenseRulesFinding.class, e -> c -> {
 				appendLevel(e, c).append("Unknown work type");
 				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
 					c.newline().append((c.getMode().compareTo(ExplanationMode.Trace) >= 0) ? HError.toString(e.getThrowable()) : e.getThrowable().getMessage());
@@ -236,53 +216,54 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						throw new EnumException(ContractType.class, type);
 				}
 			});
-			builder.add(ConditionFinding.class, e -> c -> {
-				final ExpressionContextFinding findingContext = c.getFindingContext();
-				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
-
-				appendLevel(e, c).append("Condition");
-				if (outputs.size() > 1) c.append('s');
-				c.append(' ');
-				if (!outputs.isEmpty()) {
-					final List<ITerm> list = new ArrayList<>(outputs);
-					final int size = list.size();
-					for (int i = 0; i < size; i++) {
-						if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-						c.render(list.get(i), ITerm.class);
-					}
-					c.append(' ');
-				}
-
-				c.append(outputs.size() > 1 ? "are" : "is");
-				if (!e.isSatisfied()) c.append(" not");
-				c.append(" satisfied");
-
-				if (findingContext != null) {
-					c.append(" based on ");
-					final List<ITerm> list = new ArrayList<>(findingContext.getInputs());
-					final int size = list.size();
-					for (int i = 0; i < size; i++) {
-						if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-						c.render(list.get(i), ITerm.class);
-					}
-				}
-
-				explain(e, c);
-			});
 			builder.add(DiscloseSourceFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must disclose the source for this artifact")));
-			builder.add(NoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
+			builder.add(CopyrightNoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
 			builder.add(StateChangesFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must state the changes you have made to your copy of this artifact")));
 			builder.add(SuspiciousUsageFinding.class, e -> c -> explain(e, appendLevel(e, c).append("The usage for this artifact improperly specifies the ").append(e.getAttribute().getDescription())));
+		}
+
+		protected void render(IConditionFinding finding, IReportRenderContext context, final String condition, final String satisfied) {
+			final ExpressionContextFinding findingContext = context.getFindingContext();
+			final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
+
+			appendLevel(finding, context).append(condition);
+			if (outputs.size() > 1) context.append('s');
+			context.append(' ');
+			if (!outputs.isEmpty()) {
+				final List<ITerm> list = new ArrayList<>(outputs);
+				final int size = list.size();
+				for (int i = 0; i < size; i++) {
+					if (i > 0) context.append((i == size - 1) ? " & " : ", ");
+					context.render(list.get(i), ITerm.class);
+				}
+				context.append(' ');
+			}
+
+			context.append(outputs.size() > 1 ? "are" : "is");
+			if (!finding.isSatisfied()) context.append(" not");
+			context.append(' ').append(satisfied);
+
+			if ((findingContext != null) && !findingContext.getInputs().isEmpty()) {
+				final List<ITerm> list = new ArrayList<>(findingContext.getInputs());
+				context.append(" based on ");
+				final int size = list.size();
+				for (int i = 0; i < size; i++) {
+					if (i > 0) context.append((i == size - 1) ? " & " : ", ");
+					context.render(list.get(i), ITerm.class);
+				}
+			}
+
+			explain(finding, context);
 		}
 	}
 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IRendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> renderingStatic = new ReportRendering();
 
-	protected final ExplanationRenderer<ILicenseUsageName, TermRelation> explanationRenderer;
+	protected final ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer;
 
 	public ReportRenderer(ExplanationMode mode, IContext context) {
-		this.explanationRenderer = new ExplanationRenderer<>(mode, new LicenseUsageNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		this.explanationRenderer = new ExplanationRenderer<>(mode, new ContractComparisonNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 	}
 
 	@Override

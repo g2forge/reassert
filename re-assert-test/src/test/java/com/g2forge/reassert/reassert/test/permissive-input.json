@@ -22,7 +22,7 @@
         "targets" : [ "B artifact" ]
       }, {
         "edge" : "notice",
-        "targets" : [ "Owner license", "OSSLibrary" ]
+        "targets" : [ "Owner license", "CommercialDistribution" ]
       } ]
     },
     "B artifact" : {
@@ -60,8 +60,8 @@
     "Owner license" : {
       "vertex" : "Owner"
     },
-    "OSSLibrary" : {
-      "vertex" : "OSSLibrary"
+    "CommercialDistribution" : {
+      "vertex" : "CommercialDistribution"
     }
   }
 }

@@ -20,6 +20,9 @@
       }, {
         "edge" : "notice",
         "targets" : [ "GPL-3.0-or-later", "private-usage" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "B artifact" : {
@@ -33,10 +36,17 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "no-such-license", "private-usage" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "GPL-3.0-or-later" : {
-      "vertex" : "GPL-3.0-or-later"
+      "vertex" : "GPL-3.0-or-later",
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "IncompatibleWorkLicenseFinding 1", "IncompatibleWorkLicenseFinding 2", "IncompatibleWorkLicenseFinding 3", "IncompatibleWorkLicenseFinding 7", "IncompatibleWorkLicenseFinding 10", "IncompatibleWorkLicenseFinding 12" ]
+      } ]
     },
     "no-such-license" : {
       "vertex" : {
@@ -55,7 +65,7 @@
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "UnknownWorkTypeFinding 0" ]
+        "targets" : [ "UnknownWorkLicenseRulesFinding 0", "IncompatibleWorkLicenseFinding 1", "IncompatibleWorkLicenseFinding 2", "IncompatibleWorkLicenseFinding 3", "IncompatibleWorkLicenseFinding 7", "IncompatibleWorkLicenseFinding 10", "IncompatibleWorkLicenseFinding 12" ]
       } ]
     },
     "private-usage" : {
@@ -92,12 +102,12 @@
         } ]
       }
     },
-    "UnknownWorkTypeFinding 0" : {
+    "UnknownWorkLicenseRulesFinding 0" : {
       "vertex" : {
         "@c" : ".report.GraphContextFinding",
-        "name" : "UnknownWorkTypeFinding 0",
+        "name" : "UnknownWorkLicenseRulesFinding 0",
         "finding" : {
-          "@c" : "com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding",
+          "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding",
           "level" : "ERROR"
         }
       }
@@ -105,31 +115,337 @@
     "Work 0" : {
       "vertex" : {
         "@c" : ".work.Work",
-        "name" : "Work 0",
-        "type" : {
-          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
-        }
+        "name" : "Work 0"
       },
       "outgoings" : [ {
         "edge" : "notice",
-        "targets" : [ "IncompatibleWorkLicenseFinding 30" ]
-      }, {
-        "edge" : "workcontains",
-        "targets" : [ "A artifact", "B artifact" ]
+        "targets" : [ "IncompatibleWorkLicenseFinding 1", "IncompatibleWorkLicenseFinding 2", "IncompatibleWorkLicenseFinding 3", "IncompatibleWorkLicenseFinding 7", "IncompatibleWorkLicenseFinding 10", "IncompatibleWorkLicenseFinding 12" ]
       }, {
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
     },
-    "IncompatibleWorkLicenseFinding 30" : {
+    "IncompatibleWorkLicenseFinding 1" : {
       "vertex" : {
         "@c" : ".report.GraphContextFinding",
-        "name" : "IncompatibleWorkLicenseFinding 30",
+        "name" : "IncompatibleWorkLicenseFinding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.core.model.work.IncompatibleWorkLicenseFinding",
-          "unknown" : [ "Distribution", "Modification", "PatentGrant", "DisclosureSource", "Notice", "SaaSIsDistribution", "SameLicense", "StateChanges", "PatentNonGrant", "Liability", "Trademark" ],
-          "mismatched" : [ "CommercialUse" ],
-          "level" : "ERROR"
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
+          "outputs" : [ "CommercialUse" ],
+          "finding" : {
+            "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
+            "result" : {
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "OR",
+              "value" : "Excluded",
+              "identity" : {
+                "empty" : false
+              },
+              "arguments" : [ {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "NOT",
+                  "value" : "Excluded",
+                  "identity" : {
+                    "empty" : true
+                  },
+                  "arguments" : [ {
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "CommercialUse",
+                        "contract" : "GPL-3.0-or-later"
+                      },
+                      "value" : "Included"
+                    }
+                  } ]
+                }
+              }, {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "CommercialUse",
+                    "contract" : "no-such-license"
+                  },
+                  "value" : "Excluded"
+                }
+              } ]
+            },
+            "level" : "ERROR"
+          }
+        }
+      }
+    },
+    "IncompatibleWorkLicenseFinding 2" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextFinding",
+        "name" : "IncompatibleWorkLicenseFinding 2",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
+          "outputs" : [ "Distribution" ],
+          "finding" : {
+            "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
+            "result" : {
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "OR",
+              "value" : "Unspecified",
+              "identity" : {
+                "empty" : false
+              },
+              "arguments" : [ {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "NOT",
+                  "value" : "Excluded",
+                  "identity" : {
+                    "empty" : true
+                  },
+                  "arguments" : [ {
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "Distribution",
+                        "contract" : "GPL-3.0-or-later"
+                      },
+                      "value" : "Included"
+                    }
+                  } ]
+                }
+              }, {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "Distribution",
+                    "contract" : "no-such-license"
+                  },
+                  "value" : "Unspecified"
+                }
+              } ]
+            },
+            "level" : "ERROR"
+          }
+        }
+      }
+    },
+    "IncompatibleWorkLicenseFinding 3" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextFinding",
+        "name" : "IncompatibleWorkLicenseFinding 3",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
+          "outputs" : [ "Modification" ],
+          "finding" : {
+            "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
+            "result" : {
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "OR",
+              "value" : "Unspecified",
+              "identity" : {
+                "empty" : false
+              },
+              "arguments" : [ {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "NOT",
+                  "value" : "Excluded",
+                  "identity" : {
+                    "empty" : true
+                  },
+                  "arguments" : [ {
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "Modification",
+                        "contract" : "GPL-3.0-or-later"
+                      },
+                      "value" : "Included"
+                    }
+                  } ]
+                }
+              }, {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "Modification",
+                    "contract" : "no-such-license"
+                  },
+                  "value" : "Unspecified"
+                }
+              } ]
+            },
+            "level" : "ERROR"
+          }
+        }
+      }
+    },
+    "IncompatibleWorkLicenseFinding 7" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextFinding",
+        "name" : "IncompatibleWorkLicenseFinding 7",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
+          "outputs" : [ "SaaSIsDistribution" ],
+          "finding" : {
+            "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
+            "result" : {
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "OR",
+              "value" : "Unspecified",
+              "identity" : {
+                "empty" : false
+              },
+              "arguments" : [ {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "SaaSIsDistribution",
+                    "contract" : "GPL-3.0-or-later"
+                  },
+                  "value" : "Excluded"
+                }
+              }, {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "NOT",
+                  "value" : "Unspecified",
+                  "identity" : {
+                    "empty" : true
+                  },
+                  "arguments" : [ {
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "SaaSIsDistribution",
+                        "contract" : "no-such-license"
+                      },
+                      "value" : "Unspecified"
+                    }
+                  } ]
+                }
+              } ]
+            },
+            "level" : "ERROR"
+          }
+        }
+      }
+    },
+    "IncompatibleWorkLicenseFinding 10" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextFinding",
+        "name" : "IncompatibleWorkLicenseFinding 10",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
+          "outputs" : [ "PatentNonGrant" ],
+          "finding" : {
+            "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
+            "result" : {
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "OR",
+              "value" : "Unspecified",
+              "identity" : {
+                "empty" : false
+              },
+              "arguments" : [ {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "PatentNonGrant",
+                    "contract" : "GPL-3.0-or-later"
+                  },
+                  "value" : "Excluded"
+                }
+              }, {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "NOT",
+                  "value" : "Unspecified",
+                  "identity" : {
+                    "empty" : true
+                  },
+                  "arguments" : [ {
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "PatentNonGrant",
+                        "contract" : "no-such-license"
+                      },
+                      "value" : "Unspecified"
+                    }
+                  } ]
+                }
+              } ]
+            },
+            "level" : "ERROR"
+          }
+        }
+      }
+    },
+    "IncompatibleWorkLicenseFinding 12" : {
+      "vertex" : {
+        "@c" : ".report.GraphContextFinding",
+        "name" : "IncompatibleWorkLicenseFinding 12",
+        "finding" : {
+          "@c" : "com.g2forge.reassert.contract.model.finding.ExpressionContextFinding",
+          "outputs" : [ "Trademark" ],
+          "finding" : {
+            "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
+            "result" : {
+              "@c" : ".operation.ExplainedOperation",
+              "operator" : "OR",
+              "value" : "Unspecified",
+              "identity" : {
+                "empty" : false
+              },
+              "arguments" : [ {
+                "relevance" : "Identity",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "Trademark",
+                    "contract" : "GPL-3.0-or-later"
+                  },
+                  "value" : "Excluded"
+                }
+              }, {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".operation.ExplainedOperation",
+                  "operator" : "NOT",
+                  "value" : "Unspecified",
+                  "identity" : {
+                    "empty" : true
+                  },
+                  "arguments" : [ {
+                    "relevance" : "Combined",
+                    "explained" : {
+                      "@c" : ".constant.Literal",
+                      "name" : {
+                        "term" : "Trademark",
+                        "contract" : "no-such-license"
+                      },
+                      "value" : "Unspecified"
+                    }
+                  } ]
+                }
+              } ]
+            },
+            "level" : "ERROR"
+          }
         }
       }
     }

@@ -24,6 +24,7 @@ public class ContractModule extends SimpleModule {
 
 	protected final ContractParser parser;
 
+
 	@Override
 	public void setupModule(SetupContext context) {
 		super.setupModule(context);

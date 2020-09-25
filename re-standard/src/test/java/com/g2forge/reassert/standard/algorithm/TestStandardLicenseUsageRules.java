@@ -8,9 +8,9 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.ContractComparisonAnalyzer;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
-import com.g2forge.reassert.contract.model.finding.rule.SuspiciousUsageFinding;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
@@ -24,7 +24,6 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.core.model.report.Report;
 import com.g2forge.reassert.express.convert.ExplanationMode;
-import com.g2forge.reassert.standard.algorithm.StandardLicenseUsageRules;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
@@ -55,7 +54,9 @@ public class TestStandardLicenseUsageRules {
 	}
 
 	protected void test(final IUsageApplied usage, final ILicenseApplied license, final Level exepctedMinLevel, final String expectedResource, IPredicate1<IFinding> filter) {
-		final IReport reportRaw = new LicenseUsageAnalyzer(StandardLicenseUsageRules.create()).report(usage, license);
+		final Report.ReportBuilder builder = Report.builder();
+		new ContractComparisonAnalyzer(StandardLicenseUsageRules.create()).analyze(license, usage, builder);
+		final IReport reportRaw = builder.build();
 		final IReport reportClean = filter != null ? Report.builder().findings(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList())).build() : reportRaw;
 
 		final ReportRenderer reportRenderer = new ReportRenderer(ExplanationMode.Explain, Context.getContext());

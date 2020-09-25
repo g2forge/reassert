@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IPredicate1;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
+import com.g2forge.reassert.contract.model.name.IContractComparisonName;
 import com.g2forge.reassert.core.model.contract.terms.ITerm;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.eval.AnalyzeInputsEvaluator;
@@ -26,13 +26,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AnalyzeTermExpressionEvaluator implements IEvaluator<ILicenseUsageName, TermRelation, ExpressionContextFinding> {
-	protected static final IEvaluator<ILicenseUsageName, TermRelation, Set<IVariable<ILicenseUsageName, TermRelation>>> analyzeInputs = new AnalyzeInputsEvaluator<>();
+public class AnalyzeTermExpressionEvaluator implements IEvaluator<IContractComparisonName, TermRelation, ExpressionContextFinding> {
+	protected static final IEvaluator<IContractComparisonName, TermRelation, Set<IVariable<IContractComparisonName, TermRelation>>> analyzeInputs = new AnalyzeInputsEvaluator<>();
 
-	protected static final IEvaluator<ILicenseUsageName, TermRelation, TermRelation> valueEvaluator = new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+	protected static final IEvaluator<IContractComparisonName, TermRelation, TermRelation> valueEvaluator = new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 
-	protected static Set<ITerm> toTerms(final Set<IVariable<ILicenseUsageName, TermRelation>> variables) {
-		final Set<ITerm> set = variables.stream().map(IVariable::getName).map(ILicenseUsageName::getTerm).collect(Collectors.toCollection(LinkedHashSet::new));
+	protected static Set<ITerm> toTerms(final Set<IVariable<IContractComparisonName, TermRelation>> variables) {
+		final Set<ITerm> set = variables.stream().map(IVariable::getName).map(IContractComparisonName::getTerm).collect(Collectors.toCollection(LinkedHashSet::new));
 		return Collections.unmodifiableSet(set);
 	}
 
@@ -44,13 +44,13 @@ public class AnalyzeTermExpressionEvaluator implements IEvaluator<ILicenseUsageN
 	}
 
 	@Override
-	public ExpressionContextFinding eval(IExpression<ILicenseUsageName, TermRelation> expression) {
-		final Set<IVariable<ILicenseUsageName, TermRelation>> inputs = analyzeInputs.eval(expression), outputs = new LinkedHashSet<>();
+	public ExpressionContextFinding eval(IExpression<IContractComparisonName, TermRelation> expression) {
+		final Set<IVariable<IContractComparisonName, TermRelation>> inputs = analyzeInputs.eval(expression), outputs = new LinkedHashSet<>();
 
-		final Literal<ILicenseUsageName, TermRelation> unspecified = new Literal<>(TermRelation.Unspecified);
-		final IEnvironment<ILicenseUsageName, TermRelation> environment = new Environment<>(inputs.stream().collect(Collectors.toMap(IFunction1.identity(), IFunction1.create(unspecified))));
-		for (IVariable<ILicenseUsageName, TermRelation> input : inputs) {
-			final IEnvironment<ILicenseUsageName, TermRelation> override = environment.override(Environment.<ILicenseUsageName, TermRelation>builder().bind$(input, TermRelation.Excluded).build());
+		final Literal<IContractComparisonName, TermRelation> unspecified = new Literal<>(TermRelation.Unspecified);
+		final IEnvironment<IContractComparisonName, TermRelation> environment = new Environment<>(inputs.stream().collect(Collectors.toMap(IFunction1.identity(), IFunction1.create(unspecified))));
+		for (IVariable<IContractComparisonName, TermRelation> input : inputs) {
+			final IEnvironment<IContractComparisonName, TermRelation> override = environment.override(Environment.<IContractComparisonName, TermRelation>builder().bind$(input, TermRelation.Excluded).build());
 			final TermRelation result = valueEvaluator.eval(new Closure<>(override, expression));
 			if (getTest().test(result)) outputs.add(input);
 		}

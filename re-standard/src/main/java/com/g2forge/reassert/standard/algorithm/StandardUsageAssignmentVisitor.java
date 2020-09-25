@@ -16,7 +16,6 @@ import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.core.algorithm.visitor.AGraphVisitor;
-import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
@@ -77,7 +76,7 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 
 			// If nothing can have changed, and we don't need to merge multiple initial usages, then continue
 			if ((usages.size() == 1) && HCollection.getOne(usages).equals(originalUsage)) continue;
-			final IUsageApplied merged = merge(usages);
+			final IUsageApplied merged = MergedUsage.merge(usages);
 			// If nothing actual changed after merging, then continue;
 			if (IUsage.isEqualTerms(originalUsage, merged)) continue;
 
@@ -93,15 +92,6 @@ public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 			// Might need to update everything this can affect
 			queue.addAll(HReassertModel.get(graph, artifact, true, IEdge::isDirected, new ATypeRef<Artifact<?>>() {}));
 		}
-	}
-
-	@ReassertLegalOpinion
-	protected IUsageApplied merge(Set<IUsageApplied> usages) {
-		final MergedUsage merged = new MergedUsage(usages);
-		for (IUsageApplied usage : usages) {
-			if (IUsage.isEqualTerms(usage, merged)) return usage;
-		}
-		return merged;
 	}
 
 	@Note(type = NoteType.TODO, value = "Implement support for license operations", issue = "G2-919")

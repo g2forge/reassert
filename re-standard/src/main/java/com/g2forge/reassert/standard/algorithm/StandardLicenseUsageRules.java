@@ -9,13 +9,17 @@ import java.util.Collections;
 import java.util.List;
 
 import com.g2forge.alexandria.java.core.marker.ISingleton;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ALicenseUsageRules;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRule;
-import com.g2forge.reassert.contract.model.finding.rule.ConditionFinding;
-import com.g2forge.reassert.contract.model.finding.rule.DiscloseSourceFinding;
-import com.g2forge.reassert.contract.model.finding.rule.NoticeFinding;
-import com.g2forge.reassert.contract.model.finding.rule.StateChangesFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.LicenseUsageNameScheme;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
+import com.g2forge.reassert.contract.model.IContractComparisonScheme;
+import com.g2forge.reassert.contract.model.rule.AContractComparisonRules;
+import com.g2forge.reassert.contract.model.rule.IContractComparisonRule;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
+import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
+import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttribute;
@@ -23,7 +27,7 @@ import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTermAttri
 import lombok.Getter;
 
 @ReassertLegalOpinion
-public class StandardLicenseUsageRules extends ALicenseUsageRules implements ISingleton {
+public class StandardLicenseUsageRules extends AContractComparisonRules<ILicenseTerm, IUsageTerm> implements ISingleton {
 	protected static final StandardLicenseUsageRules INSTANCE = new StandardLicenseUsageRules();
 
 	public static StandardLicenseUsageRules create() {
@@ -31,43 +35,51 @@ public class StandardLicenseUsageRules extends ALicenseUsageRules implements ISi
 	}
 
 	@Getter(lazy = true)
-	private final List<ILicenseUsageRule> rules = Collections.unmodifiableList(computeRules());
+	private final List<IContractComparisonRule> rules = Collections.unmodifiableList(computeRules());
 
 	protected StandardLicenseUsageRules() {}
 
-	protected List<ILicenseUsageRule> computeRules() {
-		final List<ILicenseUsageRule> rules = new ArrayList<>();
+	protected List<IContractComparisonRule> computeRules() {
+		final List<IContractComparisonRule> rules = new ArrayList<>();
 
 		// Usage terms
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.Commercial), b.of(StandardLicenseTerm.CommercialUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.Commercial), b.a(StandardLicenseTerm.CommercialUse))).finding(ConditionFinding::new)));
 
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.DistributionPublic), b.of(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.DistributionPrivate), b.of(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.DistributionService), b.not(StandardLicenseTerm.SaaSIsDistribution), b.of(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributionPublic), b.a(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributionPrivate), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributionService), b.notA(StandardLicenseTerm.SaaSIsDistribution), b.a(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
 
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.UseLink), b.of(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.UseCopy), b.of(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.UseModified), and(b.of(StandardLicenseTerm.PrivateUse), b.of(StandardLicenseTerm.Modification)))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.UseLink), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.UseCopy), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.UseModified), and(b.a(StandardLicenseTerm.PrivateUse), b.a(StandardLicenseTerm.Modification)))).finding(ConditionFinding::new)));
 
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.DistributingBinary), b.of(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.not(StandardUsageTerm.DistributingSource), b.of(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributingBinary), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributingSource), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
 
 		// License conditions
-		rules.add(rule(b -> b.expression(and(or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))), b.of(StandardLicenseTerm.DisclosureSource))).finding(DiscloseSourceFinding::new)));
-		rules.add(rule(b -> b.expression(and(b.of(StandardLicenseTerm.Notice), or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))))).finding(NoticeFinding::new)));
+		rules.add(rule(b -> b.expression(and(or(b.b(StandardUsageTerm.DistributionPublic), and(b.b(StandardUsageTerm.DistributionService), b.a(StandardLicenseTerm.SaaSIsDistribution))), b.a(StandardLicenseTerm.DisclosureSource))).finding(DiscloseSourceFinding::new)));
+		rules.add(rule(b -> b.expression(and(b.a(StandardLicenseTerm.Notice), or(b.b(StandardUsageTerm.DistributionPublic), and(b.b(StandardUsageTerm.DistributionService), b.a(StandardLicenseTerm.SaaSIsDistribution))))).finding(CopyrightNoticeFinding::new)));
 		// SaaSIsDistribution has no satisfying condition, since it's part of the distribution usage terms
 		// SameLicense is handled elsewhere, since it speaks to the licenses across artifacts and the analyzer isn't graph-aware
-		rules.add(rule(b -> b.expression(and(or(b.of(StandardUsageTerm.DistributionPublic), and(b.of(StandardUsageTerm.DistributionService), b.of(StandardLicenseTerm.SaaSIsDistribution))), b.of(StandardUsageTerm.UseModified), b.of(StandardLicenseTerm.StateChanges))).finding(StateChangesFinding::new)));
+		rules.add(rule(b -> b.expression(and(or(b.b(StandardUsageTerm.DistributionPublic), and(b.b(StandardUsageTerm.DistributionService), b.a(StandardLicenseTerm.SaaSIsDistribution))), b.b(StandardUsageTerm.UseModified), b.a(StandardLicenseTerm.StateChanges))).finding(StateChangesFinding::new)));
+
+		// License limitations
+		rules.add(rule(b -> b.expression(or(b.notA(StandardLicenseTerm.NoRedistribution), not(and(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributingSource))))).finding(ConditionFinding::new)));
 
 		// Consistency rules
-		rules.add(rule(b -> b.expression(not(or(b.of(StandardUsageTerm.DistributionPublic), b.of(StandardUsageTerm.DistributionPrivate), b.of(StandardUsageTerm.DistributionService)))).finding(StandardUsageTermAttribute.Distribution)));
-		rules.add(rule(b -> b.expression(not(or(b.of(StandardUsageTerm.UseLink), b.of(StandardUsageTerm.UseCopy), b.of(StandardUsageTerm.UseModified)))).finding(StandardUsageTermAttribute.Consumption)));
-		rules.add(rule(b -> b.expression(not(or(b.of(StandardUsageTerm.DistributingBinary), b.of(StandardUsageTerm.DistributingSource)))).finding(StandardUsageTermAttribute.Format)));
+		rules.add(rule(b -> b.expression(not(or(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributionPrivate), b.b(StandardUsageTerm.DistributionService)))).finding(StandardUsageTermAttribute.Distribution)));
+		rules.add(rule(b -> b.expression(not(or(b.b(StandardUsageTerm.UseLink), b.b(StandardUsageTerm.UseCopy), b.b(StandardUsageTerm.UseModified)))).finding(StandardUsageTermAttribute.Consumption)));
+		rules.add(rule(b -> b.expression(not(or(b.b(StandardUsageTerm.DistributingBinary), b.b(StandardUsageTerm.DistributingSource)))).finding(StandardUsageTermAttribute.Format)));
 
 		// Ignored terms
-		rules.add(rule(b -> b.expression(b.of(StandardLicenseTerm.SameLicense))));
-		rules.add(rule(b -> b.expression(b.of(StandardLicenseTerm.SaaSIsDistribution))));
+		rules.add(rule(b -> b.expression(b.a(StandardLicenseTerm.SameLicense))));
+		rules.add(rule(b -> b.expression(b.a(StandardLicenseTerm.SaaSIsDistribution))));
 
 		return rules;
+	}
+
+	@Override
+	protected IContractComparisonScheme<ILicenseTerm, IUsageTerm> getScheme() {
+		return LicenseUsageNameScheme.create();
 	}
 }

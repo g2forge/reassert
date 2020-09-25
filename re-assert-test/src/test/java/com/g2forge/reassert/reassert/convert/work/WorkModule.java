@@ -2,10 +2,10 @@ package com.g2forge.reassert.reassert.convert.work;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.g2forge.reassert.core.model.work.UnknownWorkTypeFinding;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding;
 
 public class WorkModule extends SimpleModule {
-	protected static abstract class UnknownWorkTypeFindingMixin {
+	protected static abstract class UnknownLicenseRulesFindingMixin {
 		@JsonIgnore
 		protected Throwable throwable;
 	}
@@ -14,7 +14,7 @@ public class WorkModule extends SimpleModule {
 
 	@Override
 	public void setupModule(SetupContext context) {
-		this.setMixInAnnotation(UnknownWorkTypeFinding.class, UnknownWorkTypeFindingMixin.class);
+		setMixInAnnotation(UnknownWorkLicenseRulesFinding.class, UnknownLicenseRulesFindingMixin.class);
 		super.setupModule(context);
 	}
 }

@@ -26,7 +26,8 @@ public enum StandardLicenseTerm implements ILicenseTerm {
 	PatentNonGrant(Type.Limitation, "Does not grant patent usage"),
 	Liability(Type.Limitation, "Does not idemnify against liability"),
 	Trademark(Type.Limitation, "Does not grant trademark usage"),
-	Warranty(Type.Limitation, "Does not grant warranty");
+	Warranty(Type.Limitation, "Does not grant warranty"),
+	NoRedistribution(Type.Limitation, "Does not allow redistribution under this license");
 
 	protected final Type type;
 

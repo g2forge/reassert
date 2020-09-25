@@ -23,6 +23,9 @@
       }, {
         "edge" : "notice",
         "targets" : [ "Finding 0", "Finding 2" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "C artifact" : {
@@ -36,6 +39,9 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "commerical usage" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "B artifact" : {
@@ -49,6 +55,9 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "GPL-3.0-or-later", "BSD-3-Clause", "Finding 1" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "GPL-3.0-or-later" : {
@@ -70,15 +79,9 @@
     "Work 0" : {
       "vertex" : {
         "@c" : ".work.Work",
-        "name" : "Work 0",
-        "type" : {
-          "@c" : "com.g2forge.reassert.standard.algorithm.StandardWorkTypeFactory$GPLWorkType"
-        }
+        "name" : "Work 0"
       },
       "outgoings" : [ {
-        "edge" : "workcontains",
-        "targets" : [ "B artifact", "A artifact", "C artifact" ]
-      }, {
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]
@@ -99,7 +102,7 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "Finding 1",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.finding.rule.NoticeFinding",
+          "@c" : "com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding",
           "result" : {
             "@c" : "com.g2forge.reassert.express.model.constant.Literal",
             "name" : null,
@@ -113,7 +116,7 @@
         "@c" : ".report.GraphContextFinding",
         "name" : "Finding 2",
         "finding" : {
-          "@c" : "com.g2forge.reassert.contract.model.finding.rule.ConditionFinding",
+          "@c" : "com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding",
           "result" : {
             "@c" : "com.g2forge.reassert.express.model.constant.Literal",
             "name" : null,
