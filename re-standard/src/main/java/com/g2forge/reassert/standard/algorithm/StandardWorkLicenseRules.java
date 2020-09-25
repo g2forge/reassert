@@ -23,6 +23,7 @@ import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;
 import com.g2forge.reassert.core.model.artifact.Inherits;
+import com.g2forge.reassert.core.model.artifact.Invokes;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
 import com.g2forge.reassert.core.model.contract.license.ILicenseSpecific;
@@ -37,10 +38,10 @@ import lombok.RequiredArgsConstructor;
 public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory implements ISingleton {
 	@Getter
 	@RequiredArgsConstructor
-	protected static class GPLWorkLicenseRulesFactory extends AWorkLicenseRulesFactory {
+	public static class GPLWorkLicenseRulesFactory extends AWorkLicenseRulesFactory {
 		@Getter
 		@RequiredArgsConstructor
-		protected class Rules extends AWorkLicenseRules {
+		public class Rules extends AWorkLicenseRules {
 			protected final ILicenseFamily combinedLicense;
 
 			@Getter(lazy = true)
@@ -94,6 +95,7 @@ public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory im
 			builder.add(Depends.class, e -> true);
 			builder.add(Copy.class, e -> true);
 			builder.add(Inherits.class, e -> true);
+			builder.add(Invokes.class, e -> true);
 		}
 	}
 
