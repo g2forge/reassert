@@ -1,12 +1,11 @@
 package com.g2forge.reassert.standard.model.contract.usage;
 
-import com.g2forge.reassert.contract.TermsLoader;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
+import com.g2forge.reassert.core.model.contract.usage.IUsageSpecific;
 import com.g2forge.reassert.core.model.contract.usage.IUsageSpecificEnum;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -19,9 +18,6 @@ public enum StandardUsage implements IUsageSpecificEnum {
 	CommercialDistribution,
 	CommercialSaaS;
 
-	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final TermsLoader<StandardUsage, IUsageTerm> loader = new TermsLoader<>(StandardUsage.class, StandardUsage.class, StandardUsageTerm.class);
-
 	@Getter(lazy = true)
-	private final ITerms<IUsageTerm> terms = getLoader().getTerms(this);
+	private final ITerms<IUsageTerm> terms = IUsageSpecific.getTerms(this);
 }

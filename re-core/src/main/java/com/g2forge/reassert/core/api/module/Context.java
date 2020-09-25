@@ -32,6 +32,8 @@ import com.g2forge.reassert.core.api.scanner.CompositeScanner;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.terms.CompositeTermsLoader;
+import com.g2forge.reassert.core.model.contract.terms.ITermsLoader;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 
 import lombok.AccessLevel;
@@ -74,6 +76,8 @@ public class Context implements IContext {
 
 	protected IParser<IUsageApplied> usageParser;
 
+	protected ITermsLoader termsLoader;
+
 	protected IScanner scanner;
 
 	protected Collection<ISystem<?>> systems;
@@ -96,6 +100,7 @@ public class Context implements IContext {
 			if (loaded == null) continue;
 			loaded.getLicenseParsers().forEach(builder::licenseParser);
 			loaded.getUsageParsers().forEach(builder::usageParser);
+			loaded.getTermsLoaders().forEach(builder::termsLoader);
 			loaded.getScanners().forEach(builder::scanner);
 			loaded.getSystems().forEach(builder::system);
 			loaded.getSystems().stream().map(ISystem::getScanner).filter(Objects::nonNull).forEach(builder::scanner);
@@ -106,6 +111,7 @@ public class Context implements IContext {
 		setScanner(new CompositeScanner(loaded.getScanners()));
 		setLicenseParser(new CompositeLicenseParser(loaded.getLicenseParsers()));
 		setUsageParser(new CompositeUsageParser(loaded.getUsageParsers()));
+		setTermsLoader(new CompositeTermsLoader(loaded.getTermsLoaders()));
 		setSystems(loaded.getSystems());
 		setDescribers(loaded.getDescribers());
 	}

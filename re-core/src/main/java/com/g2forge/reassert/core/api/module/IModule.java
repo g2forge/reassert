@@ -7,6 +7,7 @@ import com.g2forge.reassert.core.api.parser.IParser;
 import com.g2forge.reassert.core.api.scanner.IScanner;
 import com.g2forge.reassert.core.api.system.ISystem;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
+import com.g2forge.reassert.core.model.contract.terms.ITermsLoader;
 import com.g2forge.reassert.core.model.contract.usage.IUsageApplied;
 
 import lombok.Builder;
@@ -27,12 +28,15 @@ public interface IModule {
 
 		@Singular
 		protected final Collection<IParser<ILicenseApplied>> licenseParsers;
-		
+
 		@Singular
 		protected final Collection<IParser<IUsageApplied>> usageParsers;
 
 		@Singular
 		protected final Collection<IDescriber<?>> describers;
+
+		@Singular
+		protected final Collection<ITermsLoader> termsLoaders;
 	}
 
 	public Loaded load(IContext context);
