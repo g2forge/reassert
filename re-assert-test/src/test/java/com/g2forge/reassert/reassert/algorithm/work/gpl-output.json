@@ -20,6 +20,9 @@
       }, {
         "edge" : "inherits",
         "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "B artifact" : {
@@ -33,6 +36,9 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "GPL-3.0-or-later" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "C artifact" : {
@@ -42,7 +48,11 @@
           "system" : "mock",
           "text" : "C"
         }
-      }
+      },
+      "outgoings" : [ {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
+      } ]
     },
     "GPL-3.0-or-later" : {
       "vertex" : "GPL-3.0-or-later"
@@ -50,15 +60,9 @@
     "Work 0" : {
       "vertex" : {
         "@c" : ".work.Work",
-        "name" : "Work 0",
-        "type" : {
-          "@c" : ".StandardWorkRules$GPLWorkType"
-        }
+        "name" : "Work 0"
       },
       "outgoings" : [ {
-        "edge" : "workcontains",
-        "targets" : [ "B artifact", "A artifact", "C artifact" ]
-      }, {
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]

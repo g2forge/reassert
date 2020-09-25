@@ -11,7 +11,7 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1;
-import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding2;
+import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.AWorkLicenseRules;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.AWorkLicenseRulesFactory;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.rule.AWorkLicenseRulesFactoryFactory;
@@ -54,11 +54,11 @@ public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory im
 					if (StandardLicenseTerm.PatentGrant.equals(term)) continue;
 					switch (term.getType()) {
 						case Permission:
-							rules.add(rule(b -> b.expression(or(b.notA(term), b.b(term))).finding(IncompatibleWorkLicenseFinding2::new)));
+							rules.add(rule(b -> b.expression(or(b.notA(term), b.b(term))).finding(IncompatibleWorkLicenseFinding::new)));
 							break;
 						case Condition:
 						case Limitation:
-							rules.add(rule(b -> b.expression(or(b.a(term), b.notB(term))).finding(IncompatibleWorkLicenseFinding2::new)));
+							rules.add(rule(b -> b.expression(or(b.a(term), b.notB(term))).finding(IncompatibleWorkLicenseFinding::new)));
 							break;
 						default:
 							throw new EnumException(ILicenseTerm.Type.class, term.getType());
@@ -83,6 +83,7 @@ public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory im
 
 		@Override
 		public IWorkLicenseRules apply(ILicenseFamily combinedLicense) {
+			if (getWorkLicense().equals(combinedLicense)) return null;
 			return new Rules(combinedLicense);
 		}
 

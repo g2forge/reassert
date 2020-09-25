@@ -15,6 +15,7 @@ import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
+import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.core.helpers.HCollector;
 import com.g2forge.alexandria.java.core.helpers.HStream;
@@ -33,9 +34,10 @@ import com.g2forge.reassert.core.model.artifact.Artifact;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.ILicenseFamily;
+import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.work.Work;
-import com.g2forge.reassert.core.model.work.WorkContains;
 import com.g2forge.reassert.core.model.work.WorkLicense;
+import com.g2forge.reassert.core.model.work.WorkMember;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -64,8 +66,8 @@ public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 			}
 			if (factory != null) licenses.put(license, factory);
 		}
-		final LinkedHashSet<WorkContains> queue = new LinkedHashSet<>();
 
+		final LinkedHashSet<WorkMember> queue = new LinkedHashSet<>();
 		// Start with all the vertices which have licenses assigned
 		for (ILicenseApplied license : licenses.keySet()) {
 			for (Artifact<?> artifact : HReassertModel.get(graph, license, false, Notice.class::isInstance, new ATypeRef<Artifact<?>>() {})) {
@@ -76,33 +78,33 @@ public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 
 				graph.addVertex(work);
 				graph.addEdge(work, license, new WorkLicense());
-				final WorkContains contains = new WorkContains();
-				graph.addEdge(work, artifact, contains);
-				queue.add(contains);
+				final WorkMember member = new WorkMember();
+				graph.addEdge(artifact, work, member);
+				queue.add(member);
 			}
 		}
 
 		// For each artifact added to a work (represented by an edge)...
 		while (!queue.isEmpty()) {
-			final WorkContains contains;
+			final WorkMember member;
 			{ // Get the first artifact on the queue
-				final Iterator<WorkContains> iterator = queue.iterator();
-				contains = iterator.next();
+				final Iterator<WorkMember> iterator = queue.iterator();
+				member = iterator.next();
 				iterator.remove();
 			}
 
-			final Work work = (Work) graph.getEdgeSource(contains);
+			final Work work = (Work) graph.getEdgeTarget(member);
 			final IWorkLicenseRulesFactory rulesFactory = licenses.get(getLicense(graph, work));
-			final Artifact<?> artifact = (Artifact<?>) graph.getEdgeTarget(contains);
+			final Artifact<?> artifact = (Artifact<?>) graph.getEdgeSource(member);
 
 			final Stream<Artifact<?>> incoming = graph.incomingEdgesOf(artifact).stream().filter(e -> graph.getEdgeSource(e) instanceof Artifact).filter(e -> rulesFactory.isIncluded(e, false)).map(graph::getEdgeSource).flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance);
 			final Stream<Artifact<?>> outgoing = graph.outgoingEdgesOf(artifact).stream().filter(e -> graph.getEdgeTarget(e) instanceof Artifact).filter(e -> rulesFactory.isIncluded(e, true)).map(graph::getEdgeTarget).flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance);
-			final Set<Artifact<?>> artifacts = HStream.concat(incoming, outgoing).filter(a -> graph.getEdge(work, a) == null).collect(Collectors.toCollection(LinkedHashSet::new));
+			final Set<Artifact<?>> artifacts = HStream.concat(incoming, outgoing).filter(a -> graph.getEdge(a, work) == null).collect(Collectors.toCollection(LinkedHashSet::new));
 
 			for (Artifact<?> otherArtifact : artifacts) {
-				final WorkContains otherContains = new WorkContains();
-				graph.addEdge(work, otherArtifact, otherContains);
-				queue.add(otherContains);
+				final WorkMember otherMember = new WorkMember();
+				graph.addEdge(otherArtifact, work, otherMember);
+				queue.add(otherMember);
 			}
 		}
 
@@ -110,19 +112,33 @@ public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 			final ILicenseApplied workLicense = getLicense(graph, work);
 			final IWorkLicenseRulesFactory rulesFactory = licenses.get(workLicense);
 
-			final Collection<Artifact<?>> artifacts = HReassertModel.get(graph, work, true, WorkContains.class::isInstance, new ATypeRef<Artifact<?>>() {});
-			final Map<ILicenseApplied, List<Artifact<?>>> combinedLinceses = artifacts.stream().collect(HCollector.multiGroupingBy(artifact -> HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class))));
+			final Collection<Artifact<?>> artifacts = HReassertModel.get(graph, work, false, WorkMember.class::isInstance, new ATypeRef<Artifact<?>>() {});
+			final Map<ILicenseApplied, List<Artifact<?>>> combinedLinceses = artifacts.stream().collect(HCollector.multiGroupingBy(artifact -> {
+				final Collection<ILicenseApplied> retVal = HReassertModel.get(graph, artifact, true, Notice.class::isInstance, ITypeRef.of(ILicenseApplied.class));
+				if (isLicenseRequired() && retVal.isEmpty()) throw new UnreachableCodeError("All artifacts require a license (at least " + UnspecifiedLicense.create().getShortID() + ") before work license analysis, but " + artifact.getCoordinates() + " did not have a license!");
+				return retVal;
+			}));
 			for (Map.Entry<ILicenseApplied, List<Artifact<?>>> entry : combinedLinceses.entrySet()) {
 				final ILicenseFamily combinedLicense = (ILicenseFamily) entry.getKey();
-				
+
 				final IWorkLicenseRules rules = rulesFactory.apply(combinedLicense);
+				if (rules == null) continue;
 				final ContractComparisonAnalyzer analyzer = new ContractComparisonAnalyzer(rules);
-				analyzer.analyze(workLicense, combinedLicense, new FindingConsumer(graph, work));
+				analyzer.analyze(workLicense, combinedLicense, new FindingConsumer(graph, work, workLicense, combinedLicense));
 			}
 		}
 	}
 
 	protected ILicenseApplied getLicense(Graph<IVertex, IEdge> graph, final Work work) {
 		return HCollection.getOne(HReassertModel.get(graph, work, true, WorkLicense.class::isInstance, ITypeRef.of(ILicenseApplied.class)));
+	}
+
+	/**
+	 * Check if licenses must be specified for all artifacts. This method exists to facilitate testing.
+	 * 
+	 * @return {@code true} if licenses must be specified for all artifacts.
+	 */
+	protected boolean isLicenseRequired() {
+		return true;
 	}
 }

@@ -34,6 +34,7 @@ public abstract class ASummaryModule extends SimpleModule {
 	@Override
 	public void setupModule(SetupContext context) {
 		super.setupModule(context);
+
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {

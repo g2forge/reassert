@@ -11,6 +11,9 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "saas-usage", "GPL-3.0-or-later", "SuspiciousUsageFinding 13" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "saas-usage" : {
@@ -44,15 +47,9 @@
     "Work 0" : {
       "vertex" : {
         "@c" : ".work.Work",
-        "name" : "Work 0",
-        "type" : {
-          "@c" : ".StandardWorkRules$GPLWorkType"
-        }
+        "name" : "Work 0"
       },
       "outgoings" : [ {
-        "edge" : "workcontains",
-        "targets" : [ "A artifact" ]
-      }, {
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]

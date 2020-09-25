@@ -1,7 +1,4 @@
 level,message,artifact,paths,details
-ERROR,"A license is incompatible with a combined work that includes artifacts under this license",,,"ERROR: A license is incompatible with a combined work that includes artifacts under this license	
-	License terms with unknown compatability: ""Permission to distribute"", ""Permission to modify"", ""Permission to use patents"", ""Requires source disclosure"", ""Requires compatible licenses"", ""Requires statement of changes"", ""Does not grant patent usage"", ""Does not idemnify against liability"" & ""Does not grant trademark usage""
-	Mistmatched license terms: ""Permission for commercial usage"""
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",A,A,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
 	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
 	Explanation: Included - because anything or-ed with Included is Included
@@ -135,5 +132,70 @@ INFO,"The usage for this artifact improperly specifies the format",B,"A -> B","I
 	Rule: (!(""Binary distribution"" || ""Source distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
 		> Included - Binary distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
+ERROR,"Term ""Permission for commercial usage"" is not compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","ERROR: Term ""Permission for commercial usage"" is not compatible
+	Rule: ((!""Permission for commercial usage"") || ""Permission for commercial usage"")
+	Explanation: Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments"
+ERROR,"Term ""Permission to distribute"" is not compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","ERROR: Term ""Permission to distribute"" is not compatible
+	Rule: ((!""Permission to distribute"") || ""Permission to distribute"")
+	Explanation: Unspecified - because anything or-ed with Excluded is itself
+		* Unspecified - Permission to distribute in No such license"
+ERROR,"Term ""Permission to modify"" is not compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","ERROR: Term ""Permission to modify"" is not compatible
+	Rule: ((!""Permission to modify"") || ""Permission to modify"")
+	Explanation: Unspecified - because anything or-ed with Excluded is itself
+		* Unspecified - Permission to modify in No such license"
+INFO,"Term ""Permission for private usage"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Permission for private usage"" is compatible
+	Rule: ((!""Permission for private usage"") || ""Permission for private usage"")
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Permission for private usage in No such license"
+INFO,"Term ""Requires source disclosure"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Requires source disclosure"" is compatible
+	Rule: (""Requires source disclosure"" || (!""Requires source disclosure""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires source disclosure in GPL 3.0 or later license"
+INFO,"Term ""Requires copyright notice"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Requires copyright notice"" is compatible
+	Rule: (""Requires copyright notice"" || (!""Requires copyright notice""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires copyright notice in GPL 3.0 or later license
+		> Included - not, and the only argument is Excluded - Requires copyright notice in No such license"
+INFO,"Term ""Requires distribution for SaaS"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Requires distribution for SaaS"" is compatible
+	Rule: (""Requires distribution for SaaS"" || (!""Requires distribution for SaaS""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in No such license"
+INFO,"Term ""Requires compatible licenses"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Requires compatible licenses"" is compatible
+	Rule: (""Requires compatible licenses"" || (!""Requires compatible licenses""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires compatible licenses in GPL 3.0 or later license"
+INFO,"Term ""Requires statement of changes"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Requires statement of changes"" is compatible
+	Rule: (""Requires statement of changes"" || (!""Requires statement of changes""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Requires statement of changes in GPL 3.0 or later license"
+ERROR,"Term ""Does not grant patent usage"" is not compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","ERROR: Term ""Does not grant patent usage"" is not compatible
+	Rule: (""Does not grant patent usage"" || (!""Does not grant patent usage""))
+	Explanation: Unspecified - because anything or-ed with Excluded is itself
+		* Unspecified - not, and the only argument is Unspecified - Does not grant patent usage in No such license"
+INFO,"Term ""Does not idemnify against liability"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Does not idemnify against liability"" is compatible
+	Rule: (""Does not idemnify against liability"" || (!""Does not idemnify against liability""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Does not idemnify against liability in GPL 3.0 or later license"
+ERROR,"Term ""Does not grant trademark usage"" is not compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","ERROR: Term ""Does not grant trademark usage"" is not compatible
+	Rule: (""Does not grant trademark usage"" || (!""Does not grant trademark usage""))
+	Explanation: Unspecified - because anything or-ed with Excluded is itself
+		* Unspecified - not, and the only argument is Unspecified - Does not grant trademark usage in No such license"
+INFO,"Term ""Does not grant warranty"" is compatible",,"A -> B -> GPL 3.0 or later license
+A -> No such license","INFO: Term ""Does not grant warranty"" is compatible
+	Rule: (""Does not grant warranty"" || (!""Does not grant warranty""))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - Does not grant warranty in GPL 3.0 or later license"
 ERROR,"Unknown work type",,"A -> No such license","ERROR: Unknown work type	
 	GeneralLicense(name=No such license, shortID=null, SPDXShortID=null, terms=Terms(terms={CommercialUse=Excluded, PrivateUse=Included, Notice=Excluded, SaaSIsDistribution=Excluded, Warranty=Included}), version=null, orLater=false)"

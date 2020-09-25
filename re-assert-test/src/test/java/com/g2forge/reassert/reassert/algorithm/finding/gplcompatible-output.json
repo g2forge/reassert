@@ -20,6 +20,9 @@
       }, {
         "edge" : "notice",
         "targets" : [ "GPL-3.0-or-later", "private-usage" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "B artifact" : {
@@ -33,6 +36,9 @@
       "outgoings" : [ {
         "edge" : "notice",
         "targets" : [ "BSD-3-Clause", "private-usage" ]
+      }, {
+        "edge" : "workmember",
+        "targets" : [ "Work 0" ]
       } ]
     },
     "GPL-3.0-or-later" : {
@@ -78,15 +84,9 @@
     "Work 0" : {
       "vertex" : {
         "@c" : ".work.Work",
-        "name" : "Work 0",
-        "type" : {
-          "@c" : ".StandardWorkRules$GPLWorkType"
-        }
+        "name" : "Work 0"
       },
       "outgoings" : [ {
-        "edge" : "workcontains",
-        "targets" : [ "A artifact", "B artifact" ]
-      }, {
         "edge" : "worklicense",
         "targets" : [ "GPL-3.0-or-later" ]
       } ]

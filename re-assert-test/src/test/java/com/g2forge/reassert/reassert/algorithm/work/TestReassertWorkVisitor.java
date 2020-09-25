@@ -28,7 +28,12 @@ public class TestReassertWorkVisitor extends ATestReassert {
 
 	@Override
 	protected TestGraph load(final Artifact<ListCoordinates> artifact) {
-		return new TestGraph(artifact, new ReassertWorkLicenseVisitor(StandardWorkLicenseRules.create()));
+		return new TestGraph(artifact, new ReassertWorkLicenseVisitor(StandardWorkLicenseRules.create()) {
+			@Override
+			protected boolean isLicenseRequired() {
+				return false;
+			}
+		});
 	}
 
 	@Test

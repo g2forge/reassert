@@ -18,11 +18,11 @@ import lombok.ToString;
 @ToString(callSuper = false)
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class WorkContains extends DefaultEdge implements IEdge {
+public class WorkMember extends DefaultEdge implements IEdge {
 	private static final long serialVersionUID = -6037330681878424226L;
 
 	@Override
-	public WorkContains clone() {
+	public WorkMember clone() {
 		return toBuilder().build();
 	}
 }

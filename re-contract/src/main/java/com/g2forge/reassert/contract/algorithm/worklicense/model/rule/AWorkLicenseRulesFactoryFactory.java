@@ -17,6 +17,7 @@ public abstract class AWorkLicenseRulesFactoryFactory implements IWorkLicenseRul
 	@Override
 	public IWorkLicenseRulesFactory apply(ILicenseApplied license) {
 		final IFunction1<ILicenseFamily, IWorkLicenseRulesFactory> constructor = getFunction().apply(license);
+		if (constructor == null) return null;
 		return constructor.apply((ILicenseFamily) license);
 	}
 

@@ -1,5 +1,6 @@
 package com.g2forge.reassert.contract.model.name;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g2forge.reassert.contract.model.IContractComparisonScheme;
 import com.g2forge.reassert.core.model.contract.ContractType;
 import com.g2forge.reassert.core.model.contract.IContractTerms;
@@ -11,6 +12,7 @@ import lombok.Data;
 @Data
 @Builder(toBuilder = true)
 public class ContractComparisonName implements IContractComparisonName {
+	@JsonIgnore
 	protected final IContractComparisonScheme<?, ?> scheme;
 
 	protected final ITerm term;

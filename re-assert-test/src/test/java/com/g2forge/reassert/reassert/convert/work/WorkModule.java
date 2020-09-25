@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding;
 
 public class WorkModule extends SimpleModule {
-	protected static abstract class UnknownWorkTypeFindingMixin {
+	protected static abstract class UnknownLicenseRulesFindingMixin {
 		@JsonIgnore
 		protected Throwable throwable;
 	}
@@ -14,7 +14,7 @@ public class WorkModule extends SimpleModule {
 
 	@Override
 	public void setupModule(SetupContext context) {
-		setMixInAnnotation(UnknownWorkLicenseRulesFinding.class, UnknownWorkTypeFindingMixin.class);
+		setMixInAnnotation(UnknownWorkLicenseRulesFinding.class, UnknownLicenseRulesFindingMixin.class);
 		super.setupModule(context);
 	}
 }

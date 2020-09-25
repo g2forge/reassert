@@ -16,6 +16,7 @@ import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
+import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
@@ -190,29 +191,9 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 			});
 
-			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> {
-				appendLevel(e, c).append("A license is incompatible with a combined work that includes artifacts under this license");
-				if (c.getMode().compareTo(ExplanationMode.Describe) >= 0) try (final ICloseable indent = c.indent()) {
-					if ((e.getUnknown() != null) && !e.getUnknown().isEmpty()) {
-						c.newline().append("License terms with unknown compatability: ");
-						final List<ILicenseTerm> unknown = new ArrayList<>(e.getUnknown());
-						final int size = unknown.size();
-						for (int i = 0; i < size; i++) {
-							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-							c.render(unknown.get(i), ILicenseTerm.class);
-						}
-					}
-					if ((e.getMismatched() != null) && !e.getMismatched().isEmpty()) {
-						c.newline().append("Mistmatched license terms: ");
-						final List<ILicenseTerm> mistmatched = new ArrayList<>(e.getMismatched());
-						final int size = mistmatched.size();
-						for (int i = 0; i < size; i++) {
-							if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-							c.render(mistmatched.get(i), ILicenseTerm.class);
-						}
-					}
-				}
-			});
+			builder.add(ConditionFinding.class, e -> c -> render(e, c, "Condition", "satisfied"));
+			builder.add(IncompatibleWorkLicenseFinding.class, e -> c -> render(e, c, "Term", "compatible"));
+
 			builder.add(MultiLicenseFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting licenses detected for artifact"));
 			builder.add(MultiUsageFinding.class, e -> c -> appendLevel(e, c).append("Multiple, conflicting usages detected for artifact"));
 			builder.add(UnknownWorkLicenseRulesFinding.class, e -> c -> {
@@ -235,43 +216,44 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 						throw new EnumException(ContractType.class, type);
 				}
 			});
-			builder.add(IConditionFinding.class, e -> c -> {
-				final ExpressionContextFinding findingContext = c.getFindingContext();
-				final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
-
-				appendLevel(e, c).append("Condition");
-				if (outputs.size() > 1) c.append('s');
-				c.append(' ');
-				if (!outputs.isEmpty()) {
-					final List<ITerm> list = new ArrayList<>(outputs);
-					final int size = list.size();
-					for (int i = 0; i < size; i++) {
-						if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-						c.render(list.get(i), ITerm.class);
-					}
-					c.append(' ');
-				}
-
-				c.append(outputs.size() > 1 ? "are" : "is");
-				if (!e.isSatisfied()) c.append(" not");
-				c.append(" satisfied");
-
-				if (findingContext != null) {
-					c.append(" based on ");
-					final List<ITerm> list = new ArrayList<>(findingContext.getInputs());
-					final int size = list.size();
-					for (int i = 0; i < size; i++) {
-						if (i > 0) c.append((i == size - 1) ? " & " : ", ");
-						c.render(list.get(i), ITerm.class);
-					}
-				}
-
-				explain(e, c);
-			});
 			builder.add(DiscloseSourceFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must disclose the source for this artifact")));
 			builder.add(CopyrightNoticeFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must publish a copyright and license notice stating that you use this artifact")));
 			builder.add(StateChangesFinding.class, e -> c -> explain(e, appendLevel(e, c).append("You must state the changes you have made to your copy of this artifact")));
 			builder.add(SuspiciousUsageFinding.class, e -> c -> explain(e, appendLevel(e, c).append("The usage for this artifact improperly specifies the ").append(e.getAttribute().getDescription())));
+		}
+
+		protected void render(IConditionFinding finding, IReportRenderContext context, final String condition, final String satisfied) {
+			final ExpressionContextFinding findingContext = context.getFindingContext();
+			final Collection<ITerm> outputs = findingContext == null ? HCollection.emptyList() : findingContext.getOutputs();
+
+			appendLevel(finding, context).append(condition);
+			if (outputs.size() > 1) context.append('s');
+			context.append(' ');
+			if (!outputs.isEmpty()) {
+				final List<ITerm> list = new ArrayList<>(outputs);
+				final int size = list.size();
+				for (int i = 0; i < size; i++) {
+					if (i > 0) context.append((i == size - 1) ? " & " : ", ");
+					context.render(list.get(i), ITerm.class);
+				}
+				context.append(' ');
+			}
+
+			context.append(outputs.size() > 1 ? "are" : "is");
+			if (!finding.isSatisfied()) context.append(" not");
+			context.append(' ').append(satisfied);
+
+			if ((findingContext != null) && !findingContext.getInputs().isEmpty()) {
+				final List<ITerm> list = new ArrayList<>(findingContext.getInputs());
+				context.append(" based on ");
+				final int size = list.size();
+				for (int i = 0; i < size; i++) {
+					if (i > 0) context.append((i == size - 1) ? " & " : ", ");
+					context.render(list.get(i), ITerm.class);
+				}
+			}
+
+			explain(finding, context);
 		}
 	}
 
