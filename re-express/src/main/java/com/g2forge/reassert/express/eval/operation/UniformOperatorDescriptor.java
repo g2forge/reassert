@@ -7,11 +7,20 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public abstract class AOperatorDescriptor<Value> implements IOperatorDescriptor<Value> {
+public class UniformOperatorDescriptor<Value> implements IOperatorDescriptor<Value> {
 	protected final IArgumentDescriptor<Value> argument;
-	
+
 	protected final IFunction1<? super Value, ? extends Value> summarizer;
-	
+
+	public UniformOperatorDescriptor(Value zero, Value identity, IFunction1<? super Value, ? extends Value> summarizer) {
+		this(new ArgumentDescriptor<>(zero, identity), summarizer);
+	}
+
+	@Override
+	public Value combine(Value left, Value right) {
+		throw new UnsupportedOperationException();
+	}
+
 	@Override
 	public IArgumentDescriptor<Value> getArgument(int index) {
 		return getArgument();

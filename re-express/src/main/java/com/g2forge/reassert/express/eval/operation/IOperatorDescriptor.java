@@ -15,13 +15,6 @@ public interface IOperatorDescriptor<Value> {
 	public Value combine(Value left, Value right);
 
 	/**
-	 * Get a function to summarize the result of {@link #combine(Object, Object)} to produce the final result.
-	 * 
-	 * @return A summary function, or {@code null} if none is necessary.
-	 */
-	public IFunction1<? super Value, ? extends Value> getSummarizer();
-
-	/**
 	 * Get the descriptor for the argument at {@code index}.
 	 * 
 	 * @param index The {@code index} of the argument to get the descriptor for. An {@code index} of {@code -1} will return the descriptor used for all
@@ -31,5 +24,14 @@ public interface IOperatorDescriptor<Value> {
 	 */
 	public IArgumentDescriptor<Value> getArgument(int index);
 
-	public IValidation validate(IOperation<?, Value> operation);
+	/**
+	 * Get a function to summarize the result of {@link #combine(Object, Object)} to produce the final result.
+	 * 
+	 * @return A summary function, or {@code null} if none is necessary.
+	 */
+	public IFunction1<? super Value, ? extends Value> getSummarizer();
+
+	public default IValidation validate(IOperation<?, Value> operation) {
+		return operation.getOperator().validate(operation.getArguments());
+	}
 }

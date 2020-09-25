@@ -16,7 +16,9 @@ public class ArgumentDescriptor<Value> implements IArgumentDescriptor<Value> {
 	protected final IOptional<? extends Value> identity;
 
 	public ArgumentDescriptor(Value zero, Value identity) {
-		this(zero, zero, identity);
+		this.zeroInput = NonNullOptional.ofNullable(zero);
+		this.zeroOutput = this.zeroInput;
+		this.identity = NonNullOptional.ofNullable(identity);
 	}
 
 	public ArgumentDescriptor(Value zeroInput, Value zeroOutput, Value identity) {
