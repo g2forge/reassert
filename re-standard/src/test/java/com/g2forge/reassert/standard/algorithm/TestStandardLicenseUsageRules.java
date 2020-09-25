@@ -8,7 +8,7 @@ import org.slf4j.event.Level;
 import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.function.IPredicate1;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.ContractComparisonAnalyzer;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
 import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.Context;
@@ -55,7 +55,7 @@ public class TestStandardLicenseUsageRules {
 
 	protected void test(final IUsageApplied usage, final ILicenseApplied license, final Level exepctedMinLevel, final String expectedResource, IPredicate1<IFinding> filter) {
 		final Report.ReportBuilder builder = Report.builder();
-		new LicenseUsageAnalyzer(StandardLicenseUsageRules.create()).analyze(usage, license, builder);
+		new ContractComparisonAnalyzer(StandardLicenseUsageRules.create()).analyze(usage, license, builder);
 		final IReport reportRaw = builder.build();
 		final IReport reportClean = filter != null ? Report.builder().findings(reportRaw.getFindings().stream().filter(filter).collect(Collectors.toList())).build() : reportRaw;
 

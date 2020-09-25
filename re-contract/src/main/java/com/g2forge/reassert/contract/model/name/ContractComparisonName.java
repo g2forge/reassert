@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm.licenseusage.model.name;
+package com.g2forge.reassert.contract.model.name;
 
 import com.g2forge.reassert.core.model.contract.ContractType;
 import com.g2forge.reassert.core.model.contract.IContractTerms;
@@ -9,12 +9,15 @@ import lombok.Data;
 
 @Data
 @Builder(toBuilder = true)
-public class ContractLicenseUsageName implements ILicenseUsageName {
+public class ContractComparisonName implements IContractComparisonName {
+	protected final IContractComparisonNameScheme scheme;
+
 	protected final ITerm term;
 
 	protected final IContractTerms contract;
 
-	public ContractLicenseUsageName(ITerm term, IContractTerms contract) {
+	public ContractComparisonName(IContractComparisonNameScheme scheme, ITerm term, IContractTerms contract) {
+		this.scheme = scheme;
 		this.term = term;
 		this.contract = contract;
 

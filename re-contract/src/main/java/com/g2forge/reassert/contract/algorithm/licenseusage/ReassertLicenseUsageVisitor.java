@@ -8,6 +8,7 @@ import org.jgrapht.Graph;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.type.ref.ATypeRef;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
+import com.g2forge.reassert.contract.IContractComparisonAnalyzer;
 import com.g2forge.reassert.core.algorithm.visitor.AGraphVisitor;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
@@ -27,11 +28,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class ReassertLicenseUsageVisitor extends AGraphVisitor {
-	protected final ILicenseUsageAnalyzer licenseUsageAnalyzer;
+	protected final IContractComparisonAnalyzer licenseUsageAnalyzer;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
-		final ILicenseUsageAnalyzer licenseUsageAnalyzer = getLicenseUsageAnalyzer();
+		final IContractComparisonAnalyzer licenseUsageAnalyzer = getLicenseUsageAnalyzer();
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
 			final IUsageApplied usage = computeUsage(graph, artifact);
 			final ILicenseApplied license = computeLicense(graph, artifact);

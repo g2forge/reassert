@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.ContractComparisonAnalyzer;
 import com.g2forge.reassert.contract.algorithm.licenseusage.ReassertLicenseUsageVisitor;
 import com.g2forge.reassert.contract.algorithm.worklicense.ReassertWorkLicenseVisitor;
 import com.g2forge.reassert.core.model.HReassertModel;
@@ -49,6 +49,6 @@ public class TestReassertFindingVisitor extends ATestReassert {
 
 	@Override
 	protected TestGraph load(final Artifact<ListCoordinates> artifact) {
-		return new TestGraph(artifact, new ReassertWorkLicenseVisitor(StandardWorkLicenseRules.create()), new ReassertLicenseUsageVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
+		return new TestGraph(artifact, new ReassertWorkLicenseVisitor(StandardWorkLicenseRules.create()), new ReassertLicenseUsageVisitor(new ContractComparisonAnalyzer(StandardLicenseUsageRules.create())));
 	}
 }

@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm.licenseusage;
+package com.g2forge.reassert.contract;
 
 import static com.g2forge.reassert.express.model.operation.BooleanOperation.or;
 
@@ -7,11 +7,12 @@ import org.slf4j.event.Level;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.reassert.contract.ContractComparisonAnalyzer;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.ILicenseUsageRules;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.rule.LicenseUsageRules;
 import com.g2forge.reassert.contract.model.contract.TestLicenseTerm;
 import com.g2forge.reassert.contract.model.contract.TestUsageTerm;
+import com.g2forge.reassert.contract.model.rule.IContractComparisonRules;
+import com.g2forge.reassert.contract.model.rule.ContractComparisonRules;
 import com.g2forge.reassert.core.model.contract.license.GeneralLicense;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
@@ -22,12 +23,12 @@ import com.g2forge.reassert.core.model.report.Report;
 
 public class TestLicenseUsageAnalyzer {
 	protected IReport analyze(final Terms<IUsageTerm> usageTerms, final Terms<ILicenseTerm> licenseTerms) {
-		final LicenseUsageRules rules = new LicenseUsageRules(ILicenseUsageRules.rule(b -> b.expression(or(b.not(TestUsageTerm.Term), b.of(TestLicenseTerm.Permission))).finding(ConditionFinding::new)));
+		final ContractComparisonRules rules = new ContractComparisonRules(IContractComparisonRules.rule(b -> b.expression(or(b.not(TestUsageTerm.Term), b.of(TestLicenseTerm.Permission))).finding(ConditionFinding::new)));
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", usageTerms);
 		final GeneralLicense license = new GeneralLicense("license", "license", "license", licenseTerms, null, false);
 
 		final Report.ReportBuilder builder = Report.builder();
-		new LicenseUsageAnalyzer(rules).analyze(usage, license, builder);
+		new ContractComparisonAnalyzer(rules).analyze(usage, license, builder);
 		return builder.build();
 	}
 
@@ -43,13 +44,13 @@ public class TestLicenseUsageAnalyzer {
 
 	@Test
 	public void ignore() {
-		final LicenseUsageRules rules = new LicenseUsageRules(ILicenseUsageRules.rule(b -> b.expression(b.of(TestLicenseTerm.Condition))));
+		final ContractComparisonRules rules = new ContractComparisonRules(IContractComparisonRules.rule(b -> b.expression(b.of(TestLicenseTerm.Condition))));
 
 		final GeneralUsage usage = new GeneralUsage("usage", "usage", Terms.<IUsageTerm>builder().build());
 		final GeneralLicense license = new GeneralLicense("license", "license", "license", Terms.<ILicenseTerm>builder().build(), null, false);
 
 		final Report.ReportBuilder builder = Report.builder();
-		new LicenseUsageAnalyzer(rules).analyze(usage, license, builder);
+		new ContractComparisonAnalyzer(rules).analyze(usage, license, builder);
 		final Report report = builder.build();
 
 		final String message = report.getFindings().toString();

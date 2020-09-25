@@ -16,12 +16,10 @@ import com.g2forge.enigma.backend.convert.IExplicitRenderable;
 import com.g2forge.enigma.backend.convert.IRendering;
 import com.g2forge.enigma.backend.convert.textual.ATextualRenderer;
 import com.g2forge.enigma.backend.text.model.modifier.TextNestedModified;
-import com.g2forge.reassert.contract.algorithm.licenseusage.convert.LicenseUsageNameRenderer;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.DiscloseSourceFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.StateChangesFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.SuspiciousUsageFinding;
-import com.g2forge.reassert.contract.algorithm.licenseusage.model.name.ILicenseUsageName;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkFinding;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
@@ -30,6 +28,7 @@ import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IConditionFinding;
 import com.g2forge.reassert.contract.model.finding.IContractTermFinding;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
+import com.g2forge.reassert.contract.model.name.IContractComparisonName;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.model.contract.ContractType;
 import com.g2forge.reassert.core.model.contract.license.ILicenseTerm;
@@ -57,12 +56,12 @@ import lombok.Getter;
 public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContext> {
 	@Getter(AccessLevel.PROTECTED)
 	protected class ReportRenderContext extends ARenderContext implements IReportRenderContext {
-		protected final ExplanationRenderer<ILicenseUsageName, TermRelation> explanationRenderer;
+		protected final ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer;
 
 		@Getter(AccessLevel.PUBLIC)
 		protected ExpressionContextFinding findingContext;
 
-		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationRenderer<ILicenseUsageName, TermRelation> explanationRenderer) {
+		public ReportRenderContext(TextNestedModified.TextNestedModifiedBuilder builder, ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer) {
 			super(builder);
 			this.explanationRenderer = explanationRenderer;
 		}
@@ -88,7 +87,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 		}
 
 		@Override
-		public IReportRenderContext name(ILicenseUsageName name) {
+		public IReportRenderContext name(IContractComparisonName name) {
 			getExplanationRenderer().getNameRenderer().render(getBuilder(), name);
 			return getThis();
 		}
@@ -143,17 +142,17 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 
 			builder.add(ILiteral.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final ILiteral<ILicenseUsageName, TermRelation> expression = e;
+				final ILiteral<IContractComparisonName, TermRelation> expression = e;
 				c.append('(').name(expression.getName()).append(')');
 			});
 			builder.add(IVariable.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final IVariable<ILicenseUsageName, TermRelation> expression = e;
+				final IVariable<IContractComparisonName, TermRelation> expression = e;
 				c.render(expression.getName().getTerm(), ITerm.class);
 			});
 			builder.add(IOperation.class, e -> c -> {
 				@SuppressWarnings("unchecked")
-				final IOperation<ILicenseUsageName, TermRelation> castE = (IOperation<ILicenseUsageName, TermRelation>) e;
+				final IOperation<IContractComparisonName, TermRelation> castE = (IOperation<IContractComparisonName, TermRelation>) e;
 
 				c.append('(');
 				final String separator;
@@ -176,7 +175,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 				}
 
 				boolean first = true;
-				for (IExpression<ILicenseUsageName, TermRelation> argument : castE.getArguments()) {
+				for (IExpression<IContractComparisonName, TermRelation> argument : castE.getArguments()) {
 					if (first) first = false;
 					else c.append(' ').append(separator).append(' ');
 					c.render(argument, IExpression.class);
@@ -279,10 +278,10 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final IRendering<Object, IReportRenderContext, IExplicitRenderable<? super IReportRenderContext>> renderingStatic = new ReportRendering();
 
-	protected final ExplanationRenderer<ILicenseUsageName, TermRelation> explanationRenderer;
+	protected final ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer;
 
 	public ReportRenderer(ExplanationMode mode, IContext context) {
-		this.explanationRenderer = new ExplanationRenderer<>(mode, new LicenseUsageNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		this.explanationRenderer = new ExplanationRenderer<>(mode, new ContractComparisonNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
 	}
 
 	@Override

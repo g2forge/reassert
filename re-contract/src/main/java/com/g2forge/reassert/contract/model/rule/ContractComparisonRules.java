@@ -1,4 +1,4 @@
-package com.g2forge.reassert.contract.algorithm.licenseusage.model.rule;
+package com.g2forge.reassert.contract.model.rule;
 
 import java.util.Collection;
 
@@ -12,11 +12,11 @@ import lombok.Singular;
 @Data
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
-public class LicenseUsageRules implements ILicenseUsageRules {
+public class ContractComparisonRules implements IContractComparisonRules {
 	@Singular
-	protected final Collection<ILicenseUsageRule> rules;
+	protected final Collection<IContractComparisonRule> rules;
 
-	public LicenseUsageRules(ILicenseUsageRule... rules) {
+	public ContractComparisonRules(IContractComparisonRule... rules) {
 		this(HCollection.asList(rules));
 	}
 }

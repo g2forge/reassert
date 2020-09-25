@@ -6,7 +6,7 @@ import java.util.List;
 import org.jgrapht.Graph;
 
 import com.g2forge.alexandria.java.core.helpers.HCollection;
-import com.g2forge.reassert.contract.algorithm.licenseusage.LicenseUsageAnalyzer;
+import com.g2forge.reassert.contract.ContractComparisonAnalyzer;
 import com.g2forge.reassert.contract.algorithm.licenseusage.ReassertLicenseUsageVisitor;
 import com.g2forge.reassert.contract.algorithm.worklicense.ReassertWorkLicenseVisitor;
 import com.g2forge.reassert.core.algorithm.visitor.IGraphVisitor;
@@ -33,7 +33,7 @@ public class TestGraph {
 		visitors.add(new StandardLicenseInheritanceVisitor());
 		visitors.add(new StandardUsageAssignmentVisitor(StandardUsagePropagationRules.create()));
 		visitors.add(new ReassertWorkLicenseVisitor(StandardWorkLicenseRules.create()));
-		visitors.add(new ReassertLicenseUsageVisitor(new LicenseUsageAnalyzer(StandardLicenseUsageRules.create())));
+		visitors.add(new ReassertLicenseUsageVisitor(new ContractComparisonAnalyzer(StandardLicenseUsageRules.create())));
 		return visitors;
 	}
 
