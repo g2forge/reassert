@@ -6,6 +6,8 @@ import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.eval.ATestExplainingEvaluator;
 import com.g2forge.reassert.express.eval.ExplainingEvaluator;
 import com.g2forge.reassert.express.eval.IEvaluator;
+import com.g2forge.reassert.express.eval.operation.BooleanOperationSystem;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExplained.Relevance;
 import com.g2forge.reassert.express.model.constant.Literal;
@@ -17,7 +19,7 @@ import lombok.Getter;
 
 public class TestBooleanExplainingEvaluator extends ATestExplainingEvaluator<Boolean> {
 	@Getter(lazy = true)
-	private final IEvaluator<String, Boolean, IExplained<Boolean>> evaluator = new ExplainingEvaluator<>(BooleanValueSystem.create(), BooleanOperationSystem.create());
+	private final IEvaluator<String, Boolean, IExplained<Boolean>> evaluator = new ExplainingEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
 
 	public IOperation.IOperator getMultiply() {
 		return BooleanOperation.Operator.AND;

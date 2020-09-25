@@ -83,7 +83,7 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 		}
 	}
 
-	protected final IValueSystem<Value> valueSystem;
+	protected final IValueSystem<? super Value> valueSystem;
 
 	protected final IOperationSystem<Value> operationSystem;
 
@@ -110,7 +110,7 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 			final IOperatorDescriptor<Value> operatorDescriptor = getOperationSystem().getDescriptor(expression.getOperator());
 			operatorDescriptor.validate(expression).throwIfInvalid();
 
-			final IValueSystem<Value> valueSystem = getValueSystem();
+			final IValueSystem<? super Value> valueSystem = getValueSystem();
 
 			final List<? extends IExpression<Name, Value>> arguments = expression.getArguments();
 			final List<IExplainedOperation.Argument<Value>> evaluated = new ArrayList<>();

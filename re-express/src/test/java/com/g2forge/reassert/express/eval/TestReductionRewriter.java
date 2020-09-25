@@ -3,11 +3,9 @@ package com.g2forge.reassert.express.eval;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.express.eval.ReductionRewriter;
 import com.g2forge.reassert.express.eval.ReductionRewriter.Reduction;
-import com.g2forge.reassert.express.eval.ValueEvaluator;
-import com.g2forge.reassert.express.eval.bool.BooleanOperationSystem;
-import com.g2forge.reassert.express.eval.bool.BooleanValueSystem;
+import com.g2forge.reassert.express.eval.operation.BooleanOperationSystem;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.constant.Literal;
 import com.g2forge.reassert.express.model.constant.NoValueConstant;
 import com.g2forge.reassert.express.model.environment.Environment;
@@ -20,7 +18,7 @@ import lombok.Getter;
 
 public class TestReductionRewriter {
 	@Getter(lazy = true)
-	private static final ValueEvaluator<String, Boolean> valueEvaluator = new ValueEvaluator<>(BooleanValueSystem.create(), BooleanOperationSystem.create());
+	private static final ValueEvaluator<String, Boolean> valueEvaluator = new ValueEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
 
 	@Test
 	public void applyDisabled() {

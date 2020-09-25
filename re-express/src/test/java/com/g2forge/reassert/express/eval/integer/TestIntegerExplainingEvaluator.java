@@ -6,8 +6,8 @@ import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.eval.ATestExplainingEvaluator;
 import com.g2forge.reassert.express.eval.ExplainingEvaluator;
 import com.g2forge.reassert.express.eval.IEvaluator;
-import com.g2forge.reassert.express.eval.integer.IntegerOperationSystem;
-import com.g2forge.reassert.express.eval.integer.IntegerValueSystem;
+import com.g2forge.reassert.express.eval.operation.IntegerOperationSystem;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExplained.Relevance;
 import com.g2forge.reassert.express.model.operation.ArithmeticOperation;
@@ -19,7 +19,7 @@ import lombok.Getter;
 
 public class TestIntegerExplainingEvaluator extends ATestExplainingEvaluator<Integer> {
 	@Getter(lazy = true)
-	private final IEvaluator<String, Integer, IExplained<Integer>> evaluator = new ExplainingEvaluator<>(IntegerValueSystem.create(), IntegerOperationSystem.create());
+	private final IEvaluator<String, Integer, IExplained<Integer>> evaluator = new ExplainingEvaluator<>(ObjectValueSystem.create(), IntegerOperationSystem.create());
 
 	@Override
 	public IOperator getMultiply() {

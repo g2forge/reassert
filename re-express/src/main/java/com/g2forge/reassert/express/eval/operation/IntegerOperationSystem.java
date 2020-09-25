@@ -1,15 +1,9 @@
-package com.g2forge.reassert.express.eval.integer;
+package com.g2forge.reassert.express.eval.operation;
 
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.validate.IValidation;
-import com.g2forge.reassert.express.eval.operation.AOperatorDescriptor;
-import com.g2forge.reassert.express.eval.operation.ArgumentDescriptor;
-import com.g2forge.reassert.express.eval.operation.EnumOperatorRendering;
-import com.g2forge.reassert.express.eval.operation.IOperationSystem;
-import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
-import com.g2forge.reassert.express.eval.operation.IOperatorRendering;
 import com.g2forge.reassert.express.model.operation.ArithmeticOperation;
 import com.g2forge.reassert.express.model.operation.IOperation;
 import com.g2forge.reassert.express.model.operation.IOperation.IOperator;

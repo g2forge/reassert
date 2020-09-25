@@ -24,7 +24,6 @@ import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.Suspic
 import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding;
 import com.g2forge.reassert.contract.algorithm.worklicense.model.finding.UnknownWorkLicenseRulesFinding;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
-import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IConditionFinding;
 import com.g2forge.reassert.contract.model.finding.IContractTermFinding;
@@ -43,6 +42,7 @@ import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.core.model.report.IReport;
 import com.g2forge.reassert.express.convert.ExplanationMode;
 import com.g2forge.reassert.express.convert.ExplanationRenderer;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.ILiteral;
@@ -266,7 +266,7 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 	protected final ExplanationRenderer<IContractComparisonName, TermRelation> explanationRenderer;
 
 	public ReportRenderer(ExplanationMode mode, IContext context) {
-		this.explanationRenderer = new ExplanationRenderer<>(mode, new ContractComparisonNameRenderer(context), TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		this.explanationRenderer = new ExplanationRenderer<>(mode, new ContractComparisonNameRenderer(context), ObjectValueSystem.create(), TermRelationOperationSystem.create());
 	}
 
 	@Override

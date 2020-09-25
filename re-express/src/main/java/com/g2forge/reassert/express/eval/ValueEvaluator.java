@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, AEvaluator.BasicContext<Name, Value, Value>> {
-	protected final IValueSystem<Value> valueSystem;
+	protected final IValueSystem<? super Value> valueSystem;
 
 	protected final IOperationSystem<Value> operationSystem;
 
@@ -60,7 +60,7 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 			final IOperatorDescriptor<Value> operatorDescriptor = getOperationSystem().getDescriptor(expression.getOperator());
 			operatorDescriptor.validate(expression).throwIfInvalid();
 
-			final IValueSystem<Value> valueSystem = getValueSystem();
+			final IValueSystem<? super Value> valueSystem = getValueSystem();
 
 			final List<? extends IExpression<Name, Value>> arguments = expression.getArguments();
 			final List<OrThrowable<Value>> evaluated = new ArrayList<>();

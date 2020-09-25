@@ -3,10 +3,9 @@ package com.g2forge.reassert.express.convert;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.express.eval.bool.BooleanOperationSystem;
-import com.g2forge.reassert.express.eval.bool.BooleanValueSystem;
-import com.g2forge.reassert.express.eval.integer.IntegerOperationSystem;
-import com.g2forge.reassert.express.eval.integer.IntegerValueSystem;
+import com.g2forge.reassert.express.eval.operation.BooleanOperationSystem;
+import com.g2forge.reassert.express.eval.operation.IntegerOperationSystem;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExplained.Relevance;
 import com.g2forge.reassert.express.model.operation.ArithmeticOperation;
@@ -97,11 +96,11 @@ public class TestExplainOperation {
 	}
 
 	protected String renderBoolean(ExplanationMode mode, final IExplained<Boolean> explained) {
-		return new ExplanationRenderer<>(mode, BooleanValueSystem.create(), BooleanOperationSystem.create()).render(explained);
+		return new ExplanationRenderer<>(mode, ObjectValueSystem.create(), BooleanOperationSystem.create()).render(explained);
 	}
 
 	protected String renderInteger(ExplanationMode mode, final IExplained<Integer> explained) {
-		return new ExplanationRenderer<>(mode, IntegerValueSystem.create(), IntegerOperationSystem.create()).render(explained);
+		return new ExplanationRenderer<>(mode, ObjectValueSystem.create(), IntegerOperationSystem.create()).render(explained);
 	}
 
 	@Test
