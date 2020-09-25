@@ -10,7 +10,6 @@ import com.g2forge.reassert.contract.algorithm.usagepropagation.model.name.EdgeA
 import com.g2forge.reassert.contract.algorithm.usagepropagation.model.name.IUsagePropagationName;
 import com.g2forge.reassert.contract.algorithm.usagepropagation.model.name.TermUsagePropagationName;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
-import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
@@ -19,6 +18,7 @@ import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.contract.usage.PropagatedUsage;
 import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.eval.ValueEvaluator;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.environment.ATypeSwitchEnvironment;
 import com.g2forge.reassert.express.model.environment.IEnvironment;
@@ -66,7 +66,7 @@ public class UsagePropagationRuleBuilder<Term extends IUsageTerm, Edge extends I
 	@RequiredArgsConstructor
 	protected static class Function<Term extends IUsageTerm, Edge extends IEdge> implements IFunction2<Edge, IUsage, IUsage> {
 		@Getter(lazy = true, value = AccessLevel.PROTECTED)
-		private final IEvaluator<IUsagePropagationName<Term, Edge>, TermRelation, TermRelation> evaluator = new ValueEvaluator<IUsagePropagationName<Term, Edge>, TermRelation>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+		private final IEvaluator<IUsagePropagationName<Term, Edge>, TermRelation, TermRelation> evaluator = new ValueEvaluator<IUsagePropagationName<Term, Edge>, TermRelation>(ObjectValueSystem.create(), TermRelationOperationSystem.create());
 
 		protected final Map<Term, IExpression<IUsagePropagationName<Term, Edge>, TermRelation>> map;
 

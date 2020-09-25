@@ -9,6 +9,8 @@ import com.g2forge.alexandria.java.validate.ValidationFailureException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.eval.ValueEvaluator;
+import com.g2forge.reassert.express.eval.operation.BooleanOperationSystem;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.ILiteral;
 import com.g2forge.reassert.express.model.constant.Literal;
@@ -24,7 +26,7 @@ import lombok.Getter;
 
 public class TestBooleanOperationSystem {
 	@Getter(lazy = true)
-	private static final IEvaluator<String, Boolean, Boolean> evaluator = new ValueEvaluator<>(BooleanValueSystem.create(), BooleanOperationSystem.create());
+	private static final IEvaluator<String, Boolean, Boolean> evaluator = new ValueEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
 
 	protected static void reduction(BooleanOperation.Operator operator, BinaryOperator<Boolean> accumulator) {
 		for (int n = 1; n < 6; n++) {

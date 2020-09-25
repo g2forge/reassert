@@ -14,6 +14,7 @@ import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.eval.AnalyzeInputsEvaluator;
 import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.eval.ValueEvaluator;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.Literal;
 import com.g2forge.reassert.express.model.environment.Environment;
@@ -29,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class AnalyzeTermExpressionEvaluator implements IEvaluator<IContractComparisonName, TermRelation, ExpressionContextFinding> {
 	protected static final IEvaluator<IContractComparisonName, TermRelation, Set<IVariable<IContractComparisonName, TermRelation>>> analyzeInputs = new AnalyzeInputsEvaluator<>();
 
-	protected static final IEvaluator<IContractComparisonName, TermRelation, TermRelation> valueEvaluator = new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
+	protected static final IEvaluator<IContractComparisonName, TermRelation, TermRelation> valueEvaluator = new ValueEvaluator<>(ObjectValueSystem.create(), TermRelationOperationSystem.create());
 
 	protected static Set<ITerm> toTerms(final Set<IVariable<IContractComparisonName, TermRelation>> variables) {
 		final Set<ITerm> set = variables.stream().map(IVariable::getName).map(IContractComparisonName::getTerm).collect(Collectors.toCollection(LinkedHashSet::new));

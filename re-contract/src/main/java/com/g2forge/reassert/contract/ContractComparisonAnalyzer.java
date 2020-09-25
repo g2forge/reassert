@@ -15,7 +15,6 @@ import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.type.function.TypeSwitch1.FunctionBuilder;
 import com.g2forge.reassert.contract.eval.AnalyzeTermExpressionEvaluator;
 import com.g2forge.reassert.contract.eval.TermRelationOperationSystem;
-import com.g2forge.reassert.contract.eval.TermRelationValueSystem;
 import com.g2forge.reassert.contract.model.finding.ExpressionContextFinding;
 import com.g2forge.reassert.contract.model.finding.IFindingFactory;
 import com.g2forge.reassert.contract.model.finding.UnrecognizedTermFinding;
@@ -37,6 +36,7 @@ import com.g2forge.reassert.express.eval.ExplainingEvaluator;
 import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.eval.ReductionRewriter;
 import com.g2forge.reassert.express.eval.ValueEvaluator;
+import com.g2forge.reassert.express.eval.value.ObjectValueSystem;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.Literal;
@@ -101,8 +101,8 @@ public class ContractComparisonAnalyzer implements IContractComparisonAnalyzer {
 		// Sets of usage terms we need to approve and license conditions we need to meet
 		final Set<ITerm> remainingTermsA = toRemainingTerms(a), remainingTermsB = toRemainingTerms(b);
 
-		final IEvaluator<IContractComparisonName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create());
-		final IEvaluator<IContractComparisonName, TermRelation, IExpression<IContractComparisonName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(TermRelationValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
+		final IEvaluator<IContractComparisonName, TermRelation, IExplained<TermRelation>> evaluator = new ExplainingEvaluator<>(ObjectValueSystem.create(), TermRelationOperationSystem.create());
+		final IEvaluator<IContractComparisonName, TermRelation, IExpression<IContractComparisonName, TermRelation>> reduce = new ReductionRewriter<>(new ValueEvaluator<>(ObjectValueSystem.create(), TermRelationOperationSystem.create()), ReductionRewriter.Reduction.ApplyClosures);
 		for (IContractComparisonRule rule : getRules().getRules()) {
 			final IExpression<IContractComparisonName, TermRelation> expression = rule.getExpression();
 			final IFindingFactory<?> findingFactory = rule.getFinding();
