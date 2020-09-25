@@ -1,0 +1,4 @@
+level,artifact,findings,usages,licenses,paths
+INFO,A,,"CommercialDistribution usage","Owner license",
+WARN,B,"You must disclose the source for this artifact
+You must publish a copyright and license notice stating that you use this artifact","Propagated Usage (Invokes() CommercialDistribution usage)","GPL 3.0 or later license","A -> B"

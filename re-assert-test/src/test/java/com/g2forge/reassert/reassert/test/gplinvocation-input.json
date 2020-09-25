@@ -1,0 +1,42 @@
+{
+  "vertices" : {
+    "A artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "A"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "invokes",
+        "targets" : [ "B artifact" ]
+      }, {
+        "edge" : "notice",
+        "targets" : [ "Owner license", "CommercialDistribution usage" ]
+      } ]
+    },
+    "B artifact" : {
+      "vertex" : {
+        "@c" : ".artifact.Artifact",
+        "coordinates" : {
+          "system" : "mock",
+          "text" : "B"
+        }
+      },
+      "outgoings" : [ {
+        "edge" : "notice",
+        "targets" : [ "GPL-3.0-or-later" ]
+      } ]
+    },
+    "GPL-3.0-or-later" : {
+      "vertex" : "GPL3OrLater"
+    },
+    "Owner license" : {
+      "vertex" : "Owner"
+    },
+    "CommercialDistribution usage" : {
+      "vertex" : "CommercialDistribution"
+    }
+  }
+}

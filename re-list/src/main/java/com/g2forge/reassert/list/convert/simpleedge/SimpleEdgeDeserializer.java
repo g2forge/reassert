@@ -18,18 +18,19 @@ import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Inherits;
+import com.g2forge.reassert.core.model.artifact.Invokes;
 import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.coordinates.Coordinates;
 import com.g2forge.reassert.core.model.file.Contains;
 import com.g2forge.reassert.core.model.file.Describes;
 import com.g2forge.reassert.core.model.file.Parsed;
-import com.g2forge.reassert.core.model.work.WorkMember;
 import com.g2forge.reassert.core.model.work.WorkLicense;
+import com.g2forge.reassert.core.model.work.WorkMember;
 
 public class SimpleEdgeDeserializer extends StdDeserializer<IEdge> implements ResolvableDeserializer {
 	private static final long serialVersionUID = 3742304528846339144L;
 
-	protected static final Map<String, ISupplier<? extends IEdge>> suppliers = HCollection.<Class<? extends IEdge>>asList(Contains.class, Coordinates.class, Copy.class, Describes.class, Inherits.class, Notice.class, Parsed.class, WorkMember.class, WorkLicense.class).stream().collect(Collectors.toMap(c -> c.getSimpleName().toLowerCase(), c -> {
+	protected static final Map<String, ISupplier<? extends IEdge>> suppliers = HCollection.<Class<? extends IEdge>>asList(Contains.class, Coordinates.class, Copy.class, Describes.class, Inherits.class, Invokes.class, Notice.class, Parsed.class, WorkMember.class, WorkLicense.class).stream().collect(Collectors.toMap(c -> c.getSimpleName().toLowerCase(), c -> {
 		return ISupplier.create(() -> {
 			try {
 				return c.newInstance();

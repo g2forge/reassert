@@ -11,6 +11,7 @@ import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.artifact.Depends;
 import com.g2forge.reassert.core.model.artifact.Inherits;
+import com.g2forge.reassert.core.model.artifact.Invokes;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.contract.usage.IUsage;
 import com.g2forge.reassert.core.model.file.Contains;
@@ -47,6 +48,11 @@ public class StandardUsagePropagationRules extends AUsagePropagationRules<Standa
 
 			b.include(StandardUsageTerm.UseLink).exclude(StandardUsageTerm.UseCopy).exclude(StandardUsageTerm.UseModified);
 			b.copy(StandardUsageTerm.DistributingBinary).copy(StandardUsageTerm.DistributingSource);
+		}));
+		builder.add(Invokes.class, IUsage.class, rule(b -> {
+			b.copy(StandardUsageTerm.Commercial).copy(StandardUsageTerm.DistributionPublic).copy(StandardUsageTerm.DistributionPrivate).copy(StandardUsageTerm.DistributionService);
+			b.include(StandardUsageTerm.UseLink).exclude(StandardUsageTerm.UseCopy).exclude(StandardUsageTerm.UseModified);
+			b.include(StandardUsageTerm.DistributingBinary).exclude(StandardUsageTerm.DistributingSource);
 		}));
 		return builder.build();
 	}
