@@ -31,7 +31,7 @@ public class TestIntegerOperationSystem {
 	protected static void reduction(ArithmeticOperation.Operator operator, BinaryOperator<Integer> accumulator) {
 		for (int i = 0; i < (1 << numbers.length); i++) {
 			final IOperationBuilder<String, Integer, ?, ?> builder = operator.<String, Integer>builder();
-			Integer expected = IntegerOperationSystem.create().getDescriptor(operator).getIdentity().get();
+			Integer expected = IntegerOperationSystem.create().getDescriptor(operator).getArgument(-1).getIdentity().get();
 			boolean first = true;
 			for (int j = 0; j < numbers.length; j++) {
 				if (((i >>> j) & 0x1) == 0) continue;

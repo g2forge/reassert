@@ -29,11 +29,12 @@ import com.g2forge.reassert.express.model.IExplained.Relevance;
 import com.g2forge.reassert.express.model.constant.ILiteral;
 import com.g2forge.reassert.express.model.operation.ExplainedOperation;
 import com.g2forge.reassert.express.model.operation.IExplainedOperation;
+import com.g2forge.reassert.express.model.operation.ImpliesExplainedOperation;
 import com.g2forge.reassert.express.model.operation.ZeroExplainedOperation;
 import com.g2forge.reassert.express.model.variable.IExplainedClosure;
+import com.g2forge.reassert.express.model.variable.IExplainedClosure.Binding;
 import com.g2forge.reassert.express.model.variable.IExplainedVariable;
 import com.g2forge.reassert.express.model.variable.IVariable;
-import com.g2forge.reassert.express.model.variable.IExplainedClosure.Binding;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -260,6 +261,31 @@ public class ExplanationRenderer<Name, Value> extends ATextualRenderer<IExplaine
 				final List<Child<Name, Value>> toPrint = childrenPrintable.isEmpty() ? childrenAll : childrenPrintable;
 				if (toPrint.isEmpty()) context.append(", and there are no arguments");
 				else print(context, toPrint);
+			});
+			builder.add(ImpliesExplainedOperation.class, e -> c -> {
+				@SuppressWarnings("unchecked")
+				final ImpliesExplainedOperation<Value> explained = (ImpliesExplainedOperation<Value>) e;
+				final IExplanationRenderContext<Name, Value> context = (IExplanationRenderContext<Name, Value>) c;
+
+				context.value(explained.get()).append(" - because ");
+
+				final IExplained<Value> ender;
+				if (explained.getPremise().getRelevance().equals(IExplained.Relevance.Dominant)) {
+					context.append("the premise is ");
+					ender = explained.getPremise().getExplained();
+				} else {
+					context.append("the premise is ").value(explained.getPremise().getExplained().get()).append(", and the conclusion is ");
+					ender = explained.getConclusion().getExplained();
+				}
+
+				final boolean printArguments = context.getMode().compareTo(ExplanationMode.Describe) > 0;
+				if (printArguments) context.value(ender.get());
+				else context.render(ender, IExplained.class);
+
+				if (printArguments) {
+					final List<IExplainedOperation.Argument<Value>> arguments = explained.getArguments();
+					if ((arguments != null) && !arguments.isEmpty()) print(context, toPrintable(context.getMode(), arguments.stream().map(a -> new Child<Name, Value>(context.getMode(), a))));
+				}
 			});
 		}
 

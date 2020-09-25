@@ -6,7 +6,9 @@ import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.express.eval.operation.AOperatorDescriptor;
+import com.g2forge.reassert.express.eval.operation.ArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.EnumOperatorRendering;
+import com.g2forge.reassert.express.eval.operation.IArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperatorRendering;
@@ -17,7 +19,7 @@ import com.g2forge.reassert.express.model.operation.IOperation.IOperator;
 public class TermRelationOperationSystem implements IOperationSystem<TermRelation>, ISingleton {
 	protected static class TermRelationOperatorDescriptor extends AOperatorDescriptor<TermRelation> {
 		public TermRelationOperatorDescriptor(TermRelation zero, TermRelation identity, IFunction1<? super TermRelation, ? extends TermRelation> summarizer) {
-			super(zero, identity, summarizer);
+			super(new ArgumentDescriptor<>(zero, identity), summarizer);
 		}
 
 		@Override
@@ -74,6 +76,36 @@ public class TermRelationOperationSystem implements IOperationSystem<TermRelatio
 						return ((left == TermRelation.Included) ^ (right == TermRelation.Included)) ? TermRelation.Included : TermRelation.Excluded;
 					}
 				};
+			case IMPLIES:
+				return new IOperatorDescriptor<TermRelation>() {
+					@Override
+					public TermRelation combine(TermRelation left, TermRelation right) {
+						if ((left == TermRelation.Excluded) || (right == TermRelation.Included)) return TermRelation.Included;
+						return ((left == TermRelation.Included) && (right == TermRelation.Excluded)) ? TermRelation.Excluded : TermRelation.Unspecified;
+					}
+
+					@Override
+					public IArgumentDescriptor<TermRelation> getArgument(int index) {
+						switch (index) {
+							case 0:
+								return new ArgumentDescriptor<>(TermRelation.Excluded, TermRelation.Included, TermRelation.Included);
+							case 1:
+								return new ArgumentDescriptor<>(TermRelation.Included, null);
+							default:
+								throw new IllegalArgumentException(String.format("Implies supports exactly 2 arguments, cannot get descriptor for argument %1$d", index));
+						}
+					}
+
+					@Override
+					public IFunction1<? super TermRelation, ? extends TermRelation> getSummarizer() {
+						return null;
+					}
+
+					@Override
+					public IValidation validate(IOperation<?, TermRelation> operation) {
+						return operation.getOperator().validate(operation.getArguments());
+					}
+				};
 			default:
 				throw new EnumException(BooleanOperation.Operator.class, cast);
 		}
@@ -84,6 +116,11 @@ public class TermRelationOperationSystem implements IOperationSystem<TermRelatio
 		if (!(operator instanceof BooleanOperation.Operator)) throw new UnsupportedOperationException("Term relation operation system only supports boolean operations!");
 
 		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
-		return new EnumOperatorRendering<>(cast, cast.name().toLowerCase() + "-ed with");
+		switch (cast) {
+			case IMPLIES:
+				return new EnumOperatorRendering<>(cast, "implied by");
+			default:
+				return new EnumOperatorRendering<>(cast, cast.name().toLowerCase() + "-ed with");
+		}
 	}
 }

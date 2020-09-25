@@ -13,6 +13,7 @@ import com.g2forge.alexandria.java.type.function.TypeSwitch2;
 import com.g2forge.reassert.express.eval.error.EvalFailedException;
 import com.g2forge.reassert.express.eval.error.ExpressionException;
 import com.g2forge.reassert.express.eval.error.VariableUnboundException;
+import com.g2forge.reassert.express.eval.operation.IArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.IConstant;
@@ -92,9 +93,12 @@ public class ReductionRewriter<Name, Value> extends AEvaluator<Name, Value, IExp
 			final ValueEvaluator<Name, Value> valueEvaluator = getValueEvaluator();
 			if (getReductions().contains(Reduction.TrivialOperations)) {
 				if (arguments.size() <= 1) {
-					final IOperatorDescriptor<Value> descriptor = valueEvaluator.getOperationSystem().getDescriptor(expression.getOperator());
-					if (arguments.isEmpty() && !descriptor.getIdentity().isEmpty()) return context.eval(expression, new Literal<>(descriptor.getIdentity().get()));
-					if (descriptor.getSummarizer() == null) return context.eval(expression, HCollection.getOne(arguments));
+					final IOperatorDescriptor<Value> operatorDescriptor = valueEvaluator.getOperationSystem().getDescriptor(expression.getOperator());
+					if (arguments.isEmpty()) {
+						final IArgumentDescriptor<Value> argumentDescriptor = operatorDescriptor.getArgument(-1);
+						if ((argumentDescriptor != null) && !argumentDescriptor.getIdentity().isEmpty()) return context.eval(expression, new Literal<>(argumentDescriptor.getIdentity().get()));
+					}
+					if (operatorDescriptor.getSummarizer() == null) return context.eval(expression, HCollection.getOne(arguments));
 				}
 			}
 

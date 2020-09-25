@@ -5,7 +5,9 @@ import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.eval.operation.AOperatorDescriptor;
+import com.g2forge.reassert.express.eval.operation.ArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.EnumOperatorRendering;
+import com.g2forge.reassert.express.eval.operation.IArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperatorRendering;
@@ -16,7 +18,7 @@ import com.g2forge.reassert.express.model.operation.IOperation.IOperator;
 public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingleton {
 	protected static class BooleanOperatorDescriptor extends AOperatorDescriptor<Boolean> {
 		public BooleanOperatorDescriptor(Boolean zero, Boolean identity, IFunction1<? super Boolean, ? extends Boolean> summarizer) {
-			super(zero, identity, summarizer);
+			super(new ArgumentDescriptor<>(zero, identity), summarizer);
 		}
 
 		@Override
@@ -67,6 +69,35 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 						return left ^ right;
 					}
 				};
+			case IMPLIES:
+				return new IOperatorDescriptor<Boolean>() {
+					@Override
+					public Boolean combine(Boolean left, Boolean right) {
+						return (!left) || right;
+					}
+
+					@Override
+					public IArgumentDescriptor<Boolean> getArgument(int index) {
+						switch (index) {
+							case 0:
+								return new ArgumentDescriptor<>(false, true, true);
+							case 1:
+								return new ArgumentDescriptor<>(true, null);
+							default:
+								throw new IllegalArgumentException(String.format("Implies supports exactly 2 arguments, cannot get descriptor for argument %1$d", index));
+						}
+					}
+
+					@Override
+					public IFunction1<? super Boolean, ? extends Boolean> getSummarizer() {
+						return null;
+					}
+
+					@Override
+					public IValidation validate(IOperation<?, Boolean> operation) {
+						return operation.getOperator().validate(operation.getArguments());
+					}
+				};
 			default:
 				throw new EnumException(BooleanOperation.Operator.class, cast);
 		}
@@ -77,6 +108,11 @@ public class BooleanOperationSystem implements IOperationSystem<Boolean>, ISingl
 		if (!(operator instanceof BooleanOperation.Operator)) throw new UnsupportedOperationException("Boolean system only supports boolean operations!");
 
 		final BooleanOperation.Operator cast = (BooleanOperation.Operator) operator;
-		return new EnumOperatorRendering<>(cast, cast.name().toLowerCase() + "-ed with");
+		switch (cast) {
+			case IMPLIES:
+				return new EnumOperatorRendering<>(cast, "implied by");
+			default:
+				return new EnumOperatorRendering<>(cast, cast.name().toLowerCase() + "-ed with");
+		}
 	}
 }

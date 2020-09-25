@@ -1,18 +1,18 @@
 level,message,artifact,paths,details
 ERROR,"Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""",A,A,"ERROR: Condition ""Commercial usage"" is not satisfied based on ""Permission for commercial usage""
-	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Commercial usage in Unspecified usage
+	Rule: (""Commercial usage"" -> ""Permission for commercial usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Commercial usage in Unspecified usage
 		* Unspecified - Permission for commercial usage in Unspecified license"
 ERROR,"Condition ""Public distribution"" is not satisfied based on ""Permission to distribute""",A,A,"ERROR: Condition ""Public distribution"" is not satisfied based on ""Permission to distribute""
-	Rule: ((!""Public distribution"") || ""Permission to distribute"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Public distribution in Unspecified usage
+	Rule: (""Public distribution"" -> ""Permission to distribute"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Public distribution in Unspecified usage
 		* Unspecified - Permission to distribute in Unspecified license"
 ERROR,"Condition ""Private distribution"" is not satisfied based on ""Permission for private usage""",A,A,"ERROR: Condition ""Private distribution"" is not satisfied based on ""Permission for private usage""
-	Rule: ((!""Private distribution"") || ""Permission for private usage"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Private distribution in Unspecified usage
+	Rule: (""Private distribution"" -> ""Permission for private usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Private distribution in Unspecified usage
 		* Unspecified - Permission for private usage in Unspecified license"
 ERROR,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are not satisfied based on ""Permission to distribute""",A,A,"ERROR: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are not satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
@@ -21,31 +21,31 @@ ERROR,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are
 		* Unspecified - not, and the only argument is Unspecified - Requires distribution for SaaS in Unspecified license
 		* Unspecified - Permission to distribute in Unspecified license"
 ERROR,"Condition ""Linked"" is not satisfied based on ""Permission for private usage""",A,A,"ERROR: Condition ""Linked"" is not satisfied based on ""Permission for private usage""
-	Rule: ((!""Linked"") || ""Permission for private usage"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Linked in Unspecified usage
+	Rule: (""Linked"" -> ""Permission for private usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Linked in Unspecified usage
 		* Unspecified - Permission for private usage in Unspecified license"
 ERROR,"Condition ""Copied"" is not satisfied based on ""Permission for private usage""",A,A,"ERROR: Condition ""Copied"" is not satisfied based on ""Permission for private usage""
-	Rule: ((!""Copied"") || ""Permission for private usage"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Copied in Unspecified usage
+	Rule: (""Copied"" -> ""Permission for private usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Copied in Unspecified usage
 		* Unspecified - Permission for private usage in Unspecified license"
 ERROR,"Condition ""Modified"" is not satisfied based on ""Permission for private usage"" & ""Permission to modify""",A,A,"ERROR: Condition ""Modified"" is not satisfied based on ""Permission for private usage"" & ""Permission to modify""
-	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Modified in Unspecified usage
+	Rule: (""Modified"" -> (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Modified in Unspecified usage
 		* Unspecified - and
 			* Unspecified - Permission for private usage in Unspecified license
 			* Unspecified - Permission to modify in Unspecified license"
 ERROR,"Condition ""Binary distribution"" is not satisfied based on ""Permission for private usage""",A,A,"ERROR: Condition ""Binary distribution"" is not satisfied based on ""Permission for private usage""
-	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Binary distribution in Unspecified usage
+	Rule: (""Binary distribution"" -> ""Permission for private usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Binary distribution in Unspecified usage
 		* Unspecified - Permission for private usage in Unspecified license"
 ERROR,"Condition ""Source distribution"" is not satisfied based on ""Permission for private usage""",A,A,"ERROR: Condition ""Source distribution"" is not satisfied based on ""Permission for private usage""
-	Rule: ((!""Source distribution"") || ""Permission for private usage"")
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Source distribution in Unspecified usage
+	Rule: (""Source distribution"" -> ""Permission for private usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Source distribution in Unspecified usage
 		* Unspecified - Permission for private usage in Unspecified license"
 ERROR,"You must disclose the source for this artifact",A,A,"ERROR: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
@@ -76,9 +76,9 @@ ERROR,"You must state the changes you have made to your copy of this artifact",A
 		* Unspecified - Modified in Unspecified usage
 		* Unspecified - Requires statement of changes in Unspecified license"
 ERROR,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are not satisfied",A,A,"ERROR: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are not satisfied
-	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
-	Explanation: Unspecified - or
-		* Unspecified - not, and the only argument is Unspecified - Does not allow redistribution under this license in Unspecified license
+	Rule: (""Does not allow redistribution under this license"" -> (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Unspecified
+		* Unspecified - Does not allow redistribution under this license in Unspecified license
 		* Unspecified - not, and the only argument is Unspecified - and
 			* Unspecified - Public distribution in Unspecified usage
 			* Unspecified - Source distribution in Unspecified usage"
@@ -100,41 +100,40 @@ ERROR,"The usage for this artifact improperly specifies the format",A,A,"ERROR: 
 		* Unspecified - Binary distribution in Unspecified usage
 		* Unspecified - Source distribution in Unspecified usage"
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",B,"A -> B","INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
-	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Commercial usage"" -> ""Permission for commercial usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for commercial usage in BSD 3 Clause license"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
-	Rule: ((!""Public distribution"") || ""Permission to distribute"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Public distribution"" -> ""Permission to distribute"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission to distribute in BSD 3 Clause license"
 INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Private distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Private distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in BSD 3 Clause license
-		> Included - Permission to distribute in BSD 3 Clause license"
+		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in BSD 3 Clause license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Linked"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Linked"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Copied"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Copied"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",B,"A -> B","INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
-	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Modified"" -> (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - because anything and-ed with Included is itself, and there are no non-Included arguments"
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Binary distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Source distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Source distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in BSD 3 Clause license"
 INFO,"You must disclose the source for this artifact",B,"A -> B","INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
@@ -150,9 +149,9 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
 		> Excluded - Requires statement of changes in BSD 3 Clause license"
 INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",B,"A -> B","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
-	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in BSD 3 Clause license"
+	Rule: (""Does not allow redistribution under this license"" -> (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Does not allow redistribution under this license in BSD 3 Clause license"
 ERROR,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified - not, and the only argument is Unspecified - or
@@ -171,41 +170,40 @@ ERROR,"The usage for this artifact improperly specifies the format",B,"A -> B","
 		* Unspecified - Binary distribution in Unspecified usage
 		* Unspecified - Source distribution in Unspecified usage"
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",C,"A -> C","INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
-	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Commercial usage"" -> ""Permission for commercial usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for commercial usage in Apache 2.0 license"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",C,"A -> C","INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
-	Rule: ((!""Public distribution"") || ""Permission to distribute"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Public distribution"" -> ""Permission to distribute"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission to distribute in Apache 2.0 license"
 INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for private usage""",C,"A -> C","INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Private distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Private distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",C,"A -> C","INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in Apache 2.0 license
-		> Included - Permission to distribute in Apache 2.0 license"
+		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in Apache 2.0 license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",C,"A -> C","INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Linked"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Linked"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",C,"A -> C","INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Copied"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Copied"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",C,"A -> C","INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
-	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Modified"" -> (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - because anything and-ed with Included is itself, and there are no non-Included arguments"
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",C,"A -> C","INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Binary distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",C,"A -> C","INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Source distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Source distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"You must disclose the source for this artifact",C,"A -> C","INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
@@ -223,9 +221,9 @@ ERROR,"You must state the changes you have made to your copy of this artifact",C
 			* Unspecified - Public distribution in Unspecified usage
 		* Unspecified - Modified in Unspecified usage"
 INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",C,"A -> C","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
-	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in Apache 2.0 license"
+	Rule: (""Does not allow redistribution under this license"" -> (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Does not allow redistribution under this license in Apache 2.0 license"
 ERROR,"The usage for this artifact improperly specifies the method of distribution",C,"A -> C","ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified - not, and the only argument is Unspecified - or

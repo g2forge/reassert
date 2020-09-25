@@ -26,7 +26,13 @@ public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
 		},
 		AND,
 		OR,
-		XOR;
+		XOR,
+		IMPLIES {
+			@Override
+			public IValidation validate(List<? extends IExpression<?, ?>> arguments) {
+				return new OperatorArgumentsValidation(arguments.size() == 2);
+			}
+		};
 
 		@Override
 		public <Name, Value> IOperationBuilder<Name, Value, ?, ?> builder() {
@@ -37,6 +43,10 @@ public class BooleanOperation<Name, Value> implements IOperation<Name, Value> {
 	@SafeVarargs
 	public static <Name, Value> BooleanOperation<Name, Value> and(IExpression<Name, Value>... arguments) {
 		return new BooleanOperation<>(Operator.AND, arguments);
+	}
+
+	public static <Name, Value> BooleanOperation<Name, Value> implies(IExpression<Name, Value> premise, IExpression<Name, Value> conclusion) {
+		return new BooleanOperation<>(Operator.IMPLIES, premise, conclusion);
 	}
 
 	public static <Name, Value> BooleanOperation<Name, Value> not(IExpression<Name, Value> argument) {

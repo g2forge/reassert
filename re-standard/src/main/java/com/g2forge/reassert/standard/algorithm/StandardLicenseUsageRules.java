@@ -3,6 +3,7 @@ package com.g2forge.reassert.standard.algorithm;
 import static com.g2forge.reassert.express.model.operation.BooleanOperation.and;
 import static com.g2forge.reassert.express.model.operation.BooleanOperation.not;
 import static com.g2forge.reassert.express.model.operation.BooleanOperation.or;
+import static com.g2forge.reassert.express.model.operation.BooleanOperation.implies;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,18 +44,18 @@ public class StandardLicenseUsageRules extends AContractComparisonRules<ILicense
 		final List<IContractComparisonRule> rules = new ArrayList<>();
 
 		// Usage terms
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.Commercial), b.a(StandardLicenseTerm.CommercialUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.Commercial), b.a(StandardLicenseTerm.CommercialUse))).finding(ConditionFinding::new)));
 
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributionPublic), b.a(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributionPrivate), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.DistributionPublic), b.a(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.DistributionPrivate), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
 		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributionService), b.notA(StandardLicenseTerm.SaaSIsDistribution), b.a(StandardLicenseTerm.Distribution))).finding(ConditionFinding::new)));
 
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.UseLink), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.UseCopy), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.UseModified), and(b.a(StandardLicenseTerm.PrivateUse), b.a(StandardLicenseTerm.Modification)))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.UseLink), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.UseCopy), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.UseModified), and(b.a(StandardLicenseTerm.PrivateUse), b.a(StandardLicenseTerm.Modification)))).finding(ConditionFinding::new)));
 
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributingBinary), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
-		rules.add(rule(b -> b.expression(or(b.notB(StandardUsageTerm.DistributingSource), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.DistributingBinary), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.b(StandardUsageTerm.DistributingSource), b.a(StandardLicenseTerm.PrivateUse))).finding(ConditionFinding::new)));
 
 		// License conditions
 		rules.add(rule(b -> b.expression(and(or(b.b(StandardUsageTerm.DistributionPublic), and(b.b(StandardUsageTerm.DistributionService), b.a(StandardLicenseTerm.SaaSIsDistribution))), b.a(StandardLicenseTerm.DisclosureSource))).finding(DiscloseSourceFinding::new)));
@@ -64,7 +65,7 @@ public class StandardLicenseUsageRules extends AContractComparisonRules<ILicense
 		rules.add(rule(b -> b.expression(and(or(b.b(StandardUsageTerm.DistributionPublic), and(b.b(StandardUsageTerm.DistributionService), b.a(StandardLicenseTerm.SaaSIsDistribution))), b.b(StandardUsageTerm.UseModified), b.a(StandardLicenseTerm.StateChanges))).finding(StateChangesFinding::new)));
 
 		// License limitations
-		rules.add(rule(b -> b.expression(or(b.notA(StandardLicenseTerm.NoRedistribution), not(and(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributingSource))))).finding(ConditionFinding::new)));
+		rules.add(rule(b -> b.expression(implies(b.a(StandardLicenseTerm.NoRedistribution), not(and(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributingSource))))).finding(ConditionFinding::new)));
 
 		// Consistency rules
 		rules.add(rule(b -> b.expression(not(or(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributionPrivate), b.b(StandardUsageTerm.DistributionService)))).finding(StandardUsageTermAttribute.Distribution)));

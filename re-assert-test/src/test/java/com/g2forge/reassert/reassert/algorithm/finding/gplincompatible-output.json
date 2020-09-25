@@ -135,35 +135,20 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
             "result" : {
-              "@c" : ".operation.ExplainedOperation",
-              "operator" : "OR",
-              "value" : "Excluded",
-              "identity" : {
-                "empty" : false
-              },
-              "arguments" : [ {
+              "@c" : ".operation.ImpliesExplainedOperation",
+              "premise" : {
                 "relevance" : "Identity",
                 "explained" : {
-                  "@c" : ".operation.ExplainedOperation",
-                  "operator" : "NOT",
-                  "value" : "Excluded",
-                  "identity" : {
-                    "empty" : true
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "CommercialUse",
+                    "contract" : "GPL-3.0-or-later"
                   },
-                  "arguments" : [ {
-                    "relevance" : "Combined",
-                    "explained" : {
-                      "@c" : ".constant.Literal",
-                      "name" : {
-                        "term" : "CommercialUse",
-                        "contract" : "GPL-3.0-or-later"
-                      },
-                      "value" : "Included"
-                    }
-                  } ]
+                  "value" : "Included"
                 }
-              }, {
-                "relevance" : "Identity",
+              },
+              "conclusion" : {
+                "relevance" : "Combined",
                 "explained" : {
                   "@c" : ".constant.Literal",
                   "name" : {
@@ -172,7 +157,9 @@
                   },
                   "value" : "Excluded"
                 }
-              } ]
+              },
+              "value" : "Excluded",
+              "operator" : "IMPLIES"
             },
             "level" : "ERROR"
           }
@@ -189,34 +176,19 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
             "result" : {
-              "@c" : ".operation.ExplainedOperation",
-              "operator" : "OR",
-              "value" : "Unspecified",
-              "identity" : {
-                "empty" : false
-              },
-              "arguments" : [ {
+              "@c" : ".operation.ImpliesExplainedOperation",
+              "premise" : {
                 "relevance" : "Identity",
                 "explained" : {
-                  "@c" : ".operation.ExplainedOperation",
-                  "operator" : "NOT",
-                  "value" : "Excluded",
-                  "identity" : {
-                    "empty" : true
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "Distribution",
+                    "contract" : "GPL-3.0-or-later"
                   },
-                  "arguments" : [ {
-                    "relevance" : "Combined",
-                    "explained" : {
-                      "@c" : ".constant.Literal",
-                      "name" : {
-                        "term" : "Distribution",
-                        "contract" : "GPL-3.0-or-later"
-                      },
-                      "value" : "Included"
-                    }
-                  } ]
+                  "value" : "Included"
                 }
-              }, {
+              },
+              "conclusion" : {
                 "relevance" : "Combined",
                 "explained" : {
                   "@c" : ".constant.Literal",
@@ -226,7 +198,9 @@
                   },
                   "value" : "Unspecified"
                 }
-              } ]
+              },
+              "value" : "Unspecified",
+              "operator" : "IMPLIES"
             },
             "level" : "ERROR"
           }
@@ -243,34 +217,19 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
             "result" : {
-              "@c" : ".operation.ExplainedOperation",
-              "operator" : "OR",
-              "value" : "Unspecified",
-              "identity" : {
-                "empty" : false
-              },
-              "arguments" : [ {
+              "@c" : ".operation.ImpliesExplainedOperation",
+              "premise" : {
                 "relevance" : "Identity",
                 "explained" : {
-                  "@c" : ".operation.ExplainedOperation",
-                  "operator" : "NOT",
-                  "value" : "Excluded",
-                  "identity" : {
-                    "empty" : true
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "Modification",
+                    "contract" : "GPL-3.0-or-later"
                   },
-                  "arguments" : [ {
-                    "relevance" : "Combined",
-                    "explained" : {
-                      "@c" : ".constant.Literal",
-                      "name" : {
-                        "term" : "Modification",
-                        "contract" : "GPL-3.0-or-later"
-                      },
-                      "value" : "Included"
-                    }
-                  } ]
+                  "value" : "Included"
                 }
-              }, {
+              },
+              "conclusion" : {
                 "relevance" : "Combined",
                 "explained" : {
                   "@c" : ".constant.Literal",
@@ -280,7 +239,9 @@
                   },
                   "value" : "Unspecified"
                 }
-              } ]
+              },
+              "value" : "Unspecified",
+              "operator" : "IMPLIES"
             },
             "level" : "ERROR"
           }
@@ -297,14 +258,20 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
             "result" : {
-              "@c" : ".operation.ExplainedOperation",
-              "operator" : "OR",
-              "value" : "Unspecified",
-              "identity" : {
-                "empty" : false
+              "@c" : ".operation.ImpliesExplainedOperation",
+              "premise" : {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "SaaSIsDistribution",
+                    "contract" : "no-such-license"
+                  },
+                  "value" : "Unspecified"
+                }
               },
-              "arguments" : [ {
-                "relevance" : "Identity",
+              "conclusion" : {
+                "relevance" : "Combined",
                 "explained" : {
                   "@c" : ".constant.Literal",
                   "name" : {
@@ -313,28 +280,9 @@
                   },
                   "value" : "Excluded"
                 }
-              }, {
-                "relevance" : "Combined",
-                "explained" : {
-                  "@c" : ".operation.ExplainedOperation",
-                  "operator" : "NOT",
-                  "value" : "Unspecified",
-                  "identity" : {
-                    "empty" : true
-                  },
-                  "arguments" : [ {
-                    "relevance" : "Combined",
-                    "explained" : {
-                      "@c" : ".constant.Literal",
-                      "name" : {
-                        "term" : "SaaSIsDistribution",
-                        "contract" : "no-such-license"
-                      },
-                      "value" : "Unspecified"
-                    }
-                  } ]
-                }
-              } ]
+              },
+              "value" : "Unspecified",
+              "operator" : "IMPLIES"
             },
             "level" : "ERROR"
           }
@@ -351,14 +299,20 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
             "result" : {
-              "@c" : ".operation.ExplainedOperation",
-              "operator" : "OR",
-              "value" : "Unspecified",
-              "identity" : {
-                "empty" : false
+              "@c" : ".operation.ImpliesExplainedOperation",
+              "premise" : {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "PatentNonGrant",
+                    "contract" : "no-such-license"
+                  },
+                  "value" : "Unspecified"
+                }
               },
-              "arguments" : [ {
-                "relevance" : "Identity",
+              "conclusion" : {
+                "relevance" : "Combined",
                 "explained" : {
                   "@c" : ".constant.Literal",
                   "name" : {
@@ -367,28 +321,9 @@
                   },
                   "value" : "Excluded"
                 }
-              }, {
-                "relevance" : "Combined",
-                "explained" : {
-                  "@c" : ".operation.ExplainedOperation",
-                  "operator" : "NOT",
-                  "value" : "Unspecified",
-                  "identity" : {
-                    "empty" : true
-                  },
-                  "arguments" : [ {
-                    "relevance" : "Combined",
-                    "explained" : {
-                      "@c" : ".constant.Literal",
-                      "name" : {
-                        "term" : "PatentNonGrant",
-                        "contract" : "no-such-license"
-                      },
-                      "value" : "Unspecified"
-                    }
-                  } ]
-                }
-              } ]
+              },
+              "value" : "Unspecified",
+              "operator" : "IMPLIES"
             },
             "level" : "ERROR"
           }
@@ -405,14 +340,20 @@
           "finding" : {
             "@c" : "com.g2forge.reassert.contract.algorithm.worklicense.model.finding.IncompatibleWorkLicenseFinding",
             "result" : {
-              "@c" : ".operation.ExplainedOperation",
-              "operator" : "OR",
-              "value" : "Unspecified",
-              "identity" : {
-                "empty" : false
+              "@c" : ".operation.ImpliesExplainedOperation",
+              "premise" : {
+                "relevance" : "Combined",
+                "explained" : {
+                  "@c" : ".constant.Literal",
+                  "name" : {
+                    "term" : "Trademark",
+                    "contract" : "no-such-license"
+                  },
+                  "value" : "Unspecified"
+                }
               },
-              "arguments" : [ {
-                "relevance" : "Identity",
+              "conclusion" : {
+                "relevance" : "Combined",
                 "explained" : {
                   "@c" : ".constant.Literal",
                   "name" : {
@@ -421,28 +362,9 @@
                   },
                   "value" : "Excluded"
                 }
-              }, {
-                "relevance" : "Combined",
-                "explained" : {
-                  "@c" : ".operation.ExplainedOperation",
-                  "operator" : "NOT",
-                  "value" : "Unspecified",
-                  "identity" : {
-                    "empty" : true
-                  },
-                  "arguments" : [ {
-                    "relevance" : "Combined",
-                    "explained" : {
-                      "@c" : ".constant.Literal",
-                      "name" : {
-                        "term" : "Trademark",
-                        "contract" : "no-such-license"
-                      },
-                      "value" : "Unspecified"
-                    }
-                  } ]
-                }
-              } ]
+              },
+              "value" : "Unspecified",
+              "operator" : "IMPLIES"
             },
             "level" : "ERROR"
           }

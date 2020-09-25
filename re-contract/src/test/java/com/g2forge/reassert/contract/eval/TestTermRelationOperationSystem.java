@@ -50,6 +50,18 @@ public class TestTermRelationOperationSystem {
 	}
 
 	@Test
+	public void implies() {
+		HAssert.assertEquals(TermRelation.Unspecified, evaluate(BooleanOperation.Operator.IMPLIES.<String, TermRelation>builder().argument$L(TermRelation.Unspecified).argument$L(TermRelation.Unspecified).build()));
+		HAssert.assertEquals(TermRelation.Included, evaluate(BooleanOperation.Operator.IMPLIES.<String, TermRelation>builder().argument$L(TermRelation.Excluded).argument$L(TermRelation.Unspecified).build()));
+		HAssert.assertEquals(TermRelation.Unspecified, evaluate(BooleanOperation.Operator.IMPLIES.<String, TermRelation>builder().argument$L(TermRelation.Included).argument$L(TermRelation.Unspecified).build()));
+
+		HAssert.assertEquals(TermRelation.Included, evaluate(BooleanOperation.Operator.IMPLIES.<String, TermRelation>builder().argument$L(TermRelation.Excluded).argument$L(TermRelation.Excluded).build()));
+		HAssert.assertEquals(TermRelation.Excluded, evaluate(BooleanOperation.Operator.IMPLIES.<String, TermRelation>builder().argument$L(TermRelation.Included).argument$L(TermRelation.Excluded).build()));
+
+		HAssert.assertEquals(TermRelation.Included, evaluate(BooleanOperation.Operator.IMPLIES.<String, TermRelation>builder().argument$L(TermRelation.Included).argument$L(TermRelation.Included).build()));
+	}
+
+	@Test
 	public void literal() {
 		HAssert.assertEquals("Unspecified - Input", explain(new Literal<>("Input", TermRelation.Unspecified)));
 	}
@@ -65,7 +77,7 @@ public class TestTermRelationOperationSystem {
 
 		HAssert.assertEquals(TermRelation.Included, evaluate(BooleanOperation.Operator.OR.<String, TermRelation>builder().argument$L(TermRelation.Included).argument$L(TermRelation.Included).build()));
 	}
-
+	
 	@Test
 	public void xor() {
 		HAssert.assertEquals(TermRelation.Unspecified, evaluate(BooleanOperation.Operator.XOR.<String, TermRelation>builder().argument$L(TermRelation.Unspecified).argument$L(TermRelation.Unspecified).build()));
