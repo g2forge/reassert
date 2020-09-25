@@ -5,6 +5,7 @@ import com.g2forge.alexandria.java.core.marker.ISingleton;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.eval.operation.AOperatorDescriptor;
+import com.g2forge.reassert.express.eval.operation.ArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.EnumOperatorRendering;
 import com.g2forge.reassert.express.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
@@ -16,7 +17,7 @@ import com.g2forge.reassert.express.model.operation.IOperation.IOperator;
 public class IntegerOperationSystem implements IOperationSystem<Integer>, ISingleton {
 	protected static class ArithmeticOperatorDescriptor extends AOperatorDescriptor<Integer> {
 		public ArithmeticOperatorDescriptor(Integer zero, Integer identity, IFunction1<? super Integer, ? extends Integer> summarizer) {
-			super(zero, identity, summarizer);
+			super(new ArgumentDescriptor<>(zero, identity), summarizer);
 		}
 
 		@Override

@@ -1,5 +1,5 @@
 Minimum finding level: ERROR
 ERROR: Condition "Commercial usage" is not satisfied based on "Permission for commercial usage"
-	Rule: ((!"Commercial usage") || "Permission for commercial usage")
-	Explanation: Unspecified - because anything or-ed with Excluded is itself
+	Rule: ("Commercial usage" -> "Permission for commercial usage")
+	Explanation: Unspecified - because the premise is Included, and the conclusion is Unspecified
 		* Unspecified - Permission for commercial usage in Unspecified license

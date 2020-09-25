@@ -171,6 +171,9 @@ public class ReportRenderer extends ATextualRenderer<Object, IReportRenderContex
 					case XOR:
 						separator = "^";
 						break;
+					case IMPLIES:
+						separator = "->";
+						break;
 					default:
 						throw new EnumException(BooleanOperation.Operator.class, operator);
 				}

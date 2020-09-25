@@ -2,12 +2,15 @@ package com.g2forge.reassert.express.eval;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
+import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.java.function.IFunction1;
@@ -15,6 +18,7 @@ import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
 import com.g2forge.alexandria.java.validate.IValidation;
 import com.g2forge.reassert.express.eval.error.EvalFailedException;
+import com.g2forge.reassert.express.eval.operation.IArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.eval.value.IValueSystem;
@@ -22,9 +26,12 @@ import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.ILiteral;
 import com.g2forge.reassert.express.model.environment.IEnvironment;
+import com.g2forge.reassert.express.model.operation.BooleanOperation;
 import com.g2forge.reassert.express.model.operation.ExplainedOperation;
 import com.g2forge.reassert.express.model.operation.IExplainedOperation;
+import com.g2forge.reassert.express.model.operation.IExplainedOperation.Argument;
 import com.g2forge.reassert.express.model.operation.IOperation;
+import com.g2forge.reassert.express.model.operation.ImpliesExplainedOperation;
 import com.g2forge.reassert.express.model.operation.ZeroExplainedOperation;
 import com.g2forge.reassert.express.model.variable.ExplainedClosure;
 import com.g2forge.reassert.express.model.variable.ExplainedVariable;
@@ -99,43 +106,56 @@ public class ExplainingEvaluator<Name, Value> extends AEvaluator<Name, Value, IE
 			@SuppressWarnings("unchecked")
 			final AEvaluator.BasicContext<Name, Value, IExplained<Value>> context = (AEvaluator.BasicContext<Name, Value, IExplained<Value>>) c;
 
-			final IOperatorDescriptor<Value> descriptor = getOperationSystem().getDescriptor(expression.getOperator());
-			descriptor.validate(expression).throwIfInvalid();
+			final boolean isImplies = BooleanOperation.Operator.IMPLIES.equals(expression.getOperator());
+			final IOperatorDescriptor<Value> operatorDescriptor = getOperationSystem().getDescriptor(expression.getOperator());
+			operatorDescriptor.validate(expression).throwIfInvalid();
 
 			final IValueSystem<Value> valueSystem = getValueSystem();
-			final IOptional<? extends Value> zero = descriptor.getZero();
-			final IOptional<? extends Value> identity = descriptor.getIdentity();
 
-			boolean hasZero = false;
+			final List<? extends IExpression<Name, Value>> arguments = expression.getArguments();
 			final List<IExplainedOperation.Argument<Value>> evaluated = new ArrayList<>();
-			for (IExpression<Name, Value> argument : expression.getArguments()) {
+			int zeroIndex = -1;
+			final Set<Value> identities = new LinkedHashSet<>();
+			for (int i = 0; i < arguments.size(); i++) {
 				final IExplained<Value> result;
 				try {
-					result = context.eval(argument);
+					result = context.eval(arguments.get(i));
 				} catch (Throwable throwable) {
 					throw new RuntimeException(String.format("Failed to evaluate %1$s!", expression.getOperator()), throwable);
 				}
 
+				final IArgumentDescriptor<Value> argumentDescriptor = operatorDescriptor.getArgument(i);
+				final IOptional<? extends Value> zero = argumentDescriptor.getZeroInput();
+				final IOptional<? extends Value> identity = argumentDescriptor.getIdentity();
 				final IExplained.Relevance relevance;
-				if (!zero.isEmpty() && valueSystem.isEqual(result.get(), zero.get())) {
-					hasZero = true;
+				if ((zeroIndex == -1) && !zero.isEmpty() && valueSystem.isEqual(result.get(), zero.get())) {
+					zeroIndex = i;
 					relevance = IExplained.Relevance.Dominant;
-				} else if (hasZero) relevance = IExplained.Relevance.Unevaluated;
+				} else if (zeroIndex != -1) relevance = IExplained.Relevance.Unevaluated;
 				else if (!identity.isEmpty() && valueSystem.isEqual(result.get(), identity.get())) relevance = IExplained.Relevance.Identity;
 				else relevance = IExplained.Relevance.Combined;
 
 				evaluated.add(new IExplainedOperation.Argument<>(relevance, result));
+				if (identity.isNotEmpty()) identities.add(identity.get());
 			}
 
-			if (hasZero) return new ZeroExplainedOperation<Value>(expression.getOperator(), zero.get(), evaluated);
+			if ((zeroIndex != -1) && !isImplies) return new ZeroExplainedOperation<Value>(expression.getOperator(), operatorDescriptor.getArgument(zeroIndex).getZeroOutput().get(), evaluated);
 
 			final Stream<Value> stream = evaluated.stream().map(IExplainedOperation.Argument::getExplained).map(IExplained::get);
 			final Value reduced;
-			if (identity.isEmpty()) reduced = stream.reduce(descriptor::combine).get();
-			else reduced = stream.reduce(identity.get(), descriptor::combine);
+			if (identities.size() != 1) reduced = stream.reduce(operatorDescriptor::combine).get();
+			else reduced = stream.reduce(HCollection.getOne(identities), operatorDescriptor::combine);
 
-			final IFunction1<? super Value, ? extends Value> summarizer = descriptor.getSummarizer();
+			final IFunction1<? super Value, ? extends Value> summarizer = operatorDescriptor.getSummarizer();
 			final Value result = summarizer == null ? reduced : summarizer.apply(reduced);
+
+			if (isImplies) {
+				final Value FALSE = getOperationSystem().getDescriptor(BooleanOperation.Operator.AND).getArgument(0).getZeroInput().get();
+				final boolean dominated = getValueSystem().isEqual(FALSE, evaluated.get(0).getExplained().get());
+				final Argument<Value> premise = dominated ? evaluated.get(0).toBuilder().relevance(IExplained.Relevance.Dominant).build() : evaluated.get(0);
+				return new ImpliesExplainedOperation<>(premise, evaluated.get(1), result);
+			}
+			final IOptional<? extends Value> identity = identities.size() == 1 ? NullableOptional.of(HCollection.getOne(identities)) : NullableOptional.empty();
 			return new ExplainedOperation<>(expression.getOperator(), result, identity, evaluated);
 		});
 		builder.add(IClosure.class, AEvaluator.BasicContext.class, (e, c) -> {

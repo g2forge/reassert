@@ -1,6 +1,6 @@
 package com.g2forge.reassert.standard.algorithm;
 
-import static com.g2forge.reassert.express.model.operation.BooleanOperation.or;
+import static com.g2forge.reassert.express.model.operation.BooleanOperation.implies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +55,11 @@ public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory im
 					if (ignored.contains(term)) continue;
 					switch (term.getType()) {
 						case Permission:
-							rules.add(rule(b -> b.expression(or(b.notA(term), b.b(term))).finding(IncompatibleWorkLicenseFinding::new)));
+							rules.add(rule(b -> b.expression(implies(b.a(term), b.b(term))).finding(IncompatibleWorkLicenseFinding::new)));
 							break;
 						case Condition:
 						case Limitation:
-							rules.add(rule(b -> b.expression(or(b.a(term), b.notB(term))).finding(IncompatibleWorkLicenseFinding::new)));
+							rules.add(rule(b -> b.expression(implies(b.b(term), b.a(term))).finding(IncompatibleWorkLicenseFinding::new)));
 							break;
 						default:
 							throw new EnumException(ILicenseTerm.Type.class, term.getType());

@@ -1,18 +1,22 @@
 package com.g2forge.reassert.express.eval;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.core.error.OrThrowable;
+import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.type.function.TypeSwitch2;
 import com.g2forge.reassert.express.eval.error.EvalFailedException;
 import com.g2forge.reassert.express.eval.error.VariableUnboundException;
+import com.g2forge.reassert.express.eval.operation.IArgumentDescriptor;
 import com.g2forge.reassert.express.eval.operation.IOperationSystem;
 import com.g2forge.reassert.express.eval.operation.IOperatorDescriptor;
 import com.g2forge.reassert.express.eval.value.IValueSystem;
@@ -53,15 +57,16 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 			@SuppressWarnings("unchecked")
 			final AEvaluator.BasicContext<Name, Value, Value> context = (AEvaluator.BasicContext<Name, Value, Value>) c;
 
-			final IOperatorDescriptor<Value> descriptor = getOperationSystem().getDescriptor(expression.getOperator());
-			descriptor.validate(expression).throwIfInvalid();
+			final IOperatorDescriptor<Value> operatorDescriptor = getOperationSystem().getDescriptor(expression.getOperator());
+			operatorDescriptor.validate(expression).throwIfInvalid();
 
 			final IValueSystem<Value> valueSystem = getValueSystem();
-			final IOptional<? extends Value> zero = descriptor.getZero();
-			final IOptional<? extends Value> identity = descriptor.getIdentity();
 
+			final List<? extends IExpression<Name, Value>> arguments = expression.getArguments();
 			final List<OrThrowable<Value>> evaluated = new ArrayList<>();
-			for (IExpression<Name, Value> argument : expression.getArguments()) {
+			final Set<Value> identities = new LinkedHashSet<>();
+			for (int i = 0; i < arguments.size(); i++) {
+				final IExpression<Name, Value> argument = arguments.get(i);
 				final Value result;
 				try {
 					result = context.eval(argument);
@@ -70,17 +75,25 @@ public class ValueEvaluator<Name, Value> extends AEvaluator<Name, Value, Value, 
 					continue;
 				}
 
-				if (!zero.isEmpty() && valueSystem.isEqual(result, zero.get())) return zero.get();
+				final IArgumentDescriptor<Value> argumentDescriptor = operatorDescriptor.getArgument(i);
+				final IOptional<? extends Value> zero = argumentDescriptor.getZeroInput();
+				final IOptional<? extends Value> identity = argumentDescriptor.getIdentity();
+				if (!zero.isEmpty() && valueSystem.isEqual(result, zero.get())) return argumentDescriptor.getZeroOutput().get();
 				if (identity.isEmpty() || !valueSystem.isEqual(result, identity.get())) evaluated.add(new OrThrowable<>(result));
+				if (identity.isNotEmpty()) identities.add(identity.get());
+			}
+			if (arguments.isEmpty()) {
+				final IOptional<? extends Value> identity = operatorDescriptor.getArgument(-1).getIdentity();
+				if (identity.isNotEmpty()) identities.add(identity.get());
 			}
 
 			final List<Value> list = evaluated.stream().collect(HError.collector(() -> new EvalFailedException(expression), false, Collectors.<Value>toList()));
 
 			final Value reduced;
-			if (identity.isEmpty()) reduced = list.stream().reduce(descriptor::combine).get();
-			else reduced = list.stream().reduce(identity.get(), descriptor::combine);
+			if (identities.size() != 1) reduced = list.stream().reduce(operatorDescriptor::combine).get();
+			else reduced = list.stream().reduce(HCollection.getOne(identities), operatorDescriptor::combine);
 
-			final IFunction1<? super Value, ? extends Value> summarizer = descriptor.getSummarizer();
+			final IFunction1<? super Value, ? extends Value> summarizer = operatorDescriptor.getSummarizer();
 			return summarizer == null ? reduced : summarizer.apply(reduced);
 		});
 		builder.add(IClosure.class, AEvaluator.BasicContext.class, (e, c) -> {

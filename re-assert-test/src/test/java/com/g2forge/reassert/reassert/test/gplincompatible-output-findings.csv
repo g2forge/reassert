@@ -1,42 +1,40 @@
 level,message,artifact,paths,details
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",A,A,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
-	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Commercial usage in PrivateDistribution usage"
+	Rule: (""Commercial usage"" -> ""Permission for commercial usage"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Commercial usage in PrivateDistribution usage"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",A,A,"INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
-	Rule: ((!""Public distribution"") || ""Permission to distribute"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Public distribution in PrivateDistribution usage"
+	Rule: (""Public distribution"" -> ""Permission to distribute"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Public distribution in PrivateDistribution usage"
 INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Private distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Private distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in No such license"
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",A,A,"INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
 		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in No such license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Linked"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Linked in PrivateDistribution usage
-		> Included - Permission for private usage in No such license"
+	Rule: (""Linked"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Linked in PrivateDistribution usage"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Copied"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Copied"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in No such license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",A,A,"INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
-	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Modified in PrivateDistribution usage"
+	Rule: (""Modified"" -> (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Modified in PrivateDistribution usage"
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Binary distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in No such license"
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Source distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Source distribution in PrivateDistribution usage
-		> Included - Permission for private usage in No such license"
+	Rule: (""Source distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Source distribution in PrivateDistribution usage"
 INFO,"You must disclose the source for this artifact",A,A,"INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
@@ -44,24 +42,20 @@ INFO,"You must disclose the source for this artifact",A,A,"INFO: You must disclo
 INFO,"You must publish a copyright and license notice stating that you use this artifact",A,A,"INFO: You must publish a copyright and license notice stating that you use this artifact
 	Rule: (""Requires copyright notice"" && (""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")))
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
-		> Excluded - Requires copyright notice in No such license
-		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments"
+		> Excluded - Requires copyright notice in No such license"
 INFO,"You must state the changes you have made to your copy of this artifact",A,A,"INFO: You must state the changes you have made to your copy of this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
-		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments
-		> Excluded - Modified in PrivateDistribution usage"
+		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments"
 INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",A,A,"INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
-	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Does not allow redistribution under this license"" -> (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - not, and the only argument is Excluded - because anything and-ed with Excluded is Excluded
-			> Excluded - Public distribution in PrivateDistribution usage
-			> Excluded - Source distribution in PrivateDistribution usage"
+			> Excluded - Public distribution in PrivateDistribution usage"
 INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Private distribution in PrivateDistribution usage
-		> Included - SaaS distribution in PrivateDistribution usage"
+		> Included - Private distribution in PrivateDistribution usage"
 INFO,"The usage for this artifact improperly specifies the method of consumption",A,A,"INFO: The usage for this artifact improperly specifies the method of consumption
 	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
@@ -71,47 +65,41 @@ INFO,"The usage for this artifact improperly specifies the format",A,A,"INFO: Th
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
 		> Included - Binary distribution in PrivateDistribution usage"
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",B,"A -> B","INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
-	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Commercial usage in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-		> Included - Permission for commercial usage in GPL 3.0 or later license"
+	Rule: (""Commercial usage"" -> ""Permission for commercial usage"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Commercial usage in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
-	Rule: ((!""Public distribution"") || ""Permission to distribute"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Public distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-		> Included - Permission to distribute in GPL 3.0 or later license"
+	Rule: (""Public distribution"" -> ""Permission to distribute"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Public distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Private distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Private distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Private distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in GPL 3.0 or later license"
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in GPL 3.0 or later license
-		> Included - Permission to distribute in GPL 3.0 or later license"
+		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in GPL 3.0 or later license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Linked"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Linked"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in GPL 3.0 or later license"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Copied"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Copied in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-		> Included - Permission for private usage in GPL 3.0 or later license"
+	Rule: (""Copied"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Copied in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",B,"A -> B","INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
-	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-		> Included - because anything and-ed with Included is itself, and there are no non-Included arguments"
+	Rule: (""Modified"" -> (""Permission for private usage"" && ""Permission to modify""))
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Binary distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in GPL 3.0 or later license"
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
-	Rule: ((!""Source distribution"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Source distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-		> Included - Permission for private usage in GPL 3.0 or later license"
+	Rule: (""Source distribution"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Source distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"You must disclose the source for this artifact",B,"A -> B","INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
@@ -123,20 +111,15 @@ INFO,"You must publish a copyright and license notice stating that you use this 
 INFO,"You must state the changes you have made to your copy of this artifact",B,"A -> B","INFO: You must state the changes you have made to your copy of this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
-		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments
-		> Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
+		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments"
 INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",B,"A -> B","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
-	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in GPL 3.0 or later license
-		> Included - not, and the only argument is Excluded - because anything and-ed with Excluded is Excluded
-			> Excluded - Public distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-			> Excluded - Source distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
+	Rule: (""Does not allow redistribution under this license"" -> (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Does not allow redistribution under this license in GPL 3.0 or later license"
 INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Private distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
-		> Included - SaaS distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
+		> Included - Private distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"The usage for this artifact improperly specifies the method of consumption",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of consumption
 	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
@@ -147,68 +130,70 @@ INFO,"The usage for this artifact improperly specifies the format",B,"A -> B","I
 		> Included - Binary distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 ERROR,"Term ""Permission for commercial usage"" is not compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","ERROR: Term ""Permission for commercial usage"" is not compatible
-	Rule: ((!""Permission for commercial usage"") || ""Permission for commercial usage"")
-	Explanation: Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments"
+	Rule: (""Permission for commercial usage"" -> ""Permission for commercial usage"")
+	Explanation: Excluded - because the premise is Included, and the conclusion is Excluded
+		* Excluded - Permission for commercial usage in No such license"
 ERROR,"Term ""Permission to distribute"" is not compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","ERROR: Term ""Permission to distribute"" is not compatible
-	Rule: ((!""Permission to distribute"") || ""Permission to distribute"")
-	Explanation: Unspecified - because anything or-ed with Excluded is itself
+	Rule: (""Permission to distribute"" -> ""Permission to distribute"")
+	Explanation: Unspecified - because the premise is Included, and the conclusion is Unspecified
 		* Unspecified - Permission to distribute in No such license"
 ERROR,"Term ""Permission to modify"" is not compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","ERROR: Term ""Permission to modify"" is not compatible
-	Rule: ((!""Permission to modify"") || ""Permission to modify"")
-	Explanation: Unspecified - because anything or-ed with Excluded is itself
+	Rule: (""Permission to modify"" -> ""Permission to modify"")
+	Explanation: Unspecified - because the premise is Included, and the conclusion is Unspecified
 		* Unspecified - Permission to modify in No such license"
 INFO,"Term ""Permission for private usage"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Permission for private usage"" is compatible
-	Rule: ((!""Permission for private usage"") || ""Permission for private usage"")
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Permission for private usage"" -> ""Permission for private usage"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Permission for private usage in No such license"
 INFO,"Term ""Requires source disclosure"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Requires source disclosure"" is compatible
-	Rule: (""Requires source disclosure"" || (!""Requires source disclosure""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Requires source disclosure"" -> ""Requires source disclosure"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Requires source disclosure in GPL 3.0 or later license"
 INFO,"Term ""Requires copyright notice"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Requires copyright notice"" is compatible
-	Rule: (""Requires copyright notice"" || (!""Requires copyright notice""))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - Requires copyright notice in GPL 3.0 or later license
-		> Included - not, and the only argument is Excluded - Requires copyright notice in No such license"
+	Rule: (""Requires copyright notice"" -> ""Requires copyright notice"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Requires copyright notice in No such license"
 INFO,"Term ""Requires distribution for SaaS"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Requires distribution for SaaS"" is compatible
-	Rule: (""Requires distribution for SaaS"" || (!""Requires distribution for SaaS""))
-	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in No such license"
+	Rule: (""Requires distribution for SaaS"" -> ""Requires distribution for SaaS"")
+	Explanation: Included - because the premise is Excluded
+		> Excluded - Requires distribution for SaaS in No such license"
 INFO,"Term ""Requires compatible licenses"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Requires compatible licenses"" is compatible
-	Rule: (""Requires compatible licenses"" || (!""Requires compatible licenses""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Requires compatible licenses"" -> ""Requires compatible licenses"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Requires compatible licenses in GPL 3.0 or later license"
 INFO,"Term ""Requires statement of changes"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Requires statement of changes"" is compatible
-	Rule: (""Requires statement of changes"" || (!""Requires statement of changes""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Requires statement of changes"" -> ""Requires statement of changes"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Requires statement of changes in GPL 3.0 or later license"
 ERROR,"Term ""Does not grant patent usage"" is not compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","ERROR: Term ""Does not grant patent usage"" is not compatible
-	Rule: (""Does not grant patent usage"" || (!""Does not grant patent usage""))
-	Explanation: Unspecified - because anything or-ed with Excluded is itself
-		* Unspecified - not, and the only argument is Unspecified - Does not grant patent usage in No such license"
+	Rule: (""Does not grant patent usage"" -> ""Does not grant patent usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Excluded
+		* Unspecified - Does not grant patent usage in No such license
+		* Excluded - Does not grant patent usage in GPL 3.0 or later license"
 INFO,"Term ""Does not idemnify against liability"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Does not idemnify against liability"" is compatible
-	Rule: (""Does not idemnify against liability"" || (!""Does not idemnify against liability""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Does not idemnify against liability"" -> ""Does not idemnify against liability"")
+	Explanation: Included - because the premise is Unspecified, and the conclusion is Included
 		> Included - Does not idemnify against liability in GPL 3.0 or later license"
 ERROR,"Term ""Does not grant trademark usage"" is not compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","ERROR: Term ""Does not grant trademark usage"" is not compatible
-	Rule: (""Does not grant trademark usage"" || (!""Does not grant trademark usage""))
-	Explanation: Unspecified - because anything or-ed with Excluded is itself
-		* Unspecified - not, and the only argument is Unspecified - Does not grant trademark usage in No such license"
+	Rule: (""Does not grant trademark usage"" -> ""Does not grant trademark usage"")
+	Explanation: Unspecified - because the premise is Unspecified, and the conclusion is Excluded
+		* Unspecified - Does not grant trademark usage in No such license
+		* Excluded - Does not grant trademark usage in GPL 3.0 or later license"
 INFO,"Term ""Does not grant warranty"" is compatible",,"A -> B -> GPL 3.0 or later license
 A -> No such license","INFO: Term ""Does not grant warranty"" is compatible
-	Rule: (""Does not grant warranty"" || (!""Does not grant warranty""))
-	Explanation: Included - because anything or-ed with Included is Included
+	Rule: (""Does not grant warranty"" -> ""Does not grant warranty"")
+	Explanation: Included - because the premise is Included, and the conclusion is Included
 		> Included - Does not grant warranty in GPL 3.0 or later license"
 ERROR,"Unknown work type",,"A -> No such license","ERROR: Unknown work type	
 	GeneralLicense(name=No such license, shortID=null, SPDXShortID=null, terms=Terms(terms={CommercialUse=Excluded, PrivateUse=Included, Notice=Excluded, SaaSIsDistribution=Excluded, Warranty=Included}), version=null, orLater=false)"

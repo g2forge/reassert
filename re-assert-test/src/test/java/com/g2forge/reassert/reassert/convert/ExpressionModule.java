@@ -1,5 +1,7 @@
 package com.g2forge.reassert.reassert.convert;
 
+import java.util.List;
+
 import org.slf4j.event.Level;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,6 +19,8 @@ import com.g2forge.reassert.core.model.report.IContextFinding;
 import com.g2forge.reassert.core.model.report.IFinding;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExpression;
+import com.g2forge.reassert.express.model.operation.IExplainedOperation;
+import com.g2forge.reassert.express.model.operation.ImpliesExplainedOperation;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +36,7 @@ public class ExpressionModule extends SimpleModule {
 	@JsonTypeInfo(use = JsonTypeInfo.Id.MINIMAL_CLASS, include = JsonTypeInfo.As.PROPERTY)
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected static abstract class ExplainedMixin {}
-
+	
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	protected static abstract class ExpressionContextualFindingMixin extends ContextualFindingMixin {
 		@JsonIgnore
@@ -44,6 +48,11 @@ public class ExpressionModule extends SimpleModule {
 	protected static abstract class FindingMixin {
 		@JsonIgnore
 		public abstract IFinding getInnermostFinding();
+	}
+
+	protected static abstract class ImpliesExplainedOperationMixin<Value> {
+		@JsonIgnore
+		public abstract List<IExplainedOperation.Argument<Value>> getArguments();
 	}
 
 	protected static abstract class IOptionalMixin {
@@ -68,6 +77,7 @@ public class ExpressionModule extends SimpleModule {
 		setMixInAnnotation(IContextFinding.class, ContextualFindingMixin.class);
 		setMixInAnnotation(ExpressionContextFinding.class, ExpressionContextualFindingMixin.class);
 		setMixInAnnotation(IExplained.class, ExplainedMixin.class);
+		setMixInAnnotation(ImpliesExplainedOperation.class, ImpliesExplainedOperationMixin.class);
 		super.setupModule(context);
 	}
 }

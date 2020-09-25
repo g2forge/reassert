@@ -9,8 +9,6 @@ import com.g2forge.alexandria.java.validate.ValidationFailureException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.eval.ValueEvaluator;
-import com.g2forge.reassert.express.eval.bool.BooleanOperationSystem;
-import com.g2forge.reassert.express.eval.bool.BooleanValueSystem;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.ILiteral;
 import com.g2forge.reassert.express.model.constant.Literal;
@@ -66,6 +64,15 @@ public class TestBooleanOperationSystem {
 		final IExpression<String, Boolean> expression = BooleanOperation.and(x, y);
 		final IExpression<String, Boolean> closure = new Closure<>(Environment.<String, Boolean>builder().bind(x, new Literal<>(false)).build(), expression);
 		HAssert.assertEquals(false, TestBooleanOperationSystem.getEvaluator().eval(closure));
+	}
+
+	@Test
+	public void implies() {
+		for (int i = 0; i < 4; i++) {
+			final BooleanOperation<String, Boolean> expression = BooleanOperation.implies(new Literal<>((i & 0x02) != 0), new Literal<>((i & 0x01) != 0));
+			final Boolean result = getEvaluator().eval(expression);
+			HAssert.assertEquals(expression.toString(), i != 2, result);
+		}
 	}
 
 	@Test(expected = ValidationFailureException.class)
