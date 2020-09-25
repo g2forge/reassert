@@ -75,6 +75,13 @@ ERROR,"You must state the changes you have made to your copy of this artifact",A
 				* Unspecified - Requires distribution for SaaS in Unspecified license
 		* Unspecified - Modified in Unspecified usage
 		* Unspecified - Requires statement of changes in Unspecified license"
+ERROR,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are not satisfied",A,A,"ERROR: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are not satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Unspecified - or
+		* Unspecified - not, and the only argument is Unspecified - Does not allow redistribution under this license in Unspecified license
+		* Unspecified - not, and the only argument is Unspecified - and
+			* Unspecified - Public distribution in Unspecified usage
+			* Unspecified - Source distribution in Unspecified usage"
 ERROR,"The usage for this artifact improperly specifies the method of distribution",A,A,"ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified - not, and the only argument is Unspecified - or
@@ -142,6 +149,10 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
 		> Excluded - Requires statement of changes in BSD 3 Clause license"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",B,"A -> B","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in BSD 3 Clause license"
 ERROR,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified - not, and the only argument is Unspecified - or
@@ -211,6 +222,10 @@ ERROR,"You must state the changes you have made to your copy of this artifact",C
 		* Unspecified - because anything or-ed with Excluded is itself
 			* Unspecified - Public distribution in Unspecified usage
 		* Unspecified - Modified in Unspecified usage"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",C,"A -> C","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in Apache 2.0 license"
 ERROR,"The usage for this artifact improperly specifies the method of distribution",C,"A -> C","ERROR: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Unspecified - not, and the only argument is Unspecified - or

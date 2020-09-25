@@ -57,6 +57,12 @@ INFO,"You must state the changes you have made to your copy of this artifact",A,
 		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments
 		> Excluded - Modified in PrivateDistribution usage
 		> Excluded - Requires statement of changes in Owner license"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",A,A,"INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - because anything and-ed with Excluded is Excluded
+			> Excluded - Public distribution in PrivateDistribution usage
+			> Excluded - Source distribution in PrivateDistribution usage"
 INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
@@ -125,6 +131,13 @@ INFO,"You must state the changes you have made to your copy of this artifact",B,
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
 		> Excluded - because anything or-ed with Excluded is itself, and there are no non-Excluded arguments
 		> Excluded - Modified in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",B,"A -> B","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in GPL 3.0 or later license
+		> Included - not, and the only argument is Excluded - because anything and-ed with Excluded is Excluded
+			> Excluded - Public distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)
+			> Excluded - Source distribution in Propagated Usage (Depends(transitive=true, runtime=true, testtime=true, compiletime=true) PrivateDistribution usage)"
 INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included

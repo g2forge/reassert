@@ -2,7 +2,6 @@ level,message,artifact,paths,details
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",A,A,"INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
 	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Commercial usage in OSSLibrary usage
 		> Included - Permission for commercial usage in Owner license"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",A,A,"INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
 	Rule: ((!""Public distribution"") || ""Permission to distribute"")
@@ -15,22 +14,22 @@ INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for 
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",A,A,"INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - SaaS distribution in OSSLibrary usage
+		> Included - not, and the only argument is Excluded - SaaS distribution in CommercialDistribution usage
 		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in Owner license
 		> Included - Permission to distribute in Owner license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Linked"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Linked in CommercialDistribution usage
 		> Included - Permission for private usage in Owner license"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Copied"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Copied in OSSLibrary usage
 		> Included - Permission for private usage in Owner license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",A,A,"INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
 	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Modified in OSSLibrary usage
+		> Included - not, and the only argument is Excluded - Modified in CommercialDistribution usage
 		> Included - because anything and-ed with Included is itself, and there are no non-Included arguments"
 INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Binary distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Binary distribution"") || ""Permission for private usage"")
@@ -39,6 +38,7 @@ INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for p
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",A,A,"INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Source distribution"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Source distribution in CommercialDistribution usage
 		> Included - Permission for private usage in Owner license"
 INFO,"You must disclose the source for this artifact",A,A,"INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
@@ -51,26 +51,29 @@ INFO,"You must publish a copyright and license notice stating that you use this 
 INFO,"You must state the changes you have made to your copy of this artifact",A,A,"INFO: You must state the changes you have made to your copy of this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Excluded - because anything and-ed with Excluded is Excluded
-		> Excluded - Modified in OSSLibrary usage
+		> Excluded - Modified in CommercialDistribution usage
 		> Excluded - Requires statement of changes in Owner license"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",A,A,"INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - because anything and-ed with Excluded is Excluded
+			> Excluded - Source distribution in CommercialDistribution usage"
 INFO,"The usage for this artifact improperly specifies the method of distribution",A,A,"INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Public distribution in OSSLibrary usage
-		> Included - Private distribution in OSSLibrary usage"
+		> Included - Public distribution in CommercialDistribution usage
+		> Included - Private distribution in CommercialDistribution usage"
 INFO,"The usage for this artifact improperly specifies the method of consumption",A,A,"INFO: The usage for this artifact improperly specifies the method of consumption
 	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Linked in OSSLibrary usage"
+		> Included - Copied in CommercialDistribution usage"
 INFO,"The usage for this artifact improperly specifies the format",A,A,"INFO: The usage for this artifact improperly specifies the format
 	Rule: (!(""Binary distribution"" || ""Source distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Binary distribution in OSSLibrary usage
-		> Included - Source distribution in OSSLibrary usage"
+		> Included - Binary distribution in CommercialDistribution usage"
 INFO,"Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""",B,"A -> B","INFO: Condition ""Commercial usage"" is satisfied based on ""Permission for commercial usage""
 	Rule: ((!""Commercial usage"") || ""Permission for commercial usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Commercial usage in Merged Usage (1037B3EB)
 		> Included - Permission for commercial usage in Apache 2.0 license"
 INFO,"Condition ""Public distribution"" is satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Condition ""Public distribution"" is satisfied based on ""Permission to distribute""
 	Rule: ((!""Public distribution"") || ""Permission to distribute"")
@@ -83,7 +86,7 @@ INFO,"Condition ""Private distribution"" is satisfied based on ""Permission for 
 INFO,"Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""",B,"A -> B","INFO: Conditions ""SaaS distribution"" & ""Requires distribution for SaaS"" are satisfied based on ""Permission to distribute""
 	Rule: ((!""SaaS distribution"") || (!""Requires distribution for SaaS"") || ""Permission to distribute"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - SaaS distribution in Merged Usage (1037B3EB)
+		> Included - not, and the only argument is Excluded - SaaS distribution in Merged Usage (21BECEAC)
 		> Included - not, and the only argument is Excluded - Requires distribution for SaaS in Apache 2.0 license
 		> Included - Permission to distribute in Apache 2.0 license"
 INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Linked"" is satisfied based on ""Permission for private usage""
@@ -93,7 +96,7 @@ INFO,"Condition ""Linked"" is satisfied based on ""Permission for private usage"
 INFO,"Condition ""Copied"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Copied"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Copied"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
-		> Included - not, and the only argument is Excluded - Copied in Merged Usage (1037B3EB)
+		> Included - not, and the only argument is Excluded - Copied in Merged Usage (21BECEAC)
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""",B,"A -> B","INFO: Condition ""Modified"" is satisfied based on ""Permission for private usage"" & ""Permission to modify""
 	Rule: ((!""Modified"") || (""Permission for private usage"" && ""Permission to modify""))
@@ -106,6 +109,7 @@ INFO,"Condition ""Binary distribution"" is satisfied based on ""Permission for p
 INFO,"Condition ""Source distribution"" is satisfied based on ""Permission for private usage""",B,"A -> B","INFO: Condition ""Source distribution"" is satisfied based on ""Permission for private usage""
 	Rule: ((!""Source distribution"") || ""Permission for private usage"")
 	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Source distribution in Merged Usage (21BECEAC)
 		> Included - Permission for private usage in Apache 2.0 license"
 INFO,"You must disclose the source for this artifact",B,"A -> B","INFO: You must disclose the source for this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Requires source disclosure"")
@@ -117,18 +121,23 @@ WARN,"You must publish a copyright and license notice stating that you use this 
 WARN,"You must state the changes you have made to your copy of this artifact",B,"A -> B","WARN: You must state the changes you have made to your copy of this artifact
 	Rule: ((""Public distribution"" || (""SaaS distribution"" && ""Requires distribution for SaaS"")) && ""Modified"" && ""Requires statement of changes"")
 	Explanation: Included - because anything and-ed with Included is itself, and there are no non-Included arguments"
+INFO,"Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied",B,"A -> B","INFO: Conditions ""Does not allow redistribution under this license"", ""Public distribution"" & ""Source distribution"" are satisfied
+	Rule: ((!""Does not allow redistribution under this license"") || (!(""Public distribution"" && ""Source distribution"")))
+	Explanation: Included - because anything or-ed with Included is Included
+		> Included - not, and the only argument is Excluded - Does not allow redistribution under this license in Apache 2.0 license
+		> Included - not, and the only argument is Excluded - because anything and-ed with Excluded is Excluded
+			> Excluded - Source distribution in Merged Usage (21BECEAC)"
 INFO,"The usage for this artifact improperly specifies the method of distribution",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of distribution
 	Rule: (!(""Public distribution"" || ""Private distribution"" || ""SaaS distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Public distribution in Merged Usage (1037B3EB)
-		> Included - Private distribution in Merged Usage (1037B3EB)"
+		> Included - Public distribution in Merged Usage (21BECEAC)
+		> Included - Private distribution in Merged Usage (21BECEAC)"
 INFO,"The usage for this artifact improperly specifies the method of consumption",B,"A -> B","INFO: The usage for this artifact improperly specifies the method of consumption
 	Rule: (!(""Linked"" || ""Copied"" || ""Modified""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Linked in Merged Usage (1037B3EB)
-		> Included - Modified in Merged Usage (1037B3EB)"
+		> Included - Linked in Merged Usage (21BECEAC)
+		> Included - Modified in Merged Usage (21BECEAC)"
 INFO,"The usage for this artifact improperly specifies the format",B,"A -> B","INFO: The usage for this artifact improperly specifies the format
 	Rule: (!(""Binary distribution"" || ""Source distribution""))
 	Explanation: Excluded - not, and the only argument is Included - because anything or-ed with Included is Included
-		> Included - Binary distribution in Merged Usage (1037B3EB)
-		> Included - Source distribution in Merged Usage (1037B3EB)"
+		> Included - Binary distribution in Merged Usage (21BECEAC)"

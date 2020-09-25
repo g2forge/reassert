@@ -63,6 +63,9 @@ public class StandardLicenseUsageRules extends AContractComparisonRules<ILicense
 		// SameLicense is handled elsewhere, since it speaks to the licenses across artifacts and the analyzer isn't graph-aware
 		rules.add(rule(b -> b.expression(and(or(b.b(StandardUsageTerm.DistributionPublic), and(b.b(StandardUsageTerm.DistributionService), b.a(StandardLicenseTerm.SaaSIsDistribution))), b.b(StandardUsageTerm.UseModified), b.a(StandardLicenseTerm.StateChanges))).finding(StateChangesFinding::new)));
 
+		// License limitations
+		rules.add(rule(b -> b.expression(or(b.notA(StandardLicenseTerm.NoRedistribution), not(and(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributingSource))))).finding(ConditionFinding::new)));
+
 		// Consistency rules
 		rules.add(rule(b -> b.expression(not(or(b.b(StandardUsageTerm.DistributionPublic), b.b(StandardUsageTerm.DistributionPrivate), b.b(StandardUsageTerm.DistributionService)))).finding(StandardUsageTermAttribute.Distribution)));
 		rules.add(rule(b -> b.expression(not(or(b.b(StandardUsageTerm.UseLink), b.b(StandardUsageTerm.UseCopy), b.b(StandardUsageTerm.UseModified)))).finding(StandardUsageTermAttribute.Consumption)));

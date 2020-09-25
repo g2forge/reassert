@@ -4,6 +4,8 @@ import java.util.Set;
 
 import com.g2forge.alexandria.annotations.note.Note;
 import com.g2forge.alexandria.annotations.note.NoteType;
+import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.reassert.core.api.ReassertLegalOpinion;
 import com.g2forge.reassert.core.model.contract.terms.ITerms;
 import com.g2forge.reassert.core.model.contract.terms.Terms;
 
@@ -19,6 +21,16 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class MergedUsage implements IUsage {
+	@ReassertLegalOpinion
+	public static IUsageApplied merge(Set<IUsageApplied> usages) {
+		if (usages.size() == 1) return HCollection.getOne(usages);
+		final MergedUsage merged = new MergedUsage(usages);
+		for (IUsageApplied usage : usages) {
+			if (IUsage.isEqualTerms(usage, merged)) return usage;
+		}
+		return merged;
+	}
+
 	@Singular
 	protected final Set<IUsageApplied> usages;
 

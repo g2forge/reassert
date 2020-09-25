@@ -51,7 +51,7 @@ public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory im
 				final List<IContractComparisonRule> rules = new ArrayList<>();
 
 				for (ILicenseTerm term : getWorkLicense().getTerms().getTerms(true)) {
-					if (StandardLicenseTerm.PatentGrant.equals(term)) continue;
+					if (ignored.contains(term)) continue;
 					switch (term.getType()) {
 						case Permission:
 							rules.add(rule(b -> b.expression(or(b.notA(term), b.b(term))).finding(IncompatibleWorkLicenseFinding::new)));
@@ -78,6 +78,8 @@ public class StandardWorkLicenseRules extends AWorkLicenseRulesFactoryFactory im
 				return HCollection.difference(union, intersection);
 			}
 		}
+
+		protected static final Set<StandardLicenseTerm> ignored = HCollection.asSet(StandardLicenseTerm.PatentGrant, StandardLicenseTerm.NoRedistribution);
 
 		protected final ILicenseFamily workLicense;
 
