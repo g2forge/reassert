@@ -5,7 +5,7 @@
 	<groupId>com.g2forge.reassert</groupId>
 	<artifactId>re-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
@@ -42,12 +42,6 @@
 			<url>https://github.com/${reassert.organization}/${reassert.repository}/blob/${project.version}/LICENSE</url>
 		</license>
 	</licenses>
-	<scm>
-		<connection>scm:git:git://github.com/${reassert.organization}/${reassert.repository}.git</connection>
-		<developerConnection>scm:git:ssh://github.com:${reassert.organization}/${reassert.repository}.git</developerConnection>
-		<url>http://github.com/${reassert.organization}/${reassert.repository}/tree/${project.version}</url>
-	  <tag>0.0.2</tag>
-  </scm>
 
 	<build>
 		<plugins>
