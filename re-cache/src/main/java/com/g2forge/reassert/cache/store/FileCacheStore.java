@@ -6,14 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 import com.g2forge.alexandria.java.io.RuntimeIOException;
-import com.g2forge.alexandria.java.type.ref.ITypeRef;
-
-import lombok.Getter;
 
 public class FileCacheStore implements ICacheStore<Path> {
-	@Getter
-	protected final ITypeRef<Path> type = ITypeRef.of(Path.class);
-
 	@Override
 	public Path load(Path path) {
 		if (!path.isAbsolute()) throw new IllegalArgumentException();
