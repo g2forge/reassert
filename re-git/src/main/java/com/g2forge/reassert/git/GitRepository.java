@@ -1,12 +1,13 @@
 package com.g2forge.reassert.git;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -55,7 +56,17 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final IFunction1<? super GitCoordinates, ? extends Path> cacheArea = computeCacheArea();
+	private final ObjectMapper jsonMapper = computeJSONMapper();
+
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@Getter(lazy = true, value = AccessLevel.PROTECTED)
+	private final IFunction1<? super String, ? extends Boolean> serverCacheArea = computeServerCacheArea();
+
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@Getter(lazy = true, value = AccessLevel.PROTECTED)
+	private final IFunction1<? super GitCoordinates, ? extends Path> repositoryCacheArea = computeRepositoryCacheArea();
 
 	protected Path clone(GitCoordinates coordinates, Path path) {
 		boolean complete = false;
@@ -75,16 +86,20 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 		return path;
 	}
 
-	protected IFunction1<? super GitCoordinates, ? extends Path> computeCacheArea() {
-		final ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule(new ParanamerModule());
-		final ICacheStore<GitCoordinates> coordinatesStore = new JacksonCacheStore<>(mapper, ITypeRef.of(GitCoordinates.class));
+	protected ObjectMapper computeJSONMapper() {
+		final ObjectMapper jsonMapper = new ObjectMapper();
+		jsonMapper.registerModule(new ParanamerModule());
+		return jsonMapper;
+	}
+
+	protected IFunction1<? super GitCoordinates, ? extends Path> computeRepositoryCacheArea() {
+		final ICacheStore<GitCoordinates> coordinatesStore = new JacksonCacheStore<>(getJsonMapper(), ITypeRef.of(GitCoordinates.class));
 		final ICacheStore<Path> repositoryStore = new DirectoryCacheStore() {
 			@Override
 			public Path load(Path path) {
 				final Path retVal = super.load(path);
 
-				final GitConfig config = getSystem().getContext().getConfig().load(ITypeRef.of(GitConfig.class)).or(new GitConfig(1, ChronoUnit.DAYS));
+				final GitConfig config = getSystem().getContext().getConfig().load(ITypeRef.of(GitConfig.class)).or(GitConfig.builder().build());
 				if ((config.getAmount() != 0) || (config.getUnit() != null)) {
 					final boolean update;
 					try {
@@ -118,14 +133,54 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 		return getSystem().getContext().getCache().createArea(coordinates);
 	}
 
+	protected IFunction1<? super String, ? extends Boolean> computeServerCacheArea() {
+		final ICacheStore<String> urlStore = new JacksonCacheStore<>(getJsonMapper(), ITypeRef.of(String.class));
+		final ICacheStore<Boolean> booleanStore = new JacksonCacheStore<>(getJsonMapper(), ITypeRef.of(Boolean.class));
+
+		final IFunction1<? super String, ? extends Path> hash = c -> Paths.get(HBinary.toHex(HIO.sha1(c)));
+		final CacheAreaDescriptor<String, Boolean> coordinates = CacheAreaDescriptor.<String, Boolean>builder().name(Paths.get(getClass().getName())).function(this::getServerInfo).hashFunction(hash).keyConverter(urlStore).valueConverter(booleanStore).build();
+		return getSystem().getContext().getCache().createArea(coordinates);
+	}
+
 	protected GitCoordinates createCoordinates(GitCoordinates repo, Path root, Path path) {
-		final String subpath = HStream.toStream(root.relativize(path).iterator()).map(Object::toString).collect(Collectors.joining("/"));
+		final Path subpath = root.relativize(path);
+
+		final String subpathString = HStream.toStream(subpath.iterator()).map(Object::toString).collect(Collectors.joining("/"));
 		final String url = repo.getUrl();
 
-		final Matcher matcher = Pattern.compile("(http(s?)://github.com/[^/]+/[^/]+).git").matcher(url);
-		if (matcher.matches()) return new GitCoordinates(repo.getSystem(), matcher.group(1) + "/blob/master/" + subpath.toString(), repo.getBranch());
+		final Matcher matcher = Pattern.compile("((http(s?)://([^/]+))/[^/]+/[^/]+).git").matcher(url);
+		if (matcher.matches()) {
+			final String serverURL = matcher.group(2);
+			if (!getServerCacheArea().apply(serverURL)) throw new IllegalArgumentException(String.format("Cannot generate coordinates for files in %1$s, because %2$s does not appear to be a github server", url, serverURL));
+			return new GitCoordinates(repo.getSystem(), matcher.group(1) + "/blob/master/" + subpathString, repo.getBranch());
+		}
 
 		throw new IllegalArgumentException(String.format("Cannot generate coordinates for files in %1$s", url));
+	}
+
+	protected boolean getServerInfo(String url, Path path) {
+		final Pattern REGEX = Pattern.compile("(https?)://([^/]+)(/.*)?");
+		final Matcher matcher = REGEX.matcher(url);
+		if (!matcher.matches()) throw new IllegalArgumentException(url);
+		final String urlProtocol = matcher.group(1);
+		final String urlDNS = matcher.group(2);
+
+		if (urlDNS.matches("([^.]+\\.)?github\\.com")) return true;
+		else {
+			try {
+				final HttpURLConnection connection = (HttpURLConnection) new URL(urlProtocol + "://" + urlDNS + "/api/v3/").openConnection();
+				final int timeout = 5000;
+				connection.setConnectTimeout(timeout);
+				connection.setReadTimeout(timeout);
+				connection.setInstanceFollowRedirects(true);
+
+				final int status = connection.getResponseCode();
+				if (status != 200) return false;
+				return connection.getHeaderFields().keySet().contains("X-GitHub-Enterprise-Version");
+			} catch (Throwable throwable) {
+				throw new RuntimeException(throwable);
+			}
+		}
 	}
 
 	@Override
@@ -136,7 +191,7 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 
 		final IScanner scanner = getSystem().getContext().getScanner();
 		if (scanner != null) {
-			final Path root = getCacheArea().apply(coordinates);
+			final Path root = getRepositoryCacheArea().apply(coordinates);
 			new LocalScannerProxy(scanner, p -> createCoordinates(coordinates, root, p)).scan(root, builder, artifact);
 		}
 
