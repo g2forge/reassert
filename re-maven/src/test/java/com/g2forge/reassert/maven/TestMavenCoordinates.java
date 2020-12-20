@@ -20,8 +20,13 @@ public class TestMavenCoordinates extends ATestSystem {
 	private final MavenSystem system = new MavenSystem(getContext());
 
 	@Test
-	public void equality() {
+	public void builder() {
 		HAssert.assertEquals(new MavenCoordinates(getSystem(), GROUPID, ARTIFACTID, VERSION, MavenPackaging.JAR), MavenCoordinates.builder().groupId(GROUPID).artifactId(ARTIFACTID).version(VERSION).build());
+	}
+
+	@Test
+	public void equality() {
+		HAssert.assertEquals(new MavenCoordinates(getSystem(), GROUPID, ARTIFACTID, VERSION.toUpperCase(), MavenPackaging.JAR), new MavenCoordinates(getSystem(), GROUPID, ARTIFACTID, VERSION.toLowerCase(), MavenPackaging.JAR));
 	}
 
 	@Test

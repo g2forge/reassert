@@ -43,7 +43,7 @@ public class Reassert {
 	}
 
 	public IReport report(Artifact<?> origin) {
-		return report(Origins.builder().origin(origin).build());
+		return report(Origins.builder().origin(origin, null).build());
 	}
 
 	public IReport report(IOrigins origins) {

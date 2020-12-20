@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 @Builder(toBuilder = true)
 @RequiredArgsConstructor
 public class GitConfig {
-	protected final int amount;
-	
-	protected final ChronoUnit unit;
+	@Builder.Default
+	protected final int amount = 1;
+
+	@Builder.Default
+	protected final ChronoUnit unit = ChronoUnit.DAYS;
 }

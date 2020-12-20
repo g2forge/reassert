@@ -3,8 +3,11 @@ package com.g2forge.reassert.core.algorithm.visitor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,6 +17,7 @@ import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.EdgeReversedGraph;
 
 import com.g2forge.alexandria.java.core.error.HError;
+import com.g2forge.alexandria.java.core.error.OrThrowable;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder.ICallback;
@@ -27,6 +31,8 @@ import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
 import com.g2forge.reassert.core.model.IVertex;
 import com.g2forge.reassert.core.model.artifact.Artifact;
+import com.g2forge.reassert.core.model.contract.IContractApplied;
+import com.g2forge.reassert.core.model.contract.Notice;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.core.model.report.IOrigins;
 
@@ -42,42 +48,121 @@ import lombok.extern.slf4j.Slf4j;
 public class ReassertGraphExplorer {
 	@Getter
 	@RequiredArgsConstructor
+	protected static class ArtifactLoadContext {
+		protected final Graph<IVertex, IEdge> graph;
+
+		@Getter(lazy = true)
+		private final Graph<Artifact<?>, IEdge> artifactGraph = new EdgeReversedGraph<>(HReassertModel.asArtifactGraph(graph));
+
+		@Getter(lazy = true)
+		private final AllDirectedPaths<Artifact<?>, IEdge> paths = new AllDirectedPaths<>(getArtifactGraph());
+
+		@Getter(lazy = true)
+		private final Set<Artifact<?>> roots = Collections.unmodifiableSet(getArtifactGraph().vertexSet().stream().filter(v -> getArtifactGraph().outDegreeOf(v) == 0).collect(Collectors.toSet()));
+
+		protected final Map<ICoordinates, OrThrowable<String>> coordinatesToPath = new HashMap<>();
+
+		protected <Coordinates extends ICoordinates> IDescription describe(Artifact<Coordinates> a) {
+			return a.getRepository().getSystem().getCoordinateDescriber().describe(a.getCoordinates());
+		}
+
+		public OrThrowable<String> getPaths(ICoordinates coordinates) {
+			return coordinatesToPath.computeIfAbsent(coordinates, c -> {
+				try {
+					final Artifact<ICoordinates> found = HReassertModel.findArtifact(getGraph(), c);
+
+					final Set<Artifact<?>> targets = new HashSet<>(getRoots());
+					targets.remove(found);
+					final List<GraphPath<Artifact<?>, IEdge>> pathList = getPaths().getAllPaths(HCollection.asSet(found), targets, true, Integer.MAX_VALUE);
+					return new OrThrowable<String>(pathList.stream().map(GraphPath::getVertexList).map((List<Artifact<?>> al) -> {
+						final List<Artifact<?>> reversed = new ArrayList<>(al);
+						Collections.reverse(reversed);
+						return reversed.stream().map(a -> describe(a).getName()).collect(Collectors.joining(" -> "));
+					}).collect(Collectors.joining("\n")));
+				} catch (Throwable throwable) {
+					return new OrThrowable<>(throwable);
+				}
+			});
+		}
+	}
+
+	protected static class ArtifactLoadException extends RuntimeException {
+		private static final long serialVersionUID = 5809831159823219505L;
+
+		protected final ICoordinates coordinates;
+
+		protected final IRepository<? extends ICoordinates> repository;
+
+		protected final ArtifactLoadContext context;
+
+		@Getter(lazy = true)
+		private final String message = computeMessage();
+
+		public <Coordinates extends ICoordinates> ArtifactLoadException(Coordinates coordinates, IRepository<Coordinates> repository, ArtifactLoadContext context, Throwable cause) {
+			super(null, cause);
+			this.coordinates = coordinates;
+			this.repository = repository;
+			this.context = context;
+		}
+
+		protected String computeMessage() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			final String coordinateString = describe(coordinates, (IRepository) repository);
+
+			log.info(String.format("Computing exception message for %1$s", coordinateString));
+			final OrThrowable<String> paths = context.getPaths(coordinates);
+			return String.format("Failed to load artifact for coordinates %1$s\n%2$s", coordinateString, paths);
+		}
+
+		protected <Coordinates extends ICoordinates> String describe(Coordinates coordinates, IRepository<Coordinates> repository) {
+			try {
+				return repository.getSystem().getCoordinateDescriber().describe(coordinates).getName();
+			} catch (Throwable throwable) {
+				addSuppressed(throwable);
+				return coordinates.toString();
+			}
+		}
+	}
+
+	@Getter
+	@RequiredArgsConstructor
 	@ToString
 	protected static class Callback<Coordinates extends ICoordinates> implements IReassertGraphBuilder.ICallback<Coordinates> {
 		protected final Artifact<Coordinates> artifact;
 
+		protected final List<IContractApplied> notices;
+
 		@Override
-		public void callback(Artifact<Coordinates> artifact, IReassertGraphBuilder builder) {}
+		public void callback(Artifact<Coordinates> artifact, IReassertGraphBuilder builder) {
+			if (getNotices() != null) for (IContractApplied notice : getNotices()) {
+				builder.vertex(notice);
+				builder.edge(artifact, notice, new Notice());
+			}
+		}
 	}
 
 	protected final IContext context;
 
 	public Graph<IVertex, IEdge> createGraph(IOrigins origins) {
 		final Graph<IVertex, IEdge> graph = HReassertModel.createGraph();
-		for (Artifact<?> origin : origins.getOrigins()) {
-			extendGraph(origin, graph);
+		for (Map.Entry<Artifact<?>, List<IContractApplied>> origin : origins.getOrigins().entrySet()) {
+			extendGraph(new Callback<>(origin.getKey(), origin.getValue()), graph);
 		}
 		return graph;
 	}
 
-	protected <Coordinates extends ICoordinates> IDescription describe(Artifact<Coordinates> a) {
-		return a.getRepository().getSystem().getCoordinateDescriber().describe(a.getCoordinates());
-	}
-
-	protected void extendGraph(final Artifact<?> origin, final Graph<IVertex, IEdge> graph) {
-		// Don't bother if we already explored this origin
-		if (graph.vertexSet().contains(origin)) return;
-
+	protected void extendGraph(final Callback<?> callback, final Graph<IVertex, IEdge> graph) {
+		final ArtifactLoadContext context = new ArtifactLoadContext(graph);
 		final LinkedList<IReassertGraphBuilder.ICallback<?>> queue = new LinkedList<>();
 		final Collection<Throwable> failures = new ArrayList<>();
-		queue.add(new Callback<>(origin));
+		queue.add(callback);
 		while (!queue.isEmpty()) {
-			handle(graph, queue, queue.remove(), failures);
+			handle(context, queue, queue.remove(), failures);
 		}
 		if (!failures.isEmpty()) throw HError.withSuppressed(new RuntimeException("Failed to load one or more artifacts!"), failures);
 	}
 
-	protected <Coordinates extends ICoordinates> void handle(final Graph<IVertex, IEdge> graph, final Collection<IReassertGraphBuilder.ICallback<?>> queue, final ICallback<Coordinates> callback, final Collection<Throwable> failures) {
+	protected <Coordinates extends ICoordinates> void handle(final ArtifactLoadContext loadContext, final Collection<IReassertGraphBuilder.ICallback<?>> queue, final ICallback<Coordinates> callback, final Collection<Throwable> failures) {
 		final List<IReassertGraphBuilder.ICallback<?>> callbacks = new ArrayList<>();
 
 		final Artifact<Coordinates> unloadedArtifact = callback.getArtifact();
@@ -109,43 +194,22 @@ public class ReassertGraphExplorer {
 			log.info(String.format("Starting %1$s with %2$d remaining", name, queue.size()));
 		}
 
+		final ReassertGraphBuilder builder = new ReassertGraphBuilder(loadContext.getGraph(), callbacks);
 		final Artifact<Coordinates> artifact;
 		try {
-			artifact = repository.load(coordinates, new ReassertGraphBuilder(graph, callbacks));
+			artifact = repository.load(coordinates, builder);
 		} catch (Throwable throwable) {
-			// Print a really good exception, one which helps us know the artifact that couldn't be loaded and where it's being pulled in
-			String paths = "";
-			final List<Throwable> suppressed = new ArrayList<>();;
+			final ArtifactLoadException exception = new ArtifactLoadException(coordinates, repository, loadContext, throwable);
 			try {
-				final Artifact<Coordinates> found = HReassertModel.findArtifact(graph, coordinates);
-				callback.callback(found, new ReassertGraphBuilder(graph, callbacks));
-
-				final EdgeReversedGraph<Artifact<?>, IEdge> artifactGraph = new EdgeReversedGraph<>(HReassertModel.asArtifactGraph(graph));
-				final Set<Artifact<?>> targets = artifactGraph.vertexSet().stream().filter(v -> artifactGraph.outDegreeOf(v) == 0).collect(Collectors.toSet());
-				targets.remove(found);
-				final List<GraphPath<Artifact<?>, IEdge>> pathList = new AllDirectedPaths<>(artifactGraph).getAllPaths(HCollection.asSet(found), targets, true, Integer.MAX_VALUE);
-				paths = "\n" + pathList.stream().map(GraphPath::getVertexList).map((List<Artifact<?>> al) -> {
-					final List<Artifact<?>> reversed = new ArrayList<>(al);
-					Collections.reverse(reversed);
-					return reversed.stream().map(a -> describe(a).getName()).collect(Collectors.joining(" -> "));
-				}).collect(Collectors.joining("\n"));
+				final Artifact<Coordinates> found = HReassertModel.findArtifact(loadContext.getGraph(), coordinates);
+				callback.callback(found, builder);
 			} catch (Throwable nested) {
-				suppressed.add(nested);
+				exception.addSuppressed(nested);
 			}
-
-			String coordinateString;
-			try {
-				coordinateString = repository.getSystem().getCoordinateDescriber().describe(coordinates).getName();
-			} catch (Throwable t) {
-				coordinateString = coordinates.toString();
-				suppressed.add(t);
-			}
-			final RuntimeException toThrow = new RuntimeException(String.format("Failed to load artifact for coordinates %1$s%2$s", coordinateString, paths), throwable);
-			suppressed.forEach(toThrow::addSuppressed);
-			failures.add(toThrow);
+			failures.add(exception);
 			return;
 		}
-		callback.callback(artifact, new ReassertGraphBuilder(graph, callbacks));
+		callback.callback(artifact, builder);
 
 		queue.addAll(callbacks);
 	}

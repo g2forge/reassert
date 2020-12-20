@@ -101,11 +101,13 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final ObjectMapper jsonMapper = computeJSONMapper();
 
+	/** Cache area for raw POM downloads. */
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final IFunction1<? super MavenCoordinates, ? extends Path> pomCacheArea = computePOMCacheArea();
 
+	/** Cache area for resolved (effective) POM files. */
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
@@ -308,7 +310,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			if (!isCurrentPom) Files.delete(pom);
 			if (isSameDirectory) Files.move(resolved, path);
 		} catch (Throwable throwable) {
-			throw new RuntimeException(String.format("Failed to generate effective POM for %1$s", this.getSystem().getCoordinateDescriber().describe(coordinates).getName()), throwable);
+			throw new RuntimeException(String.format("Failed to generate effective POM for %1$s", getSystem().getCoordinateDescriber().describe(coordinates).getName()), throwable);
 		}
 
 		return path;
