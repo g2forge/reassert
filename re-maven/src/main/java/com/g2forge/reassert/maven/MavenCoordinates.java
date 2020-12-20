@@ -4,12 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.maven.model.MavenPackaging;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
@@ -33,10 +36,8 @@ public class MavenCoordinates implements ICoordinates {
 	@Builder.Default
 	protected final MavenPackaging packaging = MavenPackaging.JAR;
 
-	@EqualsAndHashCode.Include(replaces = "version")
-	protected String getVersionLowercase() {
-		final String version = getVersion();
-		if (version == null) return null;
-		return version.toLowerCase();
-	}
+	@JsonIgnore
+	@ToString.Exclude
+	@Getter(lazy = true, value = AccessLevel.PROTECTED, onMethod = @__({ @EqualsAndHashCode.Include(replaces = "version") }))
+	private final String versionLowercase = NullableOptional.ofNullable(getVersion()).map(String::toLowerCase).or(null);
 }

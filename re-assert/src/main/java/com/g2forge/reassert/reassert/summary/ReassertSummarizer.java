@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -59,7 +58,9 @@ public class ReassertSummarizer {
 	protected final IContext context;
 
 	protected Set<IVertex> computeOrigins(IReport report, final Graph<IVertex, IEdge> graph) {
-		if (graph.vertexSet().containsAll(report.getOrigins().getOrigins())) return new HashSet<>(report.getOrigins().getOrigins());
+		final Set<Artifact<?>> reportOrigins = report.getOrigins().getOrigins().keySet();
+		if (graph.vertexSet().containsAll(reportOrigins)) return Collections.unmodifiableSet(reportOrigins);
+		
 		final ITypeRef<Artifact<?>> artifactType = new ATypeRef<Artifact<?>>() {};
 		return graph.vertexSet().stream().flatMap(artifactType::castIfInstance).filter(a -> !graph.incomingEdgesOf(a).stream().map(graph::getEdgeSource).anyMatch(artifactType::isInstance)).collect(Collectors.toSet());
 	}

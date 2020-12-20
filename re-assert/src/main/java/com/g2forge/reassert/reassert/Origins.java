@@ -1,8 +1,10 @@
 package com.g2forge.reassert.reassert;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import com.g2forge.reassert.core.model.artifact.Artifact;
+import com.g2forge.reassert.core.model.contract.IContractApplied;
 import com.g2forge.reassert.core.model.report.IOrigins;
 
 import lombok.Builder;
@@ -17,5 +19,5 @@ import lombok.ToString;
 @Builder
 public class Origins implements IOrigins {
 	@Singular
-	protected final Collection<Artifact<?>> origins;
+	protected final Map<Artifact<?>, List<IContractApplied>> origins;
 }
