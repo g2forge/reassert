@@ -38,6 +38,12 @@ public class MavenCoordinates implements ICoordinates {
 
 	@JsonIgnore
 	@ToString.Exclude
-	@Getter(lazy = true, value = AccessLevel.PROTECTED, onMethod_ = { @EqualsAndHashCode.Include(replaces = "version") })
+	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private final String versionLowercase = NullableOptional.ofNullable(getVersion()).map(String::toLowerCase).or(null);
+
+	@JsonIgnore
+	@EqualsAndHashCode.Include(replaces = "version")
+	protected String getVersionIdentity() {
+		return getVersionLowercase();
+	}
 }
