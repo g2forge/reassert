@@ -191,6 +191,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			final String groupName = coordinates.getGroupId().replace('.', '/');
 
 			final Path base;
+			// If this hash should include modifiers, then look them up, otherwise just use an empty list of modifiers
 			final List<IMavenPOMModifier> modifiers = modify ? getFactories().stream().map(modifier -> modifier.getModifier(coordinates)).filter(Objects::nonNull).collect(Collectors.toList()) : HCollection.emptyList();
 			if (modifiers.isEmpty()) base = Paths.get(groupName);
 			else base = Paths.get(modifiers.stream().map(IMavenPOMModifier::getKey).collect(Collectors.joining("_"))).resolve(groupName);
