@@ -4,7 +4,9 @@ import java.nio.file.Path;
 
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
+import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.reassert.cache.store.ICacheStore;
+import com.g2forge.reassert.cache.store.ObjectSerializationCacheStore;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -29,4 +31,10 @@ public class CacheAreaDescriptor<K, V> implements ICacheAreaDescriptor<K, V> {
 
 	@Builder.Default
 	protected final String valueName = "value";
+
+	@Builder.Default
+	protected final String exceptionName = "exception";
+
+	@Builder.Default
+	protected final ICacheStore<Exception> exceptionConverter = new ObjectSerializationCacheStore<>(ITypeRef.of(Exception.class));
 }

@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.g2forge.alexandria.java.core.error.HError;
+import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.file.HFile;
 import com.g2forge.alexandria.java.project.HProject;
@@ -31,6 +34,7 @@ public class LocalCache implements ICache {
 			final Path directory = getRoot().resolve(descriptor.getName()).resolve(hash);
 			final Path keyPath = directory.resolve(descriptor.getKeyName());
 			final Path valuePath = directory.resolve(descriptor.getValueName());
+			final Path exceptionPath = directory.resolve(descriptor.getExceptionName());
 
 			synchronized (descriptor) {
 				if (Files.isDirectory(directory)) {
@@ -38,7 +42,14 @@ public class LocalCache implements ICache {
 					try {
 						loadedKey = descriptor.getKeyConverter().load(keyPath);
 					} catch (Throwable throwable) { /* If anything failed here, just recompute anyway */ }
-					if (key.equals(loadedKey)) return descriptor.getValueConverter().load(valuePath);
+					if (key.equals(loadedKey)) {
+						if (Files.isRegularFile(exceptionPath)) {
+							final Exception loaded = descriptor.getExceptionConverter().load(exceptionPath);
+							HError.throwQuietly(loaded);
+							throw new UnreachableCodeError(loaded);
+						}
+						return descriptor.getValueConverter().load(valuePath);
+					}
 
 					try {
 						HFile.delete(directory, false);
@@ -47,21 +58,31 @@ public class LocalCache implements ICache {
 					}
 				}
 
-				boolean success = false;
+				boolean successfullyCreatedCacheEntry = false;
 				try {
 					try {
 						Files.createDirectories(directory);
 					} catch (IOException e) {
 						throw new RuntimeIOException(e);
 					}
-
-					final V computed = descriptor.getFunction().apply(key, valuePath);
 					descriptor.getKeyConverter().store(keyPath, key);
+
+					final IFunction2<? super K, ? super Path, ? extends V> function = descriptor.getFunction();
+					final V computed;
+
+					try {
+						computed = function.apply(key, valuePath);
+					} catch (Exception exception) {
+						descriptor.getExceptionConverter().store(exceptionPath, exception);
+						successfullyCreatedCacheEntry = true;
+						throw exception;
+					}
+
 					final V retVal = descriptor.getValueConverter().store(valuePath, computed);
-					success = true;
+					successfullyCreatedCacheEntry = true;
 					return retVal;
 				} finally {
-					if (!success) {
+					if (!successfullyCreatedCacheEntry) {
 						try {
 							HFile.delete(directory, true);
 						} catch (IOException e) {

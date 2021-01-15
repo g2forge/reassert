@@ -18,6 +18,10 @@ public interface ICacheAreaDescriptor<K, V> {
 	public Path getName();
 
 	public ICacheStore<V> getValueConverter();
+	
+	public ICacheStore<Exception> getExceptionConverter();
 
 	public String getValueName();
+
+	public String getExceptionName();
 }

@@ -24,14 +24,17 @@ import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @RequiredArgsConstructor
+@Slf4j
 public class ReassertLicenseUsageVisitor extends AGraphVisitor {
 	protected final IContractComparisonAnalyzer analyzer;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
+		log.info("Analyzing");
 		final IContractComparisonAnalyzer analyzer = getAnalyzer();
 		for (Artifact<?> artifact : graph.vertexSet().stream().flatMap(new ATypeRef<Artifact<?>>() {}::castIfInstance).collect(Collectors.toList())) {
 			final IUsageApplied usage = computeUsage(graph, artifact);

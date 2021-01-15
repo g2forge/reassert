@@ -34,10 +34,14 @@ import com.g2forge.reassert.core.model.file.File;
 import com.g2forge.reassert.core.model.file.IDescriptor;
 import com.g2forge.reassert.core.model.file.Parsed;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ReassertLegalOpinion
+@Slf4j
 public class StandardLicenseInheritanceVisitor extends AGraphVisitor {
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
+		log.info("Analyzing");
 		final List<Artifact<?>> order = HStream.toStream(new TopologicalOrderIterator<>(new EdgeReversedGraph<>(new MaskSubgraph<>(graph, v -> !(v instanceof Artifact), e -> !(e instanceof Inherits))))).map(a -> (Artifact<?>) a).collect(Collectors.toList());
 
 		final Set<ILicenseApplied> removed = new HashSet<>();
