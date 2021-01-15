@@ -28,14 +28,17 @@ import com.g2forge.reassert.core.model.contract.usage.UnspecifiedUsage;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @RequiredArgsConstructor
+@Slf4j
 public class StandardUsageAssignmentVisitor extends AGraphVisitor {
 	protected final IFunction2<? super IEdge, ? super IUsage, ? extends IUsage> propagate;
 
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
+		log.info("Analyzing");
 		final UnspecifiedUsage unspecifiedUsage = UnspecifiedUsage.create();
 		graph.addVertex(unspecifiedUsage);
 

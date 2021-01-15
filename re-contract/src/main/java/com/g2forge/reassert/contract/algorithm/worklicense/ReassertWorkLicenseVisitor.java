@@ -41,9 +41,11 @@ import com.g2forge.reassert.core.model.work.WorkMember;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @RequiredArgsConstructor
+@Slf4j
 public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 	protected static void analyze(final ILicenseApplied workLicense, final IWorkLicenseRulesFactory rulesFactory, final IFunction1<? super ILicenseFamily, ? extends IFindingConsumer> consumerFactory, final Collection<ILicenseApplied> combinedLinceses) {
 		for (ILicenseApplied combinedLicenseApplied : combinedLinceses) {
@@ -63,6 +65,7 @@ public class ReassertWorkLicenseVisitor extends AGraphVisitor {
 	@Note(type = NoteType.TODO, value = "Implement license operations", issue = "G2-919")
 	@Override
 	public void accept(Graph<IVertex, IEdge> graph) {
+		log.info("Analyzing");
 		final FindingConsumer findingConsumer = new FindingConsumer(graph);
 
 		final Map<ILicenseApplied, IWorkLicenseRulesFactory> licenses = new LinkedHashMap<>();
