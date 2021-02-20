@@ -1,6 +1,5 @@
 package com.g2forge.reassert.cache;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -11,7 +10,6 @@ import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.java.close.ICloseable;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.IFunction2;
-import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.file.HFile;
 import com.g2forge.alexandria.java.io.file.TempDirectory;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
@@ -47,11 +45,7 @@ public class TestLocalCache {
 		}
 
 		public void clear() {
-			try {
-				HFile.delete(temp.get().resolve(AREA), true);
-			} catch (IOException e) {
-				throw new RuntimeIOException(e);
-			}
+			HFile.delete(temp.get().resolve(AREA), true);
 		}
 
 		@Override

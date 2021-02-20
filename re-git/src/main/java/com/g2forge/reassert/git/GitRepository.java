@@ -77,11 +77,7 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 		} catch (GitAPIException | IOException exception) {
 			throw new RuntimeException(exception);
 		} finally {
-			if (!complete) try {
-				HFile.delete(path, true);
-			} catch (IOException e) {
-				throw new RuntimeIOException(e);
-			}
+			if (!complete) HFile.delete(path, true);
 		}
 		return path;
 	}
