@@ -51,11 +51,7 @@ public class LocalCache implements ICache {
 						return descriptor.getValueConverter().load(valuePath);
 					}
 
-					try {
-						HFile.delete(directory, false);
-					} catch (IOException e) {
-						throw new RuntimeIOException(e);
-					}
+					HFile.delete(directory, false);
 				}
 
 				boolean successfullyCreatedCacheEntry = false;
@@ -83,11 +79,7 @@ public class LocalCache implements ICache {
 					return retVal;
 				} finally {
 					if (!successfullyCreatedCacheEntry) {
-						try {
-							HFile.delete(directory, true);
-						} catch (IOException e) {
-							throw new RuntimeIOException(e);
-						}
+						HFile.delete(directory, true);
 					}
 				}
 			}

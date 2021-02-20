@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.file.HFile;
 
@@ -28,9 +27,9 @@ public class DirectoryCacheStore implements ICacheStore<Path> {
 			} catch (DirectoryNotEmptyException e0) {
 				if (Files.isDirectory(path) && Files.list(path).findAny().isPresent()) throw e0;
 				try {
-					HFile.copy(value, path, true, IFunction1.create(true));
+					HFile.copy(value, path, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
 					HFile.delete(value, true);
-				} catch (IOException e1) {
+				} catch (RuntimeIOException e1) {
 					e1.addSuppressed(e0);
 					throw e1;
 				}
