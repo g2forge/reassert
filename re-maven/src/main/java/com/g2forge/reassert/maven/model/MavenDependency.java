@@ -3,6 +3,7 @@ package com.g2forge.reassert.maven.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.maven.MavenCoordinates;
 
 import lombok.Builder;

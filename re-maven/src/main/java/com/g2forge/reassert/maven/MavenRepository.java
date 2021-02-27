@@ -24,10 +24,11 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.service.BasicServiceLoader;
 import com.g2forge.alexandria.service.DefaultInstantiator;
-import com.g2forge.gearbox.command.converter.dumb.DumbCommandConverter;
 import com.g2forge.gearbox.command.process.IProcess;
-import com.g2forge.gearbox.command.process.ProcessBuilderRunner;
-import com.g2forge.gearbox.command.proxy.CommandProxyFactory;
+import com.g2forge.gearbox.maven.HMaven;
+import com.g2forge.gearbox.maven.IMaven;
+import com.g2forge.gearbox.maven.MavenDownloadErrors;
+import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.cache.CacheAreaDescriptor;
 import com.g2forge.reassert.cache.CacheAreaDescriptor.CacheAreaDescriptorBuilder;
 import com.g2forge.reassert.cache.store.FileCacheStore;
@@ -43,12 +44,8 @@ import com.g2forge.reassert.core.model.contract.license.ILicenseApplied;
 import com.g2forge.reassert.core.model.contract.license.UnspecifiedLicense;
 import com.g2forge.reassert.core.model.coordinates.Coordinates;
 import com.g2forge.reassert.core.model.file.Describes;
-import com.g2forge.reassert.maven.api.IMaven;
-import com.g2forge.reassert.maven.api.ProcessOutputHandler;
-import com.g2forge.reassert.maven.api.ProcessOutputHandler.IOutputMatcher;
 import com.g2forge.reassert.maven.model.MavenDependency;
 import com.g2forge.reassert.maven.model.MavenPOM;
-import com.g2forge.reassert.maven.model.MavenPackaging;
 import com.g2forge.reassert.maven.model.MavenScope;
 import com.g2forge.reassert.maven.modifier.IMavenPOMModifier;
 import com.g2forge.reassert.maven.modifier.IMavenPOMModifierFactory;
@@ -66,31 +63,6 @@ import lombok.extern.slf4j.Slf4j;
 @Getter(AccessLevel.PROTECTED)
 @Slf4j
 public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> {
-	protected enum DownloadErrors {
-		MISSING_ARTIFACT {
-			@Override
-			public IOutputMatcher createMatcher() {
-				return new IOutputMatcher() {
-					protected boolean matched;
-
-					@Override
-					public boolean isApplicable(boolean success) {
-						return !success;
-					}
-
-					@Override
-					public Boolean isMatch(String line, boolean output) {
-						if (matched) return true;
-						matched = line.startsWith("[ERROR]") && IMaven.PATTERN_MISSINGARTIFACT.matcher(line).find();
-						return matched ? true : null;
-					}
-				};
-			}
-		};
-
-		public abstract ProcessOutputHandler.IOutputMatcher createMatcher();
-	}
-
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@Getter(AccessLevel.PUBLIC)
@@ -116,7 +88,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private final IMaven maven = new CommandProxyFactory(DumbCommandConverter.create(), new ProcessBuilderRunner()).apply(IMaven.class);
+	private final IMaven maven = HMaven.getMaven();
 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
@@ -162,10 +134,8 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 	protected Path download(MavenCoordinates coordinates, Path path) {
 		final IMaven maven = getMaven();
 		try {
-			final IProcess process = maven.dependencyCopy(path.getParent(), coordinates.toBuilder().packaging(MavenPackaging.POM).build(), path.getParent());
-			final ProcessOutputHandler<DownloadErrors> downloadOutputHandler = new ProcessOutputHandler<>(log, HCollection.asSet(DownloadErrors.values()), DownloadErrors::createMatcher);
-			final Set<DownloadErrors> errors = downloadOutputHandler.handle(process);
-			if (HCollection.isOne(errors, DownloadErrors.MISSING_ARTIFACT)) {
+			final IProcess process = maven.dependencyCopy(path.getParent(), coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
+			if (HCollection.isOne(MavenDownloadErrors.process(log, process), MavenDownloadErrors.MISSING_ARTIFACT)) {
 				Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).close();
 				return path;
 			}

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
+import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
-import com.g2forge.reassert.maven.model.MavenPackaging;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -45,5 +45,9 @@ public class MavenCoordinates implements ICoordinates {
 	@EqualsAndHashCode.Include(replaces = "version")
 	protected String getVersionIdentity() {
 		return getVersionLowercase();
+	}
+
+	public com.g2forge.gearbox.maven.MavenCoordinates toMaven() {
+		return new com.g2forge.gearbox.maven.MavenCoordinates(getGroupId(), getArtifactId(), getVersion(), getPackaging());
 	}
 }

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.g2forge.alexandria.java.core.enums.HEnum;
-import com.g2forge.reassert.maven.model.MavenPackaging;
+import com.g2forge.gearbox.maven.MavenPackaging;
 
 public class MavenPackagingDeserializer extends StdDeserializer<MavenPackaging> {
 	private static final long serialVersionUID = 7672345770783504031L;
