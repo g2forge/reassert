@@ -1,6 +1,7 @@
 package com.g2forge.reassert.list.convert.simpleedge;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -33,8 +34,9 @@ public class SimpleEdgeDeserializer extends StdDeserializer<IEdge> implements Re
 	protected static final Map<String, ISupplier<? extends IEdge>> suppliers = HCollection.<Class<? extends IEdge>>asList(Contains.class, Coordinates.class, Copy.class, Describes.class, Inherits.class, Invokes.class, Notice.class, Parsed.class, WorkMember.class, WorkLicense.class).stream().collect(Collectors.toMap(c -> c.getSimpleName().toLowerCase(), c -> {
 		return ISupplier.create(() -> {
 			try {
-				return c.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+				final IEdge retVal = c.getDeclaredConstructor().newInstance();
+				return retVal;
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new RuntimeException(e);
 			}
 		});
