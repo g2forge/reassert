@@ -26,7 +26,11 @@ import lombok.Getter;
 
 public class TestBooleanOperationSystem {
 	@Getter(lazy = true)
-	private static final IEvaluator<String, Boolean, Boolean> evaluator = new ValueEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
+	private static final IEvaluator<String, Boolean, Boolean> evaluator = computeEvaluator();
+
+	protected static IEvaluator<String, Boolean, Boolean> computeEvaluator() {
+		return new ValueEvaluator<String, Boolean>(ObjectValueSystem.create(), BooleanOperationSystem.create());
+	}
 
 	protected static void reduction(BooleanOperation.Operator operator, BinaryOperator<Boolean> accumulator) {
 		for (int n = 1; n < 6; n++) {

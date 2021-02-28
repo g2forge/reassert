@@ -18,7 +18,11 @@ import lombok.Getter;
 
 public class TestReductionRewriter {
 	@Getter(lazy = true)
-	private static final ValueEvaluator<String, Boolean> valueEvaluator = new ValueEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
+	private static final ValueEvaluator<String, Boolean> valueEvaluator = computeValueEvaluator();
+
+	protected static ValueEvaluator<String, Boolean> computeValueEvaluator() {
+		return new ValueEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
+	}
 
 	@Test
 	public void applyDisabled() {
@@ -54,13 +58,13 @@ public class TestReductionRewriter {
 		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new NoValueConstant<>()).argument$L(false).build();
 		HAssert.assertEquals(new Literal<>(false), new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.ConstantFolding).eval(expression));
 	}
-	
+
 	@Test
 	public void constantSimple() {
 		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument$L(true).argument$L(false).build();
 		HAssert.assertEquals(new Literal<>(false), new ReductionRewriter<String, Boolean>(getValueEvaluator(), Reduction.ConstantFolding).eval(expression));
 	}
-	
+
 	@Test
 	public void constantUnbound() {
 		final IOperation<String, Boolean> expression = BooleanOperation.Operator.AND.<String, Boolean>builder().argument(new Variable<>("x")).argument$L(false).build();

@@ -15,11 +15,11 @@ import com.g2forge.reassert.express.model.operation.ExplainedOperation;
 import com.g2forge.reassert.express.model.operation.IOperation.IOperator;
 import com.g2forge.reassert.express.model.operation.ZeroExplainedOperation;
 
-import lombok.Getter;
-
 public class TestIntegerExplainingEvaluator extends ATestExplainingEvaluator<Integer> {
-	@Getter(lazy = true)
-	private final IEvaluator<String, Integer, IExplained<Integer>> evaluator = new ExplainingEvaluator<>(ObjectValueSystem.create(), IntegerOperationSystem.create());
+	@Override
+	protected IEvaluator<String, Integer, IExplained<Integer>> computeEvaluator() {
+		return new ExplainingEvaluator<>(ObjectValueSystem.create(), IntegerOperationSystem.create());
+	}
 
 	@Override
 	public IOperator getMultiply() {
