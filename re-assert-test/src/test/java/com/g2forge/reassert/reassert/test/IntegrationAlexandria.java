@@ -20,7 +20,11 @@ import lombok.Getter;
 
 public class IntegrationAlexandria {
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
-	private static final TestGraph testGraph = new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/alexandria.git", null)), HCollection.emptyList());
+	private static final TestGraph testGraph = computeTestGraph();
+
+	protected static TestGraph computeTestGraph() {
+		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/alexandria.git", null)), HCollection.emptyList());
+	}
 
 	@Test
 	public void complete() {

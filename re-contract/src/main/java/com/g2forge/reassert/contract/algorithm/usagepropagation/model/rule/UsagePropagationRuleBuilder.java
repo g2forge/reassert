@@ -66,7 +66,7 @@ public class UsagePropagationRuleBuilder<Term extends IUsageTerm, Edge extends I
 	@RequiredArgsConstructor
 	protected static class Function<Term extends IUsageTerm, Edge extends IEdge> implements IFunction2<Edge, IUsage, IUsage> {
 		@Getter(lazy = true, value = AccessLevel.PROTECTED)
-		private final IEvaluator<IUsagePropagationName<Term, Edge>, TermRelation, TermRelation> evaluator = new ValueEvaluator<IUsagePropagationName<Term, Edge>, TermRelation>(ObjectValueSystem.create(), TermRelationOperationSystem.create());
+		private final IEvaluator<IUsagePropagationName<Term, Edge>, TermRelation, TermRelation> evaluator = computeEvaluator();
 
 		protected final Map<Term, IExpression<IUsagePropagationName<Term, Edge>, TermRelation>> map;
 
@@ -84,6 +84,10 @@ public class UsagePropagationRuleBuilder<Term extends IUsageTerm, Edge extends I
 			final PropagatedUsage retVal = new PropagatedUsage(edge, usage, termsBuilder.build());
 			if (IUsage.isEqualTerms(usage, retVal)) return usage;
 			return retVal;
+		}
+
+		protected IEvaluator<IUsagePropagationName<Term, Edge>, TermRelation, TermRelation> computeEvaluator() {
+			return new ValueEvaluator<IUsagePropagationName<Term, Edge>, TermRelation>(ObjectValueSystem.create(), TermRelationOperationSystem.create());
 		}
 
 	}
