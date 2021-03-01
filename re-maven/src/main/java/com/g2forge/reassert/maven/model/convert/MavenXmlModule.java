@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.std.CollectionDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.g2forge.reassert.maven.model.MavenPackaging;
+import com.g2forge.gearbox.maven.MavenPackaging;
 
 public class MavenXmlModule extends SimpleModule {
 	private static final long serialVersionUID = -2581598831713893816L;

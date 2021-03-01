@@ -15,10 +15,10 @@ import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.java.core.enums.HEnum;
+import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.system.ISystem;
-import com.g2forge.reassert.maven.model.MavenPackaging;
 import com.g2forge.reassert.maven.model.convert.MavenXmlModule;
 
 import lombok.AccessLevel;

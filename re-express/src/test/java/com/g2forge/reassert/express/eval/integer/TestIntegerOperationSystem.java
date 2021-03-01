@@ -26,7 +26,11 @@ public class TestIntegerOperationSystem {
 	protected static final int[] numbers = new int[] { 10, 0, -3, 1, 5, -17 };
 
 	@Getter(lazy = true)
-	private static final IEvaluator<String, Integer, Integer> evaluator = new ValueEvaluator<>(ObjectValueSystem.create(), IntegerOperationSystem.create());
+	private static final IEvaluator<String, Integer, Integer> evaluator = computeEvalutor();
+
+	protected static IEvaluator<String, Integer, Integer> computeEvalutor() {
+		return new ValueEvaluator<>(ObjectValueSystem.create(), IntegerOperationSystem.create());
+	}
 
 	protected static void reduction(ArithmeticOperation.Operator operator, BinaryOperator<Integer> accumulator) {
 		for (int i = 0; i < (1 << numbers.length); i++) {

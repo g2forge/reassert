@@ -15,11 +15,11 @@ import com.g2forge.reassert.express.model.operation.BooleanOperation;
 import com.g2forge.reassert.express.model.operation.IOperation;
 import com.g2forge.reassert.express.model.operation.ImpliesExplainedOperation;
 
-import lombok.Getter;
-
 public class TestBooleanExplainingEvaluator extends ATestExplainingEvaluator<Boolean> {
-	@Getter(lazy = true)
-	private final IEvaluator<String, Boolean, IExplained<Boolean>> evaluator = new ExplainingEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
+	@Override
+	protected IEvaluator<String, Boolean, IExplained<Boolean>> computeEvaluator() {
+		return new ExplainingEvaluator<>(ObjectValueSystem.create(), BooleanOperationSystem.create());
+	}
 
 	public IOperation.IOperator getMultiply() {
 		return BooleanOperation.Operator.AND;

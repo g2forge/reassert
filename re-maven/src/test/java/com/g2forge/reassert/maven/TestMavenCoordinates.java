@@ -3,9 +3,9 @@ package com.g2forge.reassert.maven;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.core.test.ATestSystem;
-import com.g2forge.reassert.maven.model.MavenPackaging;
 
 import lombok.Getter;
 

@@ -3,13 +3,13 @@ package com.g2forge.reassert.reassert;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
+import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.git.GitCoordinates;
 import com.g2forge.reassert.git.GitSystem;
 import com.g2forge.reassert.maven.MavenCoordinates;
 import com.g2forge.reassert.maven.MavenSystem;
-import com.g2forge.reassert.maven.model.MavenPackaging;
 
 public class TestReassertContext {
 	protected static final String GROUPID = "com.g2forge.reassert";

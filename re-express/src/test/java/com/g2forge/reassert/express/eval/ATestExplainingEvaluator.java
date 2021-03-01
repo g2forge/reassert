@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.express.eval.IEvaluator;
 import com.g2forge.reassert.express.model.IExplained;
 import com.g2forge.reassert.express.model.IExplained.Relevance;
 import com.g2forge.reassert.express.model.constant.Literal;
@@ -18,7 +17,12 @@ import com.g2forge.reassert.express.model.variable.ExplainedClosure;
 import com.g2forge.reassert.express.model.variable.ExplainedVariable;
 import com.g2forge.reassert.express.model.variable.Variable;
 
+import lombok.Getter;
+
 public abstract class ATestExplainingEvaluator<Value> {
+	@Getter(lazy = true)
+	private final IEvaluator<String, Value, IExplained<Value>> evaluator = computeEvaluator();
+	
 	@Test
 	public void closure() {
 		final Variable<String, Value> x = new Variable<>("x");
@@ -31,7 +35,7 @@ public abstract class ATestExplainingEvaluator<Value> {
 		HAssert.assertEquals(expected, actual);
 	}
 
-	public abstract IEvaluator<String, Value, IExplained<Value>> getEvaluator();
+	protected abstract IEvaluator<String, Value, IExplained<Value>> computeEvaluator();
 
 	public abstract IOperation.IOperator getMultiply();
 
