@@ -5,7 +5,6 @@ import org.junit.Test;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.ConditionFinding;
 import com.g2forge.reassert.contract.algorithm.licenseusage.model.finding.CopyrightNoticeFinding;
-import com.g2forge.reassert.contract.convert.ReportRenderer;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.contract.terms.TermRelation;
 import com.g2forge.reassert.core.model.report.Report;

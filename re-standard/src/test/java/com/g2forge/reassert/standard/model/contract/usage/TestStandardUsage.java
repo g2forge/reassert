@@ -11,7 +11,6 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.standard.model.contract.usage.StandardUsage;
 
 import lombok.AccessLevel;
 import lombok.Getter;

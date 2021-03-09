@@ -9,7 +9,6 @@ import com.g2forge.reassert.core.model.contract.terms.Terms;
 import com.g2forge.reassert.core.model.contract.usage.GeneralUsage;
 import com.g2forge.reassert.core.model.contract.usage.IUsageTerm;
 import com.g2forge.reassert.core.model.contract.usage.PropagatedUsage;
-import com.g2forge.reassert.standard.algorithm.StandardUsagePropagationRules;
 import com.g2forge.reassert.standard.model.contract.usage.StandardUsageTerm;
 
 public class TestStandardUsagePropagation {

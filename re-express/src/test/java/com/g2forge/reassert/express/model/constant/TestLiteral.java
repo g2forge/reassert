@@ -3,8 +3,6 @@ package com.g2forge.reassert.express.model.constant;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.express.model.constant.ILiteral;
-import com.g2forge.reassert.express.model.constant.Literal;
 
 public class TestLiteral {
 	@Test

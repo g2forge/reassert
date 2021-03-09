@@ -6,8 +6,6 @@ import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.validate.ValidationFailureException;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.model.constant.Literal;
-import com.g2forge.reassert.express.model.operation.BooleanOperation;
-import com.g2forge.reassert.express.model.operation.IOperation;
 
 public class TestBooleanOperation {
 	@Test
