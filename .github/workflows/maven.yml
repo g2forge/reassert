@@ -30,14 +30,6 @@ jobs:
     - name: Build Habitat
       working-directory: ./habitat
       run: mvn -B install --file pom.xml -P release -DskipTests -Dgpg.skip
-    - name: Checkout Gearbox
-      uses: actions/checkout@v2
-      with:
-        repository: g2forge/gearbox
-        path: gearbox
-    - name: Build Gearbox
-      working-directory: ./gearbox
-      run: mvn -B install --file pom.xml -P release -DskipTests -Dgpg.skip
     - name: Checkout Enigma
       uses: actions/checkout@v2
       with:
@@ -45,6 +37,14 @@ jobs:
         path: enigma
     - name: Build Enigma
       working-directory: ./enigma
+      run: mvn -B install --file pom.xml -P release -DskipTests -Dgpg.skip
+    - name: Checkout Gearbox
+      uses: actions/checkout@v2
+      with:
+        repository: g2forge/gearbox
+        path: gearbox
+    - name: Build Gearbox
+      working-directory: ./gearbox
       run: mvn -B install --file pom.xml -P release -DskipTests -Dgpg.skip
     - name: Checkout
       uses: actions/checkout@v2
