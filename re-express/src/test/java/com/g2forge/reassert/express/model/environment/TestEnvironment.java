@@ -6,7 +6,6 @@ import com.g2forge.alexandria.java.fluent.optional.IOptional;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.model.IExpression;
 import com.g2forge.reassert.express.model.constant.Literal;
-import com.g2forge.reassert.express.model.environment.Environment;
 import com.g2forge.reassert.express.model.variable.Variable;
 
 public class TestEnvironment {

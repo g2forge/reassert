@@ -18,8 +18,6 @@ import com.g2forge.alexandria.java.io.HBinaryIO;
 import com.g2forge.alexandria.java.io.HIO;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.reassert.maven.MavenCoordinates;
-import com.g2forge.reassert.maven.modifier.IMavenPOMModifier;
-import com.g2forge.reassert.maven.modifier.IMavenPOMModifierFactory;
 
 @Service(IMavenPOMModifierFactory.class)
 public class EntitiesPOMModifierFactory implements IMavenPOMModifierFactory {

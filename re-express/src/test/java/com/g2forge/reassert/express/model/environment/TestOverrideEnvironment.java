@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.reassert.express.model.constant.Literal;
-import com.g2forge.reassert.express.model.environment.Environment;
 import com.g2forge.reassert.express.model.variable.Variable;
 
 public class TestOverrideEnvironment {

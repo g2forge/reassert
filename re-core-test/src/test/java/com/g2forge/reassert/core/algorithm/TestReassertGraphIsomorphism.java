@@ -4,7 +4,6 @@ import org.jgrapht.Graph;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.reassert.core.algorithm.ReassertGraphIsomorphism;
 import com.g2forge.reassert.core.model.Copy;
 import com.g2forge.reassert.core.model.HReassertModel;
 import com.g2forge.reassert.core.model.IEdge;
