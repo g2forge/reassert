@@ -55,6 +55,16 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<argLine>
+						--illegal-access=permit
+					</argLine>
+					<includes>
+						<include>**/Integration*.java</include>
+						<include>**/*Integration.java</include>
+						<include>**/*IntegrationCase.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
