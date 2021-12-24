@@ -19,6 +19,13 @@ jobs:
         distribution: 'adopt'
         java-version: 11
         cache: 'maven'
+    - name: Reassert Integration Test Cache
+      uses: actions/cache@v2
+      with:
+        path: "${{ github.workspace }}/.cache"
+        key: ${{ runner.os }}-reassert-integration-${{ hashFiles('**/Integration*.java', '**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-reassert-integration-
     - name: Build with Maven
       # Maven deploy on changes (or manual run) to master, otherwise just package it
       run: mvn -s "${GITHUB_WORKSPACE}/.github/workflows/maven-settings.xml" -B ${{ (((github.event_name == 'push') || (github.event_name == 'workflow_dispatch')) && (github.ref == 'refs/heads/master')) && 'deploy' || 'package' }} --file pom.xml -Prelease,release-snapshot
