@@ -54,9 +54,10 @@
 							<goal>verify</goal>
 						</goals>
 					</execution>
-					<configuration>
-						<trimStackTrace>false</trimStackTrace>
-					</configuration>
+				</executions>
+				<configuration>
+					<trimStackTrace>false</trimStackTrace>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
