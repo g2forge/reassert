@@ -287,7 +287,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 		return path;
 	}
 
-	protected MavenCoordinates validate(MavenCoordinates coordinates) {
+	protected static MavenCoordinates validate(MavenCoordinates coordinates) {
 		if ((coordinates.getGroupId() == null) || (coordinates.getArtifactId() == null) || (coordinates.getVersion() == null)) throw new NullPointerException(MavenCoordinatesDescriber.create().describe(coordinates).getName());
 		return coordinates;
 	}

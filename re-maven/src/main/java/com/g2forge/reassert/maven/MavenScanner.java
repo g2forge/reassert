@@ -37,21 +37,34 @@ public class MavenScanner implements IScanner {
 
 	@Override
 	public void load(Collection<IScanner.IItem> items, Artifact<?> container, IReassertGraphBuilder builder) {
-		final XmlMapper mapper = system.getMapper();
 		for (IScanner.IItem item : items) {
+			load(item, builder);
+		}
+	}
+
+	protected void load(IScanner.IItem item, IReassertGraphBuilder builder) {
+		final XmlMapper mapper = system.getMapper();
+		try {
 			final File file = new File(item.getCoordinates());
 			builder.vertex(file).vertex(item.getCoordinates()).edge(file, item.getCoordinates(), new Coordinates());
 
 			final MavenPOM pom;
 			try {
-				pom = mapper.readValue(item.getData().getStream(ITypeRef.of(InputStream.class)), MavenPOM.class);
+				final InputStream stream = item.getData().getStream(ITypeRef.of(InputStream.class));
+				pom = mapper.readValue(stream, MavenPOM.class);
 			} catch (IOException e) {
-				if (!item.getPath().getFileName().toString().toLowerCase().equals("pom.xml")) continue;
+				if (!item.getPath().getFileName().toString().toLowerCase().equals("pom.xml")) return;
 				else throw new RuntimeIOException(e);
+			}
+			if (pom.getCoordinates().getArtifactId() == null) {
+				// Any XML file without an artifact ID can't be a pom
+				return;
 			}
 			builder.vertex(pom).edge(file, pom, new Parsed());
 
-			builder.callback(new Artifact<>(null, resolveCoordinates(pom).getCoordinates()));
+			builder.callback(new Artifact<>(null, MavenRepository.validate(resolveCoordinates(pom).getCoordinates())));
+		} catch (Throwable throwable) {
+			throw new RuntimeException(String.format("Failed to scan \"%1$s\"", item.getPath()), throwable);
 		}
 	}
 
