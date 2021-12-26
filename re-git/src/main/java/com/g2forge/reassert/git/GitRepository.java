@@ -8,17 +8,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.lib.Constants;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.java.adt.compare.ComparableComparator;
+import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.core.helpers.HBinary;
 import com.g2forge.alexandria.java.core.helpers.HStream;
 import com.g2forge.alexandria.java.function.IFunction1;
@@ -70,12 +74,20 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 
 	protected Path clone(GitCoordinates coordinates, Path path) {
 		boolean complete = false;
+		final List<Throwable> suppressed = new ArrayList<>();
 		try {
 			Files.createDirectories(path);
-			Git.cloneRepository().setDirectory(path.toFile()).setURI(coordinates.getUrl()).setBranch(coordinates.getBranch()).call().close();
+			final Git result = Git.cloneRepository().setDirectory(path.toFile()).setURI(coordinates.getUrl()).setBranch(coordinates.getBranch()).call();
+			try {
+				result.log().setMaxCount(1).call();
+			} catch (NoHeadException noHeadException) {
+				suppressed.add(noHeadException);
+				result.checkout().setName(coordinates.getBranch()).call();
+			}
+			result.close();
 			complete = true;
-		} catch (GitAPIException | IOException exception) {
-			throw new RuntimeException(exception);
+		} catch (Throwable throwable) {
+			throw HError.withSuppressed(new RuntimeException(throwable), suppressed);
 		} finally {
 			if (!complete) HFile.delete(path, true);
 		}
