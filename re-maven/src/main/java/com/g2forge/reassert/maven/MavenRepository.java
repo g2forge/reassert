@@ -134,14 +134,13 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 	protected Path download(MavenCoordinates coordinates, Path path) {
 		final IMaven maven = getMaven();
 		try {
-			final IProcess process = maven.dependencyCopy(path.getParent(), coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
+			final IProcess process = maven.dependencyCopy(path.getParent(), true, coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
 			if (HCollection.isOne(MavenDownloadErrors.process(log, process), MavenDownloadErrors.MISSING_ARTIFACT)) {
 				Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).close();
-				return path;
+			} else {
+				process.assertSuccess();
+				Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 			}
-			process.assertSuccess();
-
-			Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 		} catch (Throwable throwable) {
 			throw new RuntimeException("Failed to cache maven POM!", throwable);
 		}
@@ -276,7 +275,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			if (isSameDirectory) resolved = path.getParent().resolve("resolved.xml");
 			else resolved = path;
 
-			getMaven().effectivePOM(pom.getParent(), resolved).forEach(log::debug);
+			getMaven().effectivePOM(pom.getParent(), true, resolved).forEach(log::debug);
 
 			if (!isCurrentPom) Files.delete(pom);
 			if (isSameDirectory) Files.move(resolved, path);
