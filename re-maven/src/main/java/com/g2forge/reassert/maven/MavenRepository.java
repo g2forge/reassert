@@ -18,8 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.adt.graph.HGraph;
 import com.g2forge.alexandria.java.core.enums.EnumException;
+import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.service.BasicServiceLoader;
@@ -134,11 +136,21 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 	protected Path download(MavenCoordinates coordinates, Path path) {
 		final IMaven maven = getMaven();
 		try {
-			final IProcess process = maven.dependencyCopy(path.getParent(), true, coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
+			final ISupplier<IProcess> command = () -> maven.dependencyCopy(path.getParent(), true, coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
+			final IProcess process = command.get();
 			if (HCollection.isOne(MavenDownloadErrors.process(log, process), MavenDownloadErrors.MISSING_ARTIFACT)) {
 				Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).close();
 			} else {
-				process.assertSuccess();
+				if (!process.isSuccess()) {
+					// Re-run the command so that we log the complete output
+					command.get().assertSuccess();
+					try {
+						// Fail (again) just in case the re-run succeeded somehow, which would be REALLY weird
+						process.assertSuccess();
+					} catch (Throwable throwable) {
+						throw new UnreachableCodeError(throwable);
+					}
+				}
 				Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 			}
 		} catch (Throwable throwable) {
