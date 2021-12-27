@@ -23,7 +23,7 @@ public class IntegrationAlexandria {
 	private static final TestGraph testGraph = computeTestGraph();
 
 	protected static TestGraph computeTestGraph() {
-		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/alexandria.git", "1dd72e04251f48035cc0b22c90d54638591bc937")), HCollection.emptyList());
+		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/alexandria.git", "0.0.18")), HCollection.emptyList());
 	}
 
 	@Test
