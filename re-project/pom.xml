@@ -10,12 +10,12 @@
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.18-SNAPSHOT</version>
+		<version>0.0.19-SNAPSHOT</version>
 		<relativePath>../../alexandria/ax-project/pom.xml</relativePath>
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.18-SNAPSHOT</alexandria.version>
+		<alexandria.version>0.0.19-SNAPSHOT</alexandria.version>
 		<enigma.version>0.0.12-SNAPSHOT</enigma.version>
 		<gearbox.version>0.0.10-SNAPSHOT</gearbox.version>
 		<jgrapht.version>1.4.0</jgrapht.version>
