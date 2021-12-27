@@ -18,8 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.adt.graph.HGraph;
 import com.g2forge.alexandria.java.core.enums.EnumException;
+import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction1;
+import com.g2forge.alexandria.java.function.ISupplier;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.service.BasicServiceLoader;
@@ -134,14 +136,23 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 	protected Path download(MavenCoordinates coordinates, Path path) {
 		final IMaven maven = getMaven();
 		try {
-			final IProcess process = maven.dependencyCopy(path.getParent(), coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
+			final ISupplier<IProcess> command = () -> maven.dependencyCopy(path.getParent(), true, coordinates.toBuilder().packaging(MavenPackaging.POM).build().toMaven(), path.getParent());
+			final IProcess process = command.get();
 			if (HCollection.isOne(MavenDownloadErrors.process(log, process), MavenDownloadErrors.MISSING_ARTIFACT)) {
 				Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).close();
-				return path;
+			} else {
+				if (!process.isSuccess()) {
+					// Re-run the command so that we log the complete output
+					command.get().assertSuccess();
+					try {
+						// Fail (again) just in case the re-run succeeded somehow, which would be REALLY weird
+						process.assertSuccess();
+					} catch (Throwable throwable) {
+						throw new UnreachableCodeError(throwable);
+					}
+				}
+				Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 			}
-			process.assertSuccess();
-
-			Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 		} catch (Throwable throwable) {
 			throw new RuntimeException("Failed to cache maven POM!", throwable);
 		}
@@ -276,7 +287,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			if (isSameDirectory) resolved = path.getParent().resolve("resolved.xml");
 			else resolved = path;
 
-			getMaven().effectivePOM(pom.getParent(), resolved).forEach(log::debug);
+			getMaven().effectivePOM(pom.getParent(), true, resolved).forEach(log::debug);
 
 			if (!isCurrentPom) Files.delete(pom);
 			if (isSameDirectory) Files.move(resolved, path);
@@ -287,7 +298,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 		return path;
 	}
 
-	protected MavenCoordinates validate(MavenCoordinates coordinates) {
+	protected static MavenCoordinates validate(MavenCoordinates coordinates) {
 		if ((coordinates.getGroupId() == null) || (coordinates.getArtifactId() == null) || (coordinates.getVersion() == null)) throw new NullPointerException(MavenCoordinatesDescriber.create().describe(coordinates).getName());
 		return coordinates;
 	}

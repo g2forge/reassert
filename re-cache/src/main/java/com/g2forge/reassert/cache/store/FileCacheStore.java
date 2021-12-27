@@ -10,8 +10,8 @@ import com.g2forge.alexandria.java.io.RuntimeIOException;
 public class FileCacheStore implements ICacheStore<Path> {
 	@Override
 	public Path load(Path path) {
-		if (!path.isAbsolute()) throw new IllegalArgumentException();
-		if (!Files.isRegularFile(path)) throw new IllegalArgumentException();
+		if (!path.isAbsolute()) throw new IllegalArgumentException(String.format("\"%1$s\" is not absolute", path));
+		if (!Files.isRegularFile(path)) throw new IllegalArgumentException(String.format("\"%1$s\" is not a regular file", path));
 		return path;
 	}
 
