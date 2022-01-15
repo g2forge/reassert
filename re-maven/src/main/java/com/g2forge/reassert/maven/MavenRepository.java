@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
-import com.g2forge.alexandria.adt.graph.HGraph;
+import com.g2forge.alexandria.adt.graph.v1.HGraph;
 import com.g2forge.alexandria.java.core.enums.EnumException;
 import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
