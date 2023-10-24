@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
@@ -31,6 +32,7 @@ import lombok.Getter;
 @RunWith(Parameterized.class)
 public abstract class ATestStandardLicenseParser {
 	public interface ITestCase {
+		@JsonIgnore
 		public ILicenseApplied getLicenseApplied();
 
 		public String getPurpose();
@@ -48,7 +50,7 @@ public abstract class ATestStandardLicenseParser {
 			try (final InputStream stream = HResource.getResourceAsStream(testCaseType, file, true)) {
 				testCases = reader.<TestCase>readValues(stream).readAll();
 			} catch (IOException e) {
-				throw new RuntimeIOException(e);
+				throw new RuntimeIOException(String.format("Failed to read resource \"%1$s\" near %2$s", file, testCaseType), e);
 			}
 		}
 
