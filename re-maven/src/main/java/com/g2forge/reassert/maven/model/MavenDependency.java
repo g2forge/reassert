@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @Builder(toBuilder = true)
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = { @JsonCreator(mode = JsonCreator.Mode.DISABLED) })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MavenDependency {
 	@JsonIgnore

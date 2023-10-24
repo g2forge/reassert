@@ -201,11 +201,6 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			final MavenPOM pom = readPom(pomPath);
 			builder.vertex(pom).edge(pom, artifact, new Describes());
 
-			final Collection<ILicenseApplied> licenses = getLicenses(pom);
-			for (ILicenseApplied license : licenses) {
-				builder.vertex(license).edge(artifact, license, new Notice());
-			}
-
 			if (pom.getParent() != null) {
 				final MavenCoordinates parentCoordinates = validate(pom.getParent().getCoordinates());
 				builder.callback(new Artifact<>(this, parentCoordinates), new Inherits(), artifact);
@@ -214,6 +209,11 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			{
 				final Path resolvedPath = getResolvedCacheArea().apply(unpackaged);
 				final MavenPOM resolved = readPom(resolvedPath);
+				
+				final Collection<ILicenseApplied> licenses = getLicenses(resolved);
+				for (ILicenseApplied license : licenses) {
+					builder.vertex(license).edge(artifact, license, new Notice());
+				}
 
 				final List<MavenDependency> dependencies = resolved.getDependencies();
 				if ((dependencies != null) && !dependencies.isEmpty()) for (MavenDependency dependency : dependencies) {

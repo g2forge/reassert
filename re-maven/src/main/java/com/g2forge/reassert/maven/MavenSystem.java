@@ -62,11 +62,11 @@ public class MavenSystem implements ISystem<MavenCoordinates> {
 			}
 		});
 
-		final XmlMapper mapper = new XmlMapper(new XmlFactory(xmlInputFactory, null));
-		mapper.registerModule(new ParanamerModule());
-		mapper.registerModule(new MavenXmlModule());
-		mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
-		return mapper;
+		final XmlMapper.Builder builder = XmlMapper.builder(new XmlFactory(xmlInputFactory, null));
+		builder.addModule(new ParanamerModule());
+		builder.addModule(new MavenXmlModule());
+		builder.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS);
+		return builder.build();
 	}
 
 	@Override

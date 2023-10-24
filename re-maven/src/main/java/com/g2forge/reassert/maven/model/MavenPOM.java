@@ -18,7 +18,7 @@ import lombok.Singular;
 
 @Data
 @Builder(toBuilder = true)
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = { @JsonCreator(mode = JsonCreator.Mode.DISABLED) })
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JacksonXmlRootElement(namespace = "http://maven.apache.org/POM/4.0.0")
 public class MavenPOM implements IDescriptor {
