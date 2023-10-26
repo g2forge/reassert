@@ -1022,7 +1022,7 @@ digraph reassert {
 	org_apache_commons_commons_parent_28_artifact -> org_apache_apache_13_artifact [label="inherits"];
 	org_apache_commons_commons_parent_37_artifact -> Apache_2_0 [label="notice"];
 	org_apache_commons_commons_parent_37_artifact -> org_apache_apache_16_artifact [label="inherits"];
-	org_apache_commons_commons_parent_42_artifact -> UnspecifiedLicense [label="notice"];
+	org_apache_commons_commons_parent_42_artifact -> Apache_2_0 [label="notice"];
 	org_apache_commons_commons_parent_42_artifact -> org_apache_apache_18_artifact [label="inherits"];
 	org_apache_commons_commons_parent_7_artifact -> Apache_2_0 [label="notice"];
 	org_apache_commons_commons_parent_7_artifact -> org_apache_apache_4_artifact [label="inherits"];
