@@ -127,7 +127,7 @@ public class GitRepository extends ARepository<GitCoordinates, GitSystem> {
 						try {
 							Git.open(retVal.toFile()).pull().call();
 						} catch (GitAPIException | IOException e) {
-							throw new RuntimeException(e);
+							throw new RuntimeException(String.format("Failed to open \"%1$s\"", retVal), e);
 						}
 					}
 				}
