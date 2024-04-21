@@ -25,6 +25,7 @@ import com.g2forge.reassert.core.model.file.Describes;
 import com.g2forge.reassert.core.test.ATestRepository;
 import com.g2forge.reassert.maven.model.MavenLicense;
 import com.g2forge.reassert.maven.model.MavenPOM;
+import com.g2forge.reassert.maven.model.MavenProfile;
 import com.g2forge.reassert.standard.model.contract.license.FamilyVersionLicense;
 import com.g2forge.reassert.standard.model.contract.license.StandardLicenseFamily;
 
@@ -63,7 +64,7 @@ public class TestMavenRepository extends ATestRepository<MavenCoordinates> {
 		final Graph<IVertex, IEdge> graph = getGraph();
 		final Artifact<MavenCoordinates> artifact = HReassertModel.findArtifact(graph, getCoordinates());
 		final Collection<MavenPOM> poms = HReassertModel.get(graph, artifact, false, Describes.class::isInstance, ITypeRef.of(MavenPOM.class)).stream().map(pom -> pom.toBuilder().clearDependencies().clearProperties().build()).collect(Collectors.toList());
-		HAssert.assertEquals(HCollection.asList(MavenPOM.builder().coordinates(getCoordinates().toBuilder().packaging(MavenPackaging.POM).build()).license(new MavenLicense("The Apache License, Version 2.0", "https://github.com/${alexandria.organization}/${alexandria.repository}/blob/${project.version}/LICENSE")).build()), poms);
+		HAssert.assertEquals(HCollection.asList(MavenPOM.builder().coordinates(getCoordinates().toBuilder().packaging(MavenPackaging.POM).build()).license(new MavenLicense("The Apache License, Version 2.0", "https://github.com/${alexandria.organization}/${alexandria.repository}/blob/${project.version}/LICENSE")).profile(new MavenProfile("release", null, null, null)).build()), poms);
 	}
 
 	@Test

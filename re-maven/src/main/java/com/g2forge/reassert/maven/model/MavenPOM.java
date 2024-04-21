@@ -36,9 +36,15 @@ public class MavenPOM implements IDescriptor {
 	@Singular
 	protected final Map<String, String> properties;
 
+	@Singular
+	protected final List<String> modules;
+
+	@Singular
+	protected final List<MavenProfile> profiles;
+
 	@JsonCreator
-	public MavenPOM(String groupId, String artifactId, String version, MavenPackaging packaging, MavenParent parent, List<MavenLicense> licenses, List<MavenDependency> dependencies, Map<String, String> properties) {
-		this(new MavenCoordinates(null, groupId, artifactId, version, packaging), parent, licenses, dependencies, properties);
+	public MavenPOM(String groupId, String artifactId, String version, MavenPackaging packaging, MavenParent parent, List<MavenLicense> licenses, List<MavenDependency> dependencies, Map<String, String> properties, List<String> modules, List<MavenProfile> profiles) {
+		this(new MavenCoordinates(null, groupId, artifactId, version, packaging), parent, licenses, dependencies, properties, modules, profiles);
 	}
 
 	@JsonIgnore

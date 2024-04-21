@@ -1,6 +1,8 @@
 package com.g2forge.reassert.maven;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,10 +17,14 @@ import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.java.core.enums.HEnum;
+import com.g2forge.alexandria.java.io.RuntimeIOException;
+import com.g2forge.alexandria.java.io.dataaccess.IDataSource;
+import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.system.ISystem;
+import com.g2forge.reassert.maven.model.MavenPOM;
 import com.g2forge.reassert.maven.model.convert.MavenXmlModule;
 
 import lombok.AccessLevel;
@@ -72,6 +78,15 @@ public class MavenSystem implements ISystem<MavenCoordinates> {
 	@Override
 	public IDescriber<MavenCoordinates> getCoordinateDescriber() {
 		return MavenCoordinatesDescriber.create();
+	}
+
+	public MavenPOM parse(IDataSource source) {
+		final XmlMapper mapper = getMapper();
+		try (final InputStream stream = source.getStream(ITypeRef.of(InputStream.class))) {
+			return mapper.readValue(stream, MavenPOM.class);
+		} catch (IOException e) {
+			throw new RuntimeIOException("Failed to parse Maven POM from " + source, e);
+		}
 	}
 
 	public MavenCoordinates parse(String string) {
