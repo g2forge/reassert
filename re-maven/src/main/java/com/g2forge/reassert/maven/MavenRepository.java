@@ -65,6 +65,11 @@ import lombok.extern.slf4j.Slf4j;
 @Getter(AccessLevel.PROTECTED)
 @Slf4j
 public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> {
+	protected static MavenCoordinates validate(MavenCoordinates coordinates) {
+		if ((coordinates.getGroupId() == null) || (coordinates.getArtifactId() == null) || (coordinates.getVersion() == null)) throw new NullPointerException(MavenCoordinatesDescriber.create().describe(coordinates).getName());
+		return coordinates;
+	}
+
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
 	@Getter(AccessLevel.PUBLIC)
@@ -209,7 +214,7 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			{
 				final Path resolvedPath = getResolvedCacheArea().apply(unpackaged);
 				final MavenPOM resolved = readPom(resolvedPath);
-				
+
 				final Collection<ILicenseApplied> licenses = getLicenses(resolved);
 				for (ILicenseApplied license : licenses) {
 					builder.vertex(license).edge(artifact, license, new Notice());
@@ -296,10 +301,5 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 		}
 
 		return path;
-	}
-
-	protected static MavenCoordinates validate(MavenCoordinates coordinates) {
-		if ((coordinates.getGroupId() == null) || (coordinates.getArtifactId() == null) || (coordinates.getVersion() == null)) throw new NullPointerException(MavenCoordinatesDescriber.create().describe(coordinates).getName());
-		return coordinates;
 	}
 }
