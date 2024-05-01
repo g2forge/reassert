@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 
 import com.ctc.wstx.api.WstxInputProperties;
 import com.ctc.wstx.stax.WstxInputFactory;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -24,6 +25,7 @@ import com.g2forge.gearbox.maven.MavenPackaging;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.system.ISystem;
+import com.g2forge.reassert.maven.model.MavenEffectivePOM;
 import com.g2forge.reassert.maven.model.MavenPOM;
 import com.g2forge.reassert.maven.model.convert.MavenXmlModule;
 
@@ -80,12 +82,12 @@ public class MavenSystem implements ISystem<MavenCoordinates> {
 		return MavenCoordinatesDescriber.create();
 	}
 
-	public MavenPOM parse(IDataSource source) {
+	protected <T> T parse(IDataSource source, Class<T> type) {
 		final XmlMapper mapper = getMapper();
 		try (final InputStream stream = source.getStream(ITypeRef.of(InputStream.class))) {
-			return mapper.readValue(stream, MavenPOM.class);
+			return mapper.readValue(stream, type);
 		} catch (IOException e) {
-			throw new RuntimeIOException("Failed to parse Maven POM from " + source, e);
+			throw new RuntimeIOException("Failed to parse " + type.getSimpleName() + " from " + source, e);
 		}
 	}
 
@@ -95,6 +97,14 @@ public class MavenSystem implements ISystem<MavenCoordinates> {
 		final String packagingGroup = matcher.group(4);
 		final MavenPackaging packaging = ((packagingGroup != null) && (packagingGroup.length() > 0)) ? HEnum.valueOf(MavenPackaging.class, Object::toString, true, String::toLowerCase, matcher.group(5)) : MavenPackaging.JAR;
 		return new MavenCoordinates(this, matcher.group(1), matcher.group(2), matcher.group(3), packaging);
+	}
+
+	public MavenEffectivePOM parseEffectivePOM(IDataSource source) {
+		return parse(source, MavenEffectivePOM.class);
+	}
+
+	public MavenPOM parsePOM(IDataSource source) {
+		return parse(source, MavenPOM.class);
 	}
 
 	@Override
