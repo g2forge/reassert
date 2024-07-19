@@ -27,6 +27,10 @@ public abstract class ALicenseParser implements IParser<ILicenseApplied> {
 	public static abstract class APatternListBuilder implements IBuilder<List<IMatcher<? extends ILicenseFamily, ?>>> {
 		protected static final IMatcher<?, Regex> gap = pattern().charClass(false, cc -> cc.character('-').character('_').named(NamedCharacterClass.Space)).star().build();
 
+		protected static final IMatcher<?, Regex> parenthetical = pattern().group(g -> g.with(gap).text("(").charClass(true, cc -> cc.character(')')).plus().text(")")).opt().build();
+
+		protected static final IMatcher<?, Regex> holder = pattern().group(g0 -> g0.group(g1 -> g1.with(gap).charClass(false, cc -> cc.range('a', 'z').range('A', 'Z').range('0', '9')).plus()).plus()).opt().build();
+
 		protected static final IMatcher<?, Regex> the = pattern().group(g -> g.text("the").with(gap)).opt().build();
 
 		protected static final IMatcher<?, Regex> licenseReq = pattern().with(gap).text("Licen").charClass(false, cc -> cc.character('c').character('s')).text("e").group(g -> g.charClass(false, cc -> cc.character('s').character('d'))).opt().build(), licenseOpt = pattern().group(g -> g.with(licenseReq)).opt().build();

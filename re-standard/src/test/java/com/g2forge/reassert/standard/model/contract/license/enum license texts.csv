@@ -13,6 +13,7 @@ MIT,MIT,
 MIT,MIT license,
 MIT,MIT License,
 MIT,The MIT License,
+MIT,MIT-open-group,Allow suffix for copyright holder
 Owner,Owner,
 Perl5,Perl 5 License (GPL or Artistic),
 PostgreSQL,Postgres,
@@ -26,7 +27,7 @@ WTFPL,WTFPL,
 Zlib,zlib,
 Zlib,Zlib,
 Zlib,ZLIB,
-,BSD-3-clause-s,"Ensure ""clauses"" suffix must be one word"
+Zlib,LibPNG,Resolve libpng license to zlib license
 ,Expat /MIT,The spaces around the slash make it unparseable
 ,foobar,Ensure a totally bogus string isn't recognized
 ,LPGL-2.1+,Make sure we don't parse mis-spellings since they could be other licenses
@@ -36,3 +37,18 @@ Zlib,ZLIB,
 ,Unspecified,Literally unspecified
 ,Unspecified License,Literally unspecified
 ,XGPL,Make sure we don't recognize weird GPL variants
+FSFAP,FSFAP,
+LibTIFF,LibTIFF,
+HPND,HPND,
+Ruby,Ruby,
+ICU,ICU,
+TCL,TCL,
+LPPL,LPPL,
+X11,X11,
+X11,x11,
+W3C,W3C,
+Unlicense,Unlicense,
+Hylafax,Hylafax,
+FSFUL,FSFUL,
+FSFULLR,FSFULLR,
+Latex2e,Latex2e,
