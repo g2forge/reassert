@@ -18,23 +18,23 @@ import com.g2forge.reassert.standard.algorithm.StandardLicenseInheritanceVisitor
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public class IntegrationAlexandria {
+public class IntegrationReassert {
 	@Getter(lazy = true, value = AccessLevel.PROTECTED)
 	private static final TestGraph testGraph = computeTestGraph();
 
 	protected static TestGraph computeTestGraph() {
-		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/alexandria.git", "0.0.18")), HCollection.emptyList());
+		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/reassert.git", "reassert-test")), HCollection.emptyList());
 	}
 
 	@Test
 	public void complete() {
-		HAssert.assertEquals(new Resource(getClass(), "alexandria-complete.dot"), TestVisualizer.create().visualize(getTestGraph().getGraph()));
+		HAssert.assertEquals(new Resource(getClass(), "reassert-test-complete.dot"), TestVisualizer.create().visualize(getTestGraph().getGraph()));
 	}
 
 	@Test
 	public void licenses() {
 		final Graph<IVertex, IEdge> graph = HReassertModel.clone(getTestGraph().getGraph());
 		new StandardLicenseInheritanceVisitor().accept(graph);
-		HAssert.assertEquals(new Resource(getClass(), "alexandria-licenses.dot"), TestVisualizer.create().visualize(HReassertModel.asLicenseGraph(graph)));
+		HAssert.assertEquals(new Resource(getClass(), "reassert-test-licenses.dot"), TestVisualizer.create().visualize(HReassertModel.asLicenseGraph(graph)));
 	}
 }

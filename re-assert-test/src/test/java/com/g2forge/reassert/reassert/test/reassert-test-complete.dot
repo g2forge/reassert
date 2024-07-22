@@ -1,0 +1,21 @@
+digraph reassert {
+	Apache_2_0 [label="Apache 2.0 license"];
+	com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT [label="com.g2forge.reassert:reassert-test:0.0.1-SNAPSHOT"];
+	com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT_artifact [label="com.g2forge.reassert:reassert-test:0.0.1-SNAPSHOT"];
+	com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT_pom [label="POM\ncom.g2forge.reassert:reassert-test:0.0.1-SNAPSHOT"];
+	https___github_com_g2forge_reassert_blob_master_LICENSE___reassert_test [label="https://github.com/g2forge/reassert/blob/master/LICENSE @ reassert-test"];
+	https___github_com_g2forge_reassert_blob_master_LICENSE___reassert_test_file [label="File\nhttps://github.com/g2forge/reassert/blob/master/LICENSE @ reassert-test"];
+	https___github_com_g2forge_reassert_blob_master_pom_xml___reassert_test [label="https://github.com/g2forge/reassert/blob/master/pom.xml @ reassert-test"];
+	https___github_com_g2forge_reassert_blob_master_pom_xml___reassert_test_file [label="File\nhttps://github.com/g2forge/reassert/blob/master/pom.xml @ reassert-test"];
+	https___github_com_g2forge_reassert_git___reassert_test [label="https://github.com/g2forge/reassert.git @ reassert-test"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact [label="https://github.com/g2forge/reassert.git @ reassert-test"];
+	com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT_artifact -> com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT [label="coordinates"];
+	https___github_com_g2forge_reassert_blob_master_LICENSE___reassert_test_file -> Apache_2_0 [label="parsed"];
+	https___github_com_g2forge_reassert_blob_master_LICENSE___reassert_test_file -> https___github_com_g2forge_reassert_blob_master_LICENSE___reassert_test [label="coordinates"];
+	https___github_com_g2forge_reassert_blob_master_pom_xml___reassert_test_file -> com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT_pom [label="parsed"];
+	https___github_com_g2forge_reassert_blob_master_pom_xml___reassert_test_file -> https___github_com_g2forge_reassert_blob_master_pom_xml___reassert_test [label="coordinates"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact -> Apache_2_0 [label="notice"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact -> https___github_com_g2forge_reassert_blob_master_LICENSE___reassert_test_file [label="contains"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact -> https___github_com_g2forge_reassert_blob_master_pom_xml___reassert_test_file [label="contains"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact -> https___github_com_g2forge_reassert_git___reassert_test [label="coordinates"];
+}
