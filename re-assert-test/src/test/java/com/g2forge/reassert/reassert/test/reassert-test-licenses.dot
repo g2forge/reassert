@@ -1,0 +1,6 @@
+digraph reassert {
+	Apache_2_0 [label="Apache 2.0 license"];
+	com_g2forge_reassert_reassert_test_0_0_1_SNAPSHOT_artifact [label="com.g2forge.reassert:reassert-test:0.0.1-SNAPSHOT"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact [label="https://github.com/g2forge/reassert.git @ reassert-test"];
+	https___github_com_g2forge_reassert_git___reassert_test_artifact -> Apache_2_0 [label="notice"];
+}
