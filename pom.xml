@@ -41,6 +41,11 @@
 				https://github.com/${alexandria.organization}/${alexandria.repository}/blob/${project.version}/LICENSE</url>
 		</license>
 	</licenses>
+	<scm>
+		<connection>scm:git:git://github.com/g2forge/reassert.git</connection>
+		<developerConnection>scm:git:ssh://github.com:g2forge/reassert.git</developerConnection>
+		<url>http://github.com/g2forge/reassert</url>
+	</scm>
 
 	<distributionManagement>
 		<repository>
