@@ -34,8 +34,8 @@ public class StandardLicenseParser extends ALicenseParser implements ISingleton 
 			final List<IMatcher<? extends ILicenseFamily, ?>> retVal = new ArrayList<>();
 
 			{ // Apache
-				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().with(the).text("Apache").group(g0 -> g0.group(g1 -> g1.with(gap).text("Software").group(g2 -> g2.with(gap).text("Foundation")).opt()).opt().with(licenseReq)).opt().with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(licenseOpt).buildReq(StandardLicenseFamily.Apache::create));
-				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().with(the).text("ASF").with(licenseOpt).with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(licenseOpt).buildReq(StandardLicenseFamily.Apache::create));
+				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().group(g -> g.text("OSI").with(gap).text("Approved").with(gap).text("::").with(gap)).opt().with(the).text("Apache").group(g0 -> g0.group(g1 -> g1.with(gap).text("Software").group(g2 -> g2.with(gap).text("Foundation")).opt()).opt().with(licenseReq)).opt().with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(licenseOpt).with(parenthetical).buildReq(StandardLicenseFamily.Apache::create));
+				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().with(the).text("ASF").with(licenseOpt).with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(licenseOpt).with(parenthetical).buildReq(StandardLicenseFamily.Apache::create));
 				retVal.add(new IMatcher<ILicenseFamily, IPattern>() {
 					@Override
 					public IOptional<ILicenseFamily> match(String text) {
@@ -47,13 +47,13 @@ public class StandardLicenseParser extends ALicenseParser implements ISingleton 
 			}
 			{ // BSD
 				final IMatcher<Object, Regex> suffix = pattern().with(gap).group(g -> g.text(".").with(gap)).opt().group(g -> g.text("Clause").text("s").opt()).opt().build();
-				retVal.add(APatternListBuilder.<BSDLicense>pattern().text("BSD").with(gap).group(BSDLicense::getClauses, g -> g.digit(10).plus().buildReq(match -> HPrimitive.parseInteger(match.getAsString()))).with(suffix).with(licenseOpt).buildReq(match -> new BSDLicense(match.getAsObject(BSDLicense::getClauses))));
-				retVal.add(APatternListBuilder.<BSDLicense>pattern().group(BSDLicense::getClauses, g -> g.digit(10).plus().buildReq(match -> HPrimitive.parseInteger(match.getAsString()))).with(suffix).with(gap).text("BSD").with(licenseOpt).buildReq(match -> new BSDLicense(match.getAsObject(BSDLicense::getClauses))));
+				retVal.add(APatternListBuilder.<BSDLicense>pattern().text("BSD").with(gap).group(BSDLicense::getClauses, g -> g.digit(10).plus().buildReq(match -> HPrimitive.parseInteger(match.getAsString()))).with(suffix).with(licenseOpt).with(holder).buildReq(match -> new BSDLicense(match.getAsObject(BSDLicense::getClauses))));
+				retVal.add(APatternListBuilder.<BSDLicense>pattern().group(BSDLicense::getClauses, g -> g.digit(10).plus().buildReq(match -> HPrimitive.parseInteger(match.getAsString()))).with(suffix).with(gap).text("BSD").with(licenseOpt).with(holder).buildReq(match -> new BSDLicense(match.getAsObject(BSDLicense::getClauses))));
 				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().group(g -> {
 					@SuppressWarnings("unchecked")
 					final IMatcherBuilder<ILicenseFamily, Regex> alt = g.alt(pattern().text("the").build(), pattern().text("revised").build(), pattern().text("new").build());
 					alt.with(gap);
-				}).opt().text("BSD").group(g -> g.with(gap).text("style")).opt().with(licenseOpt).buildReq(match -> StandardLicenseFamily.BSD));
+				}).opt().text("BSD").group(g -> g.with(gap).text("style")).opt().with(licenseOpt).with(parenthetical).buildReq(match -> StandardLicenseFamily.BSD));
 			}
 			{ // Creative Commons
 				final IMatcher<CCLicense.Variant, Regex> variants;
@@ -116,10 +116,15 @@ public class StandardLicenseParser extends ALicenseParser implements ISingleton 
 				}
 				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().with(the).group(g -> g.text("GNU")).opt().with(gap).with(pattern("Lesser Public")).with(gap).with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().alt(only, APatternListBuilder.<FamilyVersionLicense>pattern().with(FamilyVersionLicense::isOrLater, orlater).build()).with(licenseOpt).buildReq(StandardLicenseFamily.LGPL::create));
 			}
-			{ // MMIT
-				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(the).text("MIT").with(licenseOpt).buildReq(match -> StandardLicense.MIT));
-				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(the).text("Expat").group(g -> g.text("/MIT")).opt().buildReq(match -> StandardLicense.MIT));
-				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(the).text("Bouncy").with(gap).text("Castle").with(licenseReq).buildReq(match -> StandardLicense.MIT));
+			{ // MIT
+				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(the).text("MIT").with(licenseOpt).with(holder).buildReq(match -> StandardLicense.MIT));
+				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(the).text("Expat").group(g -> g.text("/MIT")).opt().with(holder).buildReq(match -> StandardLicense.MIT));
+				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(the).text("Bouncy").with(gap).text("Castle").with(licenseReq).with(holder).buildReq(match -> StandardLicense.MIT));
+			}
+			{ // Python
+				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().text("PSF").with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(parenthetical).buildReq(StandardLicenseFamily.PSF::create));
+				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().text("Python Software Foundation").with(licenseOpt).with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(parenthetical).buildReq(StandardLicenseFamily.PSF::create));
+				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().text("Python").with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().with(parenthetical).buildReq(StandardLicenseFamily.Python::create));
 			}
 			{ // Misc versioned
 				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().with(the).text("Artistic").group(g -> g.with(gap).alt(licenseReq, pattern().text("dist").build())).opt().with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().buildReq(StandardLicenseFamily.Artistic::create));
@@ -127,8 +132,6 @@ public class StandardLicenseParser extends ALicenseParser implements ISingleton 
 				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().with(pattern(HString.stripSuffix(StandardLicenseFamily.IndianaExtreme.getName(), "License").trim())).with(licenseOpt).with(FamilyVersionLicense::getVersion, versionPatternPatch).buildReq(StandardLicenseFamily.IndianaExtreme::create));
 				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().group(g -> g.text("SIL").with(gap)).opt().text("OFL").with(FamilyVersionLicense::getVersion, versionPatternMinor).buildReq(StandardLicenseFamily.OFL::create));
 				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().text("Open").with(gap).text("Font").with(licenseOpt).with(FamilyVersionLicense::getVersion, versionPatternMinor).buildReq(StandardLicenseFamily.OFL::create));
-				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().text("PSF").with(FamilyVersionLicense::getVersion, versionPatternMinor).buildReq(StandardLicenseFamily.PSF::create));
-				retVal.add(APatternListBuilder.<FamilyVersionLicense>pattern().text("Python").with(FamilyVersionLicense::getVersion, versionPatternMinor).opt().buildReq(StandardLicenseFamily.Python::create));
 			}
 			{ // Misc versioned with patterns
 				for (StandardLicenseFamily family : new StandardLicenseFamily[] { StandardLicenseFamily.AFL, StandardLicenseFamily.BSL, StandardLicenseFamily.EDL, StandardLicenseFamily.CDDL }) {
@@ -151,6 +154,12 @@ public class StandardLicenseParser extends ALicenseParser implements ISingleton 
 				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().with(pattern("Public Domain")).buildReq(match -> StandardLicense.PublicDomain));
 				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().text("WTFPL").buildReq(match -> StandardLicense.WTFPL));
 				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().text("ZLIB").with(licenseOpt).buildReq(match -> StandardLicense.ZLIB));
+				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().text("Libpng").with(licenseOpt).buildReq(match -> StandardLicense.ZLIB));
+				retVal.add(APatternListBuilder.<ILicenseFamily>pattern().text("Unlicense").buildReq(match -> StandardLicense.Unlicense));
+
+				for (StandardLicense license : new StandardLicense[] { StandardLicense.FSFAP, StandardLicense.LibTIFF, StandardLicense.HPND, StandardLicense.Ruby, StandardLicense.ICU, StandardLicense.TCL, StandardLicense.LPPL, StandardLicense.X11, StandardLicense.W3C, StandardLicense.Hylafax, StandardLicense.FSFUL, StandardLicense.FSFULLR, StandardLicense.Latex2e }) {
+					retVal.add(APatternListBuilder.<ILicenseFamily>pattern().text(license.name()).with(licenseOpt).buildReq(match -> license));
+				}
 			}
 			return Collections.unmodifiableList(retVal);
 		}

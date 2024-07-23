@@ -31,7 +31,21 @@ public enum StandardLicense implements ILicenseFamilyEnum, ILicenseSpecific {
 	PostgreSQL("PostgreSQL", null, null, false),
 	Beerware("Beerware", null, null, false),
 	FTL("FTL", null, null, false),
-	Perl5(null, null, null, false);
+	FSFAP("FSFAP", StandardLicenseFamily.Permissive, null, false),
+	Perl5(null, null, null, false),
+	LibTIFF("libtiff", StandardLicenseFamily.Permissive, null, false),
+	HPND(null, StandardLicenseFamily.Permissive, null, false),
+	Ruby(null, null, null, false),
+	ICU(null, null, null, false),
+	TCL(null, null, null, false),
+	LPPL(null, null, null, false),
+	X11(null, StandardLicenseFamily.Permissive, null, false),
+	W3C(null, null, null, false),
+	Unlicense(null, null, null, false),
+	Hylafax(null, null, null, false),
+	FSFUL(null, null, null, false),
+	FSFULLR(null, null, null, false),
+	Latex2e(null, null, null, false);
 
 	static {
 		ILicenseFamilyEnum.validate(StandardLicense.class);
