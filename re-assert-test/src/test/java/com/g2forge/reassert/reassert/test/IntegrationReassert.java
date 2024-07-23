@@ -23,7 +23,7 @@ public class IntegrationReassert {
 	private static final TestGraph testGraph = computeTestGraph();
 
 	protected static TestGraph computeTestGraph() {
-		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/reassert.git", "reassert-test")), HCollection.emptyList());
+		return new TestGraph(new Artifact<>(null, new GitCoordinates(null, "https://github.com/g2forge/reassert.git", "0.1.0")), HCollection.emptyList());
 	}
 
 	@Test
