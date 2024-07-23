@@ -200,13 +200,12 @@
 						<executions>
 							<execution>
 								<id>cyclonedx-makeAggregateBom</id>
-								<goals>
-									<goal>makeAggregateBom</goal>
-								</goals>
-								<phase>prepare-package</phase>
-								<inherited>false</inherited>
 								<configuration>
-									<outputName>${project.artifactId}-${project.version}-cyclonedx</outputName>
+									<includeCompileScope>true</includeCompileScope>
+									<includeProvidedScope>true</includeProvidedScope>
+									<includeRuntimeScope>true</includeRuntimeScope>
+									<includeSystemScope>true</includeSystemScope>
+									<includeTestScope>false</includeTestScope>
 								</configuration>
 							</execution>
 						</executions>
