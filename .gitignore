@@ -4,3 +4,4 @@
 /target/
 /.classpath
 /.factorypath
+/bulldozer-state.json
