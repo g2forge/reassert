@@ -199,14 +199,10 @@
 						<version>2.8.0</version>
 						<executions>
 							<execution>
-								<id>cyclonedx-makeAggregateBom</id>
-								<configuration>
-									<includeCompileScope>true</includeCompileScope>
-									<includeProvidedScope>true</includeProvidedScope>
-									<includeRuntimeScope>true</includeRuntimeScope>
-									<includeSystemScope>true</includeSystemScope>
-									<includeTestScope>false</includeTestScope>
-								</configuration>
+								<phase>package</phase>
+								<goals>
+									<goal>makeAggregateBom</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
