@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
 import com.g2forge.alexandria.adt.graph.v1.HGraph;
 import com.g2forge.alexandria.java.core.enums.EnumException;
-import com.g2forge.alexandria.java.core.error.UnreachableCodeError;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
 import com.g2forge.alexandria.java.function.IFunction1;
 import com.g2forge.alexandria.java.function.ISupplier;
@@ -27,6 +26,7 @@ import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.service.BasicServiceLoader;
 import com.g2forge.alexandria.service.DefaultInstantiator;
 import com.g2forge.gearbox.command.process.IProcess;
+import com.g2forge.gearbox.command.proxy.result.StreamResultSupplier;
 import com.g2forge.gearbox.maven.HMaven;
 import com.g2forge.gearbox.maven.IMaven;
 import com.g2forge.gearbox.maven.MavenDownloadErrors;
@@ -147,14 +147,16 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 				Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE).close();
 			} else {
 				if (!process.isSuccess()) {
-					// Re-run the command so that we log the complete output
-					command.get().assertSuccess();
+					boolean rerunFailed;
 					try {
-						// Fail (again) just in case the re-run succeeded somehow, which would be REALLY weird
-						process.assertSuccess();
+						// Re-run the command so that we log the complete output
+						log.error("Maven dependency copy failed, running again to log output:");
+						StreamResultSupplier.STANDARD.apply(command.get()).forEach(log::error);
+						rerunFailed = false;
 					} catch (Throwable throwable) {
-						throw new UnreachableCodeError(throwable);
+						rerunFailed = true;
 					}
+					if (!rerunFailed) throw new Error("This error indicates that the maven dependency copy failed once, and succeeded on re-run.  Perhaps a transient network failure?  Try re-running this.");
 				}
 				Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 			}
