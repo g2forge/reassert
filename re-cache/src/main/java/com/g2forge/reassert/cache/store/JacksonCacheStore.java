@@ -11,6 +11,9 @@ import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * A cache store for objects, which uses a jackson object mapper to serialize and deserialize them.
+ */
 @Getter
 @RequiredArgsConstructor
 public class JacksonCacheStore<T> implements ICacheStore<T> {

@@ -9,6 +9,9 @@ import java.nio.file.StandardCopyOption;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.file.HFile;
 
+/**
+ * A cache store for directories abstracted as java paths. They are moved into the cache when stored, or copied in if the move fails.
+ */
 public class DirectoryCacheStore implements ICacheStore<Path> {
 	@Override
 	public Path load(Path path) {
