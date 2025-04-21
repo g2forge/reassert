@@ -7,6 +7,9 @@ import java.nio.file.StandardCopyOption;
 
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 
+/**
+ * A cache store for files abstracted as java paths. They are moved into the cache when stored.
+ */
 public class FileCacheStore implements ICacheStore<Path> {
 	@Override
 	public Path load(Path path) {
