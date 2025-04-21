@@ -8,14 +8,14 @@ import com.g2forge.alexandria.java.function.IFunction2;
 import com.g2forge.reassert.cache.store.ICacheStore;
 
 /**
- * A descriptor for a cache area. The methods on this interface allow the cache to learn how to compute values, load & store keys, exceptions, and values, and
- * where to create cache entries within this area. Caches should cache exceptions when possible, and should verify that the key for any cache entry matches to
- * expected key in case of collisions in {@link #getHashFunction()}.
+ * A descriptor for a cache area. The methods on this interface allow the cache to learn how to compute values, load &amp; store keys, exceptions, and values,
+ * and where to create cache entries within this area. Caches should cache exceptions when possible, and should verify that the key for any cache entry matches
+ * to expected key in case of collisions in {@link #getHashFunction()}.
  * 
  * @param <K>
- *            The type of keys for this cache.
+ *            The type of keys for this cache area.
  * @param <V>
- *            The type of values for this cache.
+ *            The type of values for this cache area.
  */
 public interface ICacheAreaDescriptor<K, V> extends INamed<Path> {
 	/**
@@ -49,7 +49,7 @@ public interface ICacheAreaDescriptor<K, V> extends INamed<Path> {
 	 * necessarily always) unique path for each key, which is valid on this operating system. <code>key -> Paths.get(key.toString())</code>, or something
 	 * equally simple, is acceptable if there are never OS-disallowed characters in that string.
 	 * 
-	 * @return
+	 * @return The key hash function.
 	 */
 	public IFunction1<? super K, ? extends Path> getHashFunction();
 

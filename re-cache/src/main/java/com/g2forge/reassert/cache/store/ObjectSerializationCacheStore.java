@@ -15,10 +15,14 @@ import lombok.RequiredArgsConstructor;
 /**
  * A cache store for objects, which uses java object serialization. This is particularly suited to storing exceptions on disk, and is often used for
  * {@link com.g2forge.reassert.cache.ICacheAreaDescriptor#getExceptionConverter()}.
+ * 
+ * @param <T>
+ *            The type of the values being stored.
  */
 @Getter
 @RequiredArgsConstructor
 public class ObjectSerializationCacheStore<T> implements ICacheStore<T> {
+	/** The type of the values being stored. */
 	protected final ITypeRef<T> type;
 
 	@Override
