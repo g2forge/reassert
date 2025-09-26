@@ -3,7 +3,7 @@ package com.g2forge.reassert.maven.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.IMavenPackaging;
 import com.g2forge.reassert.maven.MavenCoordinates;
 
 import lombok.Builder;
@@ -23,7 +23,7 @@ public class MavenDependency {
 	protected final boolean optional;
 
 	@JsonCreator
-	public MavenDependency(String groupId, String artifactId, String version, MavenPackaging packaging, MavenScope scope, boolean optional) {
+	public MavenDependency(String groupId, String artifactId, String version, IMavenPackaging packaging, MavenScope scope, boolean optional) {
 		this(new MavenCoordinates(null, groupId, artifactId, version, packaging), scope, optional);
 	}
 }

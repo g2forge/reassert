@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
 import com.g2forge.reassert.core.model.file.IDescriptor;
 import com.g2forge.reassert.maven.MavenCoordinates;
 

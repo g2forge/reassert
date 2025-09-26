@@ -3,7 +3,7 @@ package com.g2forge.reassert.reassert;
 import org.junit.Test;
 
 import com.g2forge.alexandria.test.HAssert;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 import com.g2forge.reassert.git.GitCoordinates;

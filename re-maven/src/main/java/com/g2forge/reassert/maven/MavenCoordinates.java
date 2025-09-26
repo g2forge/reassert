@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.g2forge.alexandria.java.fluent.optional.NullableOptional;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.IMavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
 import com.g2forge.reassert.core.model.coordinates.ICoordinates;
 
 import lombok.AccessLevel;
@@ -34,7 +35,7 @@ public class MavenCoordinates implements ICoordinates {
 
 	@JsonInclude(Include.NON_NULL)
 	@Builder.Default
-	protected final MavenPackaging packaging = MavenPackaging.JAR;
+	protected final IMavenPackaging packaging = MavenPackaging.JAR;
 
 	@JsonIgnore
 	@ToString.Exclude
