@@ -8,9 +8,11 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.g2forge.alexandria.java.core.enums.HEnum;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.IMavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.UnknownMavenPackaging;
 
-public class MavenPackagingDeserializer extends StdDeserializer<MavenPackaging> {
+public class MavenPackagingDeserializer extends StdDeserializer<IMavenPackaging> {
 	private static final long serialVersionUID = 7672345770783504031L;
 
 	protected MavenPackagingDeserializer() {
@@ -18,9 +20,14 @@ public class MavenPackagingDeserializer extends StdDeserializer<MavenPackaging> 
 	}
 
 	@Override
-	public MavenPackaging deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+	public IMavenPackaging deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
 		final JsonToken token = parser.currentToken();
 		if (token != JsonToken.VALUE_STRING) context.handleUnexpectedToken(MavenPackaging.class, parser);
-		return HEnum.valueOf(MavenPackaging.class, Object::toString, true, String::toLowerCase, parser.getText().trim());
+		final String text = parser.getText().trim();
+		try {
+			return HEnum.valueOf(MavenPackaging.class, Object::toString, true, String::toLowerCase, text);
+		} catch (IllegalArgumentException exception) {
+			return new UnknownMavenPackaging(text);
+		}
 	}
 }

@@ -30,7 +30,7 @@ import com.g2forge.gearbox.command.proxy.result.StreamResultSupplier;
 import com.g2forge.gearbox.maven.HMaven;
 import com.g2forge.gearbox.maven.IMaven;
 import com.g2forge.gearbox.maven.MavenDownloadErrors;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
 import com.g2forge.reassert.cache.CacheAreaDescriptor;
 import com.g2forge.reassert.cache.CacheAreaDescriptor.CacheAreaDescriptorBuilder;
 import com.g2forge.reassert.cache.store.FileCacheStore;
@@ -148,15 +148,16 @@ public class MavenRepository extends ARepository<MavenCoordinates, MavenSystem> 
 			} else {
 				if (!process.isSuccess()) {
 					boolean rerunFailed;
+					final StringBuilder log = new StringBuilder();
 					try {
 						// Re-run the command so that we log the complete output
-						log.error("Maven dependency copy failed, running again to log output:");
-						StreamResultSupplier.STANDARD.apply(command.get()).forEach(log::error);
+						StreamResultSupplier.STANDARD.apply(command.get()).forEach(line -> log.append(line).append('\n'));
 						rerunFailed = false;
 					} catch (Throwable throwable) {
 						rerunFailed = true;
 					}
 					if (!rerunFailed) throw new Error("This error indicates that the maven dependency copy failed once, and succeeded on re-run.  Perhaps a transient network failure?  Try re-running this.");
+					throw new Error("Maven dependency copy failed, ran again to log output:\n" + log);
 				}
 				Files.move(path.getParent().resolve(coordinates.getArtifactId() + "-" + coordinates.getVersion() + ".pom"), path);
 			}

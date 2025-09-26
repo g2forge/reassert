@@ -20,7 +20,7 @@ import com.g2forge.alexandria.java.core.enums.HEnum;
 import com.g2forge.alexandria.java.io.RuntimeIOException;
 import com.g2forge.alexandria.java.io.dataaccess.IDataSource;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
 import com.g2forge.reassert.core.api.described.IDescriber;
 import com.g2forge.reassert.core.api.module.IContext;
 import com.g2forge.reassert.core.api.system.ISystem;

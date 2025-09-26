@@ -11,7 +11,7 @@ import com.g2forge.alexandria.java.core.resource.Resource;
 import com.g2forge.alexandria.java.type.ref.ITypeRef;
 import com.g2forge.alexandria.test.HAssert;
 import com.g2forge.enigma.diagram.dot.convert.DotRenderer;
-import com.g2forge.gearbox.maven.MavenPackaging;
+import com.g2forge.gearbox.maven.packaging.MavenPackaging;
 import com.g2forge.reassert.core.algorithm.ReassertGraphVisualizer;
 import com.g2forge.reassert.core.api.module.Context;
 import com.g2forge.reassert.core.model.HReassertModel;
