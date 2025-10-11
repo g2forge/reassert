@@ -30,6 +30,8 @@ public class StandardTermModule extends SimpleModule {
 		super.setupModule(context);
 
 		context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
+			private static final long serialVersionUID = -618720025694338390L;
+
 			public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription description, JsonDeserializer<?> deserializer) {
 				if (ITerm.class.isAssignableFrom(description.getBeanClass())) return new StandardTermDeserializer(deserializer);
 				if (ITerms.class.isAssignableFrom(description.getBeanClass())) return new TermsDeserializer();
@@ -37,6 +39,8 @@ public class StandardTermModule extends SimpleModule {
 			}
 		});
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
+			private static final long serialVersionUID = 3390001814604938831L;
+
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
 				if (ITerm.class.isAssignableFrom(description.getBeanClass())) return new StandardTermSerializer();

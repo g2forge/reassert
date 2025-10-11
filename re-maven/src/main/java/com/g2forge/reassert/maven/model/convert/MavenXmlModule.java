@@ -18,6 +18,8 @@ public class MavenXmlModule extends SimpleModule {
 		addDeserializer(IMavenPackaging.class, new MavenPackagingDeserializer());
 		super.setupModule(context);
 		context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
+			private static final long serialVersionUID = 9132457908029868158L;
+
 			@Override
 			public JsonDeserializer<?> modifyCollectionDeserializer(DeserializationConfig config, CollectionType type, BeanDescription beanDescription, JsonDeserializer<?> deserializer) {
 				if (deserializer instanceof CollectionDeserializer) return new XmlWhitespaceCollectionDeserialiser((CollectionDeserializer) deserializer);

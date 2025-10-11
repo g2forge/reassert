@@ -18,6 +18,7 @@ import org.slf4j.event.Level;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper.Builder;
 import com.g2forge.alexandria.java.adt.compare.CollectionComparator;
 import com.g2forge.alexandria.java.adt.compare.ComparableComparator;
 import com.g2forge.alexandria.java.adt.compare.MappedComparator;
@@ -60,7 +61,7 @@ public class ReassertSummarizer {
 	protected Set<IVertex> computeOrigins(IReport report, final Graph<IVertex, IEdge> graph) {
 		final Set<Artifact<?>> reportOrigins = report.getOrigins().getOrigins().keySet();
 		if (graph.vertexSet().containsAll(reportOrigins)) return Collections.unmodifiableSet(reportOrigins);
-		
+
 		final ITypeRef<Artifact<?>> artifactType = new ATypeRef<Artifact<?>>() {};
 		return graph.vertexSet().stream().flatMap(artifactType::castIfInstance).filter(a -> !graph.incomingEdgesOf(a).stream().map(graph::getEdgeSource).anyMatch(artifactType::isInstance)).collect(Collectors.toSet());
 	}
@@ -69,10 +70,19 @@ public class ReassertSummarizer {
 		return mode -> new ReportRenderer(mode, context);
 	}
 
+	protected List<GraphPath<IVertex, IEdge>> readable(List<GraphPath<IVertex, IEdge>> paths) {
+		return paths.stream().filter(path -> {
+			final List<IVertex> vertexList = path.getVertexList();
+			if (vertexList.size() <= 2) return true;
+			return vertexList.subList(1, vertexList.size() - 1).stream().allMatch(v -> !(v instanceof Work));
+		}).collect(Collectors.toList());
+	}
+
 	protected <T> void render(Class<T> writenType, Class<?> schemaType, Collection<T> value, IDataSink sink, ASummaryModule module) {
-		final CsvMapper mapper = new CsvMapper();
-		mapper.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
-		mapper.registerModule(module);
+		final Builder mapperBuilder = CsvMapper.builder();
+		mapperBuilder.disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
+		mapperBuilder.addModule(module);
+		final CsvMapper mapper = mapperBuilder.build();
 
 		final ObjectWriter writer = mapper.writerFor(writenType).with(mapper.schemaFor(schemaType).withHeader().withColumnReordering(true).withArrayElementSeparator("\n"));
 		try (final OutputStream stream = sink.getStream(ITypeRef.of(OutputStream.class))) {
@@ -163,13 +173,5 @@ public class ReassertSummarizer {
 		retVal.findings(findings);
 
 		return retVal.build();
-	}
-
-	protected List<GraphPath<IVertex, IEdge>> readable(List<GraphPath<IVertex, IEdge>> paths) {
-		return paths.stream().filter(path -> {
-			final List<IVertex> vertexList = path.getVertexList();
-			if (vertexList.size() <= 2) return true;
-			return vertexList.subList(1, vertexList.size() - 1).stream().allMatch(v -> !(v instanceof Work));
-		}).collect(Collectors.toList());
 	}
 }
