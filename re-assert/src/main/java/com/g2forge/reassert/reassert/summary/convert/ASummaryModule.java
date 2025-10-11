@@ -36,6 +36,8 @@ public abstract class ASummaryModule extends SimpleModule {
 		super.setupModule(context);
 
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
+			private static final long serialVersionUID = 2340456774216459044L;
+
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
 				return modify(description, serializer);

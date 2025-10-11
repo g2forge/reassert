@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.type.MapLikeType;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper.Builder;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema.ColumnType;
 import com.fasterxml.jackson.module.paranamer.ParanamerModule;
@@ -58,10 +59,10 @@ public class CSVTermsLoader<T> implements ITermsLoader {
 		private static final CsvMapper mapper = computeMapper();
 
 		protected static CsvMapper computeMapper() {
-			final CsvMapper mapper = new CsvMapper();
-			mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-			mapper.registerModule(new ParanamerModule());
-			return mapper;
+			final Builder mapperBuilder = CsvMapper.builder();
+			mapperBuilder.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+			mapperBuilder.addModule(new ParanamerModule());
+			return mapperBuilder.build();
 		}
 
 		public <C, T> Map<C, ITerms<T>> read(Class<C> contractClass, Class<? extends T> termClass, IDataSource source) {

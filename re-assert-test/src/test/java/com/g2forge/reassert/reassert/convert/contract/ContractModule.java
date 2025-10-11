@@ -24,18 +24,21 @@ public class ContractModule extends SimpleModule {
 
 	protected final ContractParser parser;
 
-
 	@Override
 	public void setupModule(SetupContext context) {
 		super.setupModule(context);
 
 		context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
+			private static final long serialVersionUID = 4940931805636291357L;
+
 			public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription description, JsonDeserializer<?> deserializer) {
 				if (IVertex.class.isAssignableFrom(description.getBeanClass())) return new ContractDeserializer(deserializer, getParser());
 				return deserializer;
 			}
 		});
 		context.addBeanSerializerModifier(new BeanSerializerModifier() {
+			private static final long serialVersionUID = -4855611336964247038L;
+
 			@Override
 			public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription description, JsonSerializer<?> serializer) {
 				if (IVertex.class.isAssignableFrom(description.getBeanClass())) return new ContractSerializer(serializer, getDescriber(), getParser());
