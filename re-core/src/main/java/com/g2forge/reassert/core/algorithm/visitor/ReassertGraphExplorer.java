@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +18,9 @@ import org.jgrapht.graph.EdgeReversedGraph;
 import com.g2forge.alexandria.java.core.error.HError;
 import com.g2forge.alexandria.java.core.error.OrThrowable;
 import com.g2forge.alexandria.java.core.helpers.HCollection;
+import com.g2forge.alexandria.workqueue.BasicWorkQueueFactory;
+import com.g2forge.alexandria.workqueue.IWorkQueueContext;
+import com.g2forge.alexandria.workqueue.IWorkQueueHandler;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder;
 import com.g2forge.reassert.core.api.IReassertGraphBuilder.ICallback;
 import com.g2forge.reassert.core.api.ReassertGraphBuilder;
@@ -152,17 +154,18 @@ public class ReassertGraphExplorer {
 	}
 
 	protected void extendGraph(final Callback<?> callback, final Graph<IVertex, IEdge> graph) {
-		final ArtifactLoadContext context = new ArtifactLoadContext(graph);
-		final LinkedList<IReassertGraphBuilder.ICallback<?>> queue = new LinkedList<>();
+		final ArtifactLoadContext artifactLoadContext = new ArtifactLoadContext(graph);
 		final Collection<Throwable> failures = new ArrayList<>();
-		queue.add(callback);
-		while (!queue.isEmpty()) {
-			handle(context, queue, queue.remove(), failures);
-		}
+		BasicWorkQueueFactory.create().run(new IWorkQueueHandler<IReassertGraphBuilder.ICallback<?>>() {
+			@Override
+			public void run(IWorkQueueContext<IReassertGraphBuilder.ICallback<?>> context, IReassertGraphBuilder.ICallback<?> task) {
+				handle(artifactLoadContext, context, task, failures);
+			}
+		}, callback);
 		if (!failures.isEmpty()) throw HError.withSuppressed(new RuntimeException("Failed to load one or more artifacts!"), failures);
 	}
 
-	protected <Coordinates extends ICoordinates> void handle(final ArtifactLoadContext loadContext, final Collection<IReassertGraphBuilder.ICallback<?>> queue, final ICallback<Coordinates> callback, final Collection<Throwable> failures) {
+	protected <Coordinates extends ICoordinates> void handle(final ArtifactLoadContext loadContext, final IWorkQueueContext<IReassertGraphBuilder.ICallback<?>> queueContext, final ICallback<Coordinates> callback, final Collection<Throwable> failures) {
 		final List<IReassertGraphBuilder.ICallback<?>> callbacks = new ArrayList<>();
 
 		final Artifact<Coordinates> unloadedArtifact = callback.getArtifact();
@@ -191,7 +194,7 @@ public class ReassertGraphExplorer {
 				name = coordinates.toString();
 			}
 
-			log.info(String.format("Starting %1$s with %2$d remaining", name, queue.size()));
+			log.info(String.format("Starting %1$s with %2$d remaining", name, queueContext.getApproximateQueueSize()));
 		}
 
 		final ReassertGraphBuilder builder = new ReassertGraphBuilder(loadContext.getGraph(), callbacks);
@@ -211,6 +214,6 @@ public class ReassertGraphExplorer {
 		}
 		callback.callback(artifact, builder);
 
-		queue.addAll(callbacks);
+		queueContext.queue(callbacks);
 	}
 }
