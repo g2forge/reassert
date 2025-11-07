@@ -27,19 +27,19 @@ public class ObjectSerializationCacheStore<T> implements ICacheStore<T> {
 
 	@Override
 	public T load(Path path) {
-		if (!path.isAbsolute()) throw new IllegalArgumentException();
+		if (!path.isAbsolute()) throw new IllegalArgumentException(String.format("\"%1$s\" is not absolute", path));
 		try (ObjectInputStream objectInputStream = new ObjectInputStream(Files.newInputStream(path))) {
 			return type.cast(objectInputStream.readObject());
 		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Failed to load " + getType() + " from " + path, e);
 		} catch (IOException e) {
-			throw new RuntimeIOException(e);
+			throw new RuntimeIOException("Failed to load " + getType() + " from " + path, e);
 		}
 	}
 
 	@Override
 	public T store(Path path, T value) {
-		if (!path.isAbsolute()) throw new IllegalArgumentException();
+		if (!path.isAbsolute()) throw new IllegalArgumentException(String.format("\"%1$s\" is not absolute", path));
 		try {
 			Files.createDirectories(path.getParent());
 			try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(Files.newOutputStream(path))) {
@@ -47,7 +47,7 @@ public class ObjectSerializationCacheStore<T> implements ICacheStore<T> {
 				objectOutputStream.flush();
 			}
 		} catch (IOException e) {
-			throw new RuntimeIOException(e);
+			throw new RuntimeIOException("Failed to store " + value + " to " + path, e);
 		}
 		return value;
 	}

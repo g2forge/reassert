@@ -15,8 +15,8 @@ import com.g2forge.alexandria.java.io.file.HFile;
 public class DirectoryCacheStore implements ICacheStore<Path> {
 	@Override
 	public Path load(Path path) {
-		if (!path.isAbsolute()) throw new IllegalArgumentException();
-		if (!Files.isDirectory(path)) throw new IllegalArgumentException();
+		if (!path.isAbsolute()) throw new IllegalArgumentException(path + " is not absolute!");
+		if (!Files.isDirectory(path)) throw new IllegalArgumentException(path + " is not directory!");
 		return path;
 	}
 
@@ -38,7 +38,7 @@ public class DirectoryCacheStore implements ICacheStore<Path> {
 				}
 			}
 		} catch (IOException exception) {
-			throw new RuntimeIOException(exception);
+			throw new RuntimeIOException("Failed to store " + value + " to " + path, exception);
 		}
 		return path;
 	}
