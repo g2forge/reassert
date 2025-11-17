@@ -20,12 +20,12 @@ public class FileCacheStore implements ICacheStore<Path> {
 
 	@Override
 	public Path store(Path path, Path value) {
-		if (!path.isAbsolute()) throw new IllegalArgumentException();
+		if (!path.isAbsolute()) throw new IllegalArgumentException(String.format("\"%1$s\" is not absolute", path));
 		try {
 			Files.createDirectories(path.getParent());
 			Files.move(value, path, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException exception) {
-			throw new RuntimeIOException(exception);
+			throw new RuntimeIOException("Failed to store " + value + " to " + path, exception);
 		}
 		return path;
 	}
