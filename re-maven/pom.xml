@@ -13,6 +13,9 @@
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
 
+	<name>Reassert Maven</name>
+	<description>Reassert maven module</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

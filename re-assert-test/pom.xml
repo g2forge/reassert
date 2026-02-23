@@ -10,6 +10,9 @@
 		<version>0.0.3-SNAPSHOT</version>
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
+	
+	<name>Reassert Test</name>
+	<description>End to end testing of reassert</description>
 
 	<dependencies>
 		<dependency>

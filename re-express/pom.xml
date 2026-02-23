@@ -10,6 +10,9 @@
 		<version>0.0.3-SNAPSHOT</version>
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
+	
+	<name>Reassert Express</name>
+	<description>Models and algorithms for expressions and expression evaluation</description>
 
 	<dependencies>
 		<dependency>

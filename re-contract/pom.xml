@@ -10,6 +10,9 @@
 		<version>0.0.3-SNAPSHOT</version>
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
+	
+	<name>Reassert Contract</name>
+	<description>Abstract model &amp; algorithms for contracts and contract analysis</description>
 
 	<dependencies>
 		<dependency>

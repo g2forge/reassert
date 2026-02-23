@@ -11,6 +11,9 @@
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
 
+	<name>Reassert Core Test</name>
+	<description>Abstractions for testing other reassert modules</description>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
