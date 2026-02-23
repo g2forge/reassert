@@ -12,6 +12,9 @@
 		<version>0.0.3-SNAPSHOT</version>
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
+	
+	<name>Reassert Core</name>
+	<description>Core abstractions for reassert</description>
 
 	<dependencies>
 		<dependency>

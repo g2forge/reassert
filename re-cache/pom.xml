@@ -10,6 +10,9 @@
 		<version>0.0.3-SNAPSHOT</version>
 		<relativePath>../re-project/pom.xml</relativePath>
 	</parent>
+	
+	<name>Reassert Cache</name>
+	<description>Reassert local cache for pre-computed data</description>
 
 	<dependencies>
 		<dependency>
