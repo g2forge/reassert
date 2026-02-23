@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>com.g2forge.reassert</groupId>
 		<artifactId>re-project</artifactId>
-		<version>0.0.3-SNAPSHOT</version>
+		<version>0.0.3</version>
 		<relativePath>re-project/pom.xml</relativePath>
 	</parent>
 
@@ -31,4 +31,8 @@
 		<module>re-assert</module>
 		<module>re-assert-test</module>
 	</modules>
+
+  <scm>
+    <tag>0.0.3</tag>
+  </scm>
 </project>

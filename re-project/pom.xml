@@ -5,13 +5,13 @@
 	<groupId>com.g2forge.reassert</groupId>
 	<artifactId>re-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
 		<version>0.0.19</version>
-		<relativePath></relativePath>
+		<relativePath />
 	</parent>
 
 	<properties>
@@ -113,4 +113,8 @@
 			</repositories>
 		</profile>
 	</profiles>
+
+  <scm>
+    <tag>0.0.3</tag>
+  </scm>
 </project>
