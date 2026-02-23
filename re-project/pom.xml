@@ -11,7 +11,7 @@
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
 		<version>0.0.19-SNAPSHOT</version>
-		<relativePath>../../alexandria/ax-project/pom.xml</relativePath>
+		<relativePath></relativePath>
 	</parent>
 
 	<properties>
