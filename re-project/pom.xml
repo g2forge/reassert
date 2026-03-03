@@ -5,19 +5,19 @@
 	<groupId>com.g2forge.reassert</groupId>
 	<artifactId>re-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.g2forge.alexandria</groupId>
 		<artifactId>ax-project</artifactId>
-		<version>0.0.20-SNAPSHOT</version>
+		<version>0.0.21-SNAPSHOT</version>
 		<relativePath />
 	</parent>
 
 	<properties>
-		<alexandria.version>0.0.20-SNAPSHOT</alexandria.version>
-		<enigma.version>0.0.13-SNAPSHOT</enigma.version>
-		<gearbox.version>0.0.11-SNAPSHOT</gearbox.version>
+		<alexandria.version>0.0.21-SNAPSHOT</alexandria.version>
+		<enigma.version>0.0.14-SNAPSHOT</enigma.version>
+		<gearbox.version>0.0.12-SNAPSHOT</gearbox.version>
 		<jgrapht.version>1.4.0</jgrapht.version>
 
 		<reassert.organization>g2forge</reassert.organization>
