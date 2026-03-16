@@ -10,6 +10,7 @@ import com.g2forge.alexandria.java.function.builder.IBuilder;
 import com.g2forge.alexandria.parse.IMatcher;
 import com.g2forge.alexandria.parse.IMatcherBuilder;
 import com.g2forge.alexandria.parse.NamedCharacterClass;
+import com.g2forge.alexandria.parse.QuanitifierVariant;
 import com.g2forge.alexandria.parse.regex.Regex;
 import com.g2forge.alexandria.parse.regex.RegexMatcher;
 import com.g2forge.reassert.core.api.ReassertLegalOpinion;
@@ -29,7 +30,7 @@ public abstract class ALicenseParser implements IParser<ILicenseApplied> {
 
 		protected static final IMatcher<?, Regex> parenthetical = pattern().group(g -> g.with(gap).text("(").charClass(true, cc -> cc.character(')')).plus().text(")")).opt().build();
 
-		protected static final IMatcher<?, Regex> holder = pattern().group(g0 -> g0.group(g1 -> g1.with(gap).charClass(false, cc -> cc.range('a', 'z').range('A', 'Z').range('0', '9')).plus()).plus()).opt().build();
+		protected static final IMatcher<?, Regex> holder = pattern().group(g0 -> g0.group(g1 -> g1.charClass(false, cc -> cc.character('-').character('_').named(NamedCharacterClass.Space)).star().charClass(false, cc -> cc.range('a', 'z').range('A', 'Z').range('0', '9')).plus(QuanitifierVariant.POSSESSIVE)).plus()).opt().build();
 
 		protected static final IMatcher<?, Regex> the = pattern().group(g -> g.text("the").with(gap)).opt().build();
 
